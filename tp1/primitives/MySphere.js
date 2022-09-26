@@ -1,4 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
+import { normalizeVector } from '../utils/math.js';
 
 /**
  * MySphere
@@ -24,12 +25,34 @@ export class MySphere extends CGFobject {
         this.normals = [];
 
         const deltaTheta = 2 * Math.PI / this.slices;
-        let theta = 0;
-        for (let i = 0; i < this.slices; i++) {
-            this.vertices.push([this.radius * Math.cos(theta), this.radius * Math.sin(theta), 0]);
-            theta += deltaTheta;
+        const deltaBeta = Math.PI / this.stacks;
+
+        // Vertices
+        let beta = 0;
+        for (let i = 0; i <= this.stacks + 1; i++) {
+            let theta = 0;
+            const z = Math.cos(beta) * this.radius;
+            const xyCof = Math.sin(beta) * this.radius;
+            for (let j = 0; j <= this.slices; j++) {
+                const vertex = [Math.cos(theta) * xyCof, Math.sin(theta) * xyCof, z];
+                this.vertices.push(...vertex);
+                this.normals.push(...normalizeVector(vertex));
+                theta += deltaTheta;
+            }
+            beta += deltaBeta;
         }
-        console.log(this.vertices);
+
+        // Indices
+        for (let i = 0; i <= this.stacks; i++) {
+            for (let j = 0; j < this.slices; j++) {
+                const first = (i * this.slices) + j;
+                const second = first + 1;
+                const third = first + this.slices + 1;
+                const fourth = third + 1;
+                this.indices.push(third, second, first);
+                this.indices.push(third, fourth, second);
+            }
+        }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();

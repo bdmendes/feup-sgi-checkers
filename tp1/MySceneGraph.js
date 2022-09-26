@@ -655,7 +655,7 @@ export class MySceneGraph {
                 var cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
 
                 this.primitives[primitiveId] = cylinder;
-            } else if (primitiveType == 'cylinder') {
+            } else if (primitiveType == 'sphere') {
                 var radius = this.reader.getFloat(grandChildren[0], 'radius');
                 if (!(radius != null && !isNaN(radius)))
                     return 'unable to parse radius of the primitive coordinates for ID = ' +
