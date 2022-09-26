@@ -18,7 +18,7 @@ export function parseScene(sceneGraph, sceneNode) {
 
     sceneGraph.referenceLength = axis_length || 1;
 
-    sceneGraph.log('Parsed scene');
+    console.log('Parsed scene');
 
     return null;
 }
