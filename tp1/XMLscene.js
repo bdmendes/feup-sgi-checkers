@@ -1,5 +1,5 @@
 import { CGFscene } from '../lib/CGF.js';
-import { CGFaxis,CGFcamera } from '../lib/CGF.js';
+import { CGFaxis, CGFcamera } from '../lib/CGF.js';
 
 
 var DEGREE_TO_RAD = Math.PI / 180;
@@ -62,6 +62,7 @@ export class XMLscene extends CGFscene {
                 var light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
+                //this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
