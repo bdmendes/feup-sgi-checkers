@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { normalizeVector } from '../utils/math.js';
+import { hypothenus, normalizeVector } from '../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -30,6 +30,8 @@ export class MyCylinder extends CGFobject {
     let current_angle = 0;
     let delta = (this.top - this.base) / this.stacks;
 
+    let z_normal = (this.base - this.top) / this.height;
+
     for (let current_stack = 0; current_stack <= this.stacks; current_stack++) {
       let j = 0;
       for (; ;) {
@@ -37,8 +39,7 @@ export class MyCylinder extends CGFobject {
           Math.sin(current_angle) * (this.base + current_stack * delta),
           current_stack * stack_height);
 
-        this.normals.push(...normalizeVector([this.top - this.base,]))
-        //this.normals.push(Math.cos(current_angle), Math.sin(current_angle), 0);
+        this.normals.push(...normalizeVector([Math.cos(current_angle), Math.sin(current_angle), z_normal]));
 
         this.texCoords.push(j / this.slices, current_stack / this.stacks);
 
