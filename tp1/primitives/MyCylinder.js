@@ -1,4 +1,4 @@
-import {CGFobject} from '../../lib/CGF.js';
+import { CGFobject } from '../../lib/CGF.js';
 /**
  * MyRectangle
  * @constructor
@@ -22,20 +22,22 @@ export class MyCylinder extends CGFobject {
     this.vertices = [];
     this.indices = [];
     this.normals = [];
-    //this.texCoords = [];
+    this.texCoords = [];
 
 
     let stack_height = this.height / this.stacks;
     let angle = (2 * Math.PI) / this.slices;
     let current_angle = 0;
 
-    for (let current_stack = 0; current_stack < 2; current_stack++) {
+    for (let current_stack = 0; current_stack < this.stacks; current_stack++) {
       let j = 0;
-      for (;;) {
+      for (; ;) {
         this.vertices.push(Math.cos(current_angle) * this.base, Math.sin(current_angle) * this.base, current_stack * stack_height);
         this.normals.push(Math.cos(current_angle), Math.sin(current_angle), 0);
 
-        if (current_stack < 2 - 1 && j < this.slices - 1) {
+        this.texCoords.push(j / this.slices, current_stack / this.stacks);
+
+        if (current_stack < this.stacks - 1 && j < this.slices - 1) {
           this.indices.push(current_stack * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j);
           this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j + 1);
         }
@@ -44,7 +46,7 @@ export class MyCylinder extends CGFobject {
         if (j + 1 === this.slices) { break; } else { j++; }
       }
 
-      if (current_stack < 2 - 1) {
+      if (current_stack < this.stacks - 1) {
         this.indices.push(current_stack * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices + j);
         this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices);
       }
