@@ -29,7 +29,7 @@ export class MySphere extends CGFobject {
 
         // Vertices
         let beta = 0;
-        for (let i = 0; i <= this.stacks + 1; i++) {
+        for (let i = 0; i <= this.stacks; i++) {
             let theta = 0;
             const z = Math.cos(beta) * this.radius;
             const xyCof = Math.sin(beta) * this.radius;
@@ -50,7 +50,9 @@ export class MySphere extends CGFobject {
                 const third = first + this.slices + 1;
                 const fourth = third + 1;
                 this.indices.push(third, second, first);
-                this.indices.push(third, fourth, second);
+                if (j !== this.slices - 1 || i < this.stacks - 1) {
+                    this.indices.push(third, fourth, second);
+                }
             }
         }
 
