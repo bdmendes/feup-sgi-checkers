@@ -4,23 +4,21 @@
      * @param {components block element} componentsNode
      */
 export function parseComponents(sceneGraph, componentsNode) {
-    var children = componentsNode.children;
-
+    const children = componentsNode.children;
     sceneGraph.components = [];
-
-    var grandChildren = [];
-    var grandgrandChildren = [];
-    var nodeNames = [];
+    let grandChildren = [];
+    let grandgrandChildren = [];
+    let nodeNames = [];
 
     // Any number of components.
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
         if (children[i].nodeName != 'component') {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
             continue;
         }
 
         // Get id of the current component.
-        var componentID = sceneGraph.reader.getString(children[i], 'id');
+        const componentID = sceneGraph.reader.getString(children[i], 'id');
         if (componentID == null) return 'no ID defined for componentID';
 
         // Checks for repeated IDs.
@@ -31,14 +29,14 @@ export function parseComponents(sceneGraph, componentsNode) {
         grandChildren = children[i].children;
 
         nodeNames = [];
-        for (var j = 0; j < grandChildren.length; j++) {
+        for (let j = 0; j < grandChildren.length; j++) {
             nodeNames.push(grandChildren[j].nodeName);
         }
 
-        var transformationIndex = nodeNames.indexOf('transformation');
-        var materialsIndex = nodeNames.indexOf('materials');
-        var textureIndex = nodeNames.indexOf('texture');
-        var childrenIndex = nodeNames.indexOf('children');
+        const transformationIndex = nodeNames.indexOf('transformation');
+        const materialsIndex = nodeNames.indexOf('materials');
+        const textureIndex = nodeNames.indexOf('texture');
+        const childrenIndex = nodeNames.indexOf('children');
 
         sceneGraph.onXMLMinorError('To do: Parse components.');
         // Transformations

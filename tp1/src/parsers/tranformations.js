@@ -4,21 +4,21 @@
   * @param {transformations block element} transformationsNode
   */
 export function parseTransformations(sceneGraph, transformationsNode) {
-    var children = transformationsNode.children;
+    const children = transformationsNode.children;
 
     sceneGraph.transformations = [];
 
-    var grandChildren = [];
+    let grandChildren = [];
 
     // Any number of transformations.
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
         if (children[i].nodeName != 'transformation') {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
             continue;
         }
 
         // Get id of the current transformation.
-        var transformationID = sceneGraph.reader.getString(children[i], 'id');
+        const transformationID = sceneGraph.reader.getString(children[i], 'id');
         if (transformationID == null) return 'no ID defined for transformation';
 
         // Checks for repeated IDs.
@@ -29,12 +29,12 @@ export function parseTransformations(sceneGraph, transformationsNode) {
         grandChildren = children[i].children;
         // Specifications for the current transformation.
 
-        var transfMatrix = mat4.create();
+        const transfMatrix = mat4.create();
 
-        for (var j = 0; j < grandChildren.length; j++) {
+        for (let j = 0; j < grandChildren.length; j++) {
             switch (grandChildren[j].nodeName) {
                 case 'translate':
-                    var coordinates = sceneGraph.parseFloatProps(
+                    const coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'translate transformation for ID ' + transformationID);
                     if (!Array.isArray(coordinates)) return coordinates;

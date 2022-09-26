@@ -61,11 +61,11 @@ export class MySceneGraph {
      */
     onXMLReady() {
         console.log('XML Loading finished.');
-        var rootElement = this.reader.xmlDoc.documentElement;
+        const rootElement = this.reader.xmlDoc.documentElement;
 
         // Here should go the calls for different functions to parse the various
         // blocks
-        var error = this.parseXMLFile(rootElement);
+        const error = this.parseXMLFile(rootElement);
 
         if (error != null) {
             this.onXMLError(error);
@@ -86,21 +86,21 @@ export class MySceneGraph {
     parseXMLFile(rootElement) {
         if (rootElement.nodeName != 'sxs') return 'root tag <sxs> missing';
 
-        var nodes = rootElement.children;
+        const nodes = rootElement.children;
 
         // Reads the names of the nodes to an auxiliary buffer.
-        var nodeNames = [];
+        const nodeNames = [];
 
-        for (var i = 0; i < nodes.length; i++) {
+        for (let i = 0; i < nodes.length; i++) {
             nodeNames.push(nodes[i].nodeName);
         }
 
-        var error;
+        let error;
 
         // Processes each node, verifying errors.
 
         // <scene>
-        var index;
+        let index;
         if ((index = nodeNames.indexOf('scene')) == -1)
             return 'tag <scene> missing';
         else {
@@ -208,9 +208,9 @@ export class MySceneGraph {
      * @param {array of strings} - the names of the properties to be parsed
      */
     parseFloatProps(node, messageError, props = ['x', 'y', 'z']) {
-        var result = [];
+        const result = [];
         for (const prop of props) {
-            var value = this.reader.getFloat(node, prop);
+            const value = this.reader.getFloat(node, prop);
             if (value == null || isNaN(value)) {
                 console.log('unable to parse ' + prop + 'of the ' + messageError);
                 return [];

@@ -4,22 +4,22 @@
  * @param {materials block element} materialsNode
  */
 export function parseMaterials(sceneGraph, materialsNode) {
-    var children = materialsNode.children;
+    const children = materialsNode.children;
 
     sceneGraph.materials = [];
 
-    var grandChildren = [];
-    var nodeNames = [];
+    const grandChildren = [];
+    const nodeNames = [];
 
     // Any number of materials.
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
         if (children[i].nodeName != 'material') {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
             continue;
         }
 
         // Get id of the current material.
-        var materialID = sceneGraph.reader.getString(children[i], 'id');
+        const materialID = sceneGraph.reader.getString(children[i], 'id');
         if (materialID == null) return 'no ID defined for material';
 
         // Checks for repeated IDs.

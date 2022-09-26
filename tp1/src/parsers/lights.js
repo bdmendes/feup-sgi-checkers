@@ -4,20 +4,18 @@
  * @param {lights block element} lightsNode
  */
 export function parseLights(sceneGraph, lightsNode) {
-    var children = lightsNode.children;
-
+    const children = lightsNode.children;
     sceneGraph.lights = [];
-    var numLights = 0;
-
-    var grandChildren = [];
-    var nodeNames = [];
+    let numLights = 0;
+    let grandChildren = [];
+    let nodeNames = [];
 
     // Any number of lights.
-    for (var i = 0; i < children.length; i++) {
+    for (let i = 0; i < children.length; i++) {
         // Storing light information
-        var global = [];
-        var attributeNames = [];
-        var attributeTypes = [];
+        const global = [];
+        const attributeNames = [];
+        const attributeTypes = [];
 
         // Check type of light
         if (children[i].nodeName != 'omni' && children[i].nodeName != 'spot') {
@@ -29,7 +27,7 @@ export function parseLights(sceneGraph, lightsNode) {
         }
 
         // Get id of the current light.
-        var lightId = sceneGraph.reader.getString(children[i], 'id');
+        const lightId = sceneGraph.reader.getString(children[i], 'id');
         if (lightId == null) return 'no ID defined for light';
 
         // Checks for repeated IDs.
@@ -38,8 +36,8 @@ export function parseLights(sceneGraph, lightsNode) {
                 ')';
 
         // Light enable/disable
-        var enableLight = true;
-        var aux = sceneGraph.reader.getBoolean(children[i], 'enabled');
+        let enableLight = true;
+        const aux = sceneGraph.reader.getBoolean(children[i], 'enabled');
         if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
             sceneGraph.onXMLMinorError(
                 'unable to parse value component of the \'enable light\' field for ID = ' +
@@ -55,20 +53,21 @@ export function parseLights(sceneGraph, lightsNode) {
         // Specifications for the current light.
 
         nodeNames = [];
-        for (var j = 0; j < grandChildren.length; j++) {
+        for (let j = 0; j < grandChildren.length; j++) {
             nodeNames.push(grandChildren[j].nodeName);
         }
 
-        for (var j = 0; j < attributeNames.length; j++) {
-            var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+        for (let j = 0; j < attributeNames.length; j++) {
+            const attributeIndex = nodeNames.indexOf(attributeNames[j]);
+            let aux;
 
             if (attributeIndex != -1) {
                 if (attributeTypes[j] == 'position')
-                    var aux = sceneGraph.parseFloatProps(
+                    aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         'light position for ID' + lightId, ['x', 'y', 'z', 'w']);
                 else
-                    var aux = sceneGraph.parseFloatProps(
+                    aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         attributeNames[j] + ' illumination for ID' + lightId, ['r', 'g', 'b', 'a']);
 
@@ -82,20 +81,20 @@ export function parseLights(sceneGraph, lightsNode) {
 
         // Gets the additional attributes of the spot light
         if (children[i].nodeName == 'spot') {
-            var angle = sceneGraph.reader.getFloat(children[i], 'angle');
+            const angle = sceneGraph.reader.getFloat(children[i], 'angle');
             if (!(angle != null && !isNaN(angle)))
                 return 'unable to parse angle of the light for ID = ' + lightId;
 
-            var exponent = sceneGraph.reader.getFloat(children[i], 'exponent');
+            const exponent = sceneGraph.reader.getFloat(children[i], 'exponent');
             if (!(exponent != null && !isNaN(exponent)))
                 return 'unable to parse exponent of the light for ID = ' + lightId;
 
-            var targetIndex = nodeNames.indexOf('target');
+            const targetIndex = nodeNames.indexOf('target');
 
             // Retrieves the light target.
-            var targetLight = [];
+            const targetLight = [];
             if (targetIndex != -1) {
-                var aux = sceneGraph.parseFloatProps(
+                const aux = sceneGraph.parseFloatProps(
                     grandChildren[targetIndex], 'target light for ID ' + lightId);
                 if (!Array.isArray(aux)) return aux;
 

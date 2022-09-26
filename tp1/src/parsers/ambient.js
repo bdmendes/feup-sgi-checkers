@@ -4,32 +4,31 @@
   * @param {ambient block element} ambientsNode
   */
 export function parseAmbient(sceneGraph, ambientsNode) {
-    var children = ambientsNode.children;
-
+    const children = ambientsNode.children;
     sceneGraph.ambient = [];
     sceneGraph.background = [];
+    const nodeNames = [];
 
-    var nodeNames = [];
-
-    for (var i = 0; i < children.length; i++)
+    for (let i = 0; i < children.length; i++)
         nodeNames.push(children[i].nodeName);
 
-    var ambientIndex = nodeNames.indexOf('ambient');
-    var backgroundIndex = nodeNames.indexOf('background');
+    const ambientIndex = nodeNames.indexOf('ambient');
+    const backgroundIndex = nodeNames.indexOf('background');
 
-    var color = sceneGraph.parseFloatProps(children[ambientIndex], 'ambient', ['r', 'g', 'b', 'a']);
-    if (!Array.isArray(color))
-        return color;
-    else
-        sceneGraph.ambient = color;
+    const ambientColor = sceneGraph.parseFloatProps(children[ambientIndex], 'ambient', ['r', 'g', 'b', 'a']);
+    if (!Array.isArray(ambientColor)) {
+        return ambientColor;
+    } else {
+        sceneGraph.ambient = ambientColor;
+    }
 
-    color = sceneGraph.parseFloatProps(children[backgroundIndex], 'background', ['r', 'g', 'b', 'a']);
-    if (!Array.isArray(color))
-        return color;
-    else
-        sceneGraph.background = color;
+    const backgroundColor = sceneGraph.parseFloatProps(children[backgroundIndex], 'background', ['r', 'g', 'b', 'a']);
+    if (!Array.isArray(backgroundColor)) {
+        return backgroundColor;
+    } else {
+        sceneGraph.background = backgroundColor;
+    }
 
     console.log('Parsed ambient');
-
     return null;
 }
