@@ -4,8 +4,8 @@
 
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Bruno Mendes     | 201906166 | up201906166@edu.fe.up.pt |
+| Fernando Rego    | 201905951 | up201905951@edu.fe.up.pt |
 
 ----
 ## Project information
