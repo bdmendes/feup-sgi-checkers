@@ -674,6 +674,24 @@ export class MySceneGraph {
 
         const sphere = new MySphere(this.scene, primitiveId, radius, slices, stacks);
         this.primitives[primitiveId] = sphere;
+      } else if (primitiveType == 'sphere') {
+        var radius = this.reader.getFloat(grandChildren[0], 'radius');
+        if (!(radius != null && !isNaN(radius)))
+          return 'unable to parse radius of the primitive coordinates for ID = ' +
+            primitiveId;
+
+        var slices = this.reader.getInteger(grandChildren[0], 'slices');
+        if (!(slices != null && !isNaN(slices)))
+          return 'unable to parse slices of the primitive coordinates for ID = ' +
+            primitiveId;
+
+        var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+        if (!(stacks != null && !isNaN(stacks)))
+          return 'unable to parse stacks of the primitive coordinates for ID = ' +
+            primitiveId;
+
+        const sphere = new MySphere(this.scene, primitiveId, radius, slices, stacks);
+        this.primitives[primitiveId] = sphere;
       } else if (primitiveType == 'torus') {
         //inner
         var inner = this.reader.getFloat(grandChildren[0], 'inner');
