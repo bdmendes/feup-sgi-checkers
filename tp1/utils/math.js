@@ -6,3 +6,7 @@ export function normalizeVector([x, y, z]) {
     const length = Math.sqrt(x * x + y * y + z * z);
     return length === 0 ? [x, y, z] : [x / length, y / length, z / length];
 }
+
+export function hypothenus(a, b) {
+    return Math.sqrt(a * a + b * b);
+}

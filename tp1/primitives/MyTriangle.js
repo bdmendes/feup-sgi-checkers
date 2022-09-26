@@ -65,7 +65,7 @@ export class MyTriangle extends CGFobject {
 
     /**
      * @method updateTexCoords
-     * Updates the list of texture coordinates of the rectangle
+     * Updates the list of texture coordinates of the triangle
      * @param {Array} coords - Array of texture coordinates
      */
     updateTexCoords(coords) {
