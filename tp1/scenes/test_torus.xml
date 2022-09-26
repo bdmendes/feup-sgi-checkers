@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="demoRoot" axis_length="5" />
+    <scene root="demoRoot" axis_length="5"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -44,8 +44,8 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoRectangle">
-            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
+        <primitive id="demoCylinder">
+            <torus inner="1" outer="3" slices="20" loops="20"/>
         </primitive>
     </primitives>
 
@@ -58,7 +58,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="demoTexture"/>
             <children>
                 <primitiveref id="demoRectangle" />
             </children>
