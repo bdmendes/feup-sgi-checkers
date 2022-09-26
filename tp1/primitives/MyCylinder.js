@@ -1,4 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
+import { normalizeVector } from '../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -24,20 +25,24 @@ export class MyCylinder extends CGFobject {
     this.normals = [];
     this.texCoords = [];
 
-
     let stack_height = this.height / this.stacks;
     let angle = (2 * Math.PI) / this.slices;
     let current_angle = 0;
+    let delta = (this.top - this.base) / this.stacks;
 
-    for (let current_stack = 0; current_stack < this.stacks; current_stack++) {
+    for (let current_stack = 0; current_stack <= this.stacks; current_stack++) {
       let j = 0;
       for (; ;) {
-        this.vertices.push(Math.cos(current_angle) * this.base, Math.sin(current_angle) * this.base, current_stack * stack_height);
-        this.normals.push(Math.cos(current_angle), Math.sin(current_angle), 0);
+        this.vertices.push(Math.cos(current_angle) * (this.base + current_stack * delta),
+          Math.sin(current_angle) * (this.base + current_stack * delta),
+          current_stack * stack_height);
+
+        this.normals.push(...normalizeVector([this.top - this.base,]))
+        //this.normals.push(Math.cos(current_angle), Math.sin(current_angle), 0);
 
         this.texCoords.push(j / this.slices, current_stack / this.stacks);
 
-        if (current_stack < this.stacks - 1 && j < this.slices - 1) {
+        if (current_stack < this.stacks && j < this.slices - 1) {
           this.indices.push(current_stack * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j);
           this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j + 1);
         }
@@ -46,7 +51,7 @@ export class MyCylinder extends CGFobject {
         if (j + 1 === this.slices) { break; } else { j++; }
       }
 
-      if (current_stack < this.stacks - 1) {
+      if (current_stack < this.stacks) {
         this.indices.push(current_stack * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices + j);
         this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices);
       }
