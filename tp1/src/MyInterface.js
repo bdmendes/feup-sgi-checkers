@@ -1,4 +1,4 @@
-import { CGFinterface, CGFapplication, dat } from '../lib/CGF.js';
+import { CGFinterface, CGFapplication, dat } from '../../lib/CGF.js';
 
 /**
 * MyInterface class, creating a GUI interface.
@@ -34,17 +34,17 @@ export class MyInterface extends CGFinterface {
      * initKeys
      */
     initKeys() {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
+        this.scene.gui = this;
+        this.processKeyboard = function () { };
+        this.activeKeys = {};
     }
 
     processKeyDown(event) {
-        this.activeKeys[event.code]=true;
+        this.activeKeys[event.code] = true;
     };
 
     processKeyUp(event) {
-        this.activeKeys[event.code]=false;
+        this.activeKeys[event.code] = false;
     };
 
     isKeyPressed(keyCode) {
