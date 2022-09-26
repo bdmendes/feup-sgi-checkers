@@ -7,52 +7,50 @@ import {CGFobject} from '../../lib/CGF.js';
  * @param y - Scale of rectangle in Y
  */
 export class MyCylinder extends CGFobject {
-  constructor(scene, id, x1, x2, y1, y2) {
+  constructor(scene, id, base, top, height, slices, stacks) {
     super(scene);
-    this.x1 = x1;
-    this.x2 = x2;
-    this.y1 = y1;
-    this.y2 = y2;
+    this.base = base;
+    this.top = top;
+    this.height = height;
+    this.slices = slices;
+    this.stacks = stacks;
 
     this.initBuffers();
   }
 
   initBuffers() {
-    this.vertices = [
-      this.x1, this.y1, 0,  // 0
-      this.x2, this.y1, 0,  // 1
-      this.x1, this.y2, 0,  // 2
-      this.x2, this.y2, 0   // 3
-    ];
+    this.vertices = [];
+    this.indices = [];
+    this.normals = [];
+    //this.texCoords = [];
 
-    // Counter-clockwise reference of vertices
-    this.indices = [0, 1, 2, 1, 3, 2];
 
-    // Facing Z positive
-    this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
+    let stack_height = this.height / this.stacks;
+    let angle = (2 * Math.PI) / this.slices;
+    let current_angle = 0;
 
-    /*
-    Texture coords (s,t)
-    +----------> s
-|
-|
-    |
-    v
-t
-*/
+    for (let current_stack = 0; current_stack < 2; current_stack++) {
+      let j = 0;
+      for (;;) {
+        this.vertices.push(Math.cos(current_angle) * this.base, Math.sin(current_angle) * this.base, current_stack * stack_height);
+        this.normals.push(Math.cos(current_angle), Math.sin(current_angle), 0);
 
-    this.texCoords = [0, 1, 1, 1, 0, 0, 1, 0];
+        if (current_stack < 2 - 1 && j < this.slices - 1) {
+          this.indices.push(current_stack * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j);
+          this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j + 1);
+        }
+
+        current_angle += angle;
+        if (j + 1 === this.slices) { break; } else { j++; }
+      }
+
+      if (current_stack < 2 - 1) {
+        this.indices.push(current_stack * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices + j);
+        this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices);
+      }
+    }
+
     this.primitiveType = this.scene.gl.TRIANGLES;
     this.initGLBuffers();
-  }
-
-  /**
-   * @method updateTexCoords
-   * Updates the list of texture coordinates of the rectangle
-   * @param {Array} coords - Array of texture coordinates
-   */
-  updateTexCoords(coords) {
-    this.texCoords = [...coords];
-    this.updateTexCoordsGLBuffers();
   }
 }

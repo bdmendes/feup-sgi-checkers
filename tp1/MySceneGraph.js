@@ -1,6 +1,7 @@
 import {CGFXMLreader} from '../lib/CGF.js';
 
 import {MyRectangle} from './primitives/MyRectangle.js';
+import { MyCylinder } from './primitives/MyCylinder.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
@@ -561,6 +562,41 @@ export class MySceneGraph {
         var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
 
         this.primitives[primitiveId] = rect;
+      } else if (primitiveType == 'cylinder') {
+        // base
+        var base = this.reader.getFloat(grandChildren[0], 'base');
+        if (!(base != null && !isNaN(base)))
+          return 'unable to parse x1 of the primitive coordinates for ID = ' +
+              primitiveId;
+
+        // top
+        var top = this.reader.getFloat(grandChildren[0], 'top');
+        if (!(top != null && !isNaN(top)))
+          return 'unable to parse y1 of the primitive coordinates for ID = ' +
+              primitiveId;
+
+        // height
+        var height = this.reader.getFloat(grandChildren[0], 'height');
+        if (!(height != null && !isNaN(height)))
+          return 'unable to parse x2 of the primitive coordinates for ID = ' +
+              primitiveId;
+
+        // slices
+        var slices = this.reader.getFloat(grandChildren[0], 'slices');
+        if (!(slices != null && !isNaN(slices)))
+          return 'unable to parse y2 of the primitive coordinates for ID = ' +
+              primitiveId;
+
+        // stacks
+        var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+        if (!(stacks != null && !isNaN(stacks)))
+          return 'unable to parse y2 of the primitive coordinates for ID = ' +
+              primitiveId;
+
+        var cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+
+        this.primitives[primitiveId] = cylinder;
+      
       } else {
         console.warn('To do: Parse other primitives.');
       }
@@ -744,6 +780,7 @@ export class MySceneGraph {
     // directly
     for (const key in this.primitives) {
       this.primitives[key].display();
+      this.primitives[key].enableNormalViz();
     }
 
     // this.primitives['demoRectangle'].display();

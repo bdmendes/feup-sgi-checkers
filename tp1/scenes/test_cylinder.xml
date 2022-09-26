@@ -44,9 +44,8 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoRectangle">
-            <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
-            <cylinder base="2" top="4" height="8" slices="4" stacks="8" />
+        <primitive id="demoCylinder">
+            <cylinder base="2" top="4" height="4" slices="8" stacks="4" />
         </primitive>
     </primitives>
 
