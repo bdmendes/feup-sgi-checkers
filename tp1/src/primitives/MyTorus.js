@@ -1,4 +1,4 @@
-import { CGFobject } from '../../lib/CGF.js';
+import { CGFobject } from '../../../lib/CGF.js';
 import { hypothenus, normalizeVector } from '../utils/math.js';
 /**
  * MyRectangle

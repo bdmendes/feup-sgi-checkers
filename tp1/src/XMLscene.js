@@ -1,8 +1,5 @@
-import { CGFscene } from '../lib/CGF.js';
-import { CGFaxis, CGFcamera } from '../lib/CGF.js';
-
-
-var DEGREE_TO_RAD = Math.PI / 180;
+import { CGFscene } from '../../lib/CGF.js';
+import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -50,16 +47,16 @@ export class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
+        let i = 0;
         // Lights index.
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
+        for (let key in this.graph.lights) {
             if (i >= 8)
                 break;              // Only eight lights allowed by WebGL.
 
             if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+                const light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
                 //this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
@@ -127,7 +124,7 @@ export class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
             this.lights[i].enable();
         }
