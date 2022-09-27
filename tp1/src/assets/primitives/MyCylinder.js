@@ -1,5 +1,5 @@
-import { CGFobject } from '../../../lib/CGF.js';
-import { hypothenus, normalizeVector } from '../utils/math.js';
+import { CGFobject } from '../../../../lib/CGF.js';
+import { hypothenus, normalizeVector } from '../../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -15,6 +15,7 @@ export class MyCylinder extends CGFobject {
         this.height = height;
         this.slices = slices;
         this.stacks = stacks;
+        this.id = id;
 
         this.initBuffers();
     }

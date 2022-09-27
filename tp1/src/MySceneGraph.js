@@ -29,16 +29,27 @@ export class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
+        // Not loaded until XML loading is finished
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
         scene.graph = this;
 
-        this.nodes = [];
+        // Graph nodes
+        this.components = {};
+        this.primitives = {};
+        this.idRoot = null;  // The id of the root component.
 
-        this.idRoot = null;  // The id of the root element.
+        // Scene assets
+        this.materials = {};
+        this.lights = {};
+        this.ambient = [];
+        this.background = [];
+        this.textures = {};
+        this.transformations = {};
 
+        // Setup default axis
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -198,6 +209,7 @@ export class MySceneGraph {
             // Parse components block
             if ((error = parseComponents(this, nodes[index])) != null) return error;
         }
+
         console.log('all parsed');
     }
 
@@ -212,7 +224,7 @@ export class MySceneGraph {
         for (const prop of props) {
             const value = this.reader.getFloat(node, prop);
             if (value == null || isNaN(value)) {
-                console.log('unable to parse ' + prop + 'of the ' + messageError);
+                console.warn('unable to parse ' + prop + 'of the ' + messageError);
                 return [];
             }
             result.push(value);
@@ -242,15 +254,6 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // To do: Create display loop for transversing the scene graph
-
-        // To test the parsing/creation of the primitives, call the display function
-        // directly
-        for (const key in this.primitives) {
-            this.primitives[key].display();
-            this.primitives[key].enableNormalViz();
-        }
-
-        // this.primitives['demoRectangle'].display();
+        this.components[this.idRoot].display();
     }
 }

@@ -5,9 +5,6 @@
   */
 export function parseTransformations(sceneGraph, transformationsNode) {
     const children = transformationsNode.children;
-
-    sceneGraph.transformations = [];
-
     let grandChildren = [];
 
     // Any number of transformations.
@@ -37,10 +34,9 @@ export function parseTransformations(sceneGraph, transformationsNode) {
                     const coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'translate transformation for ID ' + transformationID);
-                    if (!Array.isArray(coordinates)) return coordinates;
-
-                    transfMatrix =
-                        mat4.translate(transfMatrix, transfMatrix, coordinates);
+                    if (coordinates == []) return coordinates;
+                    // transfMatrix =
+                    // mat4.translate(transfMatrix, transfMatrix, coordinates);
                     break;
                 case 'scale':
                     sceneGraph.onXMLMinorError('To do: Parse scale transformations.');

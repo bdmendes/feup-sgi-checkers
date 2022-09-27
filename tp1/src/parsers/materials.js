@@ -5,9 +5,6 @@
  */
 export function parseMaterials(sceneGraph, materialsNode) {
     const children = materialsNode.children;
-
-    sceneGraph.materials = [];
-
     const grandChildren = [];
     const nodeNames = [];
 

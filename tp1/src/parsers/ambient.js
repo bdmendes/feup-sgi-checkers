@@ -5,8 +5,6 @@
   */
 export function parseAmbient(sceneGraph, ambientsNode) {
     const children = ambientsNode.children;
-    sceneGraph.ambient = [];
-    sceneGraph.background = [];
     const nodeNames = [];
 
     for (let i = 0; i < children.length; i++)

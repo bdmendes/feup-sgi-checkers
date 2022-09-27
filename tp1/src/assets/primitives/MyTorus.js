@@ -1,5 +1,4 @@
-import { CGFobject } from '../../../lib/CGF.js';
-import { hypothenus, normalizeVector } from '../utils/math.js';
+import { CGFobject } from '../../../../lib/CGF.js';
 /**
  * MyRectangle
  * @constructor
@@ -14,6 +13,7 @@ export class MyTorus extends CGFobject {
         this.outer = outer;
         this.slices = slices;
         this.loops = loops;
+        this.id = id;
 
         this.initBuffers();
     }

@@ -1,5 +1,5 @@
-import { CGFobject } from '../../../lib/CGF.js';
-import { normalizeVector } from '../utils/math.js';
+import { CGFobject } from '../../../../lib/CGF.js';
+import { normalizeVector } from '../../utils/math.js';
 
 /**
  * MySphere
@@ -15,6 +15,7 @@ export class MySphere extends CGFobject {
         this.radius = radius;
         this.slices = slices;
         this.stacks = stacks;
+        this.id = id;
 
         this.initBuffers();
     }

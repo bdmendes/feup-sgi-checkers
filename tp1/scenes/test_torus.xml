@@ -44,7 +44,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoCylinder">
+        <primitive id="demoTorus">
             <torus inner="1" outer="3" slices="20" loops="20"/>
         </primitive>
     </primitives>
@@ -60,7 +60,7 @@
             </materials>
             <texture id="demoTexture"/>
             <children>
-                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoTorus" />
             </children>
         </component>
     </components>

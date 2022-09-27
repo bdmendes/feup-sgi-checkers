@@ -5,7 +5,6 @@
  */
 export function parseLights(sceneGraph, lightsNode) {
     const children = lightsNode.children;
-    sceneGraph.lights = [];
     let numLights = 0;
     let grandChildren = [];
     let nodeNames = [];
