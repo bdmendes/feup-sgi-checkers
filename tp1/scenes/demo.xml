@@ -43,6 +43,8 @@
         </transformation>
         <transformation id="demoTranslate">
             <translate x="0" y="0" z="3" />
+            <scale x="0.5" y="1" z="0.5" />
+            <rotate axis="y" angle="45" />
         </transformation>
     </transformations>
 

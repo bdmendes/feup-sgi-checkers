@@ -232,6 +232,23 @@ export class MySceneGraph {
         return result;
     }
 
+    parseAxis(node, messageError) {
+        const result = [];
+        const axis = this.reader.getString(node, 'axis');
+        if (axis == null || !(['x', 'y', 'z'].includes(axis))) {
+            console.warn('unable to parse axis of the ' + messageError);
+            return [];
+        }
+        result.push(axis);
+        const value = this.reader.getFloat(node, 'angle');
+        if (value == null || isNaN(value)) {
+            console.warn('unable to parse angle of the ' + messageError);
+            return [];
+        }
+        result.push(value);
+        return result;
+    }
+
     /*
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message

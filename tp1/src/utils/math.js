@@ -10,3 +10,7 @@ export function normalizeVector([x, y, z]) {
 export function hypothenus(a, b) {
     return Math.sqrt(a * a + b * b);
 }
+
+export function degreesToRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}

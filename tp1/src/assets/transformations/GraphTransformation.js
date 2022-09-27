@@ -1,4 +1,5 @@
 import { CGFappearance } from "../../../../lib/CGF.js";
+import { degreesToRadians } from "../../utils/math.js";
 
 const transformationTypes = ['translate', 'scale', 'rotate'];
 
@@ -10,10 +11,16 @@ export class GraphTransformation {
     }
 
     addTranslation(coordinates) {
-
         this.transformationMatrix = mat4.translate(this.transformationMatrix, this.transformationMatrix, coordinates);
-        console.log(coordinates);
-        console.log(this.transformationMatrix);
+    }
+
+    addScale(coordinates) {
+        this.transformationMatrix = mat4.scale(this.transformationMatrix, this.transformationMatrix, coordinates);
+    }
+
+    addRotation(axis, angle) {
+
+        this.transformationMatrix = mat4.rotate(this.transformationMatrix, this.transformationMatrix, degreesToRadians(angle), axis);
     }
 
     apply() {

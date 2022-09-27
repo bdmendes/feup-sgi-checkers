@@ -27,12 +27,12 @@ export function parseTransformations(sceneGraph, transformationsNode) {
 
         grandChildren = children[i].children;
         // Specifications for the current transformation.
-
+        let coordinates;
         const transformation = new GraphTransformation(sceneGraph.scene, transformationID);
         for (let j = 0; j < grandChildren.length; j++) {
             switch (grandChildren[j].nodeName) {
                 case 'translate':
-                    const coordinates = sceneGraph.parseFloatProps(
+                    coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'translate transformation for ID ' + transformationID);
                     if (coordinates == []) return coordinates;
@@ -41,11 +41,29 @@ export function parseTransformations(sceneGraph, transformationsNode) {
 
                     break;
                 case 'scale':
-                    sceneGraph.onXMLMinorError('To do: Parse scale transformations.');
+                    coordinates = sceneGraph.parseFloatProps(
+                        grandChildren[j],
+                        'scale transformation for ID ' + transformationID);
+                    if (coordinates == []) return coordinates;
+
+                    transformation.addScale(coordinates);
                     break;
                 case 'rotate':
-                    // angle
-                    sceneGraph.onXMLMinorError('To do: Parse rotate transformations.');
+                    let [axis, angle] = sceneGraph.parseAxis(grandChildren[j],
+                        'rotate transformation for ID ' + transformationID);
+
+                    if (axis === undefined || angle === undefined) return '';
+                    switch (axis) {
+                        case 'x':
+                            transformation.addRotation([1, 0, 0], angle);
+                            break;
+                        case 'y':
+                            transformation.addRotation([0, 1, 0], angle);
+                            break;
+                        case 'z':
+                            transformation.addRotation([0, 0, 1], angle);
+                            break;
+                    }
                     break;
             }
         }
