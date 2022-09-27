@@ -7,9 +7,13 @@ export class GraphComponent {
         this.scene = scene;
         this.children = {};
         this.primitives = {};
+        this.materialIDs = [];
     }
 
     display() {
+        for (const materialID of this.materialIDs) {
+            this.scene.graph.materials[materialID].apply();
+        }
         for (const key in this.children) {
             this.children[key].display();
             this.children[key].enableNormalViz();

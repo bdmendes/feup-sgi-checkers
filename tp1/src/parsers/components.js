@@ -47,6 +47,26 @@ function parseComponent(sceneGraph, node) {
     // Transformations
 
     // Materials
+    if (materialsIndex == -1) {
+        return 'component ' + componentID + ' must have a materials block';
+    }
+    const materialsList = node.children[materialsIndex].children;
+    for (let i = 0; i < materialsList.length; i++) {
+        if (materialsList[i].nodeName != 'material') {
+            return 'component ' + componentID + ' must have a materials block';
+        }
+        const materialID = sceneGraph.reader.getString(materialsList[i], 'id');
+        if (materialID == null) {
+            return 'component ' + componentID + ' must have a materials block with non null id';
+        }
+        if (materialID == "inherit") {
+            continue; // inject default?
+        }
+        if (sceneGraph.materials[materialID] == null) {
+            return 'component ' + componentID + ' must have a materials block with valid id';
+        }
+        component.materialIDs.push(materialID);
+    }
 
     // Texture
 
