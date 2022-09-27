@@ -22,9 +22,11 @@ export class GraphComponent {
             this.children[key].display();
             this.children[key].enableNormalViz();
         }
-        for (const key in this.primitives) {
+        for (const key in this.primitives) { //add transformations here
+            this.scene.pushMatrix();
             this.children[key].display();
             this.children[key].enableNormalViz();
+            this.scene.popMatrix();
         }
     }
 }

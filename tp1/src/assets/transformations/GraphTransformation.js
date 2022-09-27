@@ -24,8 +24,6 @@ export class GraphTransformation {
     }
 
     apply() {
-        //this.scene.pushMatrix();
         this.scene.multMatrix(this.transformationMatrix);
-        //this.scene.popMatrix();
     }
 }

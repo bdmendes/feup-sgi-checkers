@@ -29,7 +29,7 @@ export function parseTransformations(sceneGraph, transformationsNode) {
         // Specifications for the current transformation.
         let coordinates;
         const transformation = new GraphTransformation(sceneGraph.scene, transformationID);
-        for (let j = 0; j < grandChildren.length; j++) {
+        for (let j = grandChildren.length - 1; j >= 0; j--) {
             switch (grandChildren[j].nodeName) {
                 case 'translate':
                     coordinates = sceneGraph.parseFloatProps(
@@ -53,17 +53,8 @@ export function parseTransformations(sceneGraph, transformationsNode) {
                         'rotate transformation for ID ' + transformationID);
 
                     if (axis === undefined || angle === undefined) return '';
-                    switch (axis) {
-                        case 'x':
-                            transformation.addRotation([1, 0, 0], angle);
-                            break;
-                        case 'y':
-                            transformation.addRotation([0, 1, 0], angle);
-                            break;
-                        case 'z':
-                            transformation.addRotation([0, 0, 1], angle);
-                            break;
-                    }
+
+                    transformation.addRotation(axis, angle);
                     break;
             }
         }

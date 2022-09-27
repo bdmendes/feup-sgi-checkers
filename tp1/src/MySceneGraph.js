@@ -239,7 +239,7 @@ export class MySceneGraph {
             console.warn('unable to parse axis of the ' + messageError);
             return [];
         }
-        result.push(axis);
+        result.push([(axis === 'x') ? 1 : 0, (axis === 'y') ? 1 : 0, (axis === 'z') ? 1 : 0]);
         const value = this.reader.getFloat(node, 'angle');
         if (value == null || isNaN(value)) {
             console.warn('unable to parse angle of the ' + messageError);
