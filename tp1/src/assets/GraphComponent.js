@@ -8,11 +8,15 @@ export class GraphComponent {
         this.children = {};
         this.primitives = {};
         this.materialIDs = [];
+        this.transformationIDs = [];
     }
 
     display() {
         for (const materialID of this.materialIDs) {
             this.scene.graph.materials[materialID].apply();
+        }
+        for (const transformationID of this.transformationIDs) {
+            this.scene.graph.transformations[transformationID].apply();
         }
         for (const key in this.children) {
             this.children[key].display();

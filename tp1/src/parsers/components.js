@@ -45,6 +45,26 @@ function parseComponent(sceneGraph, node) {
 
     sceneGraph.onXMLMinorError('To do: Parse components.');
     // Transformations
+    if (transformationIndex == -1) {
+        return 'component ' + componentID + ' must have a transformation block';
+    }
+    const transformationList = node.children[transformationIndex].children;
+    for (let i = 0; i < transformationList.length; i++) {
+        if (transformationList[i].nodeName != 'transformationref') {
+            return 'component ' + componentID + ' must have a transformation block';
+        }
+        const transformationID = sceneGraph.reader.getString(transformationList[i], 'id');
+        if (transformationID == null) {
+            return 'component ' + componentID + ' must have a transformation block with non null id';
+        }
+        if (transformationID == "inherit") {
+            continue; // inject default?
+        }
+        if (sceneGraph.transformations[transformationID] == null) {
+            return 'component ' + componentID + ' must have a transformation block with valid id';
+        }
+        component.transformationIDs.push(transformationID);
+    }
 
     // Materials
     if (materialsIndex == -1) {
