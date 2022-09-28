@@ -39,6 +39,35 @@ function parseComponent(sceneGraph, node) {
 
     sceneGraph.onXMLMinorError('To do: Parse components.');
     // Transformations
+    parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
+
+    // Materials
+    parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
+
+    // Texture
+
+    // Children
+    parseChildren(componentID, sceneGraph, node, component, childrenIndex);
+
+    // Add component to scene
+    sceneGraph.components[componentID] = component;
+    return null;
+}
+
+function getID(sceneGraph, node) {
+    // Get id of the current component.
+    let componentID = sceneGraph.reader.getString(node, 'id');
+    if (componentID == null) return [true, 'no ID defined for componentID'];
+
+    // Checks for repeated IDs.
+    if (sceneGraph.components[componentID] != null)
+        return [true, 'ID must be unique for each component (conflict: ID = ' +
+            componentID + ')'];
+
+    return [false, componentID];
+}
+
+function parseTransformations(componentID, sceneGraph, node, component, transformationIndex) {
     if (transformationIndex == -1) {
         return 'component ' + componentID + ' must have a transformation block';
     }
@@ -74,31 +103,6 @@ function parseComponent(sceneGraph, node) {
                 return 'component ' + componentID + ' must have a transformation block';
         }
     }
-
-    // Materials
-    parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
-
-    // Texture
-
-    // Children
-    parseChildren(componentID, sceneGraph, node, component, childrenIndex);
-
-    // Add component to scene
-    sceneGraph.components[componentID] = component;
-    return null;
-}
-
-function getID(sceneGraph, node) {
-    // Get id of the current component.
-    let componentID = sceneGraph.reader.getString(node, 'id');
-    if (componentID == null) return [true, 'no ID defined for componentID'];
-
-    // Checks for repeated IDs.
-    if (sceneGraph.components[componentID] != null)
-        return [true, 'ID must be unique for each component (conflict: ID = ' +
-            componentID + ')'];
-
-    return [false, componentID];
 }
 
 function parseMaterials(componentID, sceneGraph, node, component, materialsIndex) {
