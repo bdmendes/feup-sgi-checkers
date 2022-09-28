@@ -41,10 +41,13 @@
             <rotate axis="x" angle="-45" />
             <rotate axis="z" angle="-45" />
         </transformation>
-        <transformation id="demoTranslate">
+        <transformation id="demoTranslate1">
             <translate x="0" y="0" z="3" />
             <scale x="0.5" y="1" z="0.5" />
             <rotate axis="y" angle="45" />
+        </transformation>
+        <transformation id="demoTranslate2">
+            <translate x="0" y="0" z="3" />
         </transformation>
     </transformations>
 
@@ -58,23 +61,9 @@
     </primitives>
 
     <components>
-        <!--component id="oi"-->
-            <!--transformation-->
-                <!--transformationref id="demoTranslate" /-->
-            <!--/transformation-->
-            <!--materials-->
-                <!--material id="demoMaterial" /-->
-            <!--/materials-->
-            <!--texture id="demoTexture" /-->
-            <!--children-->
-                <!--primitiveref id="demoRectangle" /-->
-                <!--primitiveref id="demoCylinder" /-->
-            <!--/children-->
-        <!--/component-->
-
-        <component id="demoRoot">
+        <component id="oi">
             <transformation>
-                <transformationref id="demoTranslate" />
+                <transformationref id="demoTranslate2" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
@@ -83,7 +72,21 @@
             <children>
                 <primitiveref id="demoRectangle" />
                 <primitiveref id="demoCylinder" />
-                <!--componentref id="oi" /-->
+            </children>
+        </component>
+
+        <component id="demoRoot">
+            <transformation>
+                <transformationref id="demoTranslate1" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture" />
+            <children>
+                <primitiveref id="demoRectangle" />
+                <primitiveref id="demoCylinder" />
+                <componentref id="oi" />
             </children>
         </component>
     </components>

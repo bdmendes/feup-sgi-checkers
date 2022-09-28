@@ -19,7 +19,6 @@ export class GraphTransformation {
     }
 
     addRotation(axis, angle) {
-
         this.transformationMatrix = mat4.rotate(this.transformationMatrix, this.transformationMatrix, degreesToRadians(angle), axis);
     }
 

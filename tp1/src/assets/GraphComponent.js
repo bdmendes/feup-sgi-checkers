@@ -19,13 +19,11 @@ export class GraphComponent {
             this.scene.graph.transformations[transformationID].apply();
         }
         for (const key in this.children) {
-            this.children[key].display();
-            this.children[key].enableNormalViz();
-        }
-        for (const key in this.primitives) { //add transformations here
             this.scene.pushMatrix();
             this.children[key].display();
-            this.children[key].enableNormalViz();
+            if (typeof this.children[key].enableNormalViz() === 'function') {
+                this.children[key].enableNormalViz();
+            }
             this.scene.popMatrix();
         }
     }

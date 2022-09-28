@@ -22,7 +22,7 @@ export function parseComponents(sceneGraph, componentsNode) {
 }
 
 function parseComponent(sceneGraph, node) {
-    const [error, componentID] = getID(sceneGraph, node);
+    let [error, componentID] = getID(sceneGraph, node);
     if (error) return componentID;
 
     const component = new GraphComponent(sceneGraph.scene, componentID);
@@ -39,16 +39,16 @@ function parseComponent(sceneGraph, node) {
 
     sceneGraph.onXMLMinorError('To do: Parse components.');
     // Transformations
-    parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
-
+    error = parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
+    if (error != null) { return error; }
     // Materials
-    parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
-
+    error = parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
+    if (error != null) { return error; }
     // Texture
 
     // Children
-    parseChildren(componentID, sceneGraph, node, component, childrenIndex);
-
+    error = parseChildren(componentID, sceneGraph, node, component, childrenIndex);
+    if (error != null) { return error; }
     // Add component to scene
     sceneGraph.components[componentID] = component;
     return null;
@@ -72,14 +72,17 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
         return 'component ' + componentID + ' must have a transformation block';
     }
     const transformationList = node.children[transformationIndex].children;
+    let byRef = false;
+
+    if (transformationList.length > 0) { byRef = (transformationList[0].nodeName === 'transformationref') ? true : false; }
     for (let i = 0; i < transformationList.length; i++) {
         switch (transformationList[i].nodeName) {
             case 'transformationref':
+                if (!byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
                 let transformationID = sceneGraph.reader.getString(transformationList[i], 'id');
                 if (transformationID == null) {
                     return 'component ' + componentID + ' must have a transformation block with non null id';
                 }
-                if (transformationID == "inherit") { continue; } // inject default? 
                 if (sceneGraph.transformations[transformationID] == null) {
                     return 'component ' + componentID + ' must have a transformation block with valid id';
                 }
@@ -87,22 +90,28 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 break;
             case 'translate':
                 //TODO
+                if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations'; }
                 console.log("aquicrl");
                 console.log(transformationList[i]);
+                console.log(node);
                 /*if (transformationID == null) {
                     return 'component ' + componentID + ' must have a transformation block with non null id';
                 }*/
                 break;
             case 'scale':
+                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
                 //TODO
                 break;
             case 'rotate':
+                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
                 //TODO
                 break;
             default:
                 return 'component ' + componentID + ' must have a transformation block';
         }
     }
+
+    return null;
 }
 
 function parseMaterials(componentID, sceneGraph, node, component, materialsIndex) {
@@ -126,6 +135,8 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
         }
         component.materialIDs.push(materialID);
     }
+
+    return null;
 }
 
 
@@ -151,4 +162,6 @@ function parseChildren(componentID, sceneGraph, node, component, childrenIndex) 
             component.children[id] = sceneGraph.primitives[id];
         }
     }
+
+    return null;
 }
