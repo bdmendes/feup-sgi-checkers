@@ -22,14 +22,8 @@ export function parseComponents(sceneGraph, componentsNode) {
 }
 
 function parseComponent(sceneGraph, node) {
-    // Get id of the current component.
-    const componentID = sceneGraph.reader.getString(node, 'id');
-    if (componentID == null) return 'no ID defined for componentID';
-
-    // Checks for repeated IDs.
-    if (sceneGraph.components[componentID] != null)
-        return 'ID must be unique for each component (conflict: ID = ' +
-            componentID + ')';
+    const [error, componentID] = getID(sceneGraph, node);
+    if (error) return componentID;
 
     const component = new GraphComponent(sceneGraph.scene, componentID);
 
@@ -47,6 +41,32 @@ function parseComponent(sceneGraph, node) {
     // Transformations
 
     // Materials
+    parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
+
+    // Texture
+
+    // Children
+    parseChildren(componentID, sceneGraph, node, component, childrenIndex);
+
+    // Add component to scene
+    sceneGraph.components[componentID] = component;
+    return null;
+}
+
+function getID(sceneGraph, node) {
+    // Get id of the current component.
+    let componentID = sceneGraph.reader.getString(node, 'id');
+    if (componentID == null) return [true, 'no ID defined for componentID'];
+
+    // Checks for repeated IDs.
+    if (sceneGraph.components[componentID] != null)
+        return [true, 'ID must be unique for each component (conflict: ID = ' +
+            componentID + ')'];
+
+    return [false, componentID];
+}
+
+function parseMaterials(componentID, sceneGraph, node, component, materialsIndex) {
     if (materialsIndex == -1) {
         return 'component ' + componentID + ' must have a materials block';
     }
@@ -67,10 +87,10 @@ function parseComponent(sceneGraph, node) {
         }
         component.materialIDs.push(materialID);
     }
+}
 
-    // Texture
 
-    // Children
+function parseChildren(componentID, sceneGraph, node, component, childrenIndex) {
     if (childrenIndex == -1) {
         return 'component with ID ' + componentID + ' must have a <children> tag';
     }
@@ -92,8 +112,4 @@ function parseComponent(sceneGraph, node) {
             component.children[id] = sceneGraph.primitives[id];
         }
     }
-
-    // Add component to scene
-    sceneGraph.components[componentID] = component;
-    return null;
 }
