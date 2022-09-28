@@ -58,6 +58,20 @@
     </primitives>
 
     <components>
+        <!--component id="oi"-->
+            <!--transformation-->
+                <!--transformationref id="demoTranslate" /-->
+            <!--/transformation-->
+            <!--materials-->
+                <!--material id="demoMaterial" /-->
+            <!--/materials-->
+            <!--texture id="demoTexture" /-->
+            <!--children-->
+                <!--primitiveref id="demoRectangle" /-->
+                <!--primitiveref id="demoCylinder" /-->
+            <!--/children-->
+        <!--/component-->
+
         <component id="demoRoot">
             <transformation>
                 <transformationref id="demoTranslate" />
@@ -69,6 +83,7 @@
             <children>
                 <primitiveref id="demoRectangle" />
                 <primitiveref id="demoCylinder" />
+                <!--componentref id="oi" /-->
             </children>
         </component>
     </components>

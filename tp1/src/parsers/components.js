@@ -50,20 +50,35 @@ function parseComponent(sceneGraph, node) {
     }
     const transformationList = node.children[transformationIndex].children;
     for (let i = 0; i < transformationList.length; i++) {
-        if (transformationList[i].nodeName != 'transformationref') {
-            return 'component ' + componentID + ' must have a transformation block';
+        switch (transformationList[i].nodeName) {
+            case 'transformationref':
+                let transformationID = sceneGraph.reader.getString(transformationList[i], 'id');
+                if (transformationID == null) {
+                    return 'component ' + componentID + ' must have a transformation block with non null id';
+                }
+                if (transformationID == "inherit") { continue; } // inject default? 
+                if (sceneGraph.transformations[transformationID] == null) {
+                    return 'component ' + componentID + ' must have a transformation block with valid id';
+                }
+                component.transformationIDs.push(transformationID);
+                break;
+            case 'translate':
+                //TODO
+                console.log("aquicrl");
+                console.log(transformationList[i]);
+                /*if (transformationID == null) {
+                    return 'component ' + componentID + ' must have a transformation block with non null id';
+                }*/
+                break;
+            case 'scale':
+                //TODO
+                break;
+            case 'rotate':
+                //TODO
+                break;
+            default:
+                return 'component ' + componentID + ' must have a transformation block';
         }
-        const transformationID = sceneGraph.reader.getString(transformationList[i], 'id');
-        if (transformationID == null) {
-            return 'component ' + componentID + ' must have a transformation block with non null id';
-        }
-        if (transformationID == "inherit") {
-            continue; // inject default?
-        }
-        if (sceneGraph.transformations[transformationID] == null) {
-            return 'component ' + componentID + ' must have a transformation block with valid id';
-        }
-        component.transformationIDs.push(transformationID);
     }
 
     // Materials
