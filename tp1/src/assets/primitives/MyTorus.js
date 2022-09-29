@@ -25,7 +25,7 @@ export class MyTorus extends CGFobject {
         this.texCoords = [];
 
         let loop_angle = (2 * Math.PI) / this.slices;
-        let slice_edges = this.loops * 2;
+        let slice_edges = this.loops * 2 + 1;
         let slice_angle = (2 * Math.PI) / (slice_edges);
         let current_loop_angle = 0;
 
@@ -40,6 +40,7 @@ export class MyTorus extends CGFobject {
 
                 this.vertices.push(center[0] + x, center[1] + y, center[2] + z);
                 this.normals.push(x, y, z);
+                this.texCoords.push(current_loop / slice_edges, current_slice / this.slices);
 
                 if (current_slice < this.slices && current_loop < slice_edges) {
                     this.indices.push(current_slice * slice_edges + current_loop + 1,

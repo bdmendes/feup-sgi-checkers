@@ -57,6 +57,16 @@ export class MySphere extends CGFobject {
             }
         }
 
+        // Tex coords
+        this.texCoords = [];
+        const deltaX = 1 / this.slices;
+        const deltaY = 1 / this.stacks;
+        for (let i = 0; i <= this.stacks; i++) {
+            for (let j = 0; j <= this.slices; j++) {
+                this.texCoords.push(j * deltaX, i * deltaY);
+            }
+        }
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
