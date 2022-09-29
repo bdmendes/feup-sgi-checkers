@@ -17,9 +17,8 @@ export class GraphComponent {
 
         for (const materialID of this.materialIDs) {
             if (this.textureID !== null) {
-                this.scene.graph.materials[materialID].setTexture(this.scene.graph.textures[this.textureID].texture); // TODO scroll through with m key
+                this.scene.graph.textures[this.textureID].apply(this.scene.graph.materials[materialID])
             }
-
             this.scene.graph.materials[materialID].apply(); // TODO scroll through with m key
         }
         for (let i = this.transformations.length - 1; i >= 0; i--) {
