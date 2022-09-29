@@ -72,9 +72,13 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
         return 'component ' + componentID + ' must have a transformation block';
     }
     const transformationList = node.children[transformationIndex].children;
-    let byRef = false;
 
-    if (transformationList.length > 0) { byRef = (transformationList[0].nodeName === 'transformationref') ? true : false; }
+    let byRef = false;
+    if (transformationList.length > 0) {
+        byRef = transformationList[0].nodeName === 'transformationref';
+    }
+
+
     for (let i = 0; i < transformationList.length; i++) {
         switch (transformationList[i].nodeName) {
             case 'transformationref':

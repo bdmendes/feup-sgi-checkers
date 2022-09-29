@@ -42,8 +42,6 @@
             <rotate axis="z" angle="-45" />
         </transformation>
         <transformation id="demoTranslate1">
-            <translate x="0" y="0" z="3" />
-            <scale x="0.5" y="1" z="0.5" />
             <rotate axis="y" angle="45" />
         </transformation>
         <transformation id="demoTranslate2">
@@ -71,7 +69,6 @@
             <texture id="demoTexture" />
             <children>
                 <primitiveref id="demoRectangle" />
-                <primitiveref id="demoCylinder" />
             </children>
         </component>
 
