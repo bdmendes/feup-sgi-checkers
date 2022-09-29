@@ -28,7 +28,7 @@ export function parseMaterials(sceneGraph, materialsNode) {
 
         // Get shininess of the current material.
         const shininess = sceneGraph.reader.getFloat(children[i], 'shininess');
-        if (shininess == null) return 'no ID defined for material';
+        if (shininess == null) return 'no shininess defined for material';
 
         // Create material
         const material = new GraphMaterial(sceneGraph.scene, materialID, shininess);
@@ -40,10 +40,10 @@ export function parseMaterials(sceneGraph, materialsNode) {
             if (error != null) {
                 return error;
             }
-            sceneGraph.materials[materialID] = material;
         }
+        sceneGraph.materials[materialID] = material;
     }
 
-    // console.log("Parsed materials");
+    console.log("Parsed materials");
     return null;
 }

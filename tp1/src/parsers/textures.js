@@ -1,10 +1,37 @@
+import { GraphTexture } from "../assets/textures/GraphTexture.js";
 /**
  * Parses the <textures> block.
  * @param {MySceneGraph} sceneGraph
  * @param {textures block element} texturesNode
  */
 export function parseTextures(sceneGraph, texturesNode) {
-    // For each texture in textures block, check ID and file URL
-    sceneGraph.onXMLMinorError('To do: Parse textures.');
+    const children = texturesNode.children;
+
+    // Any number of textures.
+    for (let i = 0; i < children.length; i++) {
+        if (children[i].nodeName != 'texture') {
+            sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
+            continue;
+        }
+
+        // Get id of the current texture.
+        const textureID = sceneGraph.reader.getString(children[i], 'id');
+        if (textureID == null) return 'no ID defined for texture';
+
+        // Checks for repeated IDs.
+        if (sceneGraph.textures[textureID] != null)
+            return 'ID must be unique for each light (conflict: ID = ' +
+                textureID + ')';
+
+        // Get shininess of the current texture.
+        const file = sceneGraph.reader.getString(children[i], 'file');
+        if (file == null) return 'no file defined for texture';
+
+        // Create texture
+        const texture = new GraphTexture(sceneGraph.scene, textureID, file);
+        sceneGraph.textures[textureID] = texture;
+    }
+
+    console.log("Parsed textures");
     return null;
 }

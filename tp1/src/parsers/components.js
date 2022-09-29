@@ -46,7 +46,8 @@ function parseComponent(sceneGraph, node) {
     error = parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
     if (error != null) { return error; }
     // Texture
-
+    error = parseTexture(componentID, sceneGraph, node, component, textureIndex);
+    if (error != null) { return error; }
     // Children
     error = parseChildren(componentID, sceneGraph, node, component, childrenIndex);
     if (error != null) { return error; }
@@ -151,6 +152,30 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
         }
         component.materialIDs.push(materialID);
     }
+
+    return null;
+}
+
+function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
+    if (textureIndex == -1) {
+        return 'component ' + componentID + ' must have a textures block';
+    }
+    const texture = node.children[textureIndex];
+
+    if (texture.nodeName != 'texture') {
+        return 'component ' + componentID + ' must have a textures block';
+    }
+    const textureID = sceneGraph.reader.getString(texture, 'id');
+    if (textureID == null) {
+        return 'component ' + componentID + ' must have a textures block with non null id';
+    }
+    if (textureID == "inherit") {
+        // inject default?
+    }
+    if (sceneGraph.textures[textureID] == null) {
+        return 'component ' + componentID + ' must have a textures block with valid id';
+    }
+    component.textureID = textureID;
 
     return null;
 }

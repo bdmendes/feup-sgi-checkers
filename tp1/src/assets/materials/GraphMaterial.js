@@ -26,6 +26,10 @@ export class GraphMaterial {
         return null;
     }
 
+    setTexture(texture) {
+        this.material.setTexture(texture);
+    }
+
     apply() {
         // add logic to restore default appearance after applying
         this.material.apply();
