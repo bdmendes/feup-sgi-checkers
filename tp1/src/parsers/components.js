@@ -169,7 +169,7 @@ function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     if (textureID == null) {
         return 'component ' + componentID + ' must have a textures block with non null id';
     }
-    if (textureID !== "inherit" && sceneGraph.textures[textureID] == null) {
+    if (textureID !== "inherit" && textureID !== "none" && sceneGraph.textures[textureID] == null) {
         return 'component ' + componentID + ' has a <texture> with an invalid ID: ' + textureID;
     }
     component.textureID = textureID;

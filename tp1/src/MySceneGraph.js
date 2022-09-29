@@ -41,7 +41,10 @@ export class MySceneGraph {
         this.components = {};
         this.primitives = {};
         this.idRoot = null;  // The id of the root component.
+
+        // Application state
         this.selectedMaterialIndex = 0;
+        this.lastAppliedMaterialID = 0;
 
         // Scene assets
         this.materials = {};
@@ -81,10 +84,7 @@ export class MySceneGraph {
         console.log('XML Loading finished.');
         const rootElement = this.reader.xmlDoc.documentElement;
 
-        // Here should go the calls for different functions to parse the various
-        // blocks
         const error = this.parseXMLFile(rootElement);
-
         if (error != null) {
             this.onXMLError(error);
             return;

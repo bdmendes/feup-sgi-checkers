@@ -28,11 +28,17 @@
     </textures>
 
     <materials>
-        <material id="shinyMaterial" shininess="10">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+        <material id="shinyRed" shininess="2">
+            <emission r="0.5" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0" g="0.0" b="1.0" a="1.0" />
             <diffuse r="0.8" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="neutralBlue" shininess="2">
+            <emission r="0.0" g="0.0" b="0.2" a="1.0" />
+            <ambient r="0" g="0.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.8" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.5" a="1.0" />
         </material>
     </materials>
 
@@ -51,13 +57,13 @@
     </transformations>
 
     <primitives>
-        <primitive id="tableLeg">
+        <primitive id="cylinder">
             <cylinder base="0.1" top="0.1" height="1" slices="20" stacks="20" />
         </primitive>
-        <primitive id="donut">
-            <torus inner="1" outer="3" slices="3" loops="2"/>
+        <primitive id="torus">
+            <torus inner="1" outer="3" slices="20" loops="20" />
         </primitive>
-        <primitive id="houseWall">
+        <primitive id="rectangle">
             <rectangle x1="-1" x2="1" y1="-1" y2="1" />
         </primitive>
     </primitives>
@@ -66,30 +72,49 @@
         <component id="root">
             <transformation></transformation>
             <materials>
-                <material id="shinyMaterial" />
+                <material id="shinyRed" />
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="houseWalls" />
+                <componentref id="walls" />
                 <componentref id="table" />
+                <componentref id="donut" />
+            </children>
+        </component>
+
+        <component id="donut">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="0.2" y="0.2" z="0.2" />
+                <translate x="1" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="torus" />
             </children>
         </component>
 
         <component id="table">
-            <transformation></transformation>
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
             <materials>
-                <material id="shinyMaterial" />
+                <material id="shinyRed" />
             </materials>
             <texture id="rocksTexture" />
             <children>
-                <componentref id="tableLeg1" />
-                <componentref id="tableLeg2" />
-                <componentref id="tableLeg3" />
-                <componentref id="tableLeg4" />
+                <componentref id="cylinder1" />
+                <componentref id="cylinder2" />
+                <componentref id="cylinder3" />
+                <componentref id="cylinder4" />
+                <componentref id="tableTop" />
             </children>
         </component>
 
-        <component id="tableLeg1">
+        <component id="cylinder1">
             <transformation>
                 <translate x="0" y="-2" z="0" />
             </transformation>
@@ -98,22 +123,22 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="tableLeg" />
+                <primitiveref id="cylinder" />
             </children>
         </component>
 
-        <component id="tableLeg2">
+        <component id="cylinder2">
             <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="tableLeg" />
+                <primitiveref id="cylinder" />
             </children>
         </component>
 
-        <component id="tableLeg3">
+        <component id="cylinder3">
             <transformation>
                 <translate x="2" y="-2" z="0" />
             </transformation>
@@ -122,11 +147,11 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="tableLeg" />
+                <primitiveref id="cylinder" />
             </children>
         </component>
 
-        <component id="tableLeg4">
+        <component id="cylinder4">
             <transformation>
                 <translate x="2" y="0" z="0" />
             </transformation>
@@ -135,29 +160,40 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="tableLeg" />
+                <primitiveref id="cylinder" />
             </children>
         </component>
 
-        <component id="houseWalls">
+        <component id="walls">
             <transformation>
-                <scale x="10" y="10" z="10" />
+                <scale x="20" y="20" z="20" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="neutralBlue" />
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <componentref id="houseWall1" />
-                <componentref id="houseWall2" />
-                <componentref id="houseWall3" />
-                <componentref id="houseWall4" />
-                <componentref id="houseWall5" />
-                <componentref id="houseWall6" />
+                <componentref id="cube" />
             </children>
         </component>
 
-        <component id="houseWall1">
+        <component id="cube">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="rectangle1" />
+                <componentref id="rectangle2" />
+                <componentref id="rectangle3" />
+                <componentref id="rectangle4" />
+                <componentref id="rectangle5" />
+                <componentref id="rectangle6" />
+            </children>
+        </component>
+
+        <component id="rectangle1">
             <transformation>
                 <translate x="0" y="0" z="-1" />
             </transformation>
@@ -166,13 +202,13 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="houseWall2">
+        <component id="rectangle2">
             <transformation>
-                <rotate axis="y" angle="180"/>
+                <rotate axis="y" angle="180" />
                 <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
@@ -180,13 +216,13 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="houseWall3">
+        <component id="rectangle3">
             <transformation>
-                <rotate axis="y" angle="90"/>
+                <rotate axis="y" angle="90" />
                 <translate x="-1" y="0" z="0" />
             </transformation>
             <materials>
@@ -194,13 +230,13 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="houseWall4">
+        <component id="rectangle4">
             <transformation>
-                <rotate axis="y" angle="-90"/>
+                <rotate axis="y" angle="-90" />
                 <translate x="1" y="0" z="0" />
             </transformation>
             <materials>
@@ -208,13 +244,13 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="houseWall5">
+        <component id="rectangle5">
             <transformation>
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="90" />
                 <translate x="0" y="1" z="0" />
             </transformation>
             <materials>
@@ -222,13 +258,13 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="houseWall6">
+        <component id="rectangle6">
             <transformation>
-                <rotate axis="x" angle="-90"/>
+                <rotate axis="x" angle="-90" />
                 <translate x="0" y="-1" z="0" />
             </transformation>
             <materials>
@@ -236,29 +272,24 @@
             </materials>
             <texture id="vidralTexture" />
             <children>
-                <primitiveref id="houseWall" />
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <!--component id="houseWalls"-->
-            <!--transformation-->
-                <!--translate x="0" y="0" z="0" /-->
-            <!--/transformation-->
-            <!--materials-->
-                <!--material id="inherit" /-->
-            <!--/materials-->
-            <!--texture id="inherit" /-->
-            <!--children-->
-                <!--componentref id="houseWall1" /-->
-                <!-- <componentref id="houseWall2" -->
-                <!--componentref id="houseWall3" -->
-                <!--componentref id="houseWall4" -->
-                <!--componentref id="houseWall5" -->
-                <!--componentref id="houseWall6" -->
-            <!--/children-->
-        <!--/component-->
+        <component id="tableTop">
+            <transformation>
+                <scale x="1" y="2" z="0.1" />
+                <translate x="1" y="-1" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
 
-        
 
     </components>
 </sxs>

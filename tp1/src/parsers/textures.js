@@ -7,7 +7,6 @@ import { GraphTexture } from "../assets/textures/GraphTexture.js";
 export function parseTextures(sceneGraph, texturesNode) {
     const children = texturesNode.children;
 
-    // Any number of textures.
     for (let i = 0; i < children.length; i++) {
         if (children[i].nodeName != 'texture') {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
@@ -28,8 +27,10 @@ export function parseTextures(sceneGraph, texturesNode) {
         if (file == null) return 'no file defined for texture';
 
         // Create texture
-        const texture = new GraphTexture(sceneGraph.scene, textureID, file);
+        const texture = new GraphTexture(sceneGraph.scene, textureID, file, null, null);
         sceneGraph.textures[textureID] = texture;
+
+        // TODO: Parse length_s and length_t
     }
 
     console.log(sceneGraph.textures)
