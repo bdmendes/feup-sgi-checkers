@@ -8,8 +8,6 @@ import { GraphTransformation } from "../assets/transformations/GraphTransformati
      */
 export function parseComponents(sceneGraph, componentsNode) {
     const children = componentsNode.children;
-
-    // Any number of components.
     for (let i = 0; i < children.length; i++) {
         if (children[i].nodeName != 'component') {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
@@ -20,10 +18,16 @@ export function parseComponents(sceneGraph, componentsNode) {
             return error;
         }
     }
+
+    const error = referenceComponentChildren(sceneGraph);
+    if (error != null) {
+        return error;
+    }
 }
 
 function parseComponent(sceneGraph, node) {
     let [error, componentID] = getID(sceneGraph, node);
+    console.log(componentID)
     if (error) return componentID;
 
     const component = new GraphComponent(sceneGraph.scene, componentID);
@@ -79,7 +83,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
         byRef = transformationList[0].nodeName === 'transformationref';
     }
 
-
+    let coordinates = null;
     for (let i = 0; i < transformationList.length; i++) {
         switch (transformationList[i].nodeName) {
             case 'transformationref':
@@ -96,7 +100,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
             case 'translate':
                 if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations at the same time'; }
                 const translate = new GraphTransformation(sceneGraph.scene);
-                let coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
+                coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
                 if (coordinates == []) return coordinates;
 
                 translate.addTranslation(coordinates);
@@ -108,7 +112,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
                 if (coordinates == []) return coordinates;
 
-                scale.addTranslation(coordinates);
+                scale.addScale(coordinates);
                 component.transformations.push(scale);
                 break;
             case 'rotate':
@@ -144,7 +148,7 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
             return 'component ' + componentID + ' must have a materials block with non null id';
         }
         if (materialID !== "inherit" && sceneGraph.materials[materialID] == null) {
-            return 'component ' + componentID + ' must have a materials block with valid id';
+            return 'component ' + componentID + ' has a <material> with an invalid ID: ' + materialID;
         }
         component.materialIDs.push(materialID);
     }
@@ -165,17 +169,13 @@ function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     if (textureID == null) {
         return 'component ' + componentID + ' must have a textures block with non null id';
     }
-    if (textureID == "inherit") {
-        // inject default?
-    }
-    if (sceneGraph.textures[textureID] == null) {
-        return 'component ' + componentID + ' must have a textures block with valid id';
+    if (textureID !== "inherit" && sceneGraph.textures[textureID] == null) {
+        return 'component ' + componentID + ' has a <texture> with an invalid ID: ' + textureID;
     }
     component.textureID = textureID;
 
     return null;
 }
-
 
 function parseChildren(componentID, sceneGraph, node, component, childrenIndex) {
     if (childrenIndex == -1) {
@@ -188,15 +188,35 @@ function parseChildren(componentID, sceneGraph, node, component, childrenIndex) 
         }
         const id = sceneGraph.reader.getString(childrenList[i], 'id');
         if (childrenList[i].nodeName == 'componentref') {
-            if (sceneGraph.components[id] == null) {
-                return 'component with ID ' + componentID + ' has a <componentref> with an invalid ID';
-            }
-            component.children[id] = sceneGraph.components[id];
+            component.children[id] = "componentref";
         } else {
-            if (sceneGraph.primitives[id] == null) {
-                return 'component with ID ' + componentID + ' has a <primitiveref> with an invalid ID';
+            component.children[id] = "primitiveref";
+        }
+    }
+
+    return null;
+}
+
+function referenceComponentChildren(sceneGraph) {
+    for (const key in sceneGraph.components) {
+        const component = sceneGraph.components[key];
+        const componentID = component.id;
+
+        for (const id in component.children) {
+            const element = component.children[id];
+            if (element == "componentref") {
+                if (sceneGraph.components[id] == null) {
+                    console.log(sceneGraph.components)
+                    console.log(sceneGraph.components.length)
+                    return 'component with ID ' + componentID + ' has a <componentref> with an invalid ID: ' + id;
+                }
+                component.children[id] = sceneGraph.components[id];
+            } else {
+                if (sceneGraph.primitives[id] == null) {
+                    return 'component with ID ' + componentID + ' has a <primitiveref> with an invalid ID: ' + id;
+                }
+                component.children[id] = sceneGraph.primitives[id];
             }
-            component.children[id] = sceneGraph.primitives[id];
         }
     }
 

@@ -42,9 +42,10 @@ export class GraphComponent {
 
         // Children
         for (const key in this.children) {
+            //console.log(key)
             this.children[key].display();
             if (typeof this.children[key].enableNormalViz === 'function') {
-                this.children[key].enableNormalViz();
+                //this.children[key].enableNormalViz();
             }
         }
 

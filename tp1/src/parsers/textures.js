@@ -32,6 +32,8 @@ export function parseTextures(sceneGraph, texturesNode) {
         sceneGraph.textures[textureID] = texture;
     }
 
+    console.log(sceneGraph.textures)
+
     console.log("Parsed textures");
     return null;
 }
