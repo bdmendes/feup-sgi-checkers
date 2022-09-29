@@ -61,7 +61,8 @@
     <components>
         <component id="oi">
             <transformation>
-                <transformationref id="demoTranslate2" />
+                <rotate axis="z" angle="90" />
+                <translate x="0" y="0" z="3" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />

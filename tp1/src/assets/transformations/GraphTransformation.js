@@ -4,7 +4,7 @@ import { degreesToRadians } from "../../utils/math.js";
 const transformationTypes = ['translate', 'scale', 'rotate'];
 
 export class GraphTransformation {
-    constructor(scene, id) {
+    constructor(scene, id = '') {
         this.id = id;
         this.scene = scene;
         this.transformationMatrix = mat4.create();

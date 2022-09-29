@@ -21,7 +21,7 @@ export class GraphComponent {
             if (typeof this.transformations[i] === 'string') {
                 this.scene.graph.transformations[this.transformations[i]].apply();
             } else {
-                this.scene.graph.transformations[i].apply();
+                this.transformations[i].apply();
             }
         }
         for (const key in this.children) {

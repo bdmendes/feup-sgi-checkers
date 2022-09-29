@@ -1,4 +1,5 @@
 import { GraphComponent } from "../assets/GraphComponent.js";
+import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
 
 /**
      * Parses the <components> block.
@@ -82,7 +83,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
     for (let i = 0; i < transformationList.length; i++) {
         switch (transformationList[i].nodeName) {
             case 'transformationref':
-                if (!byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
+                if (!byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations at the same time'; }
                 let transformationID = sceneGraph.reader.getString(transformationList[i], 'id');
                 if (transformationID == null) {
                     return 'component ' + componentID + ' must have a transformation block with non null id';
@@ -93,16 +94,33 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 component.transformations.push(transformationID);
                 break;
             case 'translate':
-                if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations'; }
-                //TODO
+                if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations at the same time'; }
+                const translate = new GraphTransformation(sceneGraph.scene);
+                let coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
+                if (coordinates == []) return coordinates;
+
+                translate.addTranslation(coordinates);
+                component.transformations.push(translate);
                 break;
             case 'scale':
-                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
-                //TODO
+                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations at the same time'; }
+                const scale = new GraphTransformation(sceneGraph.scene);
+                coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
+                if (coordinates == []) return coordinates;
+
+                scale.addTranslation(coordinates);
+                component.transformations.push(scale);
                 break;
             case 'rotate':
-                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }
-                //TODO
+                if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations at the same time'; }
+                const rotate = new GraphTransformation(sceneGraph.scene);
+                let [axis, angle] = sceneGraph.parseAxis(transformationList[i],
+                    'rotate transformation ');
+
+                if (axis === undefined || angle === undefined) return '';
+
+                rotate.addRotation(axis, angle);
+                component.transformations.push(rotate);
                 break;
             default:
                 return 'component ' + componentID + ' must have a transformation block';
