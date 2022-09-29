@@ -29,8 +29,8 @@
     <materials>
         <material id="demoMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
         </material>
     </materials>
@@ -54,7 +54,7 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="demoCylinder">
-            <cylinder base="2" top="2" height="5" slices="20" stacks="3" />
+            <cylinder base="2" top="2" height="5" slices="4" stacks="3" />
         </primitive>
     </primitives>
 
@@ -73,18 +73,30 @@
             </children>
         </component>
 
+        <!--component id="demoRoot"-->
+            <!--transformation-->
+                <!--transformationref id="demoTranslate1" /-->
+            <!--/transformation-->
+            <!--materials-->
+                <!--material id="demoMaterial" /-->
+            <!--/materials-->
+            <!--texture id="demoTexture" /-->
+            <!--children-->
+                <!--primitiveref id="demoRectangle" /-->
+                <!--primitiveref id="demoCylinder" /-->
+                <!--componentref id="oi" /-->
+            <!--/children-->
+        <!--/component-->
+
         <component id="demoRoot">
             <transformation>
-                <transformationref id="demoTranslate1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture" />
             <children>
-                <primitiveref id="demoRectangle" />
                 <primitiveref id="demoCylinder" />
-                <componentref id="oi" />
             </children>
         </component>
     </components>
