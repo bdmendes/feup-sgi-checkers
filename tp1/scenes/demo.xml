@@ -23,7 +23,7 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="demoTexture" file="scenes/images/rocks.jpg" />
     </textures>
 
     <materials>
@@ -54,10 +54,10 @@
             <rectangle x1="-0.5" y1="-1" x2="0.5" y2="1" />
         </primitive>
         <primitive id="demoCylinder">
-            <cylinder base="2" top="2" height="5" slices="10" stacks="3" />
+            <cylinder base="2" top="2" height="5" slices="4" stacks="2" />
         </primitive>
         <primitive id="demoTorus">
-            <sphere radius="2" slices="20" stacks="20" />
+            <torus inner="1" outer="3" slices="3" loops="2"/>
         </primitive>
     </primitives>
 
@@ -84,7 +84,7 @@
             </materials>
             <texture id="demoTexture" />
             <children>
-                <primitiveref id="demoTorus" />
+                <primitiveref id="demoCylinder" />
             </children>
         </component>
     </components>

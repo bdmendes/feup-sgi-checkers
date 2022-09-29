@@ -58,6 +58,14 @@ export class MyTorus extends CGFobject {
 
             current_loop_angle += loop_angle;
         }
+        let j = 0;
+        console.log(this.vertices.length);
+        console.log(this.indices.length);
+        for (let i = 0; i < this.vertices.length; i += 3) {
+            console.log('vertice: ' + this.vertices[i] + ' , ' + this.vertices[i + 1] + ' , ' + this.vertices[i + 2]);
+            console.log('coords: ' + this.texCoords[j] + ' , ' + this.texCoords[j + 1]);
+            j += 2;
+        }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();

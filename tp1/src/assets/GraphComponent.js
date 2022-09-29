@@ -15,12 +15,23 @@ export class GraphComponent {
     display() {
         this.scene.pushMatrix();
 
-        for (const materialID of this.materialIDs) {
-            if (this.textureID !== null) {
-                this.scene.graph.textures[this.textureID].apply(this.scene.graph.materials[materialID])
+        // Material and texture
+        if (this.materialIDs.length > 0) {
+            const selectedMaterialID = this.materialIDs[this.scene.graph.selectedMaterialIndex % this.materialIDs.length];
+            if (selectedMaterialID !== "inherit") {
+                const selectedMaterial = this.scene.graph.materials[selectedMaterialID];
+                if (this.textureID === null) {
+                    selectedMaterial.setTexture(null);
+                } else if (this.textureID !== "inherit") {
+                    this.scene.graph.textures[this.textureID].apply(selectedMaterial);
+                }
+                selectedMaterial.apply();
             }
-            this.scene.graph.materials[materialID].apply(); // TODO scroll through with m key
+        } else {
+            this.scene.defaultMaterial.apply();
         }
+
+        // Transformations
         for (let i = this.transformations.length - 1; i >= 0; i--) {
             if (typeof this.transformations[i] === 'string') {
                 this.scene.graph.transformations[this.transformations[i]].apply();
@@ -28,12 +39,16 @@ export class GraphComponent {
                 this.transformations[i].apply();
             }
         }
+
+        // Children
         for (const key in this.children) {
             this.children[key].display();
             if (typeof this.children[key].enableNormalViz === 'function') {
                 this.children[key].enableNormalViz();
             }
         }
+
+
         this.scene.popMatrix();
     }
 }

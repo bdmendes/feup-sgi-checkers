@@ -38,20 +38,19 @@ function parseComponent(sceneGraph, node) {
     const textureIndex = nodeNames.indexOf('texture');
     const childrenIndex = nodeNames.indexOf('children');
 
-    sceneGraph.onXMLMinorError('To do: Parse components.');
-    // Transformations
+
     error = parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
     if (error != null) { return error; }
-    // Materials
+
     error = parseMaterials(componentID, sceneGraph, node, component, materialsIndex);
     if (error != null) { return error; }
-    // Texture
+
     error = parseTexture(componentID, sceneGraph, node, component, textureIndex);
     if (error != null) { return error; }
-    // Children
+
     error = parseChildren(componentID, sceneGraph, node, component, childrenIndex);
     if (error != null) { return error; }
-    // Add component to scene
+
     sceneGraph.components[componentID] = component;
     return null;
 }
@@ -144,10 +143,7 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
         if (materialID == null) {
             return 'component ' + componentID + ' must have a materials block with non null id';
         }
-        if (materialID == "inherit") {
-            continue; // inject default?
-        }
-        if (sceneGraph.materials[materialID] == null) {
+        if (materialID !== "inherit" && sceneGraph.materials[materialID] == null) {
             return 'component ' + componentID + ' must have a materials block with valid id';
         }
         component.materialIDs.push(materialID);

@@ -1,4 +1,4 @@
-import { CGFXMLreader } from '../../lib/CGF.js';
+import { CGFappearance, CGFXMLreader } from '../../lib/CGF.js';
 
 import { parseScene } from './parsers/scene.js';
 import { parseView } from './parsers/view.js';
@@ -9,6 +9,7 @@ import { parseMaterials } from './parsers/materials.js';
 import { parseLights } from './parsers/lights.js';
 import { parseAmbient } from './parsers/ambient.js';
 import { parseTransformations } from './parsers/tranformations.js';
+import { GraphMaterial } from './assets/materials/GraphMaterial.js';
 
 // Order of the groups in the XML document.
 const SCENE_INDEX = 0;
@@ -40,6 +41,7 @@ export class MySceneGraph {
         this.components = {};
         this.primitives = {};
         this.idRoot = null;  // The id of the root component.
+        this.selectedMaterialIndex = 0;
 
         // Scene assets
         this.materials = {};
@@ -48,6 +50,11 @@ export class MySceneGraph {
         this.background = [];
         this.textures = {};
         this.transformations = {};
+
+        // Default material
+        this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
+        this.defaultMaterial.addComponent("specular", 1, 1, 1);
+        this.defaultMaterial.apply();
 
         // Setup default axis
         this.axisCoords = [];
