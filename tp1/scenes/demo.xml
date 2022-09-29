@@ -30,7 +30,7 @@
         <material id="demoMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.8" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
         </material>
     </materials>
@@ -73,30 +73,18 @@
             </children>
         </component>
 
-        <!--component id="demoRoot"-->
-            <!--transformation-->
-                <!--transformationref id="demoTranslate1" /-->
-            <!--/transformation-->
-            <!--materials-->
-                <!--material id="demoMaterial" /-->
-            <!--/materials-->
-            <!--texture id="demoTexture" /-->
-            <!--children-->
-                <!--primitiveref id="demoRectangle" /-->
-                <!--primitiveref id="demoCylinder" /-->
-                <!--componentref id="oi" /-->
-            <!--/children-->
-        <!--/component-->
-
         <component id="demoRoot">
             <transformation>
+                <transformationref id="demoTranslate1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
             <texture id="demoTexture" />
             <children>
+                <primitiveref id="demoRectangle" />
                 <primitiveref id="demoCylinder" />
+                <componentref id="oi" />
             </children>
         </component>
     </components>
