@@ -90,17 +90,11 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 if (sceneGraph.transformations[transformationID] == null) {
                     return 'component ' + componentID + ' must have a transformation block with valid id';
                 }
-                component.transformationIDs.push(transformationID);
+                component.transformations.push(transformationID);
                 break;
             case 'translate':
-                //TODO
                 if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations'; }
-                console.log("aquicrl");
-                console.log(transformationList[i]);
-                console.log(node);
-                /*if (transformationID == null) {
-                    return 'component ' + componentID + ' must have a transformation block with non null id';
-                }*/
+                //TODO
                 break;
             case 'scale':
                 if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations'; }

@@ -8,7 +8,7 @@ export class GraphComponent {
         this.children = {};
         this.primitives = {};
         this.materialIDs = [];
-        this.transformationIDs = [];
+        this.transformations = [];
     }
 
     display() {
@@ -17,13 +17,16 @@ export class GraphComponent {
         for (const materialID of this.materialIDs) {
             this.scene.graph.materials[materialID].apply(); // TODO scroll through with m key
         }
-        for (let i = this.transformationIDs.length - 1; i >= 0; i--) {
-            this.scene.graph.transformations[this.transformationIDs[i]].apply();
+        for (let i = this.transformations.length - 1; i >= 0; i--) {
+            if (typeof this.transformations[i] === 'string') {
+                this.scene.graph.transformations[this.transformations[i]].apply();
+            } else {
+                this.scene.graph.transformations[i].apply();
+            }
         }
         for (const key in this.children) {
-
             this.children[key].display();
-            if (typeof this.children[key].enableNormalViz() === 'function') {
+            if (typeof this.children[key].enableNormalViz === 'function') {
                 this.children[key].enableNormalViz();
             }
         }
