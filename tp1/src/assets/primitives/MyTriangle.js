@@ -1,5 +1,5 @@
-import { CGFobject } from '../../../lib/CGF.js';
-import { crossProduct, normalizeVector } from '../utils/math.js';
+import { CGFobject } from '../../../../lib/CGF.js';
+import { crossProduct, normalizeVector } from '../../utils/math.js';
 
 /**
  * MyTriangle
@@ -27,6 +27,7 @@ export class MyTriangle extends CGFobject {
         this.x3 = x3;
         this.y3 = y3;
         this.z3 = z3;
+        this.id = id;
 
         this.initBuffers();
     }

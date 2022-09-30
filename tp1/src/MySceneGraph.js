@@ -1,4 +1,4 @@
-import { CGFXMLreader } from '../../lib/CGF.js';
+import { CGFappearance, CGFXMLreader } from '../../lib/CGF.js';
 
 import { parseScene } from './parsers/scene.js';
 import { parseView } from './parsers/view.js';
@@ -9,6 +9,7 @@ import { parseMaterials } from './parsers/materials.js';
 import { parseLights } from './parsers/lights.js';
 import { parseAmbient } from './parsers/ambient.js';
 import { parseTransformations } from './parsers/tranformations.js';
+import { GraphMaterial } from './assets/materials/GraphMaterial.js';
 
 // Order of the groups in the XML document.
 const SCENE_INDEX = 0;
@@ -29,16 +30,35 @@ export class MySceneGraph {
      * @constructor
      */
     constructor(filename, scene) {
+        // Not loaded until XML loading is finished
         this.loadedOk = null;
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
         scene.graph = this;
 
-        this.nodes = [];
+        // Graph nodes
+        this.components = {};
+        this.primitives = {};
+        this.idRoot = null;  // The id of the root component.
 
-        this.idRoot = null;  // The id of the root element.
+        // User controlled state
+        this.selectedMaterialIndex = 0;
 
+        // Scene assets
+        this.materials = {};
+        this.lights = {};
+        this.ambient = [];
+        this.background = [];
+        this.textures = {};
+        this.transformations = {};
+
+        // Default material
+        this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
+        this.defaultMaterial.addComponent("specular", 1, 1, 1);
+        this.defaultMaterial.apply();
+
+        // Setup default axis
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
         this.axisCoords['y'] = [0, 1, 0];
@@ -63,10 +83,7 @@ export class MySceneGraph {
         console.log('XML Loading finished.');
         const rootElement = this.reader.xmlDoc.documentElement;
 
-        // Here should go the calls for different functions to parse the various
-        // blocks
         const error = this.parseXMLFile(rootElement);
-
         if (error != null) {
             this.onXMLError(error);
             return;
@@ -198,6 +215,7 @@ export class MySceneGraph {
             // Parse components block
             if ((error = parseComponents(this, nodes[index])) != null) return error;
         }
+
         console.log('all parsed');
     }
 
@@ -212,11 +230,28 @@ export class MySceneGraph {
         for (const prop of props) {
             const value = this.reader.getFloat(node, prop);
             if (value == null || isNaN(value)) {
-                console.log('unable to parse ' + prop + 'of the ' + messageError);
+                console.warn('unable to parse ' + prop + 'of the ' + messageError);
                 return [];
             }
             result.push(value);
         }
+        return result;
+    }
+
+    parseAxis(node, messageError) {
+        const result = [];
+        const axis = this.reader.getString(node, 'axis');
+        if (axis == null || !(['x', 'y', 'z'].includes(axis))) {
+            console.warn('unable to parse axis of the ' + messageError);
+            return [];
+        }
+        result.push([(axis === 'x') ? 1 : 0, (axis === 'y') ? 1 : 0, (axis === 'z') ? 1 : 0]);
+        const value = this.reader.getFloat(node, 'angle');
+        if (value == null || isNaN(value)) {
+            console.warn('unable to parse angle of the ' + messageError);
+            return [];
+        }
+        result.push(value);
         return result;
     }
 
@@ -242,15 +277,6 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // To do: Create display loop for transversing the scene graph
-
-        // To test the parsing/creation of the primitives, call the display function
-        // directly
-        for (const key in this.primitives) {
-            this.primitives[key].display();
-            this.primitives[key].enableNormalViz();
-        }
-
-        // this.primitives['demoRectangle'].display();
+        this.components[this.idRoot].display(this.defaultMaterial);
     }
 }

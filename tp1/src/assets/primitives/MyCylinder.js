@@ -1,5 +1,5 @@
-import { CGFobject } from '../../../lib/CGF.js';
-import { hypothenus, normalizeVector } from '../utils/math.js';
+import { CGFobject } from '../../../../lib/CGF.js';
+import { hypothenus, normalizeVector } from '../../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -15,6 +15,7 @@ export class MyCylinder extends CGFobject {
         this.height = height;
         this.slices = slices;
         this.stacks = stacks;
+        this.id = id;
 
         this.initBuffers();
     }
@@ -27,13 +28,14 @@ export class MyCylinder extends CGFobject {
 
         let stack_height = this.height / this.stacks;
         let angle = (2 * Math.PI) / this.slices;
-        let current_angle = 0;
         let delta = (this.top - this.base) / this.stacks;
 
         let z_normal = (this.base - this.top) / this.height;
+        let edges = this.slices + 1;
 
         for (let current_stack = 0; current_stack <= this.stacks; current_stack++) {
             let j = 0;
+            let current_angle = 0;
             for (; ;) {
                 this.vertices.push(Math.cos(current_angle) * (this.base + current_stack * delta),
                     Math.sin(current_angle) * (this.base + current_stack * delta),
@@ -41,23 +43,19 @@ export class MyCylinder extends CGFobject {
 
                 this.normals.push(...normalizeVector([Math.cos(current_angle), Math.sin(current_angle), z_normal]));
 
-                this.texCoords.push(j / this.slices, current_stack / this.stacks);
+                this.texCoords.push(j / this.slices, 1 - current_stack / this.stacks);
 
-                if (current_stack < this.stacks && j < this.slices - 1) {
-                    this.indices.push(current_stack * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j);
-                    this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices + j + 1, (current_stack + 1) * this.slices + j + 1);
+                if (current_stack < this.stacks && j < this.slices) {
+                    this.indices.push(current_stack * edges + j, current_stack * edges + j + 1, (current_stack + 1) * edges + j);
+                    this.indices.push((current_stack + 1) * edges + j, current_stack * edges + j + 1, (current_stack + 1) * edges + j + 1);
                 }
 
                 current_angle += angle;
-                if (j + 1 === this.slices) { break; } else { j++; }
-            }
-
-            if (current_stack < this.stacks) {
-                this.indices.push(current_stack * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices + j);
-                this.indices.push((current_stack + 1) * this.slices + j, current_stack * this.slices, (current_stack + 1) * this.slices);
+                if (j === this.slices) { break; } else { j++; }
             }
         }
-
+        console.log(this.vertices.length);
+        console.log(this.indices.length);
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

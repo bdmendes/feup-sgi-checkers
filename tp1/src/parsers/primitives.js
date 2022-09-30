@@ -1,8 +1,8 @@
-import { MyRectangle } from "../primitives/MyRectangle.js";
-import { MySphere } from "../primitives/MySphere.js";
-import { MyTorus } from "../primitives/MyTorus.js";
-import { MyTriangle } from "../primitives/MyTriangle.js";
-import { MyCylinder } from "../primitives/MyCylinder.js";
+import { MyRectangle } from "../assets/primitives/MyRectangle.js";
+import { MySphere } from "../assets/primitives/MySphere.js";
+import { MyTorus } from "../assets/primitives/MyTorus.js";
+import { MyTriangle } from "../assets/primitives/MyTriangle.js";
+import { MyCylinder } from "../assets/primitives/MyCylinder.js";
 
 /**
  * Parses the <primitives> block.
@@ -66,13 +66,11 @@ export function parsePrimitives(sceneGraph, primitivesNode) {
                 'sphere coordinates for ID ' + primitiveId, ['radius', 'slices', 'stacks']);
             const sphere = new MySphere(sceneGraph.scene, primitiveId, radius, slices, stacks);
             sceneGraph.primitives[primitiveId] = sphere;
-        } else if (primitiveType == 'torus') {
+        } else {
             const [inner, outer, slices, loops] = sceneGraph.parseFloatProps(grandChildren[0],
                 'torus coordinates for ID ' + primitiveId, ['inner', 'outer', 'slices', 'loops']);
             const torus = new MyTorus(sceneGraph.scene, primitiveId, inner, outer, slices, loops);
             sceneGraph.primitives[primitiveId] = torus;
-        } else {
-            console.warn('To do: Parse other primitives.');
         }
     }
 

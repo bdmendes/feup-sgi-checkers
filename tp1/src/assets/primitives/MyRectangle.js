@@ -1,4 +1,4 @@
-import { CGFobject } from '../../../lib/CGF.js';
+import { CGFobject } from '../../../../lib/CGF.js';
 /**
  * MyRectangle
  * @constructor
@@ -13,6 +13,7 @@ export class MyRectangle extends CGFobject {
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
+        this.id = id;
 
         this.initBuffers();
     }

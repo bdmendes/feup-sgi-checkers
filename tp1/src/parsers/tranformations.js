@@ -1,3 +1,5 @@
+import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
+
 /**
   * Parses the <transformations> block.
   * @param {MySceneGraph} sceneGraph
@@ -5,9 +7,6 @@
   */
 export function parseTransformations(sceneGraph, transformationsNode) {
     const children = transformationsNode.children;
-
-    sceneGraph.transformations = [];
-
     let grandChildren = [];
 
     // Any number of transformations.
@@ -28,30 +27,38 @@ export function parseTransformations(sceneGraph, transformationsNode) {
 
         grandChildren = children[i].children;
         // Specifications for the current transformation.
-
-        const transfMatrix = mat4.create();
-
+        let coordinates;
+        const transformation = new GraphTransformation(sceneGraph.scene, transformationID);
         for (let j = 0; j < grandChildren.length; j++) {
             switch (grandChildren[j].nodeName) {
                 case 'translate':
-                    const coordinates = sceneGraph.parseFloatProps(
+                    coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'translate transformation for ID ' + transformationID);
-                    if (!Array.isArray(coordinates)) return coordinates;
+                    if (coordinates == []) return coordinates;
 
-                    transfMatrix =
-                        mat4.translate(transfMatrix, transfMatrix, coordinates);
+                    transformation.addTranslation(coordinates);
+
                     break;
                 case 'scale':
-                    sceneGraph.onXMLMinorError('To do: Parse scale transformations.');
+                    coordinates = sceneGraph.parseFloatProps(
+                        grandChildren[j],
+                        'scale transformation for ID ' + transformationID);
+                    if (coordinates == []) return coordinates;
+
+                    transformation.addScale(coordinates);
                     break;
                 case 'rotate':
-                    // angle
-                    sceneGraph.onXMLMinorError('To do: Parse rotate transformations.');
+                    let [axis, angle] = sceneGraph.parseAxis(grandChildren[j],
+                        'rotate transformation for ID ' + transformationID);
+
+                    if (axis === undefined || angle === undefined) return '';
+
+                    transformation.addRotation(axis, angle);
                     break;
             }
         }
-        sceneGraph.transformations[transformationID] = transfMatrix;
+        sceneGraph.transformations[transformationID] = transformation;
     }
 
     console.log('Parsed transformations');

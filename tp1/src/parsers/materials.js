@@ -1,3 +1,5 @@
+import { GraphMaterial } from "../assets/materials/GraphMaterial.js";
+
 /**
  * Parses the <materials> node.
  * @param {MySceneGraph} sceneGraph
@@ -5,9 +7,6 @@
  */
 export function parseMaterials(sceneGraph, materialsNode) {
     const children = materialsNode.children;
-
-    sceneGraph.materials = [];
-
     const grandChildren = [];
     const nodeNames = [];
 
@@ -27,10 +26,24 @@ export function parseMaterials(sceneGraph, materialsNode) {
             return 'ID must be unique for each light (conflict: ID = ' +
                 materialID + ')';
 
-        // Continue here
-        sceneGraph.onXMLMinorError('To do: Parse materials.');
+        // Get shininess of the current material.
+        const shininess = sceneGraph.reader.getFloat(children[i], 'shininess');
+        if (shininess == null) return 'no shininess defined for material';
+
+        // Create material
+        const material = new GraphMaterial(sceneGraph.scene, materialID, shininess);
+        const components = children[i].children;
+        for (const component of components) {
+            const type = component.nodeName;
+            const [r, g, b, a] = sceneGraph.parseFloatProps(component, materialID, ['r', 'g', 'b', 'a']);
+            const error = material.addComponent(type, r, g, b, a);
+            if (error != null) {
+                return error;
+            }
+        }
+        sceneGraph.materials[materialID] = material;
     }
 
-    // console.log("Parsed materials");
+    console.log("Parsed materials");
     return null;
 }
