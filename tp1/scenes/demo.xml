@@ -68,11 +68,20 @@
         <primitive id="cylinder">
             <cylinder base="0.1" top="0.1" height="1" slices="20" stacks="20" />
         </primitive>
+        <primitive id="lamp_cylinder">
+            <cylinder base="2" top="1" height="1" slices="4" stacks="1" />
+        </primitive>
         <primitive id="torus">
             <torus inner="1" outer="2" slices="20" loops="20" />
         </primitive>
         <primitive id="rectangle">
             <rectangle x1="-1" x2="1" y1="-1" y2="1" />
+        </primitive>
+        <primitive id="diamond">
+            <rectangle x1="0" x2="0" y1="-1" y2="1" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="1" slices="20" stacks="20" />
         </primitive>
     </primitives>
 
@@ -86,7 +95,8 @@
             <children>
                 <componentref id="walls" />
                 <componentref id="table" />
-                
+                <componentref id="sofa" />
+                <componentref id="lamp" />
             </children>
         </component>
 
@@ -109,7 +119,7 @@
                 <scale x="2" y="2" z="2.5" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="-90" />
-                <translate x="2" y="0" z="-7" />
+                <translate x="-3" y="0" z="-8" />
             </transformation>
             <materials>
                 <material id="shinyRed" />
@@ -407,6 +417,238 @@
             </children>
         </component>
 
+        <component id="sofa">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sofa_base" />
+                <componentref id="sofa_back" />
+                <componentref id="sofa_left" />
+                <componentref id="sofa_right" />
+            </children>
+        </component>
 
+        <component id="sofa_base">
+            <transformation>
+                <scale x="2" y="1" z="3"/>
+                <translate x="10" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sofa_base_front" />
+                <componentref id="sofa_base_back" />
+                <componentref id="sofa_base_right" />
+                <componentref id="sofa_base_left" />
+                <componentref id="sofa_base_top" />
+                <componentref id="sofa_base_bottom" />
+            </children>
+        </component>
+
+        <component id="sofa_back">
+            <transformation>
+                <scale x="0.5" y="2" z="4"/>
+                <translate x="12" y="0" z="7"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sofa_base_front" />
+                <componentref id="sofa_base_back" />
+                <componentref id="sofa_base_right" />
+                <componentref id="sofa_base_left" />
+                <componentref id="sofa_base_top" />
+                <componentref id="sofa_base_bottom" />
+            </children>
+        </component>
+
+        <component id="sofa_left">
+            <transformation>
+                <scale x="0.5" y="1.5" z="2"/>
+                <rotate axis="y" angle="90" />
+                <translate x="9.5" y="0" z="3.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sofa_base_front" />
+                <componentref id="sofa_base_back" />
+                <componentref id="sofa_base_right" />
+                <componentref id="sofa_base_left" />
+                <componentref id="sofa_base_top" />
+                <componentref id="sofa_base_bottom" />
+            </children>
+        </component>
+
+        <component id="sofa_right">
+            <transformation>
+                <scale x="0.5" y="1.5" z="2"/>
+                <rotate axis="y" angle="90" />
+                <translate x="9.5" y="0" z="10.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="sofa_base_front" />
+                <componentref id="sofa_base_back" />
+                <componentref id="sofa_base_right" />
+                <componentref id="sofa_base_left" />
+                <componentref id="sofa_base_top" />
+                <componentref id="sofa_base_bottom" />
+            </children>
+        </component>
+
+        <component id="sofa_base_front">
+            <transformation>
+                <translate x="0" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sofa_base_back">
+            <transformation>
+                <rotate axis="x" angle="180"/>
+                <translate x="0" y="1" z="-1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sofa_base_right">
+            <transformation>
+                <rotate axis="y" angle="90"/>
+                <translate x="1" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sofa_base_left">
+            <transformation>
+                <rotate axis="y" angle="-90"/>
+                <translate x="-1" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sofa_base_top">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+                <translate x="0" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="sofa_base_bottom">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="lamp">
+            <transformation>
+                <translate x="-13" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="lamp_base" />
+                <componentref id="lamp_light" />
+                <componentref id="lamp_shade" />
+            </children>
+        </component>
+
+        <component id="lamp_base">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="3" y="5" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="lamp_light">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="0.5" y="0.5" z="0.5" />
+                <translate x="0" y="5" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="lamp_shade">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="0.5" y="2" z="0.5" />
+                <translate x="0" y="4" z="0"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="lamp_cylinder" />
+            </children>
+        </component>
     </components>
 </sxs>
