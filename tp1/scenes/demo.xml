@@ -49,6 +49,12 @@
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+        <material id="darkOled" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
@@ -87,7 +93,7 @@
             <children>
                 <componentref id="walls" />
                 <componentref id="table" />
-                <componentref id="television" />
+                <componentref id="mediaCenter" />
             </children>
         </component>
 
@@ -105,7 +111,7 @@
             </children>
         </component>
 
-        <component id="television">
+        <component id="mediaCenter">
             <transformation>
                 <scale x="2" y="3" z="2.5" />
                 <rotate axis="x" angle="-90" />
@@ -119,6 +125,19 @@
             <children>
                 <componentref id="tablelegs" />
                 <componentref id="tableTop" />
+                <componentref id="television" />
+            </children>
+        </component>
+
+        <component id="television">
+            <transformation></transformation>
+            <materials>
+                <material id="shinyRed" />
+            </materials>
+            <texture id="rocksTexture" />
+            <children>
+                <componentref id="televisionScreen" />
+                <componentref id="televisionMount" />
             </children>
         </component>
 
@@ -228,13 +247,33 @@
             </children>
         </component>
 
-        <component id="cube">
-            <transformation></transformation>
+        <component id="televisionScreen">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="2" y="3" z="10" />
+                <translate x="1" y="0.5" z="2.5" />
+            </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkOled" />
             </materials>
-            <texture id="inherit" />
-            <children></children>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="televisionMount">
+            <transformation>
+                <translate x="1" y="-1" z="2" />
+                <scale x="1" y="1" z="0.5"></scale>
+            </transformation>
+            <materials>
+                <material id="darkOled" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
         </component>
 
         <component id="wall1">
