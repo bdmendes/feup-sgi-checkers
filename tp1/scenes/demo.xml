@@ -27,6 +27,7 @@
         <texture id="vidralTexture" file="scenes/images/vidral.jpg" />
         <texture id="bankTexture" file="scenes/images/bank.jpg" />
         <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
+        <texture id="landscapeTexture" file="scenes/images/landscape.jpg" />
     </textures>
 
     <materials>
@@ -86,7 +87,7 @@
             <children>
                 <componentref id="walls" />
                 <componentref id="table" />
-                
+                <componentref id="television" />
             </children>
         </component>
 
@@ -101,6 +102,23 @@
             <texture id="none" />
             <children>
                 <primitiveref id="torus" />
+            </children>
+        </component>
+
+        <component id="television">
+            <transformation>
+                <scale x="2" y="3" z="2.5" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="0" />
+                <translate x="-15" y="0" z="5" />
+            </transformation>
+            <materials>
+                <material id="shinyRed" />
+            </materials>
+            <texture id="rocksTexture" />
+            <children>
+                <componentref id="tablelegs" />
+                <componentref id="tableTop" />
             </children>
         </component>
 
@@ -123,8 +141,7 @@
         </component>
 
         <component id="tablelegs">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -139,7 +156,7 @@
 
         <component id="cylinder1">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="0" y="-2" z="0" />
             </transformation>
             <materials>
@@ -153,7 +170,7 @@
 
         <component id="cylinder2">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -166,7 +183,7 @@
 
         <component id="cylinder3">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="2" y="-2" z="0" />
             </transformation>
             <materials>
@@ -180,7 +197,7 @@
 
         <component id="cylinder4">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="2" y="0" z="0" />
             </transformation>
             <materials>
@@ -217,9 +234,7 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
-            <children>
-                
-            </children>
+            <children></children>
         </component>
 
         <component id="wall1">
@@ -230,6 +245,35 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="window">
+            <transformation>
+                <scale x="0.3" y="0.2" z="0.2" />
+                <translate x="0.5" y="-0.5" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunkTexture" />
+            <children>
+                <primitiveref id="rectangle" />
+                <componentref id="windowView" />
+            </children>
+        </component>
+
+        <component id="windowView">
+            <transformation>
+                <scale x="0.85" y="0.8" z="0.8" />
+                <translate x="0" y="0" z="0.02" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="landscapeTexture" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -260,6 +304,7 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
+                <componentref id="window" />
             </children>
         </component>
 
@@ -299,7 +344,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
