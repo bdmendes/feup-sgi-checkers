@@ -27,6 +27,7 @@
         <texture id="vidralTexture" file="scenes/images/vidral.jpg" />
         <texture id="bankTexture" file="scenes/images/bank.jpg" />
         <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
+        <texture id="landscapeTexture" file="scenes/images/landscape.jpg" />
     </textures>
 
     <materials>
@@ -45,6 +46,12 @@
         <material id="neutral" shininess="2">
             <emission r="0.8" g="0.8" b="0.8" a="1.0" />
             <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="darkOled" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
@@ -97,6 +104,7 @@
                 <componentref id="table" />
                 <componentref id="sofa" />
                 <componentref id="lamp" />
+                <componentref id="mediaCenter" />
             </children>
         </component>
 
@@ -114,12 +122,42 @@
             </children>
         </component>
 
+        <component id="mediaCenter">
+            <transformation>
+                <scale x="2" y="3" z="2.5" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="0" />
+                <translate x="-15" y="0" z="5" />
+            </transformation>
+            <materials>
+                <material id="shinyRed" />
+            </materials>
+            <texture id="rocksTexture" />
+            <children>
+                <componentref id="tablelegs" />
+                <componentref id="tableTop" />
+                <componentref id="television" />
+            </children>
+        </component>
+
+        <component id="television">
+            <transformation></transformation>
+            <materials>
+                <material id="shinyRed" />
+            </materials>
+            <texture id="rocksTexture" />
+            <children>
+                <componentref id="televisionScreen" />
+                <componentref id="televisionMount" />
+            </children>
+        </component>
+
         <component id="table">
             <transformation>
                 <scale x="2" y="2" z="2.5" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="-90" />
-                <translate x="-3" y="0" z="-8" />
+                <translate x="2" y="0" z="-8" />
             </transformation>
             <materials>
                 <material id="shinyRed" />
@@ -133,8 +171,7 @@
         </component>
 
         <component id="tablelegs">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -149,7 +186,7 @@
 
         <component id="cylinder1">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="0" y="-2" z="0" />
             </transformation>
             <materials>
@@ -163,7 +200,7 @@
 
         <component id="cylinder2">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -176,7 +213,7 @@
 
         <component id="cylinder3">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="2" y="-2" z="0" />
             </transformation>
             <materials>
@@ -190,7 +227,7 @@
 
         <component id="cylinder4">
             <transformation>
-                <scale x="1" y="2" z ="1"/>
+                <scale x="1" y="2" z="1" />
                 <translate x="2" y="0" z="0" />
             </transformation>
             <materials>
@@ -221,14 +258,32 @@
             </children>
         </component>
 
-        <component id="cube">
-            <transformation></transformation>
+        <component id="televisionScreen">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="2" y="3" z="10" />
+                <translate x="1" y="0.5" z="2.5" />
+            </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkOled" />
             </materials>
-            <texture id="inherit" />
+            <texture id="none" />
             <children>
-                
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="televisionMount">
+            <transformation>
+                <translate x="1" y="-1" z="2" />
+                <scale x="1" y="1" z="0.5"></scale>
+            </transformation>
+            <materials>
+                <material id="darkOled" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cylinder" />
             </children>
         </component>
 
@@ -240,6 +295,35 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="window">
+            <transformation>
+                <scale x="0.3" y="0.2" z="0.2" />
+                <translate x="0.5" y="-0.5" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="trunkTexture" />
+            <children>
+                <primitiveref id="rectangle" />
+                <componentref id="windowView" />
+            </children>
+        </component>
+
+        <component id="windowView">
+            <transformation>
+                <scale x="0.85" y="0.8" z="0.8" />
+                <translate x="0" y="0" z="0.02" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="landscapeTexture" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -270,6 +354,7 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
+                <componentref id="window" />
             </children>
         </component>
 
@@ -309,7 +394,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
