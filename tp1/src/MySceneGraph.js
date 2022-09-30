@@ -42,9 +42,8 @@ export class MySceneGraph {
         this.primitives = {};
         this.idRoot = null;  // The id of the root component.
 
-        // Application state
+        // User controlled state
         this.selectedMaterialIndex = 0;
-        this.lastAppliedMaterialID = 0;
 
         // Scene assets
         this.materials = {};
@@ -278,6 +277,6 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.components[this.idRoot].display();
+        this.components[this.idRoot].display(this.defaultMaterial);
     }
 }

@@ -6,51 +6,48 @@ export class GraphComponent {
         this.id = id;
         this.scene = scene;
         this.children = {};
-        this.primitives = {};
-        this.materialIDs = [];
-        this.transformations = [];
-        this.textureID = null;
+        this.materialIDs = []; // length >= 1
+        this.transformations = []; // length >= 0
+        this.textureID = null; // nonnull
     }
 
-    display() {
+    display(parentMaterial, parentTexture = null) {
         this.scene.pushMatrix();
-        this.renderMaterial();
-        this.renderTexture();
+        const material = this.renderMaterial(parentMaterial);
+        const texture = this.renderTexture(material, parentTexture);
         this.renderTransformations();
-        this.renderChildren();
+        this.renderChildren(material, texture);
         this.scene.popMatrix();
     }
 
-    renderMaterial() {
-        if (this.materialIDs.length === 0) {
-            return;
-        }
-
+    renderMaterial(parentMaterial) {
         const materialID = this.materialIDs[this.scene.graph.selectedMaterialIndex % this.materialIDs.length];
         if (materialID === "inherit") {
-            return;
+            parentMaterial.apply();
+            return parentMaterial;
         }
 
         const material = this.scene.graph.materials[materialID];
-        this.scene.graph.lastAppliedMaterialID = materialID;
         material.apply();
+        return material;
     }
 
-    renderTexture() {
-        if (this.textureID === null || this.textureID === "inherit") {
-            return;
+    renderTexture(material, parentTexture) {
+        if (this.textureID === "inherit") {
+            material.setTexture(parentTexture === null ? null : parentTexture.texture);
+            material.apply();
+            return parentTexture;
         }
-        const materialID = this.materialIDs[this.scene.graph.selectedMaterialIndex % this.materialIDs.length];
-        const material = this.materialIDs.length === 0 || materialID === "inherit"
-            ? this.scene.graph.materials[this.scene.graph.lastAppliedMaterialID]
-            : this.scene.graph.materials[materialID];
+
+        let texture = null;
         if (this.textureID === "none") {
-            material.material.setTexture(null);
+            material.material.setTexture(texture);
         } else {
-            const texture = this.scene.graph.textures[this.textureID];
-            texture.apply(material);
+            texture = this.scene.graph.textures[this.textureID];
+            material.setTexture(texture.texture);
         }
         material.apply();
+        return texture;
     }
 
     renderTransformations() {
@@ -63,9 +60,9 @@ export class GraphComponent {
         }
     }
 
-    renderChildren() {
+    renderChildren(material, texture) {
         for (const key in this.children) {
-            this.children[key].display();
+            this.children[key].display(material, texture);
             if (typeof this.children[key].enableNormalViz === 'function') {
                 //this.children[key].enableNormalViz();
             }

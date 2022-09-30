@@ -8,8 +8,4 @@ export class GraphTexture {
         this.file = file;
         this.texture = new CGFtexture(scene, file);
     }
-
-    apply(material) {
-        material.setTexture(this.texture);
-    }
 }

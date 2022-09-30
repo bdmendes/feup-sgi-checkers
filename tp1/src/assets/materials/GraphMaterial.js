@@ -31,7 +31,6 @@ export class GraphMaterial {
     }
 
     apply() {
-        // add logic to restore default appearance after applying
         this.material.apply();
     }
 }

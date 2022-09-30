@@ -106,24 +106,40 @@
 
         <component id="table">
             <transformation>
+                <scale x="2" y="2" z="2.5" />
                 <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="-90" />
+                <translate x="2" y="0" z="-7" />
             </transformation>
             <materials>
                 <material id="shinyRed" />
             </materials>
             <texture id="rocksTexture" />
             <children>
-                <componentref id="cylinder1" />
-                <componentref id="cylinder2" />
-                <componentref id="cylinder3" />
-                <componentref id="cylinder4" />
+                <componentref id="tablelegs" />
                 <componentref id="tableTop" />
                 <componentref id="donut" />
             </children>
         </component>
 
+        <component id="tablelegs">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cylinder1" />
+                <componentref id="cylinder2" />
+                <componentref id="cylinder3" />
+                <componentref id="cylinder4" />
+            </children>
+        </component>
+
         <component id="cylinder1">
             <transformation>
+                <scale x="1" y="2" z ="1"/>
                 <translate x="0" y="-2" z="0" />
             </transformation>
             <materials>
@@ -136,7 +152,9 @@
         </component>
 
         <component id="cylinder2">
-            <transformation></transformation>
+            <transformation>
+                <scale x="1" y="2" z ="1"/>
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -148,6 +166,7 @@
 
         <component id="cylinder3">
             <transformation>
+                <scale x="1" y="2" z ="1"/>
                 <translate x="2" y="-2" z="0" />
             </transformation>
             <materials>
@@ -161,6 +180,7 @@
 
         <component id="cylinder4">
             <transformation>
+                <scale x="1" y="2" z ="1"/>
                 <translate x="2" y="0" z="0" />
             </transformation>
             <materials>
@@ -174,7 +194,8 @@
 
         <component id="walls">
             <transformation>
-                <scale x="10" y="10" z="10" />
+                <translate x="0" y="1" z="0" />
+                <scale x="15" y="15" z="15" />
             </transformation>
             <materials>
                 <material id="neutral" />
@@ -290,9 +311,9 @@
                 <translate x="1" y="-1" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="neutral" />
             </materials>
-            <texture id="none" />
+            <texture id="trunkTexture" />
             <children>
                 <componentref id="table_face1" />
                 <componentref id="table_face2" />
