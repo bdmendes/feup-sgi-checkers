@@ -3,7 +3,7 @@
 
     <views default="mainCamera">
         <perspective id="mainCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="15" z="30" />
+            <from x="50" y="15" z="50" />
             <to x="0" y="-2" z="0" />
         </perspective>
     </views>
@@ -28,6 +28,9 @@
         <texture id="bankTexture" file="scenes/images/bank.jpg" />
         <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
         <texture id="landscapeTexture" file="scenes/images/landscape.jpg" />
+        <texture id="donutsTexture" file="scenes/images/donuts.jpg" />
+        <texture id="groundTexture" file="scenes/images/ground_grey.jpg" />
+        <texture id="sofaTexture" file="scenes/images/sofa.jpg" />
     </textures>
 
     <materials>
@@ -42,6 +45,12 @@
             <ambient r="0" g="0.0" b="1.0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.8" a="1.0" />
             <specular r="0.0" g="0.0" b="0.5" a="1.0" />
+        </material>
+        <material id="neutralPink" shininess="2">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1" g="0.4" b="0.7" a="1.0" />
+            <diffuse r="1" g="0.4" b="0.7" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         <material id="neutral" shininess="2">
             <emission r="0.8" g="0.8" b="0.8" a="1.0" />
@@ -114,9 +123,9 @@
                 <translate x="2" y="0" z="1.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="neutralPink" />
             </materials>
-            <texture id="none" />
+            <texture id="donutsTexture" />
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -394,7 +403,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="groundTexture" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -506,9 +515,9 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="neutral" />
             </materials>
-            <texture id="inherit" />
+            <texture id="sofaTexture" />
             <children>
                 <componentref id="sofa_base" />
                 <componentref id="sofa_back" />
