@@ -25,6 +25,8 @@
     <textures>
         <texture id="rocksTexture" file="scenes/images/rocks.jpg" />
         <texture id="vidralTexture" file="scenes/images/vidral.jpg" />
+        <texture id="bankTexture" file="scenes/images/bank.jpg" />
+        <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
     </textures>
 
     <materials>
@@ -39,6 +41,12 @@
             <ambient r="0" g="0.0" b="1.0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.8" a="1.0" />
             <specular r="0.0" g="0.0" b="0.5" a="1.0" />
+        </material>
+        <material id="neutral" shininess="2">
+            <emission r="0.8" g="0.8" b="0.8" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
     </materials>
 
@@ -61,7 +69,7 @@
             <cylinder base="0.1" top="0.1" height="1" slices="20" stacks="20" />
         </primitive>
         <primitive id="torus">
-            <torus inner="1" outer="3" slices="20" loops="20" />
+            <torus inner="1" outer="2" slices="20" loops="20" />
         </primitive>
         <primitive id="rectangle">
             <rectangle x1="-1" x2="1" y1="-1" y2="1" />
@@ -78,15 +86,14 @@
             <children>
                 <componentref id="walls" />
                 <componentref id="table" />
-                <componentref id="donut" />
+                
             </children>
         </component>
 
         <component id="donut">
             <transformation>
-                <rotate axis="x" angle="90" />
-                <scale x="0.2" y="0.2" z="0.2" />
-                <translate x="1" y="1" z="0" />
+                <scale x="0.1" y="0.1" z="0.1" />
+                <translate x="2" y="0" z="1.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -111,6 +118,7 @@
                 <componentref id="cylinder3" />
                 <componentref id="cylinder4" />
                 <componentref id="tableTop" />
+                <componentref id="donut" />
             </children>
         </component>
 
@@ -166,14 +174,19 @@
 
         <component id="walls">
             <transformation>
-                <scale x="20" y="20" z="20" />
+                <scale x="10" y="10" z="10" />
             </transformation>
             <materials>
-                <material id="neutralBlue" />
+                <material id="neutral" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="bankTexture" />
             <children>
-                <componentref id="cube" />
+                <componentref id="wall1" />
+                <componentref id="wall2" />
+                <componentref id="wall3" />
+                <componentref id="wall4" />
+                <componentref id="wall5" />
+                <componentref id="wall6" />
             </children>
         </component>
 
@@ -184,29 +197,24 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="rectangle1" />
-                <componentref id="rectangle2" />
-                <componentref id="rectangle3" />
-                <componentref id="rectangle4" />
-                <componentref id="rectangle5" />
-                <componentref id="rectangle6" />
+                
             </children>
         </component>
 
-        <component id="rectangle1">
+        <component id="wall1">
             <transformation>
                 <translate x="0" y="0" z="-1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="rectangle2">
+        <component id="wall2">
             <transformation>
                 <rotate axis="y" angle="180" />
                 <translate x="0" y="0" z="1" />
@@ -214,13 +222,13 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="rectangle3">
+        <component id="wall3">
             <transformation>
                 <rotate axis="y" angle="90" />
                 <translate x="-1" y="0" z="0" />
@@ -228,13 +236,13 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="rectangle4">
+        <component id="wall4">
             <transformation>
                 <rotate axis="y" angle="-90" />
                 <translate x="1" y="0" z="0" />
@@ -242,13 +250,13 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="rectangle5">
+        <component id="wall5">
             <transformation>
                 <rotate axis="x" angle="90" />
                 <translate x="0" y="1" z="0" />
@@ -256,13 +264,13 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
         </component>
 
-        <component id="rectangle6">
+        <component id="wall6">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="0" y="-1" z="0" />
@@ -270,7 +278,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="vidralTexture" />
+            <texture id="trunkTexture" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -278,7 +286,7 @@
 
         <component id="tableTop">
             <transformation>
-                <scale x="1" y="2" z="0.1" />
+                <scale x="1.5" y="2" z="0.1" />
                 <translate x="1" y="-1" z="1" />
             </transformation>
             <materials>
@@ -286,7 +294,95 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="cube" />
+                <componentref id="table_face1" />
+                <componentref id="table_face2" />
+                <componentref id="table_face3" />
+                <componentref id="table_face4" />
+                <componentref id="table_face5" />
+                <componentref id="table_face6" />
+            </children>
+        </component>
+
+        <component id="table_face1">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="table_face2">
+            <transformation>
+                <rotate axis="y" angle="180" />
+                <translate x="0" y="0" z="-1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="table_face3">
+            <transformation>
+                <rotate axis="y" angle="90" />
+                <translate x="1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="table_face4">
+            <transformation>
+                <rotate axis="y" angle="-90" />
+                <translate x="-1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="table_face5">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <translate x="0" y="-1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="table_face6">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <translate x="0" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
