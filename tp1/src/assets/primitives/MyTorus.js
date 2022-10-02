@@ -1,4 +1,5 @@
 import { CGFobject } from '../../../../lib/CGF.js';
+import { normalizeVector } from '../../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -39,7 +40,7 @@ export class MyTorus extends CGFobject {
                 let z = Math.sin(current_slice_angle) * this.inner;
 
                 this.vertices.push(center[0] + x, center[1] + y, center[2] + z);
-                this.normals.push(x, y, z);
+                this.normals.push(...normalizeVector([x, y, z]));
                 this.texCoords.push(edge / slice_edges, slice / this.slices);
 
                 if (slice < this.slices) {
