@@ -125,7 +125,7 @@
             <materials>
                 <material id="neutralPink" />
             </materials>
-            <texture id="donutsTexture" />
+            <texture id="donutsTexture" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -141,7 +141,7 @@
             <materials>
                 <material id="shinyRed" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="rocksTexture"  length_s="1" length_t="1"/>
             <children>
                 <componentref id="tablelegs" />
                 <componentref id="tableTop" />
@@ -154,7 +154,7 @@
             <materials>
                 <material id="shinyRed" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="televisionScreen" />
                 <componentref id="televisionMount" />
@@ -171,7 +171,7 @@
             <materials>
                 <material id="shinyRed" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="tablelegs" />
                 <componentref id="tableTop" />
@@ -256,7 +256,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="bankTexture" />
+            <texture id="bankTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="wall1" />
                 <componentref id="wall2" />
@@ -317,7 +317,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="trunkTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
                 <componentref id="windowView" />
@@ -332,7 +332,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="landscapeTexture" />
+            <texture id="landscapeTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -403,7 +403,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="groundTexture" />
+            <texture id="groundTexture"  length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -417,7 +417,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="trunkTexture"  length_s="1" length_t="1"/>
             <children>
                 <componentref id="table_face1" />
                 <componentref id="table_face2" />
@@ -517,7 +517,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="sofaTexture" />
+            <texture id="sofaTexture"  length_s="1" length_t="1"/>
             <children>
                 <componentref id="sofa_base" />
                 <componentref id="sofa_back" />

@@ -172,6 +172,15 @@ function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     if (textureID !== "inherit" && textureID !== "none" && sceneGraph.textures[textureID] == null) {
         return 'component ' + componentID + ' has a <texture> with an invalid ID: ' + textureID;
     }
+    if (textureID !== "inherit" && textureID !== "none") {
+        const length_s = sceneGraph.reader.getString(texture, 'length_s');
+        const length_t = sceneGraph.reader.getString(texture, 'length_t');
+        if (length_s == null || length_t == null) {
+            return 'component ' + componentID + ' must have a textures block with non null length_s and length_t';
+        }
+        component.length_s = length_s;
+        component.length_t = length_t;
+    }
     component.textureID = textureID;
 
     return null;

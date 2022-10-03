@@ -56,7 +56,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="demoTexture" length_s="3" length_t="0.4"/>
             <children>
                 <primitiveref id="demoTriangle" />
             </children>
