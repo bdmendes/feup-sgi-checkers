@@ -33,8 +33,6 @@ export function parseTextures(sceneGraph, texturesNode) {
         // TODO: Parse length_s and length_t
     }
 
-    console.log(sceneGraph.textures)
-
     console.log("Parsed textures");
     return null;
 }

@@ -27,7 +27,6 @@ export function parseComponents(sceneGraph, componentsNode) {
 
 function parseComponent(sceneGraph, node) {
     let [error, componentID] = getID(sceneGraph, node);
-    console.log(componentID)
     if (error) return componentID;
 
     const component = new GraphComponent(sceneGraph.scene, componentID);
@@ -101,7 +100,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 if (byRef) { return 'component ' + componentID + ' cannot transformations by reference and explicit transformations at the same time'; }
                 const translate = new GraphTransformation(sceneGraph.scene);
                 coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
-                if (coordinates == []) return coordinates;
+                if (coordinates.length == 0) return coordinates;
 
                 translate.addTranslation(coordinates);
                 component.transformations.push(translate);
@@ -110,7 +109,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
                 if (byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations at the same time'; }
                 const scale = new GraphTransformation(sceneGraph.scene);
                 coordinates = sceneGraph.parseFloatProps(transformationList[i], 'translate transformation ');
-                if (coordinates == []) return coordinates;
+                if (coordinates.length == 0) return coordinates;
 
                 scale.addScale(coordinates);
                 component.transformations.push(scale);
@@ -206,8 +205,6 @@ function referenceComponentChildren(sceneGraph) {
             const element = component.children[id];
             if (element == "componentref") {
                 if (sceneGraph.components[id] == null) {
-                    console.log(sceneGraph.components)
-                    console.log(sceneGraph.components.length)
                     return 'component with ID ' + componentID + ' has a <componentref> with an invalid ID: ' + id;
                 }
                 component.children[id] = sceneGraph.components[id];

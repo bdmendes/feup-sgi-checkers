@@ -1,11 +1,15 @@
 <sxs>
     <scene root="root" axis_length="5" />
 
-    <views default="mainCamera">
+    <views default="orthoCamera">
         <perspective id="mainCamera" near="0.1" far="500" angle="45">
-            <from x="50" y="15" z="50" />
-            <to x="0" y="-2" z="0" />
+            <from x="14" y="7" z="14" />
+            <to x="0" y="0" z="0" />
         </perspective>
+        <ortho id="orthoCamera" near="0" far="5" left="5" right="5" top="5" bottom="5">
+            <from x="15" y="6" z="15" />
+            <to x="0" y="0" z="0" />
+        </ortho>
     </views>
 
     <ambient>
