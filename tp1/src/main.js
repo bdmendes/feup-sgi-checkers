@@ -35,6 +35,8 @@ function main() {
     // Check console for loading errors
     const myGraph = new MySceneGraph(filename, myScene);
 
+    myInterface.sceneGraph = myGraph;
+
     // start
     app.run();
 }

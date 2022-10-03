@@ -106,6 +106,7 @@
             <transformation></transformation>
             <materials>
                 <material id="shinyRed" />
+                <material id="neutralBlue" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -139,7 +140,7 @@
                 <translate x="-15" y="0" z="5" />
             </transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
             <texture id="rocksTexture" />
             <children>
@@ -152,7 +153,7 @@
         <component id="television">
             <transformation></transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
             <texture id="rocksTexture" />
             <children>
@@ -169,7 +170,7 @@
                 <translate x="2" y="0" z="-8" />
             </transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
             <texture id="rocksTexture" />
             <children>
@@ -512,8 +513,7 @@
         </component>
 
         <component id="sofa">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="neutral" />
             </materials>
@@ -528,8 +528,8 @@
 
         <component id="sofa_base">
             <transformation>
-                <scale x="2" y="1" z="3"/>
-                <translate x="10" y="0" z="7"/>
+                <scale x="2" y="1" z="3" />
+                <translate x="10" y="0" z="7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -547,8 +547,8 @@
 
         <component id="sofa_back">
             <transformation>
-                <scale x="0.5" y="2" z="4"/>
-                <translate x="12" y="0" z="7"/>
+                <scale x="0.5" y="2" z="4" />
+                <translate x="12" y="0" z="7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -566,9 +566,9 @@
 
         <component id="sofa_left">
             <transformation>
-                <scale x="0.5" y="1.5" z="2"/>
+                <scale x="0.5" y="1.5" z="2" />
                 <rotate axis="y" angle="90" />
-                <translate x="9.5" y="0" z="3.5"/>
+                <translate x="9.5" y="0" z="3.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -586,9 +586,9 @@
 
         <component id="sofa_right">
             <transformation>
-                <scale x="0.5" y="1.5" z="2"/>
+                <scale x="0.5" y="1.5" z="2" />
                 <rotate axis="y" angle="90" />
-                <translate x="9.5" y="0" z="10.5"/>
+                <translate x="9.5" y="0" z="10.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -619,7 +619,7 @@
 
         <component id="sofa_base_back">
             <transformation>
-                <rotate axis="x" angle="180"/>
+                <rotate axis="x" angle="180" />
                 <translate x="0" y="1" z="-1" />
             </transformation>
             <materials>
@@ -633,7 +633,7 @@
 
         <component id="sofa_base_right">
             <transformation>
-                <rotate axis="y" angle="90"/>
+                <rotate axis="y" angle="90" />
                 <translate x="1" y="1" z="0" />
             </transformation>
             <materials>
@@ -647,7 +647,7 @@
 
         <component id="sofa_base_left">
             <transformation>
-                <rotate axis="y" angle="-90"/>
+                <rotate axis="y" angle="-90" />
                 <translate x="-1" y="1" z="0" />
             </transformation>
             <materials>
@@ -661,7 +661,7 @@
 
         <component id="sofa_base_top">
             <transformation>
-                <rotate axis="x" angle="-90"/>
+                <rotate axis="x" angle="-90" />
                 <translate x="0" y="2" z="0" />
             </transformation>
             <materials>
@@ -675,7 +675,7 @@
 
         <component id="sofa_base_bottom">
             <transformation>
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -692,6 +692,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -719,7 +720,7 @@
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                <translate x="0" y="5" z="0"/>
+                <translate x="0" y="5" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -734,7 +735,7 @@
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="0.5" y="2" z="0.5" />
-                <translate x="0" y="4" z="0"/>
+                <translate x="0" y="4" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
