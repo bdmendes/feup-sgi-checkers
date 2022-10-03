@@ -66,7 +66,6 @@ export class XMLscene extends CGFscene {
                 const light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
-                //this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
@@ -97,6 +96,7 @@ export class XMLscene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -120,19 +120,26 @@ export class XMLscene extends CGFscene {
         // Lights interface setup
         const lightsFolder = this.gui.gui.addFolder('Lights');
         lightsFolder.open();
-        let i = 0;
-        for (let key in this.graph.lights) {
+        const getIndexFromKey = (key) => {
+            let i = 0;
+            for (const k in this.graph.lights) {
+                if (k === key) return i;
+                i++;
+            }
+            return -1;
+        };
+        for (const key in this.graph.lights) {
             lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
+                const index = getIndexFromKey(key);
                 if (this.graph.enabledLights[key]) {
-                    this.graph.lights[key][0] = true;
-                    this.lights[i].enable();
+                    this.graph.lights[key][index] = true;
+                    this.lights[index].enable();
                 } else {
-                    this.graph.lights[key][0] = false;
-                    this.lights[i].disable();
+                    this.graph.lights[key][index] = false;
+                    this.lights[index].disable();
                 }
-                this.lights[i].update();
+                this.lights[index].update();
             });
-            i += 1;
         }
 
         this.sceneInited = true;
@@ -158,10 +165,10 @@ export class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
 
-        for (let i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
+        // for (let i = 0; i < this.lights.length; i++) {
+        //     this.lights[i].setVisible(true);
+        //     this.lights[i].enable();
+        // }
 
         if (this.sceneInited) {
             // Draw axis

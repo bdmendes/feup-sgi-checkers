@@ -35,8 +35,13 @@ export function parseLights(sceneGraph, lightsNode) {
                 ')';
 
         // Light enable/disable
-        let enableLight = sceneGraph.reader.getBoolean(children[i], 'enabled');
-        if (enableLight == null || isNaN(enableLight)) {
+        const enableLightProperty = sceneGraph.reader.getString(children[i], 'enabled');
+        let enableLight;
+        if (enableLightProperty == '0') {
+            enableLight = false;
+        } else if (enableLightProperty == '1') {
+            enableLight = true;
+        } else {
             sceneGraph.onXMLMinorError(
                 'unable to parse value component of the \'enable light\' field for ID = ' +
                 lightId + '; assuming \'value = 1\'');
