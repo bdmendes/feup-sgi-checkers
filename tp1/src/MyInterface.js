@@ -8,8 +8,9 @@ export class MyInterface extends CGFinterface {
     /**
      * @constructor
      */
-    constructor() {
+    constructor(sceneGraph) {
         super();
+        this.sceneGraph = sceneGraph;
     }
 
     /**
@@ -40,6 +41,10 @@ export class MyInterface extends CGFinterface {
     }
 
     processKeyDown(event) {
+        if (event.code === "KeyM") {
+            this.sceneGraph.selectedMaterialIndex += 1;
+            console.log("component materials switched");
+        }
         this.activeKeys[event.code] = true;
     };
 
