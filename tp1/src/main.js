@@ -13,7 +13,6 @@ function getUrlVars() {
 }
 
 function main() {
-
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);
     const myInterface = new MyInterface();
@@ -28,7 +27,6 @@ function main() {
 
     // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml 
     // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor) 
-
     const filename = getUrlVars()['file'] || "demo.xml";
 
     // create and load graph, and associate it to scene. 

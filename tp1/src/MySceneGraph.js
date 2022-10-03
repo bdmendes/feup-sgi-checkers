@@ -45,6 +45,7 @@ export class MySceneGraph {
         // User controlled state
         this.selectedMaterialIndex = 0;
         this.selectedCameraID = null;
+        this.enabledLights = {};
 
         // Scene assets
         this.materials = {};

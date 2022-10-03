@@ -78,6 +78,7 @@ export class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
+
                 if (light[0])
                     this.lights[i].enable();
                 else
@@ -109,6 +110,30 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         this.initCameras();
+
+        // Camera interface setup
+        this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
+            this.camera = this.graph.cameras[this.graph.selectedCameraID];
+            this.interface.setActiveCamera(this.camera);
+        });
+
+        // Lights interface setup
+        const lightsFolder = this.gui.gui.addFolder('Lights');
+        lightsFolder.open();
+        let i = 0;
+        for (let key in this.graph.lights) {
+            lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
+                if (this.graph.enabledLights[key]) {
+                    this.graph.lights[key][0] = true;
+                    this.lights[i].enable();
+                } else {
+                    this.graph.lights[key][0] = false;
+                    this.lights[i].disable();
+                }
+                this.lights[i].update();
+            });
+            i += 1;
+        }
 
         this.sceneInited = true;
     }

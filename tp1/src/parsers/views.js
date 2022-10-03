@@ -146,10 +146,11 @@ function parseOrthoCamera(sceneGraph, orthoNode) {
     }
 
     // Create camera
-    console.log(far)
-    const camera = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(from[0], from[1], from[2]), vec3.fromValues(to[0], to[1], to[2]), vec3.fromValues(up[0], up[1], up[2]));
+    const camera = new CGFcameraOrtho(left, right, bottom, top, near, far,
+        vec3.fromValues(from[0], from[1], from[2]),
+        vec3.fromValues(to[0], to[1], to[2]),
+        vec3.fromValues(up[0], up[1], up[2]));
     sceneGraph.cameras[nodeID] = camera;
-    console.log(camera)
 
     return null;
 }
