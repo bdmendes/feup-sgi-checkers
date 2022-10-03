@@ -1,4 +1,5 @@
 import { CGFobject } from '../../../../lib/CGF.js';
+import { normalizeVector } from '../../utils/math.js';
 /**
  * MyRectangle
  * @constructor
@@ -24,49 +25,34 @@ export class MyTorus extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        let loop_angle = (2 * Math.PI) / this.slices;
+        let loop_angle = (Math.PI * 2) / this.slices;
         let slice_edges = this.loops * 2 + 1;
-        let slice_angle = (2 * Math.PI) / (slice_edges);
+        let slice_angle = (Math.PI * 2) / (this.loops * 2);
         let current_loop_angle = 0;
 
-        for (let current_slice = 0; current_slice <= this.slices; current_slice++) {
-            let current_loop = 0;
+        for (let slice = 0; slice <= this.slices; slice++) {
             let current_slice_angle = 0;
             let center = [Math.cos(current_loop_angle) * this.outer, Math.sin(current_loop_angle) * this.outer, 0];
-            for (; ;) {
+
+            for (let edge = 0; edge < slice_edges; edge++) {
                 let x = Math.cos(current_slice_angle) * this.inner * Math.cos(current_loop_angle);
                 let y = Math.cos(current_slice_angle) * this.inner * Math.sin(current_loop_angle);
                 let z = Math.sin(current_slice_angle) * this.inner;
 
                 this.vertices.push(center[0] + x, center[1] + y, center[2] + z);
-                this.normals.push(x, y, z);
-                this.texCoords.push(current_loop / slice_edges, current_slice / this.slices);
+                this.normals.push(...normalizeVector([x, y, z]));
+                this.texCoords.push(edge / slice_edges, slice / this.slices);
 
-                if (current_slice < this.slices && current_loop < slice_edges) {
-                    this.indices.push(current_slice * slice_edges + current_loop + 1,
-                        current_slice * slice_edges + current_loop,
-                        (current_slice + 1) * slice_edges + current_loop);
-
-                    this.indices.push(current_slice * slice_edges + current_loop,
-                        (current_slice + 1) * slice_edges + current_loop - 1,
-                        (current_slice + 1) * slice_edges + current_loop);
+                if (slice < this.slices) {
+                    this.indices.push(slice * slice_edges + edge, (slice + 1) * slice_edges + edge, slice * slice_edges + edge + 1);
+                    this.indices.push(slice * slice_edges + edge + 1, (slice + 1) * slice_edges + edge, (slice + 1) * slice_edges + edge + 1);
                 }
 
                 current_slice_angle += slice_angle;
-                if (current_loop + 1 === slice_edges) { break; } else { current_loop++; }
             }
 
             current_loop_angle += loop_angle;
         }
-        let j = 0;
-        console.log(this.vertices.length);
-        console.log(this.indices.length);
-        for (let i = 0; i < this.vertices.length; i += 3) {
-            console.log('vertice: ' + this.vertices[i] + ' , ' + this.vertices[i + 1] + ' , ' + this.vertices[i + 2]);
-            console.log('coords: ' + this.texCoords[j] + ' , ' + this.texCoords[j + 1]);
-            j += 2;
-        }
-
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
