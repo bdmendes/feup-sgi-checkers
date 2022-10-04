@@ -15,6 +15,9 @@ export class MyRectangle extends CGFobject {
         this.y2 = y2;
         this.id = id;
 
+        this.a = Math.sqrt(Math.pow(this.x1 - this.x2, 2));
+        this.b = Math.sqrt(Math.pow(this.y1 - this.y2, 2));
+
         this.initBuffers();
     }
 
@@ -43,7 +46,7 @@ export class MyRectangle extends CGFobject {
      * @param {Array} coords - Array of texture coordinates
      */
     updateTexCoords(length_s, length_t) {
-        this.texCoords = [0, 1 / length_t, 1 / length_s, 1 / length_t, 0, 0, 1 / length_s, 0];
+        this.texCoords = [0, this.b / length_t, this.a / length_s, this.b / length_t, 0, 0, this.a / length_s, 0];
         this.updateTexCoordsGLBuffers();
     }
 }
