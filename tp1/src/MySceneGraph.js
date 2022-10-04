@@ -1,7 +1,7 @@
 import { CGFappearance, CGFXMLreader } from '../../lib/CGF.js';
 
 import { parseScene } from './parsers/scene.js';
-import { parseView } from './parsers/view.js';
+import { parseView } from './parsers/views.js';
 import { parsePrimitives } from './parsers/primitives.js';
 import { parseComponents } from './parsers/components.js';
 import { parseTextures } from './parsers/textures.js';
@@ -44,6 +44,8 @@ export class MySceneGraph {
 
         // User controlled state
         this.selectedMaterialIndex = 0;
+        this.selectedCameraID = null;
+        this.enabledLights = {};
 
         // Scene assets
         this.materials = {};
@@ -52,10 +54,11 @@ export class MySceneGraph {
         this.background = [];
         this.textures = {};
         this.transformations = {};
+        this.cameras = {};
 
         // Default material
         this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
-        this.defaultMaterial.addComponent("specular", 1, 1, 1);
+        this.defaultMaterial.addComponent("diffuse", 0.5, 0.5, 0.7);
         this.defaultMaterial.apply();
 
         // Setup default axis
@@ -96,6 +99,14 @@ export class MySceneGraph {
         this.scene.onGraphLoaded();
     }
 
+    getNodeNames(nodes) {
+        const nodeNames = [];
+        for (let i = 0; i < nodes.length; i++) {
+            nodeNames.push(nodes[i].nodeName);
+        }
+        return nodeNames;
+    }
+
     /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
@@ -104,17 +115,10 @@ export class MySceneGraph {
         if (rootElement.nodeName != 'sxs') return 'root tag <sxs> missing';
 
         const nodes = rootElement.children;
-
-        // Reads the names of the nodes to an auxiliary buffer.
-        const nodeNames = [];
-
-        for (let i = 0; i < nodes.length; i++) {
-            nodeNames.push(nodes[i].nodeName);
-        }
-
-        let error;
+        const nodeNames = this.getNodeNames(nodes);
 
         // Processes each node, verifying errors.
+        let error;
 
         // <scene>
         let index;
@@ -230,7 +234,7 @@ export class MySceneGraph {
         for (const prop of props) {
             const value = this.reader.getFloat(node, prop);
             if (value == null || isNaN(value)) {
-                console.warn('unable to parse ' + prop + 'of the ' + messageError);
+                console.warn('unable to parse ' + prop + ' of the ' + messageError);
                 return [];
             }
             result.push(value);
