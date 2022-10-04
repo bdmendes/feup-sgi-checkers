@@ -1,3 +1,4 @@
+import { MyRectangle } from "./primitives/MyRectangle.js";
 import { MyTriangle } from "./primitives/MyTriangle.js";
 
 /**
@@ -66,7 +67,7 @@ export class GraphComponent {
 
     renderChildren(material, texture, length_s, length_t) {
         for (const key in this.children) {
-            if (this.children[key] instanceof MyTriangle) {
+            if (this.children[key] instanceof MyTriangle || this.children[key] instanceof MyRectangle) {
                 if (this.textureID === "inherit") {
                     this.children[key].updateTexCoords(length_s, length_t);
                 } else {
