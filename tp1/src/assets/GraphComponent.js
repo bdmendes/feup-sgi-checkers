@@ -16,12 +16,12 @@ export class GraphComponent {
         this.length_t = null;
     }
 
-    display(parentMaterial, parentTexture = null, length_s = 1, length_t = 1) {
+    display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
         this.scene.pushMatrix();
         const material = this.renderMaterial(parentMaterial);
         const texture = this.renderTexture(material, parentTexture);
         this.renderTransformations();
-        this.renderChildren(material, texture, length_s, length_t);
+        this.renderChildren(material, texture, parent_length_s, parent_length_t);
         this.scene.popMatrix();
     }
 
@@ -65,16 +65,15 @@ export class GraphComponent {
         }
     }
 
-    renderChildren(material, texture, length_s, length_t) {
+    renderChildren(material, texture, parent_length_s, parent_length_t) {
         for (const key in this.children) {
+            let [length_s, length_t] = (this.textureID === "inherit") ? [parent_length_s, parent_length_t] : [this.length_s, this.length_t];
+
             if (this.children[key] instanceof MyTriangle || this.children[key] instanceof MyRectangle) {
-                if (this.textureID === "inherit") {
-                    this.children[key].updateTexCoords(length_s, length_t);
-                } else {
-                    this.children[key].updateTexCoords(this.length_s, this.length_t);
-                }
+                this.children[key].updateTexCoords(length_s, length_t);
             }
-            this.children[key].display(material, texture);
+            this.children[key].display(material, texture, length_s, length_t);
+
             if (typeof this.children[key].enableNormalViz === 'function') {
                 //this.children[key].enableNormalViz();
             }

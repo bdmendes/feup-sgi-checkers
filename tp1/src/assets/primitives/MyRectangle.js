@@ -15,8 +15,8 @@ export class MyRectangle extends CGFobject {
         this.y2 = y2;
         this.id = id;
 
-        this.a = Math.sqrt(Math.pow(this.x1 - this.x2, 2));
-        this.b = Math.sqrt(Math.pow(this.y1 - this.y2, 2));
+        this.a = Math.abs(this.x1 - this.x2);
+        this.b = Math.abs(this.y1 - this.y2);
 
         this.initBuffers();
     }
