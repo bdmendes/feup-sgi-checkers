@@ -43,7 +43,7 @@ export class MyTorus extends CGFobject {
                 this.normals.push(...normalizeVector([x, y, z]));
                 this.texCoords.push(edge / slice_edges, slice / this.slices);
 
-                if (slice < this.slices) {
+                if (slice < this.slices && edge + 1 < slice_edges) {
                     this.indices.push(slice * slice_edges + edge, (slice + 1) * slice_edges + edge, slice * slice_edges + edge + 1);
                     this.indices.push(slice * slice_edges + edge + 1, (slice + 1) * slice_edges + edge, (slice + 1) * slice_edges + edge + 1);
                 }

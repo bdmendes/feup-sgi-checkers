@@ -45,20 +45,18 @@
 
     <primitives>
         <primitive id="demoTorus">
-            <torus inner="1" outer="3" slices="20" loops="20"/>
+            <torus inner="1" outer="3" slices="3" loops="2"/>
         </primitive>
     </primitives>
 
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="none" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="demoTorus" />
             </children>
