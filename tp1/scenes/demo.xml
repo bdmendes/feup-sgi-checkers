@@ -132,6 +132,7 @@
                 <componentref id="lamp" />
                 <componentref id="mediaCenter" />
                 <componentref id="centerTable" />
+                <componentref id="chairs" />
             </children>
         </component>
 
@@ -809,6 +810,149 @@
                 <componentref id="cylinder2" />
                 <componentref id="cylinder3" />
                 <componentref id="cylinder4" />
+            </children>
+        </component>
+
+        <component id="chairs">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="metalDark" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chair1" />
+                <componentref id="chair2" />
+                <componentref id="chair3" />
+                <componentref id="chair4" />
+            </children>
+        </component>
+
+        <component id="chair1">
+            <transformation>
+                <scale x="1.2" y="1" z="1.2" />
+                <translate x="0" y="1.5" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chairBase" />
+                <componentref id="chairBack" />
+                <componentref id="chairLegs" />
+            </children>
+        </component>
+
+        <component id="chair2">
+            <transformation>
+                <scale x="1.2" y="1" z="1.2" />
+                <rotate axis="y" angle="180" />
+                <translate x="0" y="1.5" z="-9" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chairBase" />
+                <componentref id="chairBack" />
+                <componentref id="chairLegs" />
+            </children>
+        </component>
+
+        <component id="chair3">
+            <transformation>
+                <scale x="1.2" y="1" z="1.2" />
+                <rotate axis="y" angle="90" />
+                <translate x="6" y="1.5" z="-6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chairBase" />
+                <componentref id="chairBack" />
+                <componentref id="chairLegs" />
+            </children>
+        </component>
+
+        <component id="chair4">
+            <transformation>
+                <scale x="1.2" y="1" z="1.2" />
+                <rotate axis="y" angle="-90" />
+                <translate x="-6" y="1.5" z="-6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chairBase" />
+                <componentref id="chairBack" />
+                <componentref id="chairLegs" />
+            </children>
+        </component>
+
+        <component id="chairBase">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="1" y="0.1" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="chairBack">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="1" y="1.5" z="0.1" />
+                <translate x="0" y="0" z="0.9" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cube" />
+            </children>
+        </component>
+
+        <component id="chairLegs">
+            <transformation>
+                <rotate axis="x" angle="90"/>
+                <scale x="0.8" y="1.5" z="0.8" />
+                <translate x="-0.8" y="0" z="0.8" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="tablelegs" />
+            </children>
+        </component>
+
+        <component id="cube">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="table_face1" />
+                <componentref id="table_face2" />
+                <componentref id="table_face3" />
+                <componentref id="table_face4" />
+                <componentref id="table_face5" />
+                <componentref id="table_face6" />
             </children>
         </component>
     </components>
