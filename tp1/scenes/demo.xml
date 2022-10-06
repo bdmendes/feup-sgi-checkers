@@ -530,7 +530,9 @@
         </component>
 
         <component id="sofa">
-            <transformation></transformation>
+            <transformation>
+                <translate x="0" y="0" z="1"/>
+            </transformation>
             <materials>
                 <material id="neutral" />
             </materials>
@@ -765,7 +767,7 @@
 
         <component id="centerTable">
             <transformation>
-                <translate x="2" y="0" z="7"/>
+                <translate x="2" y="0" z="8"/>
             </transformation>
             <materials>
                 <material id="inherit" />
