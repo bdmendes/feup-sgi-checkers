@@ -534,7 +534,7 @@
 
         <component id="sofa">
             <transformation>
-                <translate x="0" y="0" z="1"/>
+                <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="neutral" />
@@ -770,12 +770,12 @@
 
         <component id="centerTable">
             <transformation>
-                <translate x="2" y="0" z="8"/>
+                <translate x="2" y="0" z="8" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" length_s="1" length_t="1"/>
+            <texture id="none" length_s="1" length_t="1" />
             <children>
                 <componentref id="centerTableTop" />
                 <componentref id="centerTableLegs" />
@@ -787,12 +787,12 @@
                 <rotate axis="x" angle="-90" />
                 <scale x="0.8" y="1" z="2" />
                 <scale x="3" y="1" z="3" />
-                <translate x="0" y="2" z="0"/>
+                <translate x="0" y="2" z="0" />
             </transformation>
             <materials>
                 <material id="metalDark" />
             </materials>
-            <texture id="none" length_s="1" length_t="1"/>
+            <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="flatTorus" />
             </children>
@@ -817,8 +817,7 @@
         </component>
 
         <component id="chairs">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="metalDark" />
             </materials>
@@ -929,7 +928,7 @@
 
         <component id="chairLegs">
             <transformation>
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="90" />
                 <scale x="0.8" y="1.5" z="0.8" />
                 <translate x="-0.8" y="0" z="0.8" />
             </transformation>
@@ -943,8 +942,7 @@
         </component>
 
         <component id="cube">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
             </materials>

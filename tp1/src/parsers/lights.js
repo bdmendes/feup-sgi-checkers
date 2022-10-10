@@ -83,7 +83,7 @@ export function parseLights(sceneGraph, lightsNode) {
                         return 'one and only one attenuation property can be set for light with ID = ' + lightId;
                     }
                     if (aux.filter(x => x == 1).length != 1) {
-                        return 'attenuation property should be 0 for 1 for light with ID = ' + lightId;
+                        return 'attenuation property should be 0 or 1 for light with ID = ' + lightId;
                     }
                 } else {
                     aux = sceneGraph.parseFloatProps(

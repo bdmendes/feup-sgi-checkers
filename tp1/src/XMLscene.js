@@ -119,6 +119,9 @@ export class XMLscene extends CGFscene {
 
         this.initCameras();
 
+        // Display axis checkbox
+        this.gui.gui.add(this.graph, 'displayAxis').name('Display axis');
+
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
             this.camera = this.graph.cameras[this.graph.selectedCameraID];
@@ -171,7 +174,10 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
+
+        if (this.graph.displayAxis) {
+            this.axis.display();
+        }
 
         if (this.sceneInited) {
             // Draw axis
