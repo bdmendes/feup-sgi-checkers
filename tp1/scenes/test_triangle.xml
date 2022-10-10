@@ -3,7 +3,7 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="15" z="30" />
+            <from x="10" y="10" z="10" />
             <to x="0" y="-2" z="0" />
         </perspective>
     </views>
@@ -19,6 +19,7 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1" linear="0" quadratic="0" />
         </omni>
     </lights>
 
@@ -45,7 +46,7 @@
 
     <primitives>
         <primitive id="demoTriangle">
-            <triangle x1="0" y1="0" z1="0" x2="2" y2="0" z2="0" x3="0" y3="2" z3="0" />
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
         <primitive id="demoRectangle">
             <rectangle x1="0" x2="3" y1="0" y2="3" />
@@ -59,7 +60,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" length_s="3" length_t="3"/>
+            <texture id="demoTexture" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="demoRectangle" />
             </children>
