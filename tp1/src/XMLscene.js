@@ -70,10 +70,18 @@ export class XMLscene extends CGFscene {
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
+                const setAttenuation = (attenuation, light) => {
+                    light.setConstantAttenuation(attenuation[0]);
+                    light.setLinearAttenuation(attenuation[1]);
+                    light.setQuadraticAttenuation(attenuation[2]);
+                }
                 if (light[1] == "spot") {
                     this.lights[i].setSpotCutOff(light[6]);
                     this.lights[i].setSpotExponent(light[7]);
                     this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
+                    setAttenuation(light[9], this.lights[i]);
+                } else {
+                    setAttenuation(light[6], this.lights[i]);
                 }
 
                 this.lights[i].setVisible(true);
@@ -110,6 +118,9 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         this.initCameras();
+
+        // Display axis checkbox
+        this.gui.gui.add(this.graph, 'displayAxis').name('Display axis');
 
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
@@ -163,12 +174,10 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
 
-        // for (let i = 0; i < this.lights.length; i++) {
-        //     this.lights[i].setVisible(true);
-        //     this.lights[i].enable();
-        // }
+        if (this.graph.displayAxis) {
+            this.axis.display();
+        }
 
         if (this.sceneInited) {
             // Draw axis
