@@ -3,9 +3,13 @@
 
     <views default="mainCamera">
         <perspective id="mainCamera" near="0.1" far="500" angle="45">
-            <from x="50" y="15" z="50" />
-            <to x="0" y="-2" z="0" />
+            <from x="14" y="7" z="14" />
+            <to x="0" y="0" z="0" />
         </perspective>
+        <ortho id="orthoCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
+        </ortho>
     </views>
 
     <ambient>
@@ -17,6 +21,12 @@
         <omni id="mainLight" enabled="1">
             <location x="9.8" y="11.9" z="10" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+        <omni id="centerLight" enabled="0">
+            <location x="0" y="0" z="0" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
@@ -93,9 +103,6 @@
         <primitive id="rectangle">
             <rectangle x1="-1" x2="1" y1="-1" y2="1" />
         </primitive>
-        <primitive id="diamond">
-            <rectangle x1="0" x2="0" y1="-1" y2="1" />
-        </primitive>
         <primitive id="sphere">
             <sphere radius="1" slices="20" stacks="20" />
         </primitive>
@@ -106,6 +113,7 @@
             <transformation></transformation>
             <materials>
                 <material id="shinyRed" />
+                <material id="neutralBlue" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -125,7 +133,7 @@
             <materials>
                 <material id="neutralPink" />
             </materials>
-            <texture id="donutsTexture" />
+            <texture id="donutsTexture" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="torus" />
             </children>
@@ -139,9 +147,9 @@
                 <translate x="-15" y="0" z="5" />
             </transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="rocksTexture"  length_s="1" length_t="1"/>
             <children>
                 <componentref id="tablelegs" />
                 <componentref id="tableTop" />
@@ -152,9 +160,9 @@
         <component id="television">
             <transformation></transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="inherit"/>
             <children>
                 <componentref id="televisionScreen" />
                 <componentref id="televisionMount" />
@@ -169,9 +177,9 @@
                 <translate x="2" y="0" z="-8" />
             </transformation>
             <materials>
-                <material id="shinyRed" />
+                <material id="inherit" />
             </materials>
-            <texture id="rocksTexture" />
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="tablelegs" />
                 <componentref id="tableTop" />
@@ -256,7 +264,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="bankTexture" />
+            <texture id="bankTexture" length_s="2" length_t="2" />
             <children>
                 <componentref id="wall1" />
                 <componentref id="wall2" />
@@ -317,7 +325,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="trunkTexture" length_s="2" length_t="2" />
             <children>
                 <primitiveref id="rectangle" />
                 <componentref id="windowView" />
@@ -332,7 +340,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="landscapeTexture" />
+            <texture id="landscapeTexture" length_s="2" length_t="2" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -403,7 +411,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="groundTexture" />
+            <texture id="groundTexture"  length_s="2" length_t="2"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -417,7 +425,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="trunkTexture" />
+            <texture id="trunkTexture"  length_s="2" length_t="2"/>
             <children>
                 <componentref id="table_face1" />
                 <componentref id="table_face2" />
@@ -512,12 +520,11 @@
         </component>
 
         <component id="sofa">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="sofaTexture" />
+            <texture id="sofaTexture"  length_s="2" length_t="2"/>
             <children>
                 <componentref id="sofa_base" />
                 <componentref id="sofa_back" />
@@ -528,8 +535,8 @@
 
         <component id="sofa_base">
             <transformation>
-                <scale x="2" y="1" z="3"/>
-                <translate x="10" y="0" z="7"/>
+                <scale x="2" y="1" z="3" />
+                <translate x="10" y="0" z="7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -547,8 +554,8 @@
 
         <component id="sofa_back">
             <transformation>
-                <scale x="0.5" y="2" z="4"/>
-                <translate x="12" y="0" z="7"/>
+                <scale x="0.5" y="2" z="4" />
+                <translate x="12" y="0" z="7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -566,9 +573,9 @@
 
         <component id="sofa_left">
             <transformation>
-                <scale x="0.5" y="1.5" z="2"/>
+                <scale x="0.5" y="1.5" z="2" />
                 <rotate axis="y" angle="90" />
-                <translate x="9.5" y="0" z="3.5"/>
+                <translate x="9.5" y="0" z="3.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -586,9 +593,9 @@
 
         <component id="sofa_right">
             <transformation>
-                <scale x="0.5" y="1.5" z="2"/>
+                <scale x="0.5" y="1.5" z="2" />
                 <rotate axis="y" angle="90" />
-                <translate x="9.5" y="0" z="10.5"/>
+                <translate x="9.5" y="0" z="10.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -619,7 +626,7 @@
 
         <component id="sofa_base_back">
             <transformation>
-                <rotate axis="x" angle="180"/>
+                <rotate axis="x" angle="180" />
                 <translate x="0" y="1" z="-1" />
             </transformation>
             <materials>
@@ -633,7 +640,7 @@
 
         <component id="sofa_base_right">
             <transformation>
-                <rotate axis="y" angle="90"/>
+                <rotate axis="y" angle="90" />
                 <translate x="1" y="1" z="0" />
             </transformation>
             <materials>
@@ -647,7 +654,7 @@
 
         <component id="sofa_base_left">
             <transformation>
-                <rotate axis="y" angle="-90"/>
+                <rotate axis="y" angle="-90" />
                 <translate x="-1" y="1" z="0" />
             </transformation>
             <materials>
@@ -661,7 +668,7 @@
 
         <component id="sofa_base_top">
             <transformation>
-                <rotate axis="x" angle="-90"/>
+                <rotate axis="x" angle="-90" />
                 <translate x="0" y="2" z="0" />
             </transformation>
             <materials>
@@ -675,7 +682,7 @@
 
         <component id="sofa_base_bottom">
             <transformation>
-                <rotate axis="x" angle="90"/>
+                <rotate axis="x" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -692,6 +699,7 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -719,7 +727,7 @@
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                <translate x="0" y="5" z="0"/>
+                <translate x="0" y="5" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -734,7 +742,7 @@
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="0.5" y="2" z="0.5" />
-                <translate x="0" y="4" z="0"/>
+                <translate x="0" y="4" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />

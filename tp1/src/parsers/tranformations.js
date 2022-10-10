@@ -35,7 +35,7 @@ export function parseTransformations(sceneGraph, transformationsNode) {
                     coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'translate transformation for ID ' + transformationID);
-                    if (coordinates == []) return coordinates;
+                    if (coordinates.length == 0) return coordinates;
 
                     transformation.addTranslation(coordinates);
 
@@ -44,7 +44,7 @@ export function parseTransformations(sceneGraph, transformationsNode) {
                     coordinates = sceneGraph.parseFloatProps(
                         grandChildren[j],
                         'scale transformation for ID ' + transformationID);
-                    if (coordinates == []) return coordinates;
+                    if (coordinates.length == 0) return coordinates;
 
                     transformation.addScale(coordinates);
                     break;

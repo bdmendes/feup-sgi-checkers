@@ -15,6 +15,9 @@ export class MyRectangle extends CGFobject {
         this.y2 = y2;
         this.id = id;
 
+        this.a = Math.abs(this.x1 - this.x2);
+        this.b = Math.abs(this.y1 - this.y2);
+
         this.initBuffers();
     }
 
@@ -32,16 +35,6 @@ export class MyRectangle extends CGFobject {
         // Facing Z positive
         this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
 
-        /*
-        Texture coords (s,t)
-        +----------> s
-    |
-    |
-        |
-        v
-    t
-    */
-
         this.texCoords = [0, 1, 1, 1, 0, 0, 1, 0];
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
@@ -52,8 +45,8 @@ export class MyRectangle extends CGFobject {
      * Updates the list of texture coordinates of the rectangle
      * @param {Array} coords - Array of texture coordinates
      */
-    updateTexCoords(coords) {
-        this.texCoords = [...coords];
+    updateTexCoords(length_s, length_t) {
+        this.texCoords = [0, this.b / length_t, this.a / length_s, this.b / length_t, 0, 0, this.a / length_s, 0];
         this.updateTexCoordsGLBuffers();
     }
 }

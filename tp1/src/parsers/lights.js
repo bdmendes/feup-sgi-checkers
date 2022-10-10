@@ -35,14 +35,18 @@ export function parseLights(sceneGraph, lightsNode) {
                 ')';
 
         // Light enable/disable
-        let enableLight = true;
-        const aux = sceneGraph.reader.getBoolean(children[i], 'enabled');
-        if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
+        const enableLightProperty = sceneGraph.reader.getString(children[i], 'enabled');
+        let enableLight;
+        if (enableLightProperty == '0') {
+            enableLight = false;
+        } else if (enableLightProperty == '1') {
+            enableLight = true;
+        } else {
             sceneGraph.onXMLMinorError(
                 'unable to parse value component of the \'enable light\' field for ID = ' +
                 lightId + '; assuming \'value = 1\'');
-
-        enableLight = aux || 1;
+            enableLight = true;
+        }
 
         // Add enabled boolean and type name to light info
         global.push(enableLight);
@@ -105,6 +109,7 @@ export function parseLights(sceneGraph, lightsNode) {
         }
 
         sceneGraph.lights[lightId] = global;
+        sceneGraph.enabledLights[lightId] = enableLight;
         numLights++;
     }
 

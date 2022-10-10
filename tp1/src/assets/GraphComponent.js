@@ -1,3 +1,6 @@
+import { MyRectangle } from "./primitives/MyRectangle.js";
+import { MyTriangle } from "./primitives/MyTriangle.js";
+
 /**
  * GraphComponent
  */
@@ -9,14 +12,16 @@ export class GraphComponent {
         this.materialIDs = []; // length >= 1
         this.transformations = []; // length >= 0
         this.textureID = null; // nonnull
+        this.length_s = null;
+        this.length_t = null;
     }
 
-    display(parentMaterial, parentTexture = null) {
+    display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
         this.scene.pushMatrix();
         const material = this.renderMaterial(parentMaterial);
         const texture = this.renderTexture(material, parentTexture);
         this.renderTransformations();
-        this.renderChildren(material, texture);
+        this.renderChildren(material, texture, parent_length_s, parent_length_t);
         this.scene.popMatrix();
     }
 
@@ -60,9 +65,15 @@ export class GraphComponent {
         }
     }
 
-    renderChildren(material, texture) {
+    renderChildren(material, texture, parent_length_s, parent_length_t) {
         for (const key in this.children) {
-            this.children[key].display(material, texture);
+            let [length_s, length_t] = (this.textureID === "inherit") ? [parent_length_s, parent_length_t] : [this.length_s, this.length_t];
+
+            if (this.children[key] instanceof MyTriangle || this.children[key] instanceof MyRectangle) {
+                this.children[key].updateTexCoords(length_s, length_t);
+            }
+            this.children[key].display(material, texture, length_s, length_t);
+
             if (typeof this.children[key].enableNormalViz === 'function') {
                 //this.children[key].enableNormalViz();
             }

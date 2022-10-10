@@ -45,20 +45,18 @@
 
     <primitives>
         <primitive id="demoCylinder">
-            <cylinder base="2" top="2" height="5" slices="20" stacks="3" />
+            <cylinder base="2" top="2" height="5" slices="4" stacks="3" />
         </primitive>
     </primitives>
 
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="demoTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="demoCylinder" />
             </children>
