@@ -21,8 +21,8 @@ export function parseLights(sceneGraph, lightsNode) {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
             continue;
         } else {
-            attributeNames.push(...['location', 'ambient', 'diffuse', 'specular']);
-            attributeTypes.push(...['position', 'color', 'color', 'color']);
+            attributeNames.push(...['location', 'ambient', 'diffuse', 'specular', 'attenuation']);
+            attributeTypes.push(...['position', 'color', 'color', 'color', 'attenuation']);
         }
 
         // Get id of the current light.
@@ -65,21 +65,42 @@ export function parseLights(sceneGraph, lightsNode) {
             let aux;
 
             if (attributeIndex != -1) {
-                if (attributeTypes[j] == 'position')
+                if (attributeTypes[j] == 'position') {
                     aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         'light position for ID' + lightId, ['x', 'y', 'z', 'w']);
-                else
+                    if (aux.length == 0) {
+                        return 'unable to parse light position values for ID = ' + lightId;
+                    }
+                } else if (attributeTypes[j] == 'attenuation') {
+                    aux = sceneGraph.parseFloatProps(
+                        grandChildren[attributeIndex],
+                        'light attenuation for ID' + lightId, ['constant', 'linear', 'quadratic']);
+                    if (aux.length == 0) {
+                        return 'unable to parse light attenuation values for ID = ' + lightId;
+                    }
+                    if (aux.filter(x => x != 0).length != 1) {
+                        return 'one and only one attenuation property can be set for light with ID = ' + lightId;
+                    }
+                    if (aux.filter(x => x == 1).length != 1) {
+                        return 'attenuation property should be 0 for 1 for light with ID = ' + lightId;
+                    }
+                } else {
                     aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         attributeNames[j] + ' illumination for ID' + lightId, ['r', 'g', 'b', 'a']);
+                    if (aux.length == 0) {
+                        return 'unable to parse light color values for ID = ' + lightId;
+                    }
+                }
 
                 if (!Array.isArray(aux)) return aux;
 
                 global.push(aux);
-            } else
-                return 'light ' + attributeNames[i] +
-                    ' undefined for ID = ' + lightId;
+            } else {
+                return attributeNames[j] +
+                    ' not found for light with ID = ' + lightId;
+            }
         }
 
         // Gets the additional attributes of the spot light
