@@ -3,7 +3,7 @@
 
     <views default="mainCamera">
         <perspective id="mainCamera" near="0.1" far="500" angle="45">
-            <from x="14" y="7" z="14" />
+            <from x="14" y="9" z="14" />
             <to x="0" y="0" z="0" />
         </perspective>
         <ortho id="orthoCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
@@ -43,6 +43,7 @@
         <texture id="donutsTexture" file="scenes/images/donuts.jpg" />
         <texture id="groundTexture" file="scenes/images/ground_grey.jpg" />
         <texture id="sofaTexture" file="scenes/images/sofa.jpg" />
+        <texture id="lampTexture" file="scenes/images/lamp.jpg" />
     </textures>
 
     <materials>
@@ -64,11 +65,17 @@
             <diffuse r="1" g="0.4" b="0.7" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
-        <material id="metalDark" shininess="1">
+        <material id="metal" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </material>
+        <material id="metalDark" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
         <material id="neutral" shininess="2">
             <emission r="0.2" g="0.2" b="0.2" a="1.0" />
@@ -131,7 +138,7 @@
                 <componentref id="walls" />
                 <componentref id="table" />
                 <componentref id="sofa" />
-                <componentref id="lamp" />
+                <componentref id="lamps" />
                 <componentref id="mediaCenter" />
                 <componentref id="centerTable" />
                 <componentref id="chairs" />
@@ -534,7 +541,7 @@
 
         <component id="sofa">
             <transformation>
-                <translate x="0" y="0" z="1" />
+                <translate x="2" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="neutral" />
@@ -708,9 +715,74 @@
             </children>
         </component>
 
-        <component id="lamp">
+        <component id="lamps">
             <transformation>
-                <translate x="-13" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="neutralPink" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="lamp1" />
+                <componentref id="lamp2" />
+                <componentref id="lamp3" />
+                <componentref id="lamp4" />
+            </children>
+        </component>
+
+        <component id="lamp1">
+            <transformation>
+                <translate x="-13" y="0" z="-13" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="neutralPink" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="lamp_base" />
+                <componentref id="lamp_light" />
+                <componentref id="lamp_shade" />
+            </children>
+        </component>
+
+        <component id="lamp2">
+            <transformation>
+                <translate x="13" y="0" z="-13" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="neutralPink" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="lamp_base" />
+                <componentref id="lamp_light" />
+                <componentref id="lamp_shade" />
+            </children>
+        </component>
+
+        <component id="lamp3">
+            <transformation>
+                <scale x="1" y="0.5" z="1" />
+                <translate x="-11.5" y="1" z="13" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="neutralPink" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="lamp_base_small" />
+                <componentref id="lamp_light" />
+                <componentref id="lamp_shade" />
+            </children>
+        </component>
+
+        <component id="lamp4">
+            <transformation>
+                <translate x="7" y="0" z="13" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -730,9 +802,26 @@
                 <scale x="3" y="5" z="3" />
             </transformation>
             <materials>
-                <material id="inherit" />
+m                <material id="metal" />
+m                <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="rocksTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="lamp_base_small">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="3" y="2.5" z="3" />
+                <translate x="0" y="2" z="0" />
+            </transformation>
+            <materials>
+m                <material id="metal" />
+m                <material id="inherit" />
+            </materials>
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cylinder" />
             </children>
@@ -761,8 +850,9 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="neutral" />
             </materials>
-            <texture id="inherit" />
+            <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="lampCylinder" />
             </children>
@@ -819,7 +909,7 @@
         <component id="chairs">
             <transformation></transformation>
             <materials>
-                <material id="metalDark" />
+                <material id="metal" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -933,7 +1023,7 @@
                 <translate x="-0.8" y="0" z="0.8" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="metalDark" />
             </materials>
             <texture id="inherit" />
             <children>
