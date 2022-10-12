@@ -6,8 +6,16 @@
             <from x="14" y="9" z="14" />
             <to x="0" y="0" z="0" />
         </perspective>
+        <perspective id="secondaryCamera" near="0.1" far="500" angle="45">
+            <from x="22" y="9" z="5" />
+            <to x="-15" y="0" z="-8" />
+        </perspective>
         <ortho id="orthoCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
             <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
+        </ortho>
+        <ortho id="orthoTopCamera" near="0" far="1000" left="-30" right="30" top="30" bottom="-20">
+            <from x="7" y="30" z="7" />
             <to x="0" y="0" z="0" />
         </ortho>
     </views>
@@ -71,11 +79,17 @@
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </material>
-        <material id="metalDark" shininess="1">
+        <material id="bassDark" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
             <diffuse r="0.2" g="0.2" b="0.2" a="1.0" />
-            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+        </material>
+        <material id="metalDark" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.7" g="0.7" b="0.7" a="1.0" />
         </material>
         <material id="neutral" shininess="2">
             <emission r="0.2" g="0.2" b="0.2" a="1.0" />
@@ -1023,7 +1037,7 @@ m                <material id="inherit" />
                 <translate x="-0.8" y="0" z="0.8" />
             </transformation>
             <materials>
-                <material id="metalDark" />
+                <material id="bassDark" />
             </materials>
             <texture id="inherit" />
             <children>
