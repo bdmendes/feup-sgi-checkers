@@ -10,6 +10,14 @@
             <from x="22" y="9" z="5" />
             <to x="-15" y="0" z="-8" />
         </perspective>
+        <perspective id="outsideCamera" near="0.1" far="500" angle="45">
+            <from x="25" y="15" z="25" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        <perspective id="sofaCamera" near="0.1" far="500" angle="45">
+            <from x="14" y="5" z="8" />
+            <to x="-15" y="4" z="8" />
+        </perspective>
         <ortho id="orthoCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
             <from x="10" y="10" z="10" />
             <to x="0" y="0" z="0" />
@@ -208,7 +216,7 @@
 
         <component id="rubiksPainting">
             <transformation>
-                <translate x="0" y="-2" z="0" />
+                <translate x="0" y="-4" z="0" />
             </transformation>
             <materials>
                 <material id="metal" />
@@ -265,10 +273,10 @@
 
         <component id="mediaCenter">
             <transformation>
-                <scale x="2" y="3" z="2" />
+                <scale x="1.8" y="3" z="2" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="0" />
-                <translate x="-15" y="0" z="5" />
+                <translate x="-14" y="0" z="5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -282,7 +290,9 @@
         </component>
 
         <component id="television">
-            <transformation></transformation>
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -383,7 +393,7 @@
         <component id="walls">
             <transformation>
                 <translate x="0" y="1" z="0" />
-                <scale x="15" y="15" z="15" />
+                <scale x="15" y="8" z="15" />
             </transformation>
             <materials>
                 <material id="neutral" />
