@@ -33,6 +33,7 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1" linear="0" quadratic="0" />
         </omni>
+
         <omni id="centerLight" enabled="0">
             <location x="0" y="0" z="0" w="1.0" />
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -40,6 +41,47 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="0" linear="1" quadratic="0" />
         </omni>
+
+        <omni id="lampLight1" enabled="0">
+            <location x="-13" y="5" z="-13" w="1.0" />
+            <ambient r="1" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="0" b="0" a="1.0" />
+            <specular r="1.0" g="0" b="0" a="1.0" />
+            <attenuation constant="0" linear="1" quadratic="0" />
+        </omni>
+
+        <omni id="lampLight2" enabled="0">
+            <location x="13" y="5" z="-13" w="1.0" />
+            <ambient r="0" g="1" b="0" a="1.0" />
+            <diffuse r="0" g="1" b="0" a="1.0" />
+            <specular r="0" g="1" b="0" a="1.0" />
+            <attenuation constant="0" linear="1" quadratic="0" />
+        </omni>
+
+        <omni id="lampLight3" enabled="0">
+            <location x="7" y="5" z="13" w="1.0" />
+            <ambient r="0" g="0" b="1" a="1.0" />
+            <diffuse r="0" g="0" b="1" a="1.0" />
+            <specular r="0" g="0" b="1" a="1.0" />
+            <attenuation constant="0" linear="1" quadratic="0" />
+        </omni>
+
+        <omni id="lampLight4" enabled="0">
+            <location x="-11" y="4" z="13" w="1.0" />
+            <ambient r="0.9" g="0.7" b="0.1" a="1.0" />
+            <diffuse r="0.9" g="0.7" b="0.1" a="1.0" />
+            <specular r="0.9" g="0.7" b="0.1" a="1.0" />
+            <attenuation constant="0" linear="1" quadratic="0" />
+        </omni>
+
+        <spot id="centerSpotLight" enabled="0" angle="10" exponent="100">
+            <location x="0" y="6" z="0" w="0.1" />
+            <target x="-13" y="13" z="-13" />
+            <ambient r="0.5" g="0" b="0" a="1.0" />
+            <diffuse r="0.5" g="0" b="0" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0" linear="0" quadratic="1" />
+        </spot>
     </lights>
 
     <textures>

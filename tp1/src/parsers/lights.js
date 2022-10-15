@@ -116,7 +116,7 @@ export function parseLights(sceneGraph, lightsNode) {
             const targetIndex = nodeNames.indexOf('target');
 
             // Retrieves the light target.
-            const targetLight = [];
+            let targetLight = [];
             if (targetIndex != -1) {
                 const aux = sceneGraph.parseFloatProps(
                     grandChildren[targetIndex], 'target light for ID ' + lightId);
