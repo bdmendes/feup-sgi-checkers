@@ -25,6 +25,7 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="appleTexture" file="scenes/images/apple.jpg" />
     </textures>
 
     <materials>
@@ -60,7 +61,7 @@
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" length_s="1" length_t="1"/>
+            <texture id="appleTexture" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="demoRectangle" />
             </children>

@@ -94,6 +94,7 @@
         <texture id="groundTexture" file="scenes/images/ground_grey.jpg" />
         <texture id="sofaTexture" file="scenes/images/sofa.jpg" />
         <texture id="lampTexture" file="scenes/images/lamp.jpg" />
+        <texture id="rubiksTexture" file="scenes/images/rubiks_cube.png" />
     </textures>
 
     <materials>
@@ -111,8 +112,14 @@
         </material>
         <material id="neutralPink" shininess="2">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1" g="0.4" b="0.7" a="1.0" />
+            <ambient r="0.5" g="0.2" b="0.35" a="1.0" />
             <diffuse r="1" g="0.4" b="0.7" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="neutralOrange" shininess="2">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.3" g="0.25" b="0.05" a="1.0" />
+            <diffuse r="0.8" g="0.7" b="0.2" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         <material id="metal" shininess="1">
@@ -180,6 +187,9 @@
         <primitive id="sphere">
             <sphere radius="1" slices="20" stacks="20" />
         </primitive>
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+        </primitive>
     </primitives>
 
     <components>
@@ -198,6 +208,50 @@
                 <componentref id="mediaCenter" />
                 <componentref id="centerTable" />
                 <componentref id="chairs" />
+                <componentref id="rubiksPainting" />
+            </children>
+        </component>
+
+        <component id="rubiksPainting">
+            <transformation>
+                <translate x="0" y="-2" z="0" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="rubiksTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="applesPaintingTop" />
+                <componentref id="applesPaintingBottom" />
+            </children>
+        </component>
+
+        <component id="applesPaintingTop">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <scale x="3" y="3" z="1" />
+                <translate x="6" y="18" z="-14.9" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="applesPaintingBottom">
+            <transformation>
+                <scale x="3" y="3" z="1" />
+                <translate x="-4" y="7" z="-14.9" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle" />
             </children>
         </component>
 
