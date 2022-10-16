@@ -105,10 +105,16 @@ export function parseLights(sceneGraph, lightsNode) {
             const angle = sceneGraph.reader.getFloat(children[i], 'angle');
             if (!(angle != null && !isNaN(angle)))
                 return 'unable to parse angle of the light for ID = ' + lightId;
+            if (angle != 180 && !(angle >= 0 && angle <= 90)) {
+                return 'angle for light with ID = ' + lightId + ' must be between 0 and 90 degrees';
+            }
 
             const exponent = sceneGraph.reader.getFloat(children[i], 'exponent');
             if (!(exponent != null && !isNaN(exponent)))
                 return 'unable to parse exponent of the light for ID = ' + lightId;
+            if (!(exponent >= 0 && exponent <= 128)) {
+                return 'exponent for light with ID = ' + lightId + ' must be between 0 and 128';
+            }
 
             const targetIndex = nodeNames.indexOf('target');
 

@@ -14,3 +14,7 @@ export function hypothenus(a, b) {
 export function degreesToRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
+
+export function vectorDifference([x1, y1, z1], [x2, y2, z2]) {
+    return [x1 - x2, y1 - y2, z1 - z2];
+}

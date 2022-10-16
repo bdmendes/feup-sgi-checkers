@@ -7,8 +7,6 @@ import { GraphMaterial } from "../assets/materials/GraphMaterial.js";
  */
 export function parseMaterials(sceneGraph, materialsNode) {
     const children = materialsNode.children;
-    const grandChildren = [];
-    const nodeNames = [];
 
     // Any number of materials.
     for (let i = 0; i < children.length; i++) {

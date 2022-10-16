@@ -237,7 +237,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -251,7 +251,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="triangle" />
             </children>
@@ -830,8 +830,7 @@
         </component>
 
         <component id="lamps">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="inherit" />
                 <material id="neutralPink" />
@@ -916,8 +915,10 @@
                 <scale x="3" y="5" z="3" />
             </transformation>
             <materials>
-m                <material id="metal" />
-m                <material id="inherit" />
+                m
+                <material id="metal" />
+                m
+                <material id="inherit" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
@@ -932,8 +933,10 @@ m                <material id="inherit" />
                 <translate x="0" y="2" z="0" />
             </transformation>
             <materials>
-m                <material id="metal" />
-m                <material id="inherit" />
+                m
+                <material id="metal" />
+                m
+                <material id="inherit" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
