@@ -73,10 +73,6 @@ export class GraphComponent {
                 this.children[key].updateTexCoords(length_s, length_t);
             }
             this.children[key].display(material, texture, length_s, length_t);
-
-            if (typeof this.children[key].enableNormalViz === 'function') {
-                //this.children[key].enableNormalViz();
-            }
         }
     }
 }

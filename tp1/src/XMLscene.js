@@ -1,5 +1,6 @@
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
+import { normalizeVector, vectorDifference } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -54,6 +55,8 @@ export class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
+        this.forceLightRefresh = false;
+
         let i = 0;
         // Lights index.
 
@@ -76,10 +79,11 @@ export class XMLscene extends CGFscene {
                     light.setQuadraticAttenuation(attenuation[2]);
                 }
                 if (light[1] == "spot") {
-                    this.lights[i].setSpotCutOff(light[6]);
-                    this.lights[i].setSpotExponent(light[7]);
-                    this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
-                    setAttenuation(light[9], this.lights[i]);
+                    this.lights[i].setSpotCutOff(light[7]);
+                    this.lights[i].setSpotExponent(light[8]);
+                    const direction = normalizeVector(vectorDifference(light[9], light[2]));
+                    this.lights[i].setSpotDirection(...direction);
+                    setAttenuation(light[6], this.lights[i]);
                 } else {
                     setAttenuation(light[6], this.lights[i]);
                 }
@@ -126,6 +130,7 @@ export class XMLscene extends CGFscene {
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
             this.camera = this.graph.cameras[this.graph.selectedCameraID];
             this.interface.setActiveCamera(this.camera);
+            this.forceLightRefresh = true;
         });
 
         // Lights interface setup
@@ -143,10 +148,10 @@ export class XMLscene extends CGFscene {
             lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
                 const index = getIndexFromKey(key);
                 if (this.graph.enabledLights[key]) {
-                    this.graph.lights[key][index] = true;
+                    this.graph.lights[key][0] = true;
                     this.lights[index].enable();
                 } else {
-                    this.graph.lights[key][index] = false;
+                    this.graph.lights[key][0] = false;
                     this.lights[index].disable();
                 }
                 this.lights[index].update();
@@ -174,6 +179,13 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
+
+        if (this.forceLightRefresh) {
+            this.forceLightRefresh = false;
+            for (let i = 0; i < this.lights.length; i++) {
+                this.lights[i].update();
+            }
+        }
 
         if (this.graph.displayAxis) {
             this.axis.display();
