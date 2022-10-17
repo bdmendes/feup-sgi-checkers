@@ -12,10 +12,10 @@
 
 ### [TP1 - Scene Graph](tp1)
 
-- The scene represents a comfortable living room with a dinner table, a sofa to watch TV and a lamp to allow night entertainment.
-- Scene (TODO)
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+- Items described in tp1 [README](https://git.fe.up.pt/sgi-meic/sgi-2022-2023/t05/sgi-t05-g04/-/blob/main/tp1/README.md)
+- Scene
+  - The scene represents a comfortable living room with a little donut over the dinner table and a modern center table, a sofa to watch TV and several lamps to allow night entertainment. Two art paintings are present in the living room walls to give some life and colors to the scene.
+  - [Check out our scene here](https://paginas.fe.up.pt/~up201905951/sgi/tp1/)
 
 -----
 
