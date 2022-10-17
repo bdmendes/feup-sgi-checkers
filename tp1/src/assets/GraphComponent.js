@@ -67,11 +67,21 @@ export class GraphComponent {
 
     renderChildren(material, texture, parent_length_s, parent_length_t) {
         for (const key in this.children) {
-            let [length_s, length_t] = (this.textureID === "inherit") ? [parent_length_s, parent_length_t] : [this.length_s, this.length_t];
+            let [length_s, length_t] = (this.textureID === "inherit")
+                ? [parent_length_s, parent_length_t]
+                : [this.length_s, this.length_t];
 
             if (this.children[key] instanceof MyTriangle || this.children[key] instanceof MyRectangle) {
                 this.children[key].updateTexCoords(length_s, length_t);
             }
+            if (!(this.children[key] instanceof GraphComponent)) {
+                if (this.scene.graph.displayNormals) {
+                    this.children[key].enableNormalViz();
+                } else {
+                    this.children[key].disableNormalViz();
+                }
+            }
+
             this.children[key].display(material, texture, length_s, length_t);
         }
     }

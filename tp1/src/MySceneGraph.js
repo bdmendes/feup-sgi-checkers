@@ -47,6 +47,8 @@ export class MySceneGraph {
         this.selectedCameraID = null;
         this.enabledLights = {};
         this.displayAxis = false;
+        this.lightsAreVisible = false;
+        this.displayNormals = false;
 
         // Scene assets
         this.materials = {};

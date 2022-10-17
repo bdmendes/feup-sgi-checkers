@@ -18,12 +18,12 @@
             <from x="14" y="5" z="8" />
             <to x="-15" y="4" z="8" />
         </perspective>
-        <ortho id="orthoCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
-            <from x="10" y="10" z="10" />
-            <to x="0" y="0" z="0" />
+        <ortho id="orthoSideCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
+            <from x="2" y="5" z="15" />
+            <to x="0" y="5" z="0" />
         </ortho>
         <ortho id="orthoTopCamera" near="0" far="1000" left="-30" right="30" top="30" bottom="-20">
-            <from x="7" y="30" z="7" />
+            <from x="10" y="40" z="10" />
             <to x="0" y="0" z="0" />
         </ortho>
     </views>
@@ -35,11 +35,11 @@
 
     <lights>
         <omni id="mainLight" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <location x="-7" y="10" z="5" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1" linear="0" quadratic="0" />
+            <attenuation constant="0" linear="0.03" quadratic="0" />
         </omni>
 
         <omni id="centerLight" enabled="0">
@@ -47,48 +47,57 @@
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <omni id="lampLight1" enabled="0">
+        <omni id="lampTopRight" enabled="0">
             <location x="-13" y="5" z="-13" w="1.0" />
             <ambient r="1" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="0" b="0" a="1.0" />
             <specular r="1.0" g="0" b="0" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <omni id="lampLight2" enabled="0">
+        <omni id="lampBottomRight" enabled="0">
             <location x="13" y="5" z="-13" w="1.0" />
             <ambient r="0" g="1" b="0" a="1.0" />
             <diffuse r="0" g="1" b="0" a="1.0" />
             <specular r="0" g="1" b="0" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <omni id="lampLight3" enabled="0">
+        <omni id="lampBottomLeft" enabled="0">
             <location x="7" y="5" z="13" w="1.0" />
             <ambient r="0" g="0" b="1" a="1.0" />
             <diffuse r="0" g="0" b="1" a="1.0" />
             <specular r="0" g="0" b="1" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <omni id="lampLight4" enabled="0">
+        <omni id="lampTopLeft" enabled="0">
             <location x="-11" y="4" z="13" w="1.0" />
             <ambient r="0.9" g="0.7" b="0.1" a="1.0" />
             <diffuse r="0.9" g="0.7" b="0.1" a="1.0" />
             <specular r="0.9" g="0.7" b="0.1" a="1.0" />
-            <attenuation constant="0" linear="1" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <spot id="centerSpotLight" enabled="0" angle="10" exponent="100">
-            <location x="0" y="6" z="0" w="0.1" />
-            <target x="-13" y="13" z="-13" />
-            <ambient r="0.5" g="0" b="0" a="1.0" />
-            <diffuse r="0.5" g="0" b="0" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-            <attenuation constant="0" linear="0" quadratic="1" />
+        <spot id="sofaSpotlight" enabled="0" angle="30" exponent="40">
+            <location x="12" y="8" z="8" w="1" />
+            <target x="12" y="5" z="8" />
+            <ambient r="0.5" g="0.5" b="0.4" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.4" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
+        </spot>
+
+        <spot id="tableSpotlight" enabled="0" angle="20" exponent="15">
+            <location x="0" y="9" z="-6" w="1" />
+            <target x="0" y="4" z="-6" />
+            <ambient r="0.5" g="0.5" b="0.4" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.4" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </spot>
     </lights>
 
@@ -110,13 +119,7 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
             <diffuse r="0.6" g="0.5" b="0.45" a="1.0" />
-            <specular r="0.2" g="0.15" b="0.12" a="1.0" />
-        </material>
-        <material id="neutralBlue" shininess="2">
-            <emission r="0.0" g="0.0" b="0.2" a="1.0" />
-            <ambient r="0" g="0.0" b="1.0" a="1.0" />
-            <diffuse r="0.0" g="0.0" b="0.8" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.5" a="1.0" />
+            <specular r="0.1" g="0.07" b="0.06" a="1.0" />
         </material>
         <material id="neutralPink" shininess="2">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -124,11 +127,17 @@
             <diffuse r="1" g="0.4" b="0.7" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
+        <material id="neutralOrange" shininess="2">
+            <emission r="0.05" g="0.02" b="0.0" a="1.0" />
+            <ambient r="0.2" g="0.1" b="0" a="1.0" />
+            <diffuse r="0.4" g="0.2" b="0" a="1.0" />
+            <specular r="0.2" g="0.05" b="0.0" a="1    " />
+        </material>
         <material id="metal" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.2" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
         <material id="bassDark" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
@@ -143,16 +152,22 @@
             <specular r="0.7" g="0.7" b="0.7" a="1.0" />
         </material>
         <material id="neutral" shininess="2">
-            <emission r="0.1" g="0.1" b="0.1" a="1.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
-            <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1" />
+            <specular r="0.3" g="0.3" b="0.3" a="1" />
         </material>
         <material id="darkOled" shininess="1">
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="shinyOled" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.3" g="0.3" b="0.3" a="1.0" />
         </material>
     </materials>
 
@@ -199,7 +214,6 @@
             <transformation></transformation>
             <materials>
                 <material id="darkBrown" />
-                <material id="neutralBlue" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -208,7 +222,7 @@
                 <componentref id="sofa" />
                 <componentref id="lamps" />
                 <componentref id="mediaCenter" />
-                <componentref id="centerTable" />
+                <componentref id="sofaTable" />
                 <componentref id="chairs" />
                 <componentref id="rubiksPainting" />
             </children>
@@ -219,16 +233,17 @@
                 <translate x="0" y="-4" z="0" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="metal" />
             </materials>
             <texture id="rubiksTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="applesPaintingTop" />
-                <componentref id="applesPaintingBottom" />
+                <componentref id="rubiksPaintingTop" />
+                <componentref id="rubiksPaintingBottom" />
             </children>
         </component>
 
-        <component id="applesPaintingTop">
+        <component id="rubiksPaintingTop">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <scale x="3" y="3" z="1" />
@@ -237,13 +252,13 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="rubiksTexture" length_s="3" length_t="4" />
             <children>
                 <primitiveref id="triangle" />
             </children>
         </component>
 
-        <component id="applesPaintingBottom">
+        <component id="rubiksPaintingBottom">
             <transformation>
                 <scale x="3" y="3" z="1" />
                 <translate x="-4" y="7" z="-14.9" />
@@ -264,6 +279,9 @@
             </transformation>
             <materials>
                 <material id="neutralPink" />
+                <material id="neutral" />
+                <material id="shinyOled" />
+                <material id="metal" />
             </materials>
             <texture id="donutsTexture" length_s="1" length_t="1" />
             <children>
@@ -280,10 +298,11 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="shinyOled" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="tablelegs" />
+                <componentref id="tableLegs" />
                 <componentref id="tableTop" />
                 <componentref id="television" />
             </children>
@@ -312,18 +331,20 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="metal" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="tablelegs" />
+                <componentref id="tableLegs" />
                 <componentref id="tableTop" />
                 <componentref id="donut" />
             </children>
         </component>
 
-        <component id="tablelegs">
+        <component id="tableLegs">
             <transformation></transformation>
             <materials>
+                <material id="darkBrown" />
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
@@ -396,6 +417,7 @@
                 <scale x="15" y="8" z="15" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="neutral" />
             </materials>
             <texture id="bankTexture" length_s="2" length_t="2" />
@@ -431,6 +453,7 @@
             </transformation>
             <materials>
                 <material id="darkOled" />
+                <material id="darkBrown" />
             </materials>
             <texture id="none" />
             <children>
@@ -457,7 +480,9 @@
                 <translate x="0.5" y="-0.5" z="0.01" />
             </transformation>
             <materials>
+                <material id="neutral" />
                 <material id="inherit" />
+                <material id="metalDark" />
             </materials>
             <texture id="trunkTexture" length_s="2" length_t="2" />
             <children>
@@ -558,19 +583,21 @@
             </transformation>
             <materials>
                 <material id="neutral" />
+                <material id="darkBrown" />
+                <material id="inherit" />
             </materials>
             <texture id="trunkTexture" length_s="2" length_t="2" />
             <children>
-                <componentref id="table_face1" />
-                <componentref id="table_face2" />
-                <componentref id="table_face3" />
-                <componentref id="table_face4" />
-                <componentref id="table_face5" />
-                <componentref id="table_face6" />
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="cube_face6" />
             </children>
         </component>
 
-        <component id="table_face1">
+        <component id="cube_face1">
             <transformation>
                 <translate x="0" y="0" z="1" />
             </transformation>
@@ -583,7 +610,7 @@
             </children>
         </component>
 
-        <component id="table_face2">
+        <component id="cube_face2">
             <transformation>
                 <rotate axis="y" angle="180" />
                 <translate x="0" y="0" z="-1" />
@@ -597,7 +624,7 @@
             </children>
         </component>
 
-        <component id="table_face3">
+        <component id="cube_face3">
             <transformation>
                 <rotate axis="y" angle="90" />
                 <translate x="1" y="0" z="0" />
@@ -611,7 +638,7 @@
             </children>
         </component>
 
-        <component id="table_face4">
+        <component id="cube_face4">
             <transformation>
                 <rotate axis="y" angle="-90" />
                 <translate x="-1" y="0" z="0" />
@@ -625,7 +652,7 @@
             </children>
         </component>
 
-        <component id="table_face5">
+        <component id="cube_face5">
             <transformation>
                 <rotate axis="x" angle="90" />
                 <translate x="0" y="-1" z="0" />
@@ -639,7 +666,7 @@
             </children>
         </component>
 
-        <component id="table_face6">
+        <component id="cube_face6">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="0" y="1" z="0" />
@@ -659,6 +686,8 @@
             </transformation>
             <materials>
                 <material id="neutral" />
+                <material id="shinyOled" />
+                <material id="neutralOrange" />
             </materials>
             <texture id="sofaTexture" length_s="2" length_t="2" />
             <children>
@@ -833,7 +862,7 @@
             <transformation></transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutralPink" />
+                <material id="neutralOrange" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -850,7 +879,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -866,7 +894,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -883,7 +910,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -899,7 +925,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -915,9 +940,7 @@
                 <scale x="3" y="5" z="3" />
             </transformation>
             <materials>
-                m
                 <material id="metal" />
-                m
                 <material id="inherit" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
@@ -933,9 +956,7 @@
                 <translate x="0" y="2" z="0" />
             </transformation>
             <materials>
-                m
                 <material id="metal" />
-                m
                 <material id="inherit" />
             </materials>
             <texture id="rocksTexture" length_s="1" length_t="1" />
@@ -967,7 +988,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="neutral" />
             </materials>
             <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
@@ -975,21 +995,24 @@
             </children>
         </component>
 
-        <component id="centerTable">
+        <component id="sofaTable">
             <transformation>
                 <translate x="2" y="0" z="8" />
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="neutralOrange" />
+                <material id="darkBrown" />
+                <material id="neutralPink" />
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
-                <componentref id="centerTableTop" />
-                <componentref id="centerTableLegs" />
+                <componentref id="sofaTableTop" />
+                <componentref id="sofatableLegs" />
             </children>
         </component>
 
-        <component id="centerTableTop">
+        <component id="sofaTableTop">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="0.8" y="1" z="2" />
@@ -998,6 +1021,7 @@
             </transformation>
             <materials>
                 <material id="metalDark" />
+                <material id="inherit" />
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
@@ -1005,7 +1029,7 @@
             </children>
         </component>
 
-        <component id="centerTableLegs">
+        <component id="sofatableLegs">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <scale x="1" y="2" z="3" />
@@ -1027,6 +1051,10 @@
             <transformation></transformation>
             <materials>
                 <material id="metal" />
+                <material id="darkBrown" />
+                <material id="inherit" />
+                <material id="neutralOrange" />
+                <material id="neutralPink" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1140,11 +1168,12 @@
                 <translate x="-0.8" y="0" z="0.8" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="bassDark" />
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="tablelegs" />
+                <componentref id="tableLegs" />
             </children>
         </component>
 
@@ -1155,12 +1184,12 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="table_face1" />
-                <componentref id="table_face2" />
-                <componentref id="table_face3" />
-                <componentref id="table_face4" />
-                <componentref id="table_face5" />
-                <componentref id="table_face6" />
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="cube_face6" />
             </children>
         </component>
     </components>

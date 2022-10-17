@@ -1,6 +1,6 @@
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { normalizeVector, vectorDifference } from './utils/math.js';
+import { normalizeVector, vectorDifference, degreesToRadians } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -55,8 +55,6 @@ export class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        this.forceLightRefresh = false;
-
         let i = 0;
         // Lights index.
 
@@ -81,21 +79,15 @@ export class XMLscene extends CGFscene {
                 if (light[1] == "spot") {
                     this.lights[i].setSpotCutOff(light[7]);
                     this.lights[i].setSpotExponent(light[8]);
-                    const direction = normalizeVector(vectorDifference(light[9], light[2]));
+                    const direction = vectorDifference(light[9], light[2]);
                     this.lights[i].setSpotDirection(...direction);
-                    setAttenuation(light[6], this.lights[i]);
-                } else {
-                    setAttenuation(light[6], this.lights[i]);
                 }
-
-                this.lights[i].setVisible(true);
+                setAttenuation(light[6], this.lights[i]);
 
                 if (light[0])
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
-
-                this.lights[i].update();
 
                 i++;
             }
@@ -123,14 +115,17 @@ export class XMLscene extends CGFscene {
 
         this.initCameras();
 
-        // Display axis checkbox
-        this.gui.gui.add(this.graph, 'displayAxis').name('Display axis');
+        // Debug options
+        const debugFolder = this.gui.gui.addFolder('Debug');
+        debugFolder.open();
+        debugFolder.add(this.graph, 'displayAxis').name('Display axis');
+        debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
+        debugFolder.add(this.graph, 'displayNormals').name('Display normals');
 
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
             this.camera = this.graph.cameras[this.graph.selectedCameraID];
             this.interface.setActiveCamera(this.camera);
-            this.forceLightRefresh = true;
         });
 
         // Lights interface setup
@@ -154,7 +149,6 @@ export class XMLscene extends CGFscene {
                     this.graph.lights[key][0] = false;
                     this.lights[index].disable();
                 }
-                this.lights[index].update();
             });
         }
 
@@ -180,11 +174,9 @@ export class XMLscene extends CGFscene {
 
         this.pushMatrix();
 
-        if (this.forceLightRefresh) {
-            this.forceLightRefresh = false;
-            for (let i = 0; i < this.lights.length; i++) {
-                this.lights[i].update();
-            }
+        for (let i = 0; i < this.lights.length; i++) {
+            this.lights[i].setVisible(this.graph.lightsAreVisible);
+            this.lights[i].update();
         }
 
         if (this.graph.displayAxis) {
