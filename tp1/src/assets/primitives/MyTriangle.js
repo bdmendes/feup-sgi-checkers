@@ -16,7 +16,7 @@ import { crossProduct, normalizeVector } from '../../utils/math.js';
  * @param z3 - Z coordinate of third vertex
  */
 export class MyTriangle extends CGFobject {
-    constructor(scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
+    constructor(scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3, length_s = 1, length_t = 1) {
         super(scene);
         this.x1 = x1;
         this.y1 = y1;
@@ -29,6 +29,13 @@ export class MyTriangle extends CGFobject {
         this.z3 = z3;
         this.id = id;
 
+        this.a = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2) + Math.pow(this.z2 - this.z1, 2));
+        this.b = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2) + Math.pow(this.z3 - this.z2, 2));
+        this.c = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2) + Math.pow(this.z1 - this.z3, 2));
+
+        this.cos_alpha = (Math.pow(this.a, 2) - Math.pow(this.b, 2) + Math.pow(this.c, 2)) / (2 * this.a * this.c);
+        this.sin_alpha = Math.sqrt(1 - Math.pow(this.cos_alpha, 2));
+
         this.initBuffers();
     }
 
@@ -39,27 +46,14 @@ export class MyTriangle extends CGFobject {
             this.x3, this.y3, this.z3,  // 2
         ];
 
-        // Counter-clockwise reference of vertices
         this.indices = [0, 1, 2];
 
-        // Normals are the same for all vertices
         const normal =
             normalizeVector(crossProduct([this.x1 - this.x2, this.y1 - this.y2, this.z1 - this.z2],
                 [this.x1 - this.x3, this.y1 - this.y3, this.z1 - this.z3]));
         this.normals =
             [...normal, ...normal, ...normal];
 
-        /*
-        Texture coords (s,t)
-        +----------> s
-    |
-    |
-        |
-        v
-    t
-    */
-
-        //this.texCoords = [0, 1, 1, 1, 0, 0, 1, 0];
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
@@ -69,8 +63,11 @@ export class MyTriangle extends CGFobject {
      * Updates the list of texture coordinates of the triangle
      * @param {Array} coords - Array of texture coordinates
      */
-    updateTexCoords(coords) {
-        this.texCoords = [...coords];
+    updateTexCoords(length_s, length_t) {
+        this.texCoords = [0, 0,
+            this.a / length_s, 0,
+            (this.c * this.cos_alpha) / length_s, (this.c * this.sin_alpha) / length_t
+        ];
         this.updateTexCoordsGLBuffers();
     }
 }

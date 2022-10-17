@@ -3,7 +3,7 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="30" y="15" z="30" />
+            <from x="10" y="10" z="10" />
             <to x="0" y="-2" z="0" />
         </perspective>
     </views>
@@ -19,11 +19,13 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1" linear="0" quadratic="0" />
         </omni>
     </lights>
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="appleTexture" file="scenes/images/apple.jpg" />
     </textures>
 
     <materials>
@@ -45,22 +47,23 @@
 
     <primitives>
         <primitive id="demoTriangle">
-            <triangle x1="0" y1="0" z1="0" x2="-1" y2="-1" z2="-1" x3="1" y3="-1" z3="-1" />
+            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+        </primitive>
+        <primitive id="demoRectangle">
+            <rectangle x1="0" x2="3" y1="0" y2="3" />
         </primitive>
     </primitives>
 
     <components>
         <component id="demoRoot">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="appleTexture" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="demoTriangle" />
+                <primitiveref id="demoRectangle" />
             </children>
         </component>
     </components>

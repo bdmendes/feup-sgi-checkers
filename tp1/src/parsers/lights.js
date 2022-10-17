@@ -21,8 +21,8 @@ export function parseLights(sceneGraph, lightsNode) {
             sceneGraph.onXMLMinorError('unknown tag <' + children[i].nodeName + '>');
             continue;
         } else {
-            attributeNames.push(...['location', 'ambient', 'diffuse', 'specular']);
-            attributeTypes.push(...['position', 'color', 'color', 'color']);
+            attributeNames.push(...['location', 'ambient', 'diffuse', 'specular', 'attenuation']);
+            attributeTypes.push(...['position', 'color', 'color', 'color', 'attenuation']);
         }
 
         // Get id of the current light.
@@ -35,14 +35,18 @@ export function parseLights(sceneGraph, lightsNode) {
                 ')';
 
         // Light enable/disable
-        let enableLight = true;
-        const aux = sceneGraph.reader.getBoolean(children[i], 'enabled');
-        if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
+        const enableLightProperty = sceneGraph.reader.getString(children[i], 'enabled');
+        let enableLight;
+        if (enableLightProperty == '0') {
+            enableLight = false;
+        } else if (enableLightProperty == '1') {
+            enableLight = true;
+        } else {
             sceneGraph.onXMLMinorError(
                 'unable to parse value component of the \'enable light\' field for ID = ' +
                 lightId + '; assuming \'value = 1\'');
-
-        enableLight = aux || 1;
+            enableLight = true;
+        }
 
         // Add enabled boolean and type name to light info
         global.push(enableLight);
@@ -61,21 +65,39 @@ export function parseLights(sceneGraph, lightsNode) {
             let aux;
 
             if (attributeIndex != -1) {
-                if (attributeTypes[j] == 'position')
+                if (attributeTypes[j] == 'position') {
                     aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         'light position for ID' + lightId, ['x', 'y', 'z', 'w']);
-                else
+                    if (aux.length == 0) {
+                        return 'unable to parse light position values for ID = ' + lightId;
+                    }
+                } else if (attributeTypes[j] == 'attenuation') {
+                    aux = sceneGraph.parseFloatProps(
+                        grandChildren[attributeIndex],
+                        'light attenuation for ID' + lightId, ['constant', 'linear', 'quadratic']);
+                    if (aux.length == 0) {
+                        return 'unable to parse light attenuation values for ID = ' + lightId;
+                    }
+                    if (aux.filter(x => x != 0).length != 1) {
+                        return 'one and only one attenuation property can be set for light with ID = ' + lightId;
+                    }
+                } else {
                     aux = sceneGraph.parseFloatProps(
                         grandChildren[attributeIndex],
                         attributeNames[j] + ' illumination for ID' + lightId, ['r', 'g', 'b', 'a']);
+                    if (aux.length == 0) {
+                        return 'unable to parse light color values for ID = ' + lightId;
+                    }
+                }
 
                 if (!Array.isArray(aux)) return aux;
 
                 global.push(aux);
-            } else
-                return 'light ' + attributeNames[i] +
-                    ' undefined for ID = ' + lightId;
+            } else {
+                return attributeNames[j] +
+                    ' not found for light with ID = ' + lightId;
+            }
         }
 
         // Gets the additional attributes of the spot light
@@ -83,15 +105,21 @@ export function parseLights(sceneGraph, lightsNode) {
             const angle = sceneGraph.reader.getFloat(children[i], 'angle');
             if (!(angle != null && !isNaN(angle)))
                 return 'unable to parse angle of the light for ID = ' + lightId;
+            if (angle != 180 && !(angle >= 0 && angle <= 90)) {
+                return 'angle for light with ID = ' + lightId + ' must be between 0 and 90 degrees';
+            }
 
             const exponent = sceneGraph.reader.getFloat(children[i], 'exponent');
             if (!(exponent != null && !isNaN(exponent)))
                 return 'unable to parse exponent of the light for ID = ' + lightId;
+            if (!(exponent >= 0 && exponent <= 128)) {
+                return 'exponent for light with ID = ' + lightId + ' must be between 0 and 128';
+            }
 
             const targetIndex = nodeNames.indexOf('target');
 
             // Retrieves the light target.
-            const targetLight = [];
+            let targetLight = [];
             if (targetIndex != -1) {
                 const aux = sceneGraph.parseFloatProps(
                     grandChildren[targetIndex], 'target light for ID ' + lightId);
@@ -105,6 +133,7 @@ export function parseLights(sceneGraph, lightsNode) {
         }
 
         sceneGraph.lights[lightId] = global;
+        sceneGraph.enabledLights[lightId] = enableLight;
         numLights++;
     }
 

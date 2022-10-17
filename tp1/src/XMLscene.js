@@ -1,5 +1,6 @@
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
+import { normalizeVector, vectorDifference, degreesToRadians } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -41,8 +42,15 @@ export class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        const hasParsedCameras = Object.keys(this.graph?.cameras ?? {}).length > 0;
+        if (hasParsedCameras) {
+            this.camera = this.graph.cameras[this.graph.selectedCameraID];
+            this.interface.setActiveCamera(this.camera);
+        } else {
+            this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        }
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
@@ -59,24 +67,27 @@ export class XMLscene extends CGFscene {
                 const light = this.graph.lights[key];
 
                 this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
-                //this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
-                if (light[1] == "spot") {
-                    this.lights[i].setSpotCutOff(light[6]);
-                    this.lights[i].setSpotExponent(light[7]);
-                    this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
+                const setAttenuation = (attenuation, light) => {
+                    light.setConstantAttenuation(attenuation[0]);
+                    light.setLinearAttenuation(attenuation[1]);
+                    light.setQuadraticAttenuation(attenuation[2]);
                 }
+                if (light[1] == "spot") {
+                    this.lights[i].setSpotCutOff(light[7]);
+                    this.lights[i].setSpotExponent(light[8]);
+                    const direction = vectorDifference(light[9], light[2]);
+                    this.lights[i].setSpotDirection(...direction);
+                }
+                setAttenuation(light[6], this.lights[i]);
 
-                this.lights[i].setVisible(true);
                 if (light[0])
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
-
-                this.lights[i].update();
 
                 i++;
             }
@@ -89,6 +100,7 @@ export class XMLscene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -100,6 +112,45 @@ export class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
+
+        this.initCameras();
+
+        // Debug options
+        const debugFolder = this.gui.gui.addFolder('Debug');
+        debugFolder.open();
+        debugFolder.add(this.graph, 'displayAxis').name('Display axis');
+        debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
+        debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+
+        // Camera interface setup
+        this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
+            this.camera = this.graph.cameras[this.graph.selectedCameraID];
+            this.interface.setActiveCamera(this.camera);
+        });
+
+        // Lights interface setup
+        const lightsFolder = this.gui.gui.addFolder('Lights');
+        lightsFolder.open();
+        const getIndexFromKey = (key) => {
+            let i = 0;
+            for (const k in this.graph.lights) {
+                if (k === key) return i;
+                i++;
+            }
+            return -1;
+        };
+        for (const key in this.graph.lights) {
+            lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
+                const index = getIndexFromKey(key);
+                if (this.graph.enabledLights[key]) {
+                    this.graph.lights[key][0] = true;
+                    this.lights[index].enable();
+                } else {
+                    this.graph.lights[key][0] = false;
+                    this.lights[index].disable();
+                }
+            });
+        }
 
         this.sceneInited = true;
     }
@@ -122,11 +173,14 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
-        this.axis.display();
 
         for (let i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
+            this.lights[i].setVisible(this.graph.lightsAreVisible);
+            this.lights[i].update();
+        }
+
+        if (this.graph.displayAxis) {
+            this.axis.display();
         }
 
         if (this.sceneInited) {
