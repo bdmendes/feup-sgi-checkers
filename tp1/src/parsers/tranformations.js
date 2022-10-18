@@ -29,7 +29,7 @@ export function parseTransformations(sceneGraph, transformationsNode) {
         // Specifications for the current transformation.
         let coordinates;
         const transformation = new GraphTransformation(sceneGraph.scene, transformationID);
-        for (let j = 0; j < grandChildren.length; j++) {
+        for (let j = grandChildren.length - 1; j >= 0; j--) {
             switch (grandChildren[j].nodeName) {
                 case 'translate':
                     coordinates = sceneGraph.parseFloatProps(

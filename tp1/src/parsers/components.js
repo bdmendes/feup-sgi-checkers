@@ -83,7 +83,7 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
     }
 
     let coordinates = null;
-    for (let i = 0; i < transformationList.length; i++) {
+    for (let i = transformationList.length - 1; i >= 0; i--) {
         switch (transformationList[i].nodeName) {
             case 'transformationref':
                 if (!byRef) { return 'component ' + componentID + ' cannot have transformations by reference and explicit transformations at the same time'; }

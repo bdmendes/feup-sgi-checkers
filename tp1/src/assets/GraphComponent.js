@@ -56,7 +56,7 @@ export class GraphComponent {
     }
 
     renderTransformations() {
-        for (let i = this.transformations.length - 1; i >= 0; i--) {
+        for (let i = 0; i < this.transformations.length; i++) {
             if (typeof this.transformations[i] === 'string') {
                 this.scene.graph.transformations[this.transformations[i]].apply();
             } else {

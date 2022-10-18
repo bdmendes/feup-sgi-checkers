@@ -52,14 +52,11 @@
 
     <components>
         <component id="demoRoot">
-            <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="2" y="1" z="1" />
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" />
+            <texture id="demoTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="demoSphere" />
             </children>
