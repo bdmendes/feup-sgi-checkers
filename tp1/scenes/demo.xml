@@ -108,6 +108,7 @@
         <texture id="trunkTexture" file="scenes/images/trunk-image.jpg" />
         <texture id="landscapeTexture" file="scenes/images/landscape.jpg" />
         <texture id="donutsTexture" file="scenes/images/donuts.jpg" />
+        <texture id="orangeTexture" file="scenes/images/orange.jpg" />
         <texture id="groundTexture" file="scenes/images/ground_grey.jpg" />
         <texture id="sofaTexture" file="scenes/images/sofa.jpg" />
         <texture id="lampTexture" file="scenes/images/lamp.jpg" />
@@ -172,16 +173,11 @@
     </materials>
 
     <transformations>
-        <transformation id="demoTransform">
-            <scale x="5" y="1" z="5" />
-            <rotate axis="x" angle="-45" />
-            <rotate axis="z" angle="-45" />
-        </transformation>
-        <transformation id="demoTranslate1">
-            <rotate axis="y" angle="45" />
-        </transformation>
-        <transformation id="demoTranslate2">
-            <translate x="0" y="0" z="3" />
+        <transformation id="tableTransform">
+            <scale x="2" y="3" z="3" />
+            <rotate axis="x" angle="-90" />
+            <rotate axis="y" angle="-90" />
+            <translate x="3" y="0" z="-8" />
         </transformation>
     </transformations>
 
@@ -289,6 +285,21 @@
             </children>
         </component>
 
+        <component id="orange">
+            <transformation>
+                <scale x="0.15" y="0.1" z="0.1" />
+                <translate x="2" y="-0.5" z="1.2" />
+            </transformation>
+            <materials>
+                <material id="neutralOrange" />
+                <material id="neutral" />
+            </materials>
+            <texture id="orangeTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
         <component id="mediaCenter">
             <transformation>
                 <scale x="1.8" y="3" z="2" />
@@ -324,10 +335,7 @@
 
         <component id="table">
             <transformation>
-                <scale x="2" y="3" z="3" />
-                <rotate axis="x" angle="-90" />
-                <rotate axis="y" angle="-90" />
-                <translate x="3" y="0" z="-8" />
+                <transformationref id="tableTransform" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -338,6 +346,7 @@
                 <componentref id="tableLegs" />
                 <componentref id="tableTop" />
                 <componentref id="donut" />
+                <componentref id="orange" />
             </children>
         </component>
 

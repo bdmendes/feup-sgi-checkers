@@ -10,6 +10,9 @@
 ----
 ## Project information
 
+### XML Parsing
+We parsed the XML file according to the specifications. We allow referencing a later defined entity, too.
+
 ### Strong points (and discussion)
 
 #### Primitives and Geometry
