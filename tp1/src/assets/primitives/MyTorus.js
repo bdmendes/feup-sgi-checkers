@@ -1,12 +1,6 @@
 import { CGFobject } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
-/**
- * MyRectangle
- * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
- */
+
 export class MyTorus extends CGFobject {
     constructor(scene, id, inner, outer, slices, loops) {
         super(scene);
