@@ -1,12 +1,6 @@
 import { CGFobject } from '../../../../lib/CGF.js';
-import { hypothenus, normalizeVector } from '../../utils/math.js';
-/**
- * MyRectangle
- * @constructor
- * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
- */
+import { normalizeVector } from '../../utils/math.js';
+
 export class MyCylinder extends CGFobject {
     constructor(scene, id, base, top, height, slices, stacks) {
         super(scene);

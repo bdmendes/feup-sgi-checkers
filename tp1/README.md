@@ -19,9 +19,9 @@ We parsed the XML file according to the specifications. We allow referencing a l
 We paid special attention to our implementation of the required primitives, including the texture coordinates and normals.
 
 #### Geometric Transformations
-We chose (in the abscence of a clear indication in the requirements) to consider the component tranformations in its natural order. We made sure to apply the component transformations only after its children, of course.
+We chose (in the abscence of a clear indication in the requirements) to consider the component tranformations in its appearance order. We made sure to apply the component transformations only after its children, of course.
 
-> If, in the `xml` file, the user transforms a component with a `rotate` followed by a `translation`, the component is actually rotated first and then translated. This means that the transformation matrices are pushed in reverse order to the scene.
+> If, in the `xml` file, the user transforms a component with a `rotate` followed by a `translation`, the component is actually translated first and then rotated. This means that the transformation matrices are pushed in the order they appear in the xml file to the scene.
 
 #### Materials
 When materials are inherited, it means that the component applies the material that is currently applied in its parent. This was also a design choice, since the requirements are not totally clear in this regard (we could have interpreted that `inherit` meant "bring all my parent materials to my materials list"). This seemed more natural to us.
