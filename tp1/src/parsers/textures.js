@@ -29,8 +29,6 @@ export function parseTextures(sceneGraph, texturesNode) {
         // Create texture
         const texture = new GraphTexture(sceneGraph.scene, textureID, file, null, null);
         sceneGraph.textures[textureID] = texture;
-
-        // TODO: Parse length_s and length_t
     }
 
     console.log("Parsed textures");

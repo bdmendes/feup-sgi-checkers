@@ -2,19 +2,19 @@
     <scene root="root" axis_length="5" />
 
     <views default="mainCamera">
-        <perspective id="mainCamera" near="0.1" far="500" angle="45">
+        <perspective id="mainCamera" near="0.1" far="500" angle="58">
             <from x="14" y="9" z="14" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="secondaryCamera" near="0.1" far="500" angle="45">
+        <perspective id="secondaryCamera" near="0.1" far="500" angle="58">
             <from x="22" y="9" z="5" />
             <to x="-15" y="0" z="-8" />
         </perspective>
-        <perspective id="outsideCamera" near="0.1" far="500" angle="45">
+        <perspective id="outsideCamera" near="0.1" far="500" angle="58">
             <from x="25" y="15" z="25" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="sofaCamera" near="0.1" far="500" angle="45">
+        <perspective id="sofaCamera" near="0.1" far="500" angle="58">
             <from x="14" y="5" z="8" />
             <to x="-15" y="4" z="8" />
         </perspective>
