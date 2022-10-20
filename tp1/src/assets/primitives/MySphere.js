@@ -1,8 +1,8 @@
-import { CGFobject } from '../../../../lib/CGF.js';
+import { CGFobject, CGFscene } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
 
 /**
- * MySphere
+ * MySphere primitive
  * @constructor
  * @param scene - Reference to MyScene object
  * @param radius - Radius of the sphere
@@ -10,6 +10,16 @@ import { normalizeVector } from '../../utils/math.js';
  * @param stacks - Number of stacks (divisions between poles)
  */
 export class MySphere extends CGFobject {
+
+    /**
+     * Creates an instance of MySphere.
+     * @param {CGFscene} scene
+     * @param {*} id
+     * @param {*} radius
+     * @param {*} slices
+     * @param {*} stacks
+     * @memberof MySphere
+     */
     constructor(scene, id, radius, slices, stacks) {
         super(scene);
         this.radius = radius;
@@ -20,6 +30,10 @@ export class MySphere extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MySphere primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MySphere
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];

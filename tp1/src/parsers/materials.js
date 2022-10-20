@@ -2,8 +2,8 @@ import { GraphMaterial } from "../assets/materials/GraphMaterial.js";
 
 /**
  * Parses the <materials> node.
- * @param {MySceneGraph} sceneGraph
- * @param {materials block element} materialsNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+ * @param {materials block element} materialsNode - materials block element
  */
 export function parseMaterials(sceneGraph, materialsNode) {
     const children = materialsNode.children;

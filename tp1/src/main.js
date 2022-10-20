@@ -3,6 +3,10 @@ import { XMLscene } from './XMLscene.js';
 import { MyInterface } from './MyInterface.js';
 import { MySceneGraph } from './MySceneGraph.js';
 
+/**
+ * Parse url variables to get the right file
+ * @return {*} 
+ */
 function getUrlVars() {
     const vars = {};
     const parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -12,6 +16,9 @@ function getUrlVars() {
     return vars;
 }
 
+/**
+ * Main function of the application
+ */
 function main() {
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);

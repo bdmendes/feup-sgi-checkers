@@ -1,12 +1,23 @@
 import { CGFobject } from '../../../../lib/CGF.js';
 /**
- * MyRectangle
+ * MyRectangle primitive
  * @constructor
  * @param scene - Reference to MyScene object
  * @param x - Scale of rectangle in X
  * @param y - Scale of rectangle in Y
  */
 export class MyRectangle extends CGFobject {
+
+    /**
+     * Creates an instance of MyRectangle.
+     * @param {CGFscene} scene: the scene where the primitive will be displayed
+     * @param {*} id: the id of the primitive
+     * @param {*} x1: the x coordinate of the first corner point
+     * @param {*} x2: the x coordinate of the second corner point
+     * @param {*} y1: the y coordinate of the first corner point
+     * @param {*} y2: the y coordinate of the second corner point
+     * @memberof MyRectangle
+     */
     constructor(scene, id, x1, x2, y1, y2) {
         super(scene);
         this.x1 = x1;
@@ -21,6 +32,10 @@ export class MyRectangle extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyRectangle primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyRectangle
+     */
     initBuffers() {
         this.vertices = [
             this.x1, this.y1, 0,  // 0
@@ -29,10 +44,8 @@ export class MyRectangle extends CGFobject {
             this.x2, this.y2, 0   // 3
         ];
 
-        // Counter-clockwise reference of vertices
         this.indices = [0, 1, 2, 1, 3, 2];
 
-        // Facing Z positive
         this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
 
         this.texCoords = [0, 1, 1, 1, 0, 0, 1, 0];

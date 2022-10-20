@@ -1,7 +1,7 @@
 /**
  * Parses the <light> node.
- * @param {MySceneGraph} sceneGraph
- * @param {lights block element} lightsNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+ * @param {lights block element} lightsNode - lights block element
  */
 export function parseLights(sceneGraph, lightsNode) {
     const children = lightsNode.children;

@@ -1,8 +1,8 @@
 import { GraphTexture } from "../assets/textures/GraphTexture.js";
 /**
  * Parses the <textures> block.
- * @param {MySceneGraph} sceneGraph
- * @param {textures block element} texturesNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+ * @param {textures block element} texturesNode - textures block element
  */
 export function parseTextures(sceneGraph, texturesNode) {
     const children = texturesNode.children;
