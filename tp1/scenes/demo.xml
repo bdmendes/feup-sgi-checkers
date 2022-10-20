@@ -232,7 +232,7 @@
                 <material id="inherit" />
                 <material id="metal" />
             </materials>
-            <texture id="rubiksTexture" length_s="1" length_t="1" />
+            <texture id="rubiksTexture" length_s="3" length_t="3" />
             <children>
                 <componentref id="rubiksPaintingTop" />
                 <componentref id="rubiksPaintingBottom" />
@@ -262,7 +262,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="inherit" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="triangle" />
             </children>
