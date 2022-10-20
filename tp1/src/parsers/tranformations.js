@@ -2,8 +2,8 @@ import { GraphTransformation } from "../assets/transformations/GraphTransformati
 
 /**
   * Parses the <transformations> block.
-  * @param {MySceneGraph} sceneGraph
-  * @param {transformations block element} transformationsNode
+  * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+  * @param {transformations block element} transformationsNode - transformations block element
   */
 export function parseTransformations(sceneGraph, transformationsNode) {
     const children = transformationsNode.children;

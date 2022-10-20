@@ -1,7 +1,7 @@
 /**
   * Parses the <ambient> node.
-  * @param {MySceneGraph} sceneGraph
-  * @param {ambient block element} ambientsNode
+  * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+  * @param {ambient block element} ambientsNode - ambient block element
   */
 export function parseAmbient(sceneGraph, ambientsNode) {
     const children = ambientsNode.children;

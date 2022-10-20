@@ -1,7 +1,7 @@
 /**
  * Parses the <scene> block.
- * @param {MySceneGraph} sceneGraph
- * @param {scene block element} sceneNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+ * @param {scene block element} sceneNode - scene block element
  */
 export function parseScene(sceneGraph, sceneNode) {
     // Get root of the scene.

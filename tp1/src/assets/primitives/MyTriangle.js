@@ -1,22 +1,31 @@
-import { CGFobject } from '../../../../lib/CGF.js';
+import { CGFobject, CGFscene } from '../../../../lib/CGF.js';
 import { crossProduct, normalizeVector } from '../../utils/math.js';
 
+
 /**
- * MyTriangle
- * @constructor
- * @param scene - Reference to MyScene object
- * @param x1 - X coordinate of first vertex
- * @param y1 - Y coordinate of first vertex
- * @param z3 - Z coordinate of first vertex
- * @param x2 - X coordinate of second vertex
- * @param y2 - Y coordinate of second vertex
- * @param z2 - Z coordinate of second vertex
- * @param x3 - X coordinate of third vertex
- * @param y3 - Y coordinate of third vertex
- * @param z3 - Z coordinate of third vertex
+ *
+ * @export
+ * @class MyTriangle
+ * @extends {CGFobject}
  */
 export class MyTriangle extends CGFobject {
-    constructor(scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3, length_s = 1, length_t = 1) {
+
+    /**
+     * Creates an instance of MyTriangle.
+     * @param {CGFscene} scene - the scene where the primitive will be displayed
+     * @param {*} id - the id of the primitive
+     * @param {*} x1 - the x coordinate of the first vertice
+     * @param {*} y1 - the y coordinate of the first vertice
+     * @param {*} z1 - the z coordinate of the first vertice
+     * @param {*} x2 - the x coordinate of the second vertice
+     * @param {*} y2 - the y coordinate of the second vertice
+     * @param {*} z2 - the z coordinate of the second vertice
+     * @param {*} x3 - the x coordinate of the third vertice
+     * @param {*} y3 - the y coordinate of the third vertice
+     * @param {*} z3 - the z coordinate of the third vertice
+     * @memberof MyTriangle
+     */
+    constructor(scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
         super(scene);
         this.x1 = x1;
         this.y1 = y1;
@@ -39,6 +48,10 @@ export class MyTriangle extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyTriangle primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyTriangle
+     */
     initBuffers() {
         this.vertices = [
             this.x1, this.y1, this.z1,  // 0
@@ -58,10 +71,13 @@ export class MyTriangle extends CGFobject {
         this.initGLBuffers();
     }
 
+
     /**
-     * @method updateTexCoords
-     * Updates the list of texture coordinates of the triangle
-     * @param {Array} coords - Array of texture coordinates
+     *
+     *
+     * @param {*} length_s - the length of the texture in the s direction
+     * @param {*} length_t - the length of the texture in the t direction
+     * @memberof MyTriangle
      */
     updateTexCoords(length_s, length_t) {
         this.texCoords = [0, 0,
