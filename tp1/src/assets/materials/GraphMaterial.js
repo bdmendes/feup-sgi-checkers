@@ -1,8 +1,18 @@
 import { CGFappearance } from "../../../../lib/CGF.js";
 
-const materialTypes = ['emission', 'ambient', 'diffuse', 'specular'];
-
+/**
+ * @export
+ * @class GraphMaterial
+ */
 export class GraphMaterial {
+
+    /**
+     * Creates an instance of GraphMaterial.
+     * @param {*} scene
+     * @param {*} id
+     * @param {*} shininess
+     * @memberof GraphMaterial
+     */
     constructor(scene, id, shininess) {
         this.id = id;
         this.scene = scene;
@@ -11,6 +21,16 @@ export class GraphMaterial {
         this.material.setShininess(shininess);
     }
 
+    /**
+     * Add a material component to this material
+     * @param {*} type
+     * @param {*} r
+     * @param {*} g
+     * @param {*} b
+     * @param {*} a
+     * @return {*} 
+     * @memberof GraphMaterial
+     */
     addComponent(type, r, g, b, a) {
         if (type === 'emission') {
             this.material.setEmission(r, g, b, a);
@@ -26,10 +46,20 @@ export class GraphMaterial {
         return null;
     }
 
+    /**
+     * Set texture to this material
+     * @param {*} texture
+     * @memberof GraphMaterial
+     */
     setTexture(texture) {
         this.material.setTexture(texture);
     }
 
+
+    /**
+     * Apply material
+     * @memberof GraphMaterial
+     */
     apply() {
         this.material.apply();
     }

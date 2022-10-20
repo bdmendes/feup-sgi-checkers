@@ -1,10 +1,19 @@
 import { MyRectangle } from "./primitives/MyRectangle.js";
 import { MyTriangle } from "./primitives/MyTriangle.js";
 
+
 /**
- * GraphComponent
+ * @export
+ * @class GraphComponent
  */
 export class GraphComponent {
+
+    /**
+     * Creates an instance of GraphComponent.
+     * @param {*} scene
+     * @param {*} id
+     * @memberof GraphComponent
+     */
     constructor(scene, id) {
         this.id = id;
         this.scene = scene;
@@ -16,6 +25,14 @@ export class GraphComponent {
         this.length_t = null;
     }
 
+    /**
+     * Render everything needed to display children components
+     * @param {*} parentMaterial
+     * @param {*} [parentTexture=null]
+     * @param {number} [parent_length_s=1]
+     * @param {number} [parent_length_t=1]
+     * @memberof GraphComponent
+     */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
         this.scene.pushMatrix();
         const material = this.renderMaterial(parentMaterial);
@@ -25,6 +42,12 @@ export class GraphComponent {
         this.scene.popMatrix();
     }
 
+    /**
+     * Render material of a component with special care about parent material
+     * @param {*} parentMaterial
+     * @return {*} 
+     * @memberof GraphComponent
+     */
     renderMaterial(parentMaterial) {
         const materialID = this.materialIDs[this.scene.graph.selectedMaterialIndex % this.materialIDs.length];
         if (materialID === "inherit") {
@@ -37,6 +60,13 @@ export class GraphComponent {
         return material;
     }
 
+    /**
+     * Render and apply texture to a material of a component with special care about parent texture
+     * @param {*} material
+     * @param {*} parentTexture
+     * @return {*} 
+     * @memberof GraphComponent
+     */
     renderTexture(material, parentTexture) {
         if (this.textureID === "inherit") {
             material.setTexture(parentTexture === null ? null : parentTexture.texture);
@@ -55,6 +85,10 @@ export class GraphComponent {
         return texture;
     }
 
+    /**
+     * Render all transformations of a component
+     * @memberof GraphComponent
+     */
     renderTransformations() {
         for (let i = 0; i < this.transformations.length; i++) {
             if (typeof this.transformations[i] === 'string') {
@@ -65,6 +99,14 @@ export class GraphComponent {
         }
     }
 
+    /**
+     * Render and display every children of a component
+     * @param {*} material
+     * @param {*} texture
+     * @param {*} parent_length_s
+     * @param {*} parent_length_t
+     * @memberof GraphComponent
+     */
     renderChildren(material, texture, parent_length_s, parent_length_t) {
         for (const key in this.children) {
             let length_s = this.length_s ?? parent_length_s;

@@ -1,7 +1,25 @@
 import { CGFobject } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
 
+/**
+ * MyCylinder primitive
+ * @export
+ * @class MyCylinder
+ * @extends {CGFobject}
+ */
 export class MyCylinder extends CGFobject {
+
+    /**
+     * Creates an instance of MyCylinder.
+     * @param {*} scene
+     * @param {*} id
+     * @param {*} base
+     * @param {*} top
+     * @param {*} height
+     * @param {*} slices
+     * @param {*} stacks
+     * @memberof MyCylinder
+     */
     constructor(scene, id, base, top, height, slices, stacks) {
         super(scene);
         this.base = base;
@@ -14,6 +32,10 @@ export class MyCylinder extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyCylinder primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyCylinder
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];

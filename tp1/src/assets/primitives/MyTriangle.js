@@ -2,7 +2,7 @@ import { CGFobject } from '../../../../lib/CGF.js';
 import { crossProduct, normalizeVector } from '../../utils/math.js';
 
 /**
- * MyTriangle
+ * MyTriangle primitive
  * @constructor
  * @param scene - Reference to MyScene object
  * @param x1 - X coordinate of first vertex
@@ -39,6 +39,10 @@ export class MyTriangle extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyTriangle primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyTriangle
+     */
     initBuffers() {
         this.vertices = [
             this.x1, this.y1, this.z1,  // 0

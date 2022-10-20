@@ -1,7 +1,23 @@
 import { CGFobject } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
 
+/**
+ * MyTorus primitive
+ * @export
+ * @class MyTorus
+ * @extends {CGFobject}
+ */
 export class MyTorus extends CGFobject {
+    /**
+     * Creates an instance of MyTorus.
+     * @param {*} scene
+     * @param {*} id
+     * @param {*} inner
+     * @param {*} outer
+     * @param {*} slices
+     * @param {*} loops
+     * @memberof MyTorus
+     */
     constructor(scene, id, inner, outer, slices, loops) {
         super(scene);
         this.inner = inner;
@@ -13,6 +29,10 @@ export class MyTorus extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyTorus primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyTorus
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];
