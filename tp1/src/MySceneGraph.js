@@ -245,6 +245,14 @@ export class MySceneGraph {
         return result;
     }
 
+    /**
+     * Parse axis values returning an array with the coordinates values
+     *
+     * @param {*} node
+     * @param {*} messageError
+     * @return {*} 
+     * @memberof MySceneGraph
+     */
     parseAxis(node, messageError) {
         const result = [];
         const axis = this.reader.getString(node, 'axis');

@@ -32,6 +32,11 @@ export class MyInterface extends CGFinterface {
         this.activeKeys = {};
     }
 
+    /**
+     * Handle key press down event 
+     * @param {*} event
+     * @memberof MyInterface
+     */
     processKeyDown(event) {
         if (event.code === "KeyM") {
             this.sceneGraph.selectedMaterialIndex += 1;
@@ -39,10 +44,21 @@ export class MyInterface extends CGFinterface {
         this.activeKeys[event.code] = true;
     };
 
+    /**
+     * Handle key press up event
+     * @param {*} event
+     * @memberof MyInterface
+     */
     processKeyUp(event) {
         this.activeKeys[event.code] = false;
     };
 
+    /**
+     * Checks if a  key is pressed
+     * @param {*} keyCode
+     * @return {*} 
+     * @memberof MyInterface
+     */
     isKeyPressed(keyCode) {
         return this.activeKeys[keyCode] || false;
     }

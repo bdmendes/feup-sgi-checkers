@@ -94,6 +94,10 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Set default appearance
+     * @memberof XMLscene
+     */
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
