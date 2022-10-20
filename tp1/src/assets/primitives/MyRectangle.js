@@ -10,12 +10,12 @@ export class MyRectangle extends CGFobject {
 
     /**
      * Creates an instance of MyRectangle.
-     * @param {*} scene
-     * @param {*} id
-     * @param {*} x1
-     * @param {*} x2
-     * @param {*} y1
-     * @param {*} y2
+     * @param {CGFscene} scene: the scene where the primitive will be displayed
+     * @param {*} id: the id of the primitive
+     * @param {*} x1: the x coordinate of the first corner point
+     * @param {*} x2: the x coordinate of the second corner point
+     * @param {*} y1: the y coordinate of the first corner point
+     * @param {*} y2: the y coordinate of the second corner point
      * @memberof MyRectangle
      */
     constructor(scene, id, x1, x2, y1, y2) {

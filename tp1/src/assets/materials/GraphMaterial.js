@@ -1,14 +1,15 @@
-import { CGFappearance } from "../../../../lib/CGF.js";
+import { CGFappearance, CGFscene } from "../../../../lib/CGF.js";
+import { GraphTexture } from "../textures/GraphTexture.js";
 
 /**
  * @export
- * @class GraphMaterial
+ * @class GraphMaterial: an abstraction of a CGFappearance
  */
 export class GraphMaterial {
 
     /**
      * Creates an instance of GraphMaterial.
-     * @param {*} scene
+     * @param {CGFscene} scene
      * @param {*} id
      * @param {*} shininess
      * @memberof GraphMaterial
@@ -48,7 +49,7 @@ export class GraphMaterial {
 
     /**
      * Set texture to this material
-     * @param {*} texture
+     * @param {GraphTexture} texture: a GraphTexture object
      * @memberof GraphMaterial
      */
     setTexture(texture) {

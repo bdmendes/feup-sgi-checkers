@@ -2,9 +2,9 @@ import { GraphComponent } from "../assets/GraphComponent.js";
 import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
 
 /**
-     * Parses the <components> block.
-     * @param {MySceneGraph} sceneGraph
-     * @param {components block element} componentsNode
+     * Parses the <components> block
+     * @param {MySceneGraph} sceneGraph - The scene graph
+     * @param {components block element} componentsNode - The components block element
      */
 export function parseComponents(sceneGraph, componentsNode) {
     const children = componentsNode.children;
@@ -25,6 +25,14 @@ export function parseComponents(sceneGraph, componentsNode) {
     }
 }
 
+
+/**
+ * Parses the <component> block.
+ *
+ * @param {MySceneGraph} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @return {*} 
+ */
 function parseComponent(sceneGraph, node) {
     let [error, componentID] = getID(sceneGraph, node);
     if (error) return componentID;
@@ -58,6 +66,14 @@ function parseComponent(sceneGraph, node) {
     return null;
 }
 
+
+/**
+ * Parses the component id.
+ *
+ * @param {*} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @return {*} 
+ */
 function getID(sceneGraph, node) {
     // Get id of the current component.
     let componentID = sceneGraph.reader.getString(node, 'id');
@@ -71,6 +87,17 @@ function getID(sceneGraph, node) {
     return [false, componentID];
 }
 
+
+/**
+ * Parses the component's <transformations> block.
+ *
+ * @param {*} componentID - The component's id
+ * @param {*} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @param {*} component - The component to push transformations into
+ * @param {*} transformationIndex - The index of the <transformation> block
+ * @return {*} 
+ */
 function parseTransformations(componentID, sceneGraph, node, component, transformationIndex) {
     if (transformationIndex == -1) {
         return 'component ' + componentID + ' must have a transformation block';
@@ -133,6 +160,17 @@ function parseTransformations(componentID, sceneGraph, node, component, transfor
     return null;
 }
 
+
+/**
+ * Parses the component's <materials> block.
+ *
+ * @param {*} componentID - The component's id
+ * @param {*} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @param {*} component - The component to push materials into
+ * @param {*} materialsIndex - The index of the <material> block
+ * @return {*} 
+ */
 function parseMaterials(componentID, sceneGraph, node, component, materialsIndex) {
     if (materialsIndex == -1) {
         return 'component ' + componentID + ' must have a materials block';
@@ -155,6 +193,17 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
     return null;
 }
 
+
+/**
+ * Parses the component's <textures> block.
+ *
+ * @param {*} componentID - The component's id
+ * @param {MySceneGraph} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @param {*} component - The component to push textures into
+ * @param {*} textureIndex - The index of the <texture> block
+ * @return {*} 
+ */
 function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     if (textureIndex == -1) {
         return 'component ' + componentID + ' must have a textures block';
@@ -185,6 +234,17 @@ function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     return null;
 }
 
+
+/**
+ * Parses the component's <children> block, using ids for referencing the children
+ *
+ * @param {*} componentID - The component's id
+ * @param {MySceneGraph} sceneGraph - The scene graph
+ * @param {*} node - The <component> block
+ * @param {*} component - The component to push children into
+ * @param {*} childrenIndex - The index of the <children> block
+ * @return {*} 
+ */
 function parseChildren(componentID, sceneGraph, node, component, childrenIndex) {
     if (childrenIndex == -1) {
         return 'component with ID ' + componentID + ' must have a <children> tag';
@@ -205,6 +265,13 @@ function parseChildren(componentID, sceneGraph, node, component, childrenIndex) 
     return null;
 }
 
+
+/**
+ * Replace component's children by their respective components
+ *
+ * @param {MySceneGraph} sceneGraph - The scene graph
+ * @return {*} 
+ */
 function referenceComponentChildren(sceneGraph) {
     for (const key in sceneGraph.components) {
         const component = sceneGraph.components[key];

@@ -6,8 +6,8 @@ import { MyCylinder } from "../assets/primitives/MyCylinder.js";
 
 /**
  * Parses the <primitives> block.
- * @param {MySceneGraph} sceneGraph
- * @param {primitives block element} primitivesNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object
+ * @param {primitives block element} primitivesNode - primitives block element
  */
 export function parsePrimitives(sceneGraph, primitivesNode) {
     const children = primitivesNode.children;

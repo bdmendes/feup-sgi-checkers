@@ -8,7 +8,7 @@ import { normalizeVector, vectorDifference, degreesToRadians } from './utils/mat
 export class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface - Reference to the interface
      */
     constructor(myinterface) {
         super();
@@ -18,7 +18,7 @@ export class XMLscene extends CGFscene {
 
     /**
      * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
-     * @param {CGFApplication} application
+     * @param {CGFApplication} application - Reference to the CGFapplication object
      */
     init(application) {
         super.init(application);

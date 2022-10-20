@@ -28,6 +28,8 @@ const COMPONENTS_INDEX = 8;
 export class MySceneGraph {
     /**
      * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {string} filename - the name of the file to be parsed
      */
     constructor(filename, scene) {
         // Not loaded until XML loading is finished
@@ -112,7 +114,7 @@ export class MySceneGraph {
 
     /**
      * Parses the XML file, processing each block.
-     * @param {XML root element} rootElement
+     * @param {XML root element} rootElement - the root element of the XML document
      */
     parseXMLFile(rootElement) {
         if (rootElement.nodeName != 'sxs') return 'root tag <sxs> missing';
@@ -228,8 +230,8 @@ export class MySceneGraph {
 
     /**
      * Parse the coordinates from a node with ID = id
-     * @param {block element} node
-     * @param {message to be displayed in case of error} messageError
+     * @param {block element} node - the node to be parsed
+     * @param {message to be displayed in case of error} messageError - the message to be displayed in case of error
      * @param {array of strings} - the names of the properties to be parsed
      */
     parseFloatProps(node, messageError, props = ['x', 'y', 'z']) {
@@ -248,8 +250,8 @@ export class MySceneGraph {
     /**
      * Parse axis values returning an array with the coordinates values
      *
-     * @param {*} node
-     * @param {*} messageError
+     * @param {*} node - the node to be parsed
+     * @param {*} messageError - the message to be displayed in case of error
      * @return {*} 
      * @memberof MySceneGraph
      */
@@ -271,18 +273,20 @@ export class MySceneGraph {
     }
 
     /*
-     * Callback to be executed on any read error, showing an error on the console.
-     * @param {string} message
+     * Callback to be executed on any read error, showing an error on the console,
+     * a warning on the interface and aborting the current read.
+     * @param {string} message - Message to be displayed.
      */
     onXMLError(message) {
         console.error('XML Loading Error: ' + message);
+        alert('XML Loading Error: ' + message);
         this.loadedOk = false;
     }
 
     /**
      * Callback to be executed on any minor error, showing a warning on the
      * console.
-     * @param {string} message
+     * @param {string} message - Message to be displayed.
      */
     onXMLMinorError(message) {
         console.warn('Warning: ' + message);

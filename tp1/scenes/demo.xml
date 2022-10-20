@@ -262,7 +262,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="triangle" />
             </children>

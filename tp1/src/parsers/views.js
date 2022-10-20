@@ -3,8 +3,8 @@ import { degreesToRadians } from "../utils/math.js";
 
 /**
  * Parses the <views> block.
- * @param {MySceneGraph} sceneGraph
- * @param {view block element} viewsNode
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object.
+ * @param {view block element} viewsNode - <views> block element.
  */
 export function parseView(sceneGraph, viewsNode) {
     const defaultView = viewsNode.getAttribute('default');
@@ -37,6 +37,14 @@ export function parseView(sceneGraph, viewsNode) {
     return null;
 }
 
+
+/**
+ * Parses a <perspective> block.
+ *
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object.
+ * @param {*} perspectiveNode - <perspective> block element.
+ * @return {*} 
+ */
 function parsePerspectiveCamera(sceneGraph, perspectiveNode) {
     // Parse ID
     const nodeID = perspectiveNode.getAttribute('id');
@@ -89,6 +97,14 @@ function parsePerspectiveCamera(sceneGraph, perspectiveNode) {
     return null;
 }
 
+
+/**
+ * Parses a <ortho> block.
+ *
+ * @param {MySceneGraph} sceneGraph - Reference to MySceneGraph object.
+ * @param {*} orthoNode - <ortho> block element.
+ * @return {*} 
+ */
 function parseOrthoCamera(sceneGraph, orthoNode) {
     // Parse ID
     const nodeID = orthoNode.getAttribute('id');

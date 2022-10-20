@@ -1,16 +1,16 @@
-import { CGFappearance } from "../../../../lib/CGF.js";
+import { CGFappearance, CGFscene } from "../../../../lib/CGF.js";
 import { degreesToRadians } from "../../utils/math.js";
 
 /**
  * @export
- * @class GraphTransformation
+ * @class GraphTransformation: an abstraction of a transformation matrix
  */
 export class GraphTransformation {
 
     /**
      * Creates an instance of GraphTransformation.
-     * @param {*} scene
-     * @param {string} [id='']
+     * @param {CGFscene} scene - the scene where the transformation will be applied
+     * @param {string} [id=''] - the transformation id
      * @memberof GraphTransformation
      */
     constructor(scene, id = '') {
@@ -21,7 +21,7 @@ export class GraphTransformation {
 
     /**
      * Apply a translate transformation to this component transformation matrix
-     * @param {*} coordinates
+     * @param {*} coordinates - the coordinates to translate
      * @memberof GraphTransformation
      */
     addTranslation(coordinates) {
@@ -30,7 +30,7 @@ export class GraphTransformation {
 
     /**
      * Apply a scale transformation to this component transformation matrix
-     * @param {*} coordinates
+     * @param {*} coordinates - the coordinates to scale
      * @memberof GraphTransformation
      */
     addScale(coordinates) {
@@ -39,8 +39,8 @@ export class GraphTransformation {
 
     /**
      * Apply a rotation transformation to this component transformation matrix
-     * @param {*} axis
-     * @param {*} angle
+     * @param {*} axis - the axis to rotate
+     * @param {*} angle - the angle to rotate
      * @memberof GraphTransformation
      */
     addRotation(axis, angle) {

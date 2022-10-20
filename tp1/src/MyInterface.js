@@ -34,7 +34,7 @@ export class MyInterface extends CGFinterface {
 
     /**
      * Handle key press down event 
-     * @param {*} event
+     * @param {*} event - the event that triggered the function
      * @memberof MyInterface
      */
     processKeyDown(event) {
@@ -46,7 +46,7 @@ export class MyInterface extends CGFinterface {
 
     /**
      * Handle key press up event
-     * @param {*} event
+     * @param {*} event - the event that triggered the function
      * @memberof MyInterface
      */
     processKeyUp(event) {
@@ -55,8 +55,8 @@ export class MyInterface extends CGFinterface {
 
     /**
      * Checks if a  key is pressed
-     * @param {*} keyCode
-     * @return {*} 
+     * @param {*} keyCode - the key code
+     * @return {*}
      * @memberof MyInterface
      */
     isKeyPressed(keyCode) {

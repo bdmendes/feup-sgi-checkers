@@ -1,4 +1,4 @@
-import { CGFobject } from '../../../../lib/CGF.js';
+import { CGFobject, CGFscene } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
 
 /**
@@ -11,13 +11,13 @@ export class MyCylinder extends CGFobject {
 
     /**
      * Creates an instance of MyCylinder.
-     * @param {*} scene
-     * @param {*} id
-     * @param {*} base
-     * @param {*} top
-     * @param {*} height
-     * @param {*} slices
-     * @param {*} stacks
+     * @param {CGFscene} scene: the scene where the primitive will be displayed
+     * @param {*} id: the id of the primitive
+     * @param {*} base: the base radius of the cylinder
+     * @param {*} top: the top radius of the cylinder
+     * @param {*} height: the height of the cylinder
+     * @param {*} slices: the number of slices of the cylinder
+     * @param {*} stacks: the number of stacks of the cylinder
      * @memberof MyCylinder
      */
     constructor(scene, id, base, top, height, slices, stacks) {

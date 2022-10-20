@@ -1,4 +1,4 @@
-import { CGFobject } from '../../../../lib/CGF.js';
+import { CGFobject, CGFscene } from '../../../../lib/CGF.js';
 import { normalizeVector } from '../../utils/math.js';
 
 /**
@@ -13,7 +13,7 @@ export class MySphere extends CGFobject {
 
     /**
      * Creates an instance of MySphere.
-     * @param {*} scene
+     * @param {CGFscene} scene
      * @param {*} id
      * @param {*} radius
      * @param {*} slices

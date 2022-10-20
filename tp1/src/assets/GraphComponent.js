@@ -1,17 +1,21 @@
+import { CGFscene } from "../../../lib/CGF.js";
+import { GraphMaterial } from "./materials/GraphMaterial.js";
 import { MyRectangle } from "./primitives/MyRectangle.js";
 import { MyTriangle } from "./primitives/MyTriangle.js";
+import { GraphTexture } from "./textures/GraphTexture.js";
 
 
 /**
  * @export
- * @class GraphComponent
+ * @class GraphComponent: a node of the scene graph, with children,
+ * a transformation matrix, a material and a texture
  */
 export class GraphComponent {
 
     /**
      * Creates an instance of GraphComponent.
-     * @param {*} scene
-     * @param {*} id
+     * @param {CGFscene} scene - the scene where the component will be rendered
+     * @param {*} id - the component id
      * @memberof GraphComponent
      */
     constructor(scene, id) {
@@ -26,11 +30,11 @@ export class GraphComponent {
     }
 
     /**
-     * Render everything needed to display children components
-     * @param {*} parentMaterial
-     * @param {*} [parentTexture=null]
-     * @param {number} [parent_length_s=1]
-     * @param {number} [parent_length_t=1]
+     * Render the component in the scene
+     * @param {GraphMaterial} parentMaterial - the material of the parent component
+     * @param {GraphTexture} [parentTexture=null] - the texture of the parent component
+     * @param {number} [parent_length_s=1] - the length_s of the parent component
+     * @param {number} [parent_length_t=1] - the length_t of the parent component
      * @memberof GraphComponent
      */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
@@ -43,9 +47,9 @@ export class GraphComponent {
     }
 
     /**
-     * Render material of a component with special care about parent material
-     * @param {*} parentMaterial
-     * @return {*} 
+     * Render component's material considering parent's material
+     * @param {GraphMaterial} parentMaterial - the material of the parent component
+     * @return {GraphMaterial} 
      * @memberof GraphComponent
      */
     renderMaterial(parentMaterial) {
@@ -61,10 +65,10 @@ export class GraphComponent {
     }
 
     /**
-     * Render and apply texture to a material of a component with special care about parent texture
-     * @param {*} material
-     * @param {*} parentTexture
-     * @return {*} 
+     * Render component's texture considering parent's texture
+     * @param {GraphMaterial} material - the material of the component
+     * @param {GraphTexture} parentTexture - the texture of the parent component
+     * @return {GraphTexture} 
      * @memberof GraphComponent
      */
     renderTexture(material, parentTexture) {
@@ -101,10 +105,10 @@ export class GraphComponent {
 
     /**
      * Render and display every children of a component
-     * @param {*} material
-     * @param {*} texture
-     * @param {*} parent_length_s
-     * @param {*} parent_length_t
+     * @param {GraphMaterial} material - the material of the component
+     * @param {GraphTexture} texture - the texture of the component
+     * @param {*} parent_length_s - the length_s of the parent component
+     * @param {*} parent_length_t - the length_t of the parent component
      * @memberof GraphComponent
      */
     renderChildren(material, texture, parent_length_s, parent_length_t) {
