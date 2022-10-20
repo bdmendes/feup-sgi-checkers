@@ -1,4 +1,5 @@
 import { CGFcamera, CGFcameraOrtho } from "../../../lib/CGF.js";
+import { degreesToRadians } from "../utils/math.js";
 
 /**
  * Parses the <views> block.
@@ -81,7 +82,7 @@ function parsePerspectiveCamera(sceneGraph, perspectiveNode) {
     }
 
     // Create camera
-    const camera = new CGFcamera(angle, near, far,
+    const camera = new CGFcamera(degreesToRadians(angle), near, far,
         vec3.fromValues(from[0], from[1], from[2]), vec3.fromValues(to[0], to[1], to[2]));
     sceneGraph.cameras[nodeID] = camera;
 
