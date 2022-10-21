@@ -45,7 +45,10 @@ Our interface attempts to demonstrate the features of the project, so we allow, 
 ### Scene description
 The scene represents a comfortable living room with a small donut on the dinner table and a modern center table, a sofa to watch TV and several lamps around the room to allow night entertainment. Two art paintings are present in the living room walls to give some life and colors to the scene.
 
-Check out our scene: [here](https://paginas.fe.up.pt/~up201905951/sgi/tp1/)
+Check out our project [in this page](https://paginas.fe.up.pt/~up201905951/sgi/tp1/).
+
+Check out some screenshots [here](screenshots/).
+
 
 
 ----
