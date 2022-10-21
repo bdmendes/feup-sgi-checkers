@@ -187,6 +187,9 @@ function parseMaterials(componentID, sceneGraph, node, component, materialsIndex
         if (materialID !== "inherit" && sceneGraph.materials[materialID] == null) {
             return 'component ' + componentID + ' has a <material> with an invalid ID: ' + materialID;
         }
+        if (materialID == "inherit" && sceneGraph.idRoot == componentID) {
+            return 'component ' + componentID + ' does not have a parent to inherit material from';
+        }
         component.materialIDs.push(materialID);
     }
 
@@ -219,6 +222,9 @@ function parseTexture(componentID, sceneGraph, node, component, textureIndex) {
     }
     if (textureID !== "inherit" && textureID !== "none" && sceneGraph.textures[textureID] == null) {
         return 'component ' + componentID + ' has a <texture> with an invalid ID: ' + textureID;
+    }
+    if (textureID == "inherit" && sceneGraph.idRoot == componentID) {
+        return 'component ' + componentID + ' does not have a parent to inherit texture from';
     }
     if (textureID !== "none") {
         const length_s = sceneGraph.reader.getString(texture, 'length_s', false);

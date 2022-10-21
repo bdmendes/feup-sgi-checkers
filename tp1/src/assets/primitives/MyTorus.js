@@ -1,5 +1,5 @@
 import { CGFobject, CGFscene } from '../../../../lib/CGF.js';
-import { normalizeVector } from '../../utils/math.js';
+import { crossProduct, normalizeVector, vectorDifference } from '../../utils/math.js';
 
 /**
  * MyTorus primitive
@@ -14,8 +14,8 @@ export class MyTorus extends CGFobject {
      * @param {*} id - the id of the primitive
      * @param {*} inner - the inner radius of the torus
      * @param {*} outer - the outer radius of the torus
-     * @param {*} slices - the number of slices of the torus
-     * @param {*} loops - the number of loops of the torus
+     * @param {*} slices - the number of slices ("inside sides") of the torus
+     * @param {*} loops - the number of loops ("outside sides") of the torus
      * @memberof MyTorus
      */
     constructor(scene, id, inner, outer, slices, loops) {
@@ -39,34 +39,36 @@ export class MyTorus extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        let loop_angle = (Math.PI * 2) / this.slices;
-        let slice_edges = this.loops * 2 + 1;
-        let slice_angle = (Math.PI * 2) / (this.loops * 2);
-        let current_loop_angle = 0;
+        const deltaLoops = 2 * Math.PI / this.loops;
+        const deltaSlices = 2 * Math.PI / this.slices;
 
-        for (let slice = 0; slice <= this.slices; slice++) {
-            let current_slice_angle = 0;
-            let center = [Math.cos(current_loop_angle) * this.outer, Math.sin(current_loop_angle) * this.outer, 0];
-
-            for (let edge = 0; edge < slice_edges; edge++) {
-                let x = Math.cos(current_slice_angle) * this.inner * Math.cos(current_loop_angle);
-                let y = Math.cos(current_slice_angle) * this.inner * Math.sin(current_loop_angle);
-                let z = Math.sin(current_slice_angle) * this.inner;
-
-                this.vertices.push(center[0] + x, center[1] + y, center[2] + z);
-                this.normals.push(...normalizeVector([x, y, z]));
-                this.texCoords.push(edge / slice_edges, slice / this.slices);
-
-                if (slice < this.slices && edge + 1 < slice_edges) {
-                    this.indices.push(slice * slice_edges + edge, (slice + 1) * slice_edges + edge, slice * slice_edges + edge + 1);
-                    this.indices.push(slice * slice_edges + edge + 1, (slice + 1) * slice_edges + edge, (slice + 1) * slice_edges + edge + 1);
-                }
-
-                current_slice_angle += slice_angle;
+        // Vertices and texCoords
+        for (let loop = 0; loop <= this.loops; loop++) {
+            const currentLoopAngle = loop * deltaLoops;
+            for (let slice = 0; slice <= this.slices; slice++) {
+                const currentSliceAngle = slice * deltaSlices;
+                const x = (this.outer + this.inner * Math.cos(currentSliceAngle)) * Math.cos(currentLoopAngle);
+                const y = (this.outer + this.inner * Math.cos(currentSliceAngle)) * Math.sin(currentLoopAngle);
+                const z = this.inner * Math.sin(currentSliceAngle);
+                this.vertices.push(x, y, z);
+                const normal = [x - this.outer * Math.cos(currentLoopAngle), y - this.outer * Math.sin(currentLoopAngle), z];
+                this.normals.push(...normalizeVector(normal));
+                this.texCoords.push(slice / this.slices, loop / this.loops);
             }
-
-            current_loop_angle += loop_angle;
         }
+
+        // Indices
+        for (let loop = 0; loop < this.loops; loop++) {
+            for (let slice = 0; slice <= this.slices; slice++) {
+                const vertex1 = loop * (this.slices + 1) + slice;
+                const vertex2 = vertex1 + 1;
+                const vertex3 = vertex1 + this.slices + 1;
+                const vertex4 = vertex1 + this.slices;
+                this.indices.push(vertex2, vertex1, vertex3);
+                this.indices.push(vertex4, vertex3, vertex1);
+            }
+        }
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
