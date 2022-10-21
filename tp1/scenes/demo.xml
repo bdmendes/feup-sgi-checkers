@@ -192,7 +192,7 @@
             <torus inner="1" outer="2" slices="20" loops="20" />
         </primitive>
         <primitive id="flatTorus">
-            <torus inner="1" outer="0" slices="100" loops="1" />
+            <torus inner="20" outer="0" slices="100" loops="100" />
         </primitive>
         <primitive id="rectangle">
             <rectangle x1="-1" x2="1" y1="-1" y2="1" />
@@ -211,7 +211,7 @@
             <materials>
                 <material id="darkBrown" />
             </materials>
-            <texture id="inherit" />
+            <texture id="none" />
             <children>
                 <componentref id="walls" />
                 <componentref id="table" />
@@ -1014,7 +1014,7 @@
                 <material id="darkBrown" />
                 <material id="neutralPink" />
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="none" />
             <children>
                 <componentref id="sofaTableTop" />
                 <componentref id="sofatableLegs" />
@@ -1024,15 +1024,15 @@
         <component id="sofaTableTop">
             <transformation>
                 <translate x="0" y="2" z="0" />
-                <scale x="3" y="1" z="3" />
+                <scale x="0.12" y="0.01" z="0.15" />
                 <scale x="0.8" y="1" z="2" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="metalDark" />
+                <material id="bassDark" />
                 <material id="inherit" />
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="flatTorus" />
             </children>
