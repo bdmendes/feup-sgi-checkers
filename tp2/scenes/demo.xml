@@ -205,6 +205,16 @@
         </primitive>
     </primitives>
 
+    <animations>
+        <keyframeanim id="circles">
+            <keyframe instant="1">
+                <translation x="10" y="10" z="10" />
+                <rotation axis="y" angle="30" />
+                <scale sx="2" sy="2" sz="2" />
+            </keyframe>
+        </keyframeanim>
+    </animations>
+
     <components>
         <component id="root">
             <transformation></transformation>

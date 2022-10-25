@@ -1,4 +1,4 @@
-import { CGFappearance, CGFXMLreader } from '../../lib/CGF.js';
+import { CGFXMLreader } from '../../lib/CGF.js';
 
 import { parseScene } from './parsers/scene.js';
 import { parseView } from './parsers/views.js';
@@ -9,6 +9,7 @@ import { parseMaterials } from './parsers/materials.js';
 import { parseLights } from './parsers/lights.js';
 import { parseAmbient } from './parsers/ambient.js';
 import { parseTransformations } from './parsers/tranformations.js';
+import { parseAnimations } from './parsers/animations.js';
 import { GraphMaterial } from './assets/materials/GraphMaterial.js';
 
 // Order of the groups in the XML document.
@@ -20,7 +21,8 @@ const TEXTURES_INDEX = 4;
 const MATERIALS_INDEX = 5;
 const TRANSFORMATIONS_INDEX = 6;
 const PRIMITIVES_INDEX = 7;
-const COMPONENTS_INDEX = 8;
+const ANIMATIONS_INDEX = 8;
+const COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -60,6 +62,7 @@ export class MySceneGraph {
         this.textures = {};
         this.transformations = {};
         this.cameras = {};
+        this.animations = {};
 
         // Default material
         this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
@@ -200,6 +203,18 @@ export class MySceneGraph {
 
             // Parse transformations block
             if ((error = parseTransformations(this, nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf('animations')) == -1)
+            return 'tag <animations> missing';
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError('tag <animations> out of order');
+
+            // Parse animations block
+            if ((error = parseAnimations(this, nodes[index])) != null)
                 return error;
         }
 

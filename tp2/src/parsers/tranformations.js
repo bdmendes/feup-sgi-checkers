@@ -26,6 +26,7 @@ export function parseTransformations(sceneGraph, transformationsNode) {
                 transformationID + ')';
 
         grandChildren = children[i].children;
+
         // Specifications for the current transformation.
         let coordinates;
         const transformation = new GraphTransformation(sceneGraph.scene, transformationID);
