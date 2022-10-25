@@ -50,10 +50,11 @@
         </primitive>
     </primitives>
 
+    <animations></animations>
+
     <components>
         <component id="demoRoot">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>

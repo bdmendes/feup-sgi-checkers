@@ -53,26 +53,26 @@
         </primitive>
     </primitives>
 
+    <animations></animations>
+
     <components>
         <component id="demoRoot">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="demoTexture" length_s="1" length_t="3"/>
+            <texture id="demoTexture" length_s="1" length_t="3" />
             <children>
-                <componentref id="square"/>
+                <componentref id="square" />
             </children>
         </component>
 
         <component id="square">
-            <transformation>
-            </transformation>
+            <transformation></transformation>
             <materials>
                 <material id="demoMaterial" />
             </materials>
-            <texture id="inherit" length_t="3"/>
+            <texture id="inherit" length_t="3" />
             <children>
                 <primitiveref id="demoRectangle" />
             </children>

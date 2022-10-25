@@ -3,6 +3,7 @@ import { MySphere } from "../assets/primitives/MySphere.js";
 import { MyTorus } from "../assets/primitives/MyTorus.js";
 import { MyTriangle } from "../assets/primitives/MyTriangle.js";
 import { MyCylinder } from "../assets/primitives/MyCylinder.js";
+import { MyPatch } from "../assets/primitives/MyPatch.js";
 
 /**
  * Parses the <primitives> block.
@@ -33,13 +34,8 @@ export function parsePrimitives(sceneGraph, primitivesNode) {
         grandChildren = children[i].children;
 
         // Validate the primitive type
-        if (grandChildren.length != 1 ||
-            (grandChildren[0].nodeName != 'rectangle' &&
-                grandChildren[0].nodeName != 'triangle' &&
-                grandChildren[0].nodeName != 'cylinder' &&
-                grandChildren[0].nodeName != 'sphere' &&
-                grandChildren[0].nodeName != 'torus')) {
-            return 'There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus)'
+        if (grandChildren.length != 1) {
+            return 'There must be exactly 1 primitive type for primitive with ID = ' + primitiveId;
         }
 
         // Specifications for the current primitive.
@@ -66,14 +62,38 @@ export function parsePrimitives(sceneGraph, primitivesNode) {
                 'sphere coordinates for ID ' + primitiveId, ['radius', 'slices', 'stacks']);
             const sphere = new MySphere(sceneGraph.scene, primitiveId, radius, slices, stacks);
             sceneGraph.primitives[primitiveId] = sphere;
-        } else {
+        } else if (primitiveType == 'torus') {
             const [inner, outer, slices, loops] = sceneGraph.parseFloatProps(grandChildren[0],
                 'torus coordinates for ID ' + primitiveId, ['inner', 'outer', 'slices', 'loops']);
             const torus = new MyTorus(sceneGraph.scene, primitiveId, inner, outer, slices, loops);
             sceneGraph.primitives[primitiveId] = torus;
+        } else if (primitiveType == 'patch') {
+            const error = parsePatch(sceneGraph, grandChildren[0], primitiveId);
+            if (error) {
+                return error;
+            }
+        } else {
+            return 'unknown primitive type: ' + primitiveType;
         }
     }
 
     console.log('Parsed primitives');
     return null;
+}
+
+function parsePatch(sceneGraph, patchNode, primitiveId) {
+    const [degreeU, degreeV, partsU, partsV] = sceneGraph.parseFloatProps(patchNode,
+        'patch coordinates for ID ' + primitiveId, ['degree_u', 'degree_v', 'parts_u', 'parts_v']);
+    const controlPoints = [];
+    const controlPointsChildren = patchNode.children;
+    if (controlPointsChildren.length != (degreeU + 1) * (degreeV + 1)) {
+        return 'Invalid number of control points for patch with ID = ' + primitiveId + "; expected " + (degreeU + 1) * (degreeV + 1) + " but got " + controlPointsChildren.length;
+    }
+    for (let i = 0; i < controlPointsChildren.length; i++) {
+        const coordinates = sceneGraph.parseFloatProps(controlPointsChildren[i],
+            'control point coordinates for patch with ID = ' + primitiveId);
+        controlPoints.push(coordinates);
+    }
+    const patch = new MyPatch(sceneGraph.scene, primitiveId, degreeU, degreeV, partsU, partsV, controlPoints);
+    sceneGraph.primitives[primitiveId] = patch;
 }

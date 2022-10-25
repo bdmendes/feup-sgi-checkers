@@ -50,6 +50,8 @@
         </primitive>
     </primitives>
 
+    <animations></animations>
+
     <components>
         <component id="demoRoot">
             <transformation></transformation>
