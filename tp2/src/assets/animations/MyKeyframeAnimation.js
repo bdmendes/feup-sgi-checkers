@@ -1,14 +1,15 @@
 import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
+import { MyAnimation } from './MyAnimation.js';
 
-export class GraphKeyframeAnimation {
+export class MyKeyframeAnimation extends MyAnimation {
 
     /**
-     * Creates an instance of GraphKeyframeAnimation.
+     * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
     constructor(scene, id) {
-        this.id = id;
+        super(id);
         this.scene = scene;
         this.keyframes = [];
     }

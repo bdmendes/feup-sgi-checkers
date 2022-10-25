@@ -1,4 +1,5 @@
 import { GraphComponent } from "../assets/GraphComponent.js";
+import { GraphHighlight } from "../assets/highlights/GraphHighlight.js";
 import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
 
 /**
@@ -48,7 +49,8 @@ function parseComponent(sceneGraph, node) {
     const materialsIndex = nodeNames.indexOf('materials');
     const textureIndex = nodeNames.indexOf('texture');
     const childrenIndex = nodeNames.indexOf('children');
-
+    const animationIndex = nodeNames.indexOf('animation');
+    const highlightedIndex = nodeNames.indexOf('highlighted');
 
     error = parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
     if (error != null) { return error; }
@@ -60,6 +62,12 @@ function parseComponent(sceneGraph, node) {
     if (error != null) { return error; }
 
     error = parseChildren(componentID, sceneGraph, node, component, childrenIndex);
+    if (error != null) { return error; }
+
+    error = parseAnimation(componentID, sceneGraph, node, component, animationIndex);
+    if (error != null) { return error; }
+
+    error = parseHighlighted(componentID, sceneGraph, node, component, highlightedIndex);
     if (error != null) { return error; }
 
     sceneGraph.components[componentID] = component;
@@ -292,6 +300,47 @@ function referenceComponentChildren(sceneGraph) {
             }
         }
     }
+
+    return null;
+}
+
+function parseAnimation(componentID, sceneGraph, node, component, animationIndex) {
+    if (animationIndex == -1) {
+        return null;
+    }
+
+    const animationNode = node.children[animationIndex];
+
+    const animationID = sceneGraph.reader.getString(animationNode, 'id');
+    if (animationID == null) {
+        return 'component ' + componentID + ' must have a animations block with non null id';
+    }
+    if (sceneGraph.animations[animationID] == null) {
+        return 'component ' + componentID + ' has a <animation> with an invalid ID: ' + animationID;
+    }
+    component.animationID = animationID;
+
+    return null;
+}
+
+function parseHighlighted(componentID, sceneGraph, node, component, highlightIndex) {
+    if (highlightIndex == -1) {
+        return null;
+    }
+
+    const highlightedNode = node.children[highlightIndex];
+
+    const color = sceneGraph.parseFloatProps(highlightedNode, 'color for highlight of component with ID = ' + componentID, ['r', 'g', 'b']);
+    if (color.length == 0) {
+        return '<highlight> block of component with ID = ' + componentID + ' must have a valid color';
+    }
+
+    const scaleH = sceneGraph.reader.getFloat(highlightedNode, 'scale_h');
+    if (scaleH == null) {
+        return 'component ' + componentID + ' must have a highlight block with non null scale_h';
+    }
+
+    component.highlight = new GraphHighlight(sceneGraph.scene, color, scaleH);
 
     return null;
 }

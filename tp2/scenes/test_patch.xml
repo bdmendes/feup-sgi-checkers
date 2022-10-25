@@ -58,7 +58,15 @@
         </primitive>
     </primitives>
 
-    <animations></animations>
+    <animations>
+        <keyframeanim id="demoKeyframe">
+            <keyframe instant="2">
+                <translation x="10" y="10" z="10" />
+                <rotation axis="x" angle="10" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+    </animations>
 
     <components>
         <component id="demoRoot">
@@ -70,6 +78,8 @@
             <children>
                 <primitiveref id="demoPatch" />
             </children>
+            <animation id="demoKeyframe" />
+            <highlighted r="1.0" g="0.0" b="0.0" scale_h="1.1" />
         </component>
     </components>
 </sxs>

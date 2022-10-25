@@ -27,6 +27,8 @@ export class GraphComponent {
         this.textureID = null; // nonnull
         this.length_s = null;
         this.length_t = null;
+        this.animationID = null;
+        this.highlight = null;
     }
 
     /**

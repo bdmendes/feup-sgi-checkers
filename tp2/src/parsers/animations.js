@@ -1,5 +1,5 @@
 import { GraphKeyframe } from "../assets/animations/GraphKeyframe.js";
-import { GraphKeyframeAnimation } from "../assets/animations/GraphKeyframeAnimation.js";
+import { MyKeyframeAnimation } from "../assets/animations/MyKeyframeAnimation.js";
 import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
 
 /**
@@ -20,7 +20,7 @@ export function parseAnimations(sceneGraph, animationsNode) {
             return "no ID defined for keyframeanim";
         }
 
-        const keyframeAnimation = new GraphKeyframeAnimation(sceneGraph.scene, id);
+        const keyframeAnimation = new MyKeyframeAnimation(sceneGraph.scene, id);
         const grandChildren = child.children;
         let foundKeyFrame = false;
         for (const grandChild of grandChildren) {
