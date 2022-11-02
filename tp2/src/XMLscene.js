@@ -1,6 +1,6 @@
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { normalizeVector, vectorDifference, degreesToRadians } from './utils/math.js';
+import { vectorDifference, milisToSeconds } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -14,6 +14,7 @@ export class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.time_zero = -1;
     }
 
     /**
@@ -159,6 +160,16 @@ export class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
+    update(t) {
+        if (this.time_zero === -1) { this.time_zero = t; }
+        let t_secs = milisToSeconds(t - this.time_zero);
+
+        for (const key in this.graph.animations) {
+            this.graph.animations[key].update(t_secs);
+        }
+    }
+
+
     /**
      * Displays the scene.
      */
@@ -183,9 +194,9 @@ export class XMLscene extends CGFscene {
             this.lights[i].update();
         }
 
-        if (this.graph.displayAxis) {
-            this.axis.display();
-        }
+        //if (this.graph.displayAxis) {
+        this.axis.display();
+        //}
 
         if (this.sceneInited) {
             // Draw axis

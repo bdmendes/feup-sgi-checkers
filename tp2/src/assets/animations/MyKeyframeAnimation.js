@@ -12,6 +12,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         super(id);
         this.scene = scene;
         this.keyframes = [];
+
     }
 
     /**
@@ -20,5 +21,21 @@ export class MyKeyframeAnimation extends MyAnimation {
      */
     addKeyframe(keyframe) {
         this.keyframes.push(keyframe);
+        if (keyframe.instant < this.startTime) {
+            this.startTime = keyframe.instant;
+        }
+        if (keyframe.instant > this.endTime) {
+            this.endTime = keyframe.instant;
+        }
+    }
+
+    update(t) {
+        if (t >= this.startTime) {
+            this.isVisible = true;
+        }
+    }
+
+    apply() {
+        //this.scene.multMatrix(this.matrix);
     }
 }
