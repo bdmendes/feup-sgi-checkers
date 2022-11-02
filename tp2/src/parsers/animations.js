@@ -48,6 +48,8 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     const instant = sceneGraph.reader.getFloat(keyframeNode, 'instant');
     if (instant == null) {
         return "no instant defined for keyframe";
+    } else if (instant < 0) {
+        return "instant must be great or equal to zero";
     }
 
     const keyframe = new GraphKeyframe(sceneGraph.scene, instant);
