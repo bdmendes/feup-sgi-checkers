@@ -7,8 +7,6 @@ export class MyAnimation {
         this.isVisible = false;
         this.id = id;
         this.matrix = mat4.create();
-        this.startTime = Number.MAX_SAFE_INTEGER;
-        this.endTime = Number.MIN_SAFE_INTEGER;
     }
 
     update(t) {

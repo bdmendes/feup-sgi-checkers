@@ -1,6 +1,6 @@
 import { GraphKeyframe } from "../assets/animations/GraphKeyframe.js";
 import { MyKeyframeAnimation } from "../assets/animations/MyKeyframeAnimation.js";
-import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
+import { degreesToRadians } from "../utils/math.js";
 
 /**
   * Parses the <animations> node.
@@ -53,7 +53,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     }
 
     const keyframe = new GraphKeyframe(sceneGraph.scene, instant);
-    const transformation = new GraphTransformation(sceneGraph.scene);
+    const transformation = new Object();
     const keyframeChildren = keyframeNode.children;
 
     let foundTranslation = false;
@@ -71,7 +71,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (coordinates.length == 0) {
                 return "invalid coordinates defined for translation in keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
-            transformation.addTranslation(coordinates);
+            transformation.translation_coords = coordinates;
             foundTranslation = true;
         } else if (keyframeChild.nodeName === 'rotation') {
             if (!foundTranslation || foundScale) {
@@ -82,7 +82,13 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (axis == null || angle == null) {
                 return "invalid axis or angle defined for rotation in keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
-            transformation.addRotation(axis, angle);
+            if (axis[0] == 1) {
+                transformation.rotate_x = degreesToRadians(angle);
+            } else if (axis[1] == 1) {
+                transformation.rotate_y = degreesToRadians(angle);
+            } else if (axis[2] == 1) {
+                transformation.rotate_z = degreesToRadians(angle);
+            }
             foundRotation = true;
         } else if (keyframeChild.nodeName === 'scale') {
             if (!foundTranslation || !foundRotation) {
@@ -94,7 +100,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (coordinates.length == 0) {
                 return "invalid coordinates for scale transformation for keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             };
-            transformation.addScale(coordinates);
+            transformation.scale_coords = coordinates;
             foundScale = true;
         } else {
             sceneGraph.onXMLMinorError("unknown tag <" + keyframeChild.nodeName + ">");
