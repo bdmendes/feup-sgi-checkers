@@ -1,6 +1,6 @@
-import { CGFscene } from '../../lib/CGF.js';
+import { CGFscene, CGFshader } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { normalizeVector, vectorDifference, degreesToRadians } from './utils/math.js';
+import { vectorDifference, milisToSeconds } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -27,6 +27,8 @@ export class XMLscene extends CGFscene {
 
         this.initCameras();
 
+        this.initShaders();
+
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -36,6 +38,10 @@ export class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(100);
+    }
+
+    initShaders() {
+        this.highlightShader = new CGFshader(this.gl, "src/assets/highlights/scale.vert", "src/assets/highlights/color.frag");
     }
 
     /**
@@ -133,7 +139,7 @@ export class XMLscene extends CGFscene {
         });
 
         // Highlight pulse duration interface setup
-        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0, 10).name('Pulse duration');
+        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
 
         // Lights interface setup
         const lightsFolder = this.gui.gui.addFolder('Lights');
@@ -171,6 +177,22 @@ export class XMLscene extends CGFscene {
         }
 
         this.sceneInited = true;
+    }
+
+    update(t) {
+        if (this.firstUpdateTimeMilis == null) {
+            this.firstUpdateTimeMilis = t;
+        }
+
+        const updateTimeSeconds = milisToSeconds(t - this.firstUpdateTimeMilis);
+
+        // Update highlights instant
+        for (const key in this.graph.components) {
+            const component = this.graph.components[key];
+            if (component.highlight != null) {
+                component.highlight.updateCurrentScale(updateTimeSeconds);
+            }
+        }
     }
 
     /**

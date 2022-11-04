@@ -24,7 +24,7 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="demoTexture" file="scenes/images/donuts.jpg" />
     </textures>
 
     <materials>
