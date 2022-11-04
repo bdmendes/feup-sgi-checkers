@@ -29,7 +29,7 @@ export class GraphComponent {
         this.length_t = null;
         this.animationID = null;
         this.highlight = null;
-        this.enableHighlight = false;
+        this.enableHighlight = true;
     }
 
     /**
@@ -56,8 +56,14 @@ export class GraphComponent {
      */
     renderHighlight(texture) {
         if (this.highlight != null && this.enableHighlight) {
-            this.scene.highlightShader.setUniformsValues({ scale: this.highlight.currentScale });
-            texture.texture.bind();
+            this.scene.highlightShader.setUniformsValues({
+                scale: this.highlight.currentScale,
+                ratio: this.highlight.ratio,
+                r: this.highlight.color[0],
+                g: this.highlight.color[1],
+                b: this.highlight.color[2],
+            });
+            texture?.texture.bind();
             this.scene.setActiveShader(this.scene.highlightShader);
             return;
         }

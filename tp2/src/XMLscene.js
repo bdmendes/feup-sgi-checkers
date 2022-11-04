@@ -190,7 +190,7 @@ export class XMLscene extends CGFscene {
         for (const key in this.graph.components) {
             const component = this.graph.components[key];
             if (component.highlight != null) {
-                component.highlight.updateCurrentScale(updateTimeSeconds);
+                component.highlight.updateInstant(updateTimeSeconds);
             }
         }
     }
