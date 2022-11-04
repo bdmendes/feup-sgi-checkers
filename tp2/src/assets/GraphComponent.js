@@ -58,7 +58,7 @@ export class GraphComponent {
         if (this.highlight != null && this.enableHighlight) {
             this.scene.highlightShader.setUniformsValues({ scale: this.highlight.currentScale });
             texture.texture.bind();
-            this.scene.setActiveShaderSimple(this.scene.highlightShader);
+            this.scene.setActiveShader(this.scene.highlightShader);
             return;
         }
 

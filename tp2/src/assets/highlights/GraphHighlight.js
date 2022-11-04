@@ -13,6 +13,5 @@ export class GraphHighlight {
         }
         const ratio = Math.sin(Math.PI * (t / this.scene.graph.highlightPulseDuration));
         this.currentScale = (this.scaleH - 1.0) * ratio;
-        console.log(this.currentScale);
     }
 }
