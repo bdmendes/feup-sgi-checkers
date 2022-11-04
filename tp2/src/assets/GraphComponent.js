@@ -29,6 +29,7 @@ export class GraphComponent {
         this.length_t = null;
         this.animationID = null;
         this.highlight = null;
+        this.enableHighlight = true;
     }
 
     /**
@@ -44,9 +45,31 @@ export class GraphComponent {
         const material = this.renderMaterial(parentMaterial);
         const texture = this.renderTexture(material, parentTexture);
         this.renderTransformations();
+        this.renderHighlight(texture);
         this.renderAnimation();
         this.renderChildren(material, texture, parent_length_s, parent_length_t);
         this.scene.popMatrix();
+    }
+
+    /**
+     * Render the component highlight shader
+     * @memberof GraphComponent
+     */
+    renderHighlight(texture) {
+        if (this.highlight != null && this.enableHighlight) {
+            this.scene.highlightShader.setUniformsValues({
+                scale: this.highlight.currentScale,
+                ratio: this.highlight.ratio,
+                r: this.highlight.color[0],
+                g: this.highlight.color[1],
+                b: this.highlight.color[2],
+            });
+            texture?.texture.bind();
+            this.scene.setActiveShader(this.scene.highlightShader);
+            return;
+        }
+
+        this.scene.setActiveShaderSimple(this.scene.defaultShader);
     }
 
     /**
@@ -144,5 +167,19 @@ export class GraphComponent {
                 this.children[key].display(material, texture, length_s, length_t);
             }
         }
+    }
+
+    /**
+     * Verifies if this component has a direct primitive child
+     * @return {boolean}
+     * @memberof GraphComponent
+     */
+    hasDirectPrimitiveDescendant() {
+        for (const key in this.children) {
+            if (!(this.children[key] instanceof GraphComponent)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

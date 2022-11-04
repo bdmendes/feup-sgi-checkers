@@ -1,4 +1,4 @@
-import { CGFscene } from '../../lib/CGF.js';
+import { CGFscene, CGFshader } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
 import { vectorDifference, milisToSeconds } from './utils/math.js';
 
@@ -28,6 +28,8 @@ export class XMLscene extends CGFscene {
 
         this.initCameras();
 
+        this.initShaders();
+
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -37,6 +39,10 @@ export class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(20);
+    }
+
+    initShaders() {
+        this.highlightShader = new CGFshader(this.gl, "src/assets/highlights/scale.vert", "src/assets/highlights/color.frag");
     }
 
     /**
@@ -134,6 +140,9 @@ export class XMLscene extends CGFscene {
             this.interface.setActiveCamera(this.camera);
         });
 
+        // Highlight pulse duration interface setup
+        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
+
         // Lights interface setup
         const lightsFolder = this.gui.gui.addFolder('Lights');
         lightsFolder.open();
@@ -158,6 +167,17 @@ export class XMLscene extends CGFscene {
             });
         }
 
+        // Highlights interface setup
+        const highlightsFolder = this.gui.gui.addFolder('Highlights');
+        highlightsFolder.open();
+        for (const key in this.graph.components) {
+            const component = this.graph.components[key];
+            if (component.highlight == null || !component.hasDirectPrimitiveDescendant()) {
+                continue;
+            }
+            highlightsFolder.add(component, 'enableHighlight').name(key);
+        }
+
         this.sceneInited = true;
     }
 
@@ -167,6 +187,16 @@ export class XMLscene extends CGFscene {
         }
 
         const updateTimeSeconds = milisToSeconds(t - this.firstUpdateTimeMilis);
+
+        // Update highlights instant
+        for (const key in this.graph.components) {
+            const component = this.graph.components[key];
+            if (component.highlight != null) {
+                component.highlight.updateInstant(updateTimeSeconds);
+            }
+        }
+
+        // Update animations instant
         for (const key in this.graph.animations) {
             this.graph.animations[key].update(updateTimeSeconds);
         }
