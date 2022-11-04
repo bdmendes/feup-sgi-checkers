@@ -53,6 +53,7 @@ export class MySceneGraph {
         this.displayAxis = false;
         this.lightsAreVisible = false;
         this.displayNormals = false;
+        this.highlightPulseDuration = 3;
 
         // Scene assets
         this.materials = {};

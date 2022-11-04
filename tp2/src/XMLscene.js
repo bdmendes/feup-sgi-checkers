@@ -132,6 +132,9 @@ export class XMLscene extends CGFscene {
             this.interface.setActiveCamera(this.camera);
         });
 
+        // Highlight pulse duration interface setup
+        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0, 10).name('Pulse duration');
+
         // Lights interface setup
         const lightsFolder = this.gui.gui.addFolder('Lights');
         lightsFolder.open();
