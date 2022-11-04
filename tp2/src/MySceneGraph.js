@@ -53,6 +53,7 @@ export class MySceneGraph {
         this.displayAxis = false;
         this.lightsAreVisible = false;
         this.displayNormals = false;
+        this.loopAnimations = false;
 
         // Scene assets
         this.materials = {};

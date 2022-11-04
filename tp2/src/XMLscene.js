@@ -1,6 +1,6 @@
 import { CGFscene } from '../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../lib/CGF.js';
-import { normalizeVector, vectorDifference, degreesToRadians } from './utils/math.js';
+import { vectorDifference, milisToSeconds } from './utils/math.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -14,6 +14,7 @@ export class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.firstUpdateTimeMilis = null;
     }
 
     /**
@@ -35,7 +36,7 @@ export class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(20);
     }
 
     /**
@@ -125,6 +126,7 @@ export class XMLscene extends CGFscene {
         debugFolder.add(this.graph, 'displayAxis').name('Display axis');
         debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
         debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+        debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
 
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
@@ -157,6 +159,17 @@ export class XMLscene extends CGFscene {
         }
 
         this.sceneInited = true;
+    }
+
+    update(t) {
+        if (this.firstUpdateTimeMilis == null) {
+            this.firstUpdateTimeMilis = t;
+        }
+
+        const updateTimeSeconds = milisToSeconds(t - this.firstUpdateTimeMilis);
+        for (const key in this.graph.animations) {
+            this.graph.animations[key].update(updateTimeSeconds);
+        }
     }
 
     /**
