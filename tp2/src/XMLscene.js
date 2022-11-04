@@ -156,6 +156,17 @@ export class XMLscene extends CGFscene {
             });
         }
 
+        // Highlights interface setup
+        const highlightsFolder = this.gui.gui.addFolder('Highlights');
+        highlightsFolder.open();
+        for (const key in this.graph.components) {
+            const component = this.graph.components[key];
+            if (component.highlight == null || !component.hasDirectPrimitiveDescendant()) {
+                continue;
+            }
+            highlightsFolder.add(component, 'enableHighlight').name(key);
+        }
+
         this.sceneInited = true;
     }
 

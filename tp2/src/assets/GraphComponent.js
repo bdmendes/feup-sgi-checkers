@@ -29,6 +29,7 @@ export class GraphComponent {
         this.length_t = null;
         this.animationID = null;
         this.highlight = null;
+        this.enableHighlight = true;
     }
 
     /**
@@ -133,4 +134,17 @@ export class GraphComponent {
         }
     }
 
+    /**
+     * Verifies if this component has a direct primitive child
+     * @return {boolean}
+     * @memberof GraphComponent
+     */
+    hasDirectPrimitiveDescendant() {
+        for (const key in this.children) {
+            if (!(this.children[key] instanceof GraphComponent)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
