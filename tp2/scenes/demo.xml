@@ -293,6 +293,7 @@
             <children>
                 <primitiveref id="torus" />
             </children>
+            <highlighted r="1" g="1" b="0" scale_h="1.5" />
         </component>
 
         <component id="orange">
