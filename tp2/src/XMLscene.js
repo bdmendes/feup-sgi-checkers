@@ -126,6 +126,7 @@ export class XMLscene extends CGFscene {
         debugFolder.add(this.graph, 'displayAxis').name('Display axis');
         debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
         debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+        debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
 
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {

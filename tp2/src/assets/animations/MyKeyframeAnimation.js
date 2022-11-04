@@ -26,6 +26,14 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     update(t) {
+        if (this.keyframes.length == 0) {
+            return;
+        }
+
+        if (this.scene.graph.loopAnimations) {
+            t = t % this.keyframes[this.keyframes.length - 1].instant;
+        }
+
         const beforeFirstInstant = t < this.keyframes[0].instant;
         const afterLastInstant = t > this.keyframes[this.keyframes.length - 1].instant;
         if (beforeFirstInstant || afterLastInstant) {
@@ -40,7 +48,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         for (let i = 0; i < this.keyframes.length; i++) {
             if (t >= this.keyframes[i].instant) {
                 this.lastKeyframe = this.keyframes[i];
-                this.nextKeyFrame = this.keyframes[i + 1];
+                this.nextKeyFrame = this.keyframes[i + 1 < this.keyframes.length ? i + 1 : 0];
             } else {
                 break;
             }
@@ -51,6 +59,9 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     apply() {
+        if (this.matrix == null) {
+            return;
+        }
         this.scene.multMatrix(this.matrix);
     }
 
