@@ -14,6 +14,7 @@ export class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.firstUpdateTimeMilis = null;
     }
 
     /**
@@ -37,7 +38,7 @@ export class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(20);
     }
 
     initShaders() {
@@ -131,6 +132,7 @@ export class XMLscene extends CGFscene {
         debugFolder.add(this.graph, 'displayAxis').name('Display axis');
         debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
         debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+        debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
 
         // Camera interface setup
         this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
@@ -192,6 +194,11 @@ export class XMLscene extends CGFscene {
             if (component.highlight != null) {
                 component.highlight.updateInstant(updateTimeSeconds);
             }
+        }
+
+        // Update animations instant
+        for (const key in this.graph.animations) {
+            this.graph.animations[key].update(updateTimeSeconds);
         }
     }
 

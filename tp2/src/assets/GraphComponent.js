@@ -46,6 +46,7 @@ export class GraphComponent {
         const texture = this.renderTexture(material, parentTexture);
         this.renderTransformations();
         this.renderHighlight(texture);
+        this.renderAnimation();
         this.renderChildren(material, texture, parent_length_s, parent_length_t);
         this.scene.popMatrix();
     }
@@ -129,6 +130,16 @@ export class GraphComponent {
     }
 
     /**
+     * Render component animation
+     * @memberof GraphComponent
+     */
+    renderAnimation() {
+        if (this.animationID != null) {
+            this.scene.graph.animations[this.animationID].apply();
+        }
+    }
+
+    /**
      * Render and display every children of a component
      * @param {GraphMaterial} material - the material of the component
      * @param {GraphTexture} texture - the texture of the component
@@ -152,7 +163,9 @@ export class GraphComponent {
                 }
             }
 
-            this.children[key].display(material, texture, length_s, length_t);
+            if (this.animationID == null || this.scene.graph.animations[this.animationID].isVisible) {
+                this.children[key].display(material, texture, length_s, length_t);
+            }
         }
     }
 

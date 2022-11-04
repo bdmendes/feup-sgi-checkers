@@ -54,6 +54,7 @@ export class MySceneGraph {
         this.lightsAreVisible = false;
         this.displayNormals = false;
         this.highlightPulseDuration = 3;
+        this.loopAnimations = false;
 
         // Scene assets
         this.materials = {};
