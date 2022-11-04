@@ -1,4 +1,3 @@
-import { CGFscene } from "../../../../lib/CGF.js";
 import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
@@ -13,9 +12,8 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.scene = scene;
         this.keyframes = [];
 
-        this.keyframe1 = null;
-        this.keyframe2 = null;
-        this.lastUpdate = false;
+        this.lastKeyframe = null;
+        this.nextKeyFrame = null;
     }
 
     /**
@@ -28,52 +26,55 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     update(t) {
-        if (t < this.keyframes[0].instant || (t >= this.keyframes[this.keyframes.length - 1].instant && this.lastUpdate)) {
+        const beforeFirstInstant = t < this.keyframes[0].instant;
+        const afterLastInstant = t > this.keyframes[this.keyframes.length - 1].instant;
+        if (beforeFirstInstant || afterLastInstant) {
             return;
-        } else if (t >= this.keyframes[this.keyframes.length - 1].instant) {
-            this.lastUpdate = true;
-            this.interpolate(this.keyframe1, this.keyframe2, 1);
-            return;
-        } else if (!this.isVisible && t >= this.keyframes[0].instant && t < this.keyframes[this.keyframes.length - 1].instant) {
+        }
+
+        if (!this.isVisible) {
             this.isVisible = true;
         }
 
+        // Find current keyframes
         for (let i = 0; i < this.keyframes.length; i++) {
             if (t >= this.keyframes[i].instant) {
-                this.keyframe1 = this.keyframes[i];
-                this.keyframe2 = this.keyframes[i + 1];
+                this.lastKeyframe = this.keyframes[i];
+                this.nextKeyFrame = this.keyframes[i + 1];
+            } else {
+                break;
             }
         }
 
-        this.interpolate(this.keyframe1, this.keyframe2, (t - this.keyframe1.instant) / (this.keyframe2.instant - this.keyframe1.instant));
+        // Calculate current transformation matrix
+        this.interpolate(this.lastKeyframe, this.nextKeyFrame, (t - this.lastKeyframe.instant) / (this.nextKeyFrame.instant - this.lastKeyframe.instant));
     }
 
     apply() {
         this.scene.multMatrix(this.matrix);
     }
 
-    interpolate(keyframe1, keyframe2, t) {
-        let new_matrix = mat4.create();
+    interpolate(lastKeyframe, nextKeyFrame, t) {
+        let newMatrix = mat4.create();
 
-        let translation_coords = [0, 0, 0];
-        vec3.lerp(translation_coords, keyframe1.transformation.translation_coords, keyframe2.transformation.translation_coords, t);
-        mat4.translate(new_matrix, new_matrix, translation_coords);
+        // Interpolate translation
+        let translationCoords = [0, 0, 0];
+        vec3.lerp(translationCoords, lastKeyframe.transformation.translationCoords, nextKeyFrame.transformation.translationCoords, t);
+        mat4.translate(newMatrix, newMatrix, translationCoords);
 
-        let rotate_coords = [0, 0, 0];
-        vec3.lerp(rotate_coords, this.getKeyframeRotateCoords(keyframe1), this.getKeyframeRotateCoords(keyframe2), t);
+        // Interpolate rotation
+        let rotateCoords = [0, 0, 0];
+        let keyframeRotateCoords = (keyframe) => [keyframe.transformation.rotateX, keyframe.transformation.rotateY, keyframe.transformation.rotateZ];
+        vec3.lerp(rotateCoords, keyframeRotateCoords(lastKeyframe), keyframeRotateCoords(nextKeyFrame), t);
+        mat4.rotateX(newMatrix, newMatrix, rotateCoords[0]);
+        mat4.rotateY(newMatrix, newMatrix, rotateCoords[1]);
+        mat4.rotateZ(newMatrix, newMatrix, rotateCoords[2]);
 
-        mat4.rotateX(new_matrix, new_matrix, rotate_coords[0]);
-        mat4.rotateY(new_matrix, new_matrix, rotate_coords[1]);
-        mat4.rotateZ(new_matrix, new_matrix, rotate_coords[2]);
+        // Interpolate scale
+        let scaleCoords = [0, 0, 0];
+        vec3.lerp(scaleCoords, lastKeyframe.transformation.scaleCoords, nextKeyFrame.transformation.scaleCoords, t);
+        mat4.scale(newMatrix, newMatrix, scaleCoords);
 
-        let scale_coords = [0, 0, 0];
-        vec3.lerp(scale_coords, keyframe1.transformation.scale_coords, keyframe2.transformation.scale_coords, t);
-        mat4.scale(new_matrix, new_matrix, scale_coords);
-
-        this.matrix = new_matrix;
-    }
-
-    getKeyframeRotateCoords(keyframe) {
-        return [keyframe.transformation.rotate_x, keyframe.transformation.rotate_y, keyframe.transformation.rotate_z];
+        this.matrix = newMatrix;
     }
 }

@@ -59,7 +59,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     let foundTranslation = false;
     let foundRotation = false;
     let foundScale = false;
-    // maintain order
+
     for (const keyframeChild of keyframeChildren) {
         if (keyframeChild.nodeName === 'translation') {
             if (foundRotation || foundScale) {
@@ -71,7 +71,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (coordinates.length == 0) {
                 return "invalid coordinates defined for translation in keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
-            transformation.translation_coords = coordinates;
+            transformation.translationCoords = coordinates;
             foundTranslation = true;
         } else if (keyframeChild.nodeName === 'rotation') {
             if (!foundTranslation || foundScale) {
@@ -83,11 +83,11 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
                 return "invalid axis or angle defined for rotation in keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
             if (axis[0] == 1) {
-                transformation.rotate_x = degreesToRadians(angle);
+                transformation.rotateX = degreesToRadians(angle);
             } else if (axis[1] == 1) {
-                transformation.rotate_y = degreesToRadians(angle);
+                transformation.rotateY = degreesToRadians(angle);
             } else if (axis[2] == 1) {
-                transformation.rotate_z = degreesToRadians(angle);
+                transformation.rotateZ = degreesToRadians(angle);
             }
             foundRotation = true;
         } else if (keyframeChild.nodeName === 'scale') {
@@ -100,7 +100,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (coordinates.length == 0) {
                 return "invalid coordinates for scale transformation for keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             };
-            transformation.scale_coords = coordinates;
+            transformation.scaleCoords = coordinates;
             foundScale = true;
         } else {
             sceneGraph.onXMLMinorError("unknown tag <" + keyframeChild.nodeName + ">");

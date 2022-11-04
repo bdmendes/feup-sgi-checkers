@@ -14,7 +14,7 @@ export class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
-        this.time_zero = -1;
+        this.firstUpdateTimeMilis = null;
     }
 
     /**
@@ -161,14 +161,15 @@ export class XMLscene extends CGFscene {
     }
 
     update(t) {
-        if (this.time_zero === -1) { this.time_zero = t; }
-        let t_secs = milisToSeconds(t - this.time_zero);
+        if (this.firstUpdateTimeMilis == null) {
+            this.firstUpdateTimeMilis = t;
+        }
 
+        const updateTimeSeconds = milisToSeconds(t - this.firstUpdateTimeMilis);
         for (const key in this.graph.animations) {
-            this.graph.animations[key].update(t_secs);
+            this.graph.animations[key].update(updateTimeSeconds);
         }
     }
-
 
     /**
      * Displays the scene.
@@ -194,9 +195,9 @@ export class XMLscene extends CGFscene {
             this.lights[i].update();
         }
 
-        //if (this.graph.displayAxis) {
-        this.axis.display();
-        //}
+        if (this.graph.displayAxis) {
+            this.axis.display();
+        }
 
         if (this.sceneInited) {
             // Draw axis

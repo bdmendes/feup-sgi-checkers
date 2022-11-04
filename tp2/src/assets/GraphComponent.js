@@ -133,7 +133,7 @@ export class GraphComponent {
                 this.scene.graph.animations[this.animationID].apply();
             }
 
-            if (this.animationID === null || this.scene.graph.animations[this.animationID].isVisible) {
+            if (this.animationID == null || this.scene.graph.animations[this.animationID].isVisible) {
                 this.children[key].display(material, texture, length_s, length_t);
             }
         }
