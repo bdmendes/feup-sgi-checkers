@@ -75,7 +75,7 @@
         </omni>
 
         <omni id="lampTopLeft" enabled="0">
-            <location x="-11" y="4" z="13" w="1.0" />
+            <location x="-10" y="4" z="13" w="1.0" />
             <ambient r="0.9" g="0.7" b="0.1" a="1.0" />
             <diffuse r="0.9" g="0.7" b="0.1" a="1.0" />
             <specular r="0.9" g="0.7" b="0.1" a="1.0" />
@@ -174,7 +174,7 @@
 
     <transformations>
         <transformation id="tableTransform">
-            <translate x="3" y="0" z="-8" />
+            <translate x="6" y="0" z="-10" />
             <rotate axis="y" angle="-90" />
             <rotate axis="x" angle="-90" />
             <scale x="2" y="3" z="3" />
@@ -203,14 +203,128 @@
         <primitive id="triangle">
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
+
+        <primitive id="halfBarrel">
+            <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="2.6" />
+                <controlpoint x="2" y="0" z="2.6" />
+                <controlpoint x="2" y="0" z="0" />
+
+                <controlpoint x="-4" y="3" z="0" />
+                <controlpoint x="-4" y="3" z="5" />
+                <controlpoint x="4" y="3" z="5" />
+                <controlpoint x="4" y="3" z="0" />
+
+                <controlpoint x="-2" y="6" z="0" />
+                <controlpoint x="-2" y="6" z="2.6" />
+                <controlpoint x="2" y="6" z="2.6" />
+                <controlpoint x="2" y="6" z="0" />
+            </patch>
+        </primitive>
+
+        <primitive id="coverBarrel">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="1.41" y="0" z="1.41" />
+
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="0" y="0" z="0.8" />
+                <controlpoint x="0" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="0" y="0" z="-0.8" />
+                <controlpoint x="0" y="0" z="-0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
+            </patch>
+        </primitive>
+
+        <primitive id="tent">
+            <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="2" />
+                <controlpoint x="0" y="5" z="2" />
+                <controlpoint x="2" y="0" z="2" />
+                
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="0" y="5" z="-2" />
+                <controlpoint x="2" y="0" z="-2" />
+            </patch>
+        </primitive>
+
+        <primitive id="inversedTent">
+            <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="-2" />
+                <controlpoint x="0" y="5" z="-2" />
+                <controlpoint x="2" y="0" z="-2" />
+
+                <controlpoint x="-2" y="0" z="2" />
+                <controlpoint x="0" y="5" z="2" />
+                <controlpoint x="2" y="0" z="2" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations>
-        <keyframeanim id="circles">
-            <keyframe instant="1">
-                <translation x="10" y="10" z="10" />
-                <rotation axis="y" angle="30" />
-                <scale sx="2" sy="2" sz="2" />
+        <keyframeanim id="televisionAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="orangeAnimation">
+            <keyframe instant="0">
+                <translation x="-2" y="2" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="4" y="3" z="0" />
+                <rotation axis="z" angle="90" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="90" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2.7">
+                <translation x="7" y="4" z="-11" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="30" y="8" z="-11" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>
     </animations>
@@ -231,6 +345,8 @@
                 <componentref id="sofaTable" />
                 <componentref id="chairs" />
                 <componentref id="rubiksPainting" />
+                <componentref id="barrel" />
+                <componentref id="tent" />
             </children>
         </component>
 
@@ -280,7 +396,7 @@
 
         <component id="donut">
             <transformation>
-                <translate x="2" y="0" z="1.15" />
+                <translate x="2" y="0.3" z="1.15" />
                 <scale x="0.1" y="0.05" z="0.05" />
             </transformation>
             <materials>
@@ -309,6 +425,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="orangeAnimation" />
         </component>
 
         <component id="mediaCenter">
@@ -332,7 +449,7 @@
 
         <component id="television">
             <transformation>
-                <translate x="-1" y="0" z="0" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -342,6 +459,7 @@
                 <componentref id="televisionScreen" />
                 <componentref id="televisionMount" />
             </children>
+            <animation id="televisionAnimation" />
         </component>
 
         <component id="table">
@@ -496,7 +614,7 @@
 
         <component id="window">
             <transformation>
-                <translate x="0.5" y="-0.5" z="0.01" />
+                <translate x="0.5" y="0.1" z="0.01" />
                 <scale x="0.3" y="0.2" z="0.2" />
             </transformation>
             <materials>
@@ -925,7 +1043,7 @@
 
         <component id="lamp3">
             <transformation>
-                <translate x="-11.5" y="1" z="13" />
+                <translate x="-10.5" y="1" z="13" />
                 <scale x="1" y="0.5" z="1" />
             </transformation>
             <materials>
@@ -1068,7 +1186,9 @@
         </component>
 
         <component id="chairs">
-            <transformation></transformation>
+            <transformation>
+                <translate x="3" y="0" z="-2" />
+            </transformation>
             <materials>
                 <material id="metal" />
                 <material id="darkBrown" />
@@ -1210,6 +1330,80 @@
                 <componentref id="cube_face4" />
                 <componentref id="cube_face5" />
                 <componentref id="cube_face6" />
+            </children>
+        </component>
+
+        <component id="barrel">
+            <transformation>
+                <scale x="0.75" y="0.75" z="0.75" />
+                <translate x="16" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+                <material id="inherit" />
+                <material id="metalDark" />
+            </materials>
+            <texture id="trunkTexture" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="halfBarrel" />
+                <componentref id="rotatedHalfBarrel" />
+                <componentref id="barrelCoverTop" />
+                <componentref id="barrelCoverBottom" />
+            </children>
+        </component>
+
+        <component id="rotatedHalfBarrel">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="halfBarrel" />
+            </children>
+        </component>
+
+        <component id="barrelCoverTop">
+            <transformation>
+                <translate x="0" y="6" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="coverBarrel" />
+            </children>
+        </component>
+
+        <component id="barrelCoverBottom">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="coverBarrel" />
+            </children>
+        </component>
+
+        <component id="tent">
+            <transformation>
+                <translate x="-13" y="0" z="-6" />
+                <scale x="1" y="1.5" z="2" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="bassDark" />
+            </materials>
+            <texture id="rocksTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="tent" />
+                <primitiveref id="inversedTent" />
             </children>
         </component>
     </components>
