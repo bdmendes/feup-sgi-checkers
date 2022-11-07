@@ -252,7 +252,7 @@
                 <controlpoint x="-2" y="0" z="2" />
                 <controlpoint x="0" y="5" z="2" />
                 <controlpoint x="2" y="0" z="2" />
-                
+
                 <controlpoint x="-2" y="0" z="-2" />
                 <controlpoint x="0" y="5" z="-2" />
                 <controlpoint x="2" y="0" z="-2" />
@@ -582,6 +582,7 @@
             <children>
                 <primitiveref id="cylinder" />
             </children>
+            <highlighted r="0.1" g="0.1" b="0.1" scale_h="1.05" />
         </component>
 
         <component id="televisionMount">
@@ -1359,7 +1360,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="halfBarrel" />
             </children>
@@ -1372,7 +1373,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="coverBarrel" />
             </children>
@@ -1385,7 +1386,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="coverBarrel" />
             </children>
@@ -1400,7 +1401,7 @@
             <materials>
                 <material id="bassDark" />
             </materials>
-            <texture id="rocksTexture" length_s="1" length_t="1"/>
+            <texture id="rocksTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tent" />
                 <primitiveref id="inversedTent" />
