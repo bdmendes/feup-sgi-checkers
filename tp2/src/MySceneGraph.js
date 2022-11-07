@@ -66,6 +66,9 @@ export class MySceneGraph {
         this.cameras = {};
         this.animations = {};
 
+        // Optimization variables
+        this.lastComponentNeededHighlight = false;
+
         // Default material
         this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
         this.defaultMaterial.addComponent("diffuse", 0.5, 0.5, 0.7);

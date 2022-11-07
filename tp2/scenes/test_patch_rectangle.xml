@@ -76,8 +76,6 @@
             <children>
                 <primitiveref id="demoRectangle" />
             </children>
-            <animation id="demoKeyframe" />
-            <highlighted r="1.0" g="0.0" b="0.0" scale_h="1" />
         </component>
     </components>
 </sxs>

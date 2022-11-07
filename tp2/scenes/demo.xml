@@ -113,6 +113,7 @@
         <texture id="sofaTexture" file="scenes/images/sofa.jpg" />
         <texture id="lampTexture" file="scenes/images/lamp.jpg" />
         <texture id="rubiksTexture" file="scenes/images/rubiks_cube.png" />
+        <texture id="fireplaceTexture" file="scenes/images/fireplace.jpg" />
     </textures>
 
     <materials>
@@ -204,6 +205,16 @@
             <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
         </primitive>
 
+        <primitive id="patchRectangle">
+            <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="-1" y="-1" z="0" />
+                <controlpoint x="1" y="-1" z="0" />
+
+                <controlpoint x="-1.2" y="1" z="0" />
+                <controlpoint x="1.2" y="1" z="0" />
+            </patch>
+        </primitive>
+
         <primitive id="halfBarrel">
             <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
@@ -252,7 +263,7 @@
                 <controlpoint x="-2" y="0" z="2" />
                 <controlpoint x="0" y="5" z="2" />
                 <controlpoint x="2" y="0" z="2" />
-                
+
                 <controlpoint x="-2" y="0" z="-2" />
                 <controlpoint x="0" y="5" z="-2" />
                 <controlpoint x="2" y="0" z="-2" />
@@ -270,6 +281,18 @@
                 <controlpoint x="2" y="0" z="2" />
             </patch>
         </primitive>
+
+        <primitive id="tentBack">
+            <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="0" y="0" z="-3.3" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="3.3" />
+
+                <controlpoint x="0" y="2" z="-2.2" />
+                <controlpoint x="0" y="5.1" z="0" />
+                <controlpoint x="0" y="2" z="2.2" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations>
@@ -281,14 +304,14 @@
                 <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
-            <keyframe instant="3">
-                <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="30" />
+            <keyframe instant="1">
+                <translation x="0.2" y="0" z="0" />
+                <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
-            <keyframe instant="6">
+            <keyframe instant="2">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
@@ -327,6 +350,30 @@
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>
+
+        <keyframeanim id="tentAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1.1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="0.8" sz="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1.1" sz="1" />
+            </keyframe>
+        </keyframeanim>
     </animations>
 
     <components>
@@ -346,7 +393,7 @@
                 <componentref id="chairs" />
                 <componentref id="rubiksPainting" />
                 <componentref id="barrel" />
-                <componentref id="tent" />
+                <componentref id="fireplace" />
             </children>
         </component>
 
@@ -409,7 +456,7 @@
             <children>
                 <primitiveref id="torus" />
             </children>
-            <highlighted r="1" g="1" b="0" scale_h="1.5" />
+            <highlighted r="1" g="0.55" b="0.58" scale_h="1.2" />
         </component>
 
         <component id="orange">
@@ -624,7 +671,7 @@
             </materials>
             <texture id="trunkTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="patchRectangle" />
                 <componentref id="windowView" />
             </children>
         </component>
@@ -1359,7 +1406,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="halfBarrel" />
             </children>
@@ -1372,7 +1419,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="coverBarrel" />
             </children>
@@ -1385,22 +1432,51 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="lampTexture" length_s="1" length_t="1"/>
+            <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="coverBarrel" />
             </children>
         </component>
 
-        <component id="tent">
+        <component id="fireplace">
             <transformation>
-                <translate x="-13" y="0" z="-6" />
+                <translate x="-14.7" y="0" z="-6" />
                 <scale x="1" y="1.5" z="2" />
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="bassDark" />
+                <material id="darkOled" />
             </materials>
-            <texture id="rocksTexture" length_s="1" length_t="1"/>
+            <texture id="rocksTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="tent" />
+                <componentref id="fireplaceBack" />
+            </children>
+            <animation id="tentAnimation" />
+        </component>
+
+        <component id="fireplaceBack">
+            <transformation>
+                <scale x="0.6" y="0.7" z="0.6" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="fireplaceTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="tentBack" />
+            </children>
+        </component>
+
+        <component id="tent">
+            <transformation>
+                <scale x="1" y="1" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tent" />
                 <primitiveref id="inversedTent" />

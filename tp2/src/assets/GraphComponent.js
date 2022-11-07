@@ -42,12 +42,16 @@ export class GraphComponent {
      */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
         this.scene.pushMatrix();
+
         const material = this.renderMaterial(parentMaterial);
         const texture = this.renderTexture(material, parentTexture);
-        this.renderTransformations();
         this.renderHighlight(texture);
+
+        this.renderTransformations();
         this.renderAnimation();
+
         this.renderChildren(material, texture, parent_length_s, parent_length_t);
+
         this.scene.popMatrix();
     }
 
@@ -56,7 +60,7 @@ export class GraphComponent {
      * @memberof GraphComponent
      */
     renderHighlight(texture) {
-        if (this.highlight != null && this.enableHighlight) {
+        if (this.highlight != null && this.enableHighlight && this.hasDirectPrimitiveDescendant()) {
             this.scene.highlightShader.setUniformsValues({
                 scale: this.highlight.currentScale,
                 ratio: this.highlight.ratio,
@@ -65,10 +69,21 @@ export class GraphComponent {
                 b: this.highlight.color[2],
             });
             texture?.texture.bind();
-            this.scene.setActiveShader(this.scene.highlightShader);
+            if (!this.scene.graph.lastComponentNeededHighlight) {
+                this.scene.graph.lastComponentNeededHighlight = true;
+                this.scene.setActiveShader(this.scene.highlightShader);
+            }
             return;
         }
 
+        // Do not set same shader twice
+        if (!this.scene.graph.lastComponentNeededHighlight) {
+            return;
+        }
+        this.scene.graph.lastComponentNeededHighlight = false;
+
+        // Lights are passed automatically by WebCGF to its default shader,
+        // so let's skip that with the simple variant of setActiveShader
         this.scene.setActiveShaderSimple(this.scene.defaultShader);
     }
 
