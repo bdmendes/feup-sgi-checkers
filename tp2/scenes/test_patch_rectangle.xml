@@ -48,10 +48,10 @@
         <primitive id="demoRectangle">
             <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="2" />
-                <controlpoint x="2" y="0" z="2" />
-
                 <controlpoint x="-2" y="0" z="-2" />
+
                 <controlpoint x="2" y="0" z="-2" />
+                <controlpoint x="2" y="0" z="2" />
             </patch>
         </primitive>
     </primitives>

@@ -208,9 +208,8 @@
         <primitive id="patchRectangle">
             <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
                 <controlpoint x="-1" y="-1" z="0" />
-                <controlpoint x="1" y="-1" z="0" />
-
                 <controlpoint x="-1.2" y="1" z="0" />
+                <controlpoint x="1" y="-1" z="0" />
                 <controlpoint x="1.2" y="1" z="0" />
             </patch>
         </primitive>
@@ -218,18 +217,20 @@
         <primitive id="halfBarrel">
             <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
-                <controlpoint x="-2" y="0" z="2.6" />
-                <controlpoint x="2" y="0" z="2.6" />
-                <controlpoint x="2" y="0" z="0" />
-
                 <controlpoint x="-4" y="3" z="0" />
-                <controlpoint x="-4" y="3" z="5" />
-                <controlpoint x="4" y="3" z="5" />
-                <controlpoint x="4" y="3" z="0" />
-
                 <controlpoint x="-2" y="6" z="0" />
+
+
+                <controlpoint x="-2" y="0" z="2.6" />
+                <controlpoint x="-4" y="3" z="5" />
                 <controlpoint x="-2" y="6" z="2.6" />
+
+                <controlpoint x="2" y="0" z="2.6" />
+                <controlpoint x="4" y="3" z="5" />
                 <controlpoint x="2" y="6" z="2.6" />
+
+                <controlpoint x="2" y="0" z="0" />
+                <controlpoint x="4" y="3" z="0" />
                 <controlpoint x="2" y="6" z="0" />
             </patch>
         </primitive>
@@ -237,23 +238,23 @@
         <primitive id="coverBarrel">
             <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
                 <controlpoint x="-1.41" y="0" z="1.41" />
-                <controlpoint x="-0.8" y="0" z="2.2" />
-                <controlpoint x="0.8" y="0" z="2.2" />
-                <controlpoint x="1.41" y="0" z="1.41" />
-
                 <controlpoint x="-2.2" y="0" z="0.8" />
-                <controlpoint x="0" y="0" z="0.8" />
-                <controlpoint x="0" y="0" z="0.8" />
-                <controlpoint x="2.2" y="0" z="0.8" />
-
                 <controlpoint x="-2.2" y="0" z="-0.8" />
-                <controlpoint x="0" y="0" z="-0.8" />
-                <controlpoint x="0" y="0" z="-0.8" />
-                <controlpoint x="2.2" y="0" z="-0.8" />
-
                 <controlpoint x="-1.41" y="0" z="-1.41" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="0" z="0.8" />
+                <controlpoint x="0" y="0" z="-0.8" />
                 <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="0" z="0.8" />
+                <controlpoint x="0" y="0" z="-0.8" />
                 <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
                 <controlpoint x="1.41" y="0" z="-1.41" />
             </patch>
         </primitive>
@@ -261,11 +262,12 @@
         <primitive id="tent">
             <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="2" />
-                <controlpoint x="0" y="5" z="2" />
-                <controlpoint x="2" y="0" z="2" />
-
                 <controlpoint x="-2" y="0" z="-2" />
+
+                <controlpoint x="0" y="5" z="2" />
                 <controlpoint x="0" y="5" z="-2" />
+
+                <controlpoint x="2" y="0" z="2" />
                 <controlpoint x="2" y="0" z="-2" />
             </patch>
         </primitive>
@@ -273,11 +275,12 @@
         <primitive id="inversedTent">
             <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="-2" />
-                <controlpoint x="0" y="5" z="-2" />
-                <controlpoint x="2" y="0" z="-2" />
-
                 <controlpoint x="-2" y="0" z="2" />
+
+                <controlpoint x="0" y="5" z="-2" />
                 <controlpoint x="0" y="5" z="2" />
+
+                <controlpoint x="2" y="0" z="-2" />
                 <controlpoint x="2" y="0" z="2" />
             </patch>
         </primitive>
@@ -285,11 +288,12 @@
         <primitive id="tentBack">
             <patch degree_u="2" degree_v="1" parts_u="10" parts_v="10">
                 <controlpoint x="0" y="0" z="-3.3" />
-                <controlpoint x="0" y="0" z="0" />
-                <controlpoint x="0" y="0" z="3.3" />
-
                 <controlpoint x="0" y="2" z="-2.2" />
+
+                <controlpoint x="0" y="0" z="0" />
                 <controlpoint x="0" y="5.1" z="0" />
+
+                <controlpoint x="0" y="0" z="3.3" />
                 <controlpoint x="0" y="2" z="2.2" />
             </patch>
         </primitive>
