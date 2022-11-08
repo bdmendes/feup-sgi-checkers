@@ -17,7 +17,7 @@ export class MyPatch extends CGFobject {
         for (let u = 0; u < this.degreeU + 1; u++) {
             const subarray = [];
             for (let v = 0; v < this.degreeV + 1; v++) {
-                subarray.push([...this.controlPoints[v * (this.degreeU + 1) + u], 1]);
+                subarray.push([...this.controlPoints[u * (this.degreeV + 1) + v], 1]);
             }
             vertices.push(subarray);
         }
