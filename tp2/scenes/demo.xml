@@ -114,6 +114,8 @@
         <texture id="lampTexture" file="scenes/images/lamp.jpg" />
         <texture id="rubiksTexture" file="scenes/images/rubiks_cube.png" />
         <texture id="fireplaceTexture" file="scenes/images/fireplace.jpg" />
+        <texture id="goldTexture" file="scenes/images/gold.jpg" />
+        <texture id="bowlTexture" file="scenes/images/bowl.jpg" />
     </textures>
 
     <materials>
@@ -295,6 +297,98 @@
 
                 <controlpoint x="0" y="0" z="3.3" />
                 <controlpoint x="0" y="2" z="2.2" />
+            </patch>
+        </primitive>
+
+        <primitive id="bowlTop">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
+            </patch>
+        </primitive>
+
+        <primitive id="bowlBottom">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+            </patch>
+        </primitive>
+
+        <primitive id="glassHalfSide">
+            <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="0" y="3" z="0" />
+                <controlpoint x="-2" y="6" z="0" />
+
+                <controlpoint x="-2" y="0" z="2.6" />
+                <controlpoint x="4" y="3" z="0" />
+                <controlpoint x="-2" y="6" z="2.6" />
+
+                <controlpoint x="2" y="0" z="2.6" />
+                <controlpoint x="-4" y="3" z="0" />
+                <controlpoint x="2" y="6" z="2.6" />
+
+                <controlpoint x="2" y="0" z="0" />
+                <controlpoint x="0" y="3" z="0" />
+                <controlpoint x="2" y="6" z="0" />
+            </patch>
+        </primitive>
+
+        <primitive id="glassBase">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-3" z="0" />
+                <controlpoint x="0" y="-3" z="0" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-3" z="0" />
+                <controlpoint x="0" y="-3" z="0" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
             </patch>
         </primitive>
     </primitives>
@@ -527,6 +621,24 @@
                 <componentref id="tableTop" />
                 <componentref id="donut" />
                 <componentref id="orange" />
+                <componentref id="bowl" />
+            </children>
+        </component>
+
+        <component id="bowl">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <translate x="1" y="1.325" z="1" />
+                <scale x="0.4" y="0.2" z="0.4" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+                <material id="inherit" />
+            </materials>
+            <texture id="bowlTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="bowlTop" />
+                <primitiveref id="bowlBottom" />
             </children>
         </component>
 
@@ -1196,8 +1308,90 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="glass" />
                 <componentref id="sofaTableTop" />
                 <componentref id="sofatableLegs" />
+            </children>
+        </component>
+
+        <component id="glass">
+            <transformation>
+                <rotate axis="y" angle="180" />
+                <translate x="0" y="2.2" z="-2" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="goldTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="glassSide" />
+                <componentref id="glassBases" />
+            </children>
+        </component>
+
+        <component id="glassSide">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="glassHalfSide" />
+                <componentref id="rotatedHalfGlass" />
+            </children>
+        </component>
+
+        <component id="rotatedHalfGlass">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="glassHalfSide" />
+            </children>
+        </component>
+
+        <component id="glassBases">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="glassTop" />
+                <componentref id="glassBottom" />
+            </children>
+        </component>
+
+        <component id="glassTop">
+            <transformation>
+                <translate x="0" y="6" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="glassBase" />
+            </children>
+        </component>
+
+        <component id="glassBottom">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="glassBase" />
             </children>
         </component>
 
