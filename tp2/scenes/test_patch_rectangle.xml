@@ -50,8 +50,8 @@
                 <controlpoint x="-2" y="0" z="2" />
                 <controlpoint x="-2" y="0" z="-2" />
 
-                <controlpoint x="2" y="0" z="-2" />
                 <controlpoint x="2" y="0" z="2" />
+                <controlpoint x="2" y="0" z="-2" />
             </patch>
         </primitive>
     </primitives>

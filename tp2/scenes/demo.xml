@@ -297,6 +297,54 @@
                 <controlpoint x="0" y="2" z="2.2" />
             </patch>
         </primitive>
+
+        <primitive id="bowlTop">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
+            </patch>
+        </primitive>
+
+        <primitive id="bowlBottom">
+            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="1.41" y="0" z="1.41" />
+                <controlpoint x="2.2" y="0" z="0.8" />
+                <controlpoint x="2.2" y="0" z="-0.8" />
+                <controlpoint x="1.41" y="0" z="-1.41" />
+
+                <controlpoint x="0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="0.8" y="0" z="-2.2" />
+
+                <controlpoint x="-0.8" y="0" z="2.2" />
+                <controlpoint x="0" y="-2" z="0.8" />
+                <controlpoint x="0" y="-2" z="-0.8" />
+                <controlpoint x="-0.8" y="0" z="-2.2" />
+
+                <controlpoint x="-1.41" y="0" z="1.41" />
+                <controlpoint x="-2.2" y="0" z="0.8" />
+                <controlpoint x="-2.2" y="0" z="-0.8" />
+                <controlpoint x="-1.41" y="0" z="-1.41" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations>
@@ -527,6 +575,24 @@
                 <componentref id="tableTop" />
                 <componentref id="donut" />
                 <componentref id="orange" />
+                <componentref id="bowl" />
+            </children>
+        </component>
+
+        <component id="bowl">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <translate x="1" y="1.325" z="1" />
+                <scale x="0.4" y="0.2" z="0.4" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+                <material id="inherit" />
+            </materials>
+            <texture id="vidralTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="bowlTop" />
+                <primitiveref id="bowlBottom" />
             </children>
         </component>
 
