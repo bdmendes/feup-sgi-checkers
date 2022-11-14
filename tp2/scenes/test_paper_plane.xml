@@ -61,7 +61,139 @@
         </primitive>
     </primitives>
 
-    <animations></animations>
+    <animations>
+        <keyframeanim id="rightWingAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="0.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="leftWingAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="0.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-30" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+    </animations>
 
     <components>
         <component id="demoRoot">
@@ -98,6 +230,7 @@
                 <primitiveref id="rightTriangle" />
                 <primitiveref id="leftTriangle" />
             </children>
+            <animation id="rightWingAnimation" />
         </component>
 
         <component id="leftWing">
@@ -109,8 +242,10 @@
             </materials>
             <texture id="inherit" length_t="3" />
             <children>
-                <componentref id="rightWing" />
+                <primitiveref id="rightTriangle" />
+                <primitiveref id="leftTriangle" />
             </children>
+            <animation id="leftWingAnimation" />
         </component>
 
         <component id="planeBase">
