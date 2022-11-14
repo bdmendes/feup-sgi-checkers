@@ -1,0 +1,128 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5" />
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1" linear="0" quadratic="0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="10">
+            <emission r="0.2" g="0" b="0" a="1.0" />
+            <diffuse r="0.8" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="rightTriangle">
+            <triangle x1="0" y1="0" z1="0" x2="1.5" y2="0" z2="0" x3="2" y3="0" z3="-1" />
+        </primitive>
+
+        <primitive id="leftTriangle">
+            <triangle x1="1.5" y1="0" z1="0" x2="0" y2="0" z2="0" x3="2" y3="0" z3="-1" />
+        </primitive>
+
+        <primitive id="baseRightTriangle">
+            <triangle x1="0" y1="0" z1="0" x2="1.5" y2="0" z2="0" x3="1.5" y3="-0.7" z3="0" />
+        </primitive>
+
+        <primitive id="baseLeftTriangle">
+            <triangle x1="1.5" y1="0" z1="0" x2="0" y2="0" z2="0" x3="1.5" y3="-0.7" z3="0" />
+        </primitive>
+    </primitives>
+
+    <animations></animations>
+
+    <components>
+        <component id="demoRoot">
+            <transformation></transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="demoTexture" length_s="1" length_t="3" />
+            <children>
+                <componentref id="plane" />
+            </children>
+        </component>
+
+        <component id="plane">
+            <transformation></transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_t="3" />
+            <children>
+                <componentref id="rightWing" />
+                <componentref id="leftWing" />
+                <componentref id="planeBase" />
+            </children>
+        </component>
+
+        <component id="rightWing">
+            <transformation></transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_t="3" />
+            <children>
+                <primitiveref id="rightTriangle" />
+                <primitiveref id="leftTriangle" />
+            </children>
+        </component>
+
+        <component id="leftWing">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_t="3" />
+            <children>
+                <componentref id="rightWing" />
+            </children>
+        </component>
+
+        <component id="planeBase">
+            <transformation></transformation>
+            <materials>
+                <material id="demoMaterial" />
+            </materials>
+            <texture id="inherit" length_t="3" />
+            <children>
+                <primitiveref id="baseRightTriangle" />
+                <primitiveref id="baseLeftTriangle" />
+            </children>
+        </component>
+    </components>
+</sxs>
