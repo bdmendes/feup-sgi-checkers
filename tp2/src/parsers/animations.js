@@ -53,7 +53,7 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     }
 
     const keyframe = new GraphKeyframe(sceneGraph.scene, instant);
-    const transformation = new Object();
+    const transformation = { rotateX: 0, rotateY: 0, rotateZ: 0, translationCoords: [0, 0, 0], scaleCoords: [1, 1, 1] };
     const keyframeChildren = keyframeNode.children;
 
     let foundTranslation = false;
