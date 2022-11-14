@@ -19,8 +19,11 @@
 
 -----
 
-### [TP2 - ...](tp2)
-- (items briefly describing main strong points)
+### [TP2 - Extended Scene Graph](tp2)
+- Items described in tp2 [README](https://git.fe.up.pt/sgi-meic/sgi-2022-2023/t05/sgi-t05-g04/-/blob/main/tp2/README.md)
+- Scene <!-- TO COMPLETE -->
+  - The scene represents a comfortable living room with a little donut over the dinner table and a modern center table, a sofa to watch TV and several lamps to allow night entertainment. Two art paintings are present in the living room walls to give some life and colors to the scene.
+  - [Check out our scene here](https://paginas.fe.up.pt/~up201905951/sgi/tp2/)
 
 ----
 
