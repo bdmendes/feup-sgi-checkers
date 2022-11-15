@@ -304,6 +304,16 @@ function referenceComponentChildren(sceneGraph) {
     return null;
 }
 
+/**
+ * Parses the component's <animation> block
+ * 
+ * @param {*} componentID 
+ * @param {MySceneGraph} sceneGraph 
+ * @param {*} node 
+ * @param {*} component 
+ * @param {*} animationIndex 
+ * @returns 
+ */
 function parseAnimation(componentID, sceneGraph, node, component, animationIndex) {
     if (animationIndex == -1) {
         return null;
@@ -323,6 +333,16 @@ function parseAnimation(componentID, sceneGraph, node, component, animationIndex
     return null;
 }
 
+/**
+ * Parses the component's <highlighted> block
+ * 
+ * @param {*} componentID 
+ * @param {MySceneGraph} sceneGraph 
+ * @param {*} node 
+ * @param {*} component 
+ * @param {*} highlightIndex 
+ * @returns 
+ */
 function parseHighlighted(componentID, sceneGraph, node, component, highlightIndex) {
     if (highlightIndex == -1) {
         return null;

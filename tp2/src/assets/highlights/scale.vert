@@ -101,6 +101,10 @@ vec4 lighting(vec4 vertex, vec3 E, vec3 N) {
   return result;
 }
 
+/**
+* Calculates lighting at the position to be used by the fragment shader.
+* Offsets the vertex position according to a scale factor, to give it a appearance.
+*/
 void main() {
   // Transformed Vertex position
   vec3 scaledVertex = aVertexPosition * scale + aVertexPosition;

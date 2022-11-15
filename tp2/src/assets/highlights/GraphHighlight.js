@@ -1,4 +1,15 @@
+/**
+ * @export
+ * @class GraphHighlight:
+ */
 export class GraphHighlight {
+
+    /**
+     * Creates an instance of GraphHighlight.
+     * @param {CGFscene} scene 
+     * @param {*} color 
+     * @param {*} scaleH 
+     */
     constructor(scene, color, scaleH) {
         this.scene = scene;
         this.color = color;
@@ -7,6 +18,10 @@ export class GraphHighlight {
         this.ratio = 0;
     }
 
+    /**
+     * Update values that shall be used in the shader for the current frame
+     * @param {number} t 
+     */
     updateInstant(t) {
         t = t % this.scene.graph.highlightPulseDuration;
         if (t == 0) {

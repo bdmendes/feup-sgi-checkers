@@ -2,6 +2,11 @@ import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
 
+/**
+ * @export
+ * @class MyKeyframeAnimation
+ * @extends {MyAnimation}
+ */
 export class MyKeyframeAnimation extends MyAnimation {
     /**
      * Creates an instance of MyKeyframeAnimation.
@@ -17,7 +22,7 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     /**
-     * 
+     * Add keyframe to the animation
      * @param {GraphKeyframe} keyframe 
      */
     addKeyframe(keyframe) {
@@ -25,6 +30,12 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.keyframes.sort((a, b) => a.instant - b.instant);
     }
 
+
+    /**
+     * Update animation matrix for the current frame
+     * @param {*} t
+     * @memberof MyKeyframeAnimation
+     */
     update(t) {
         if (this.keyframes.length == 0) {
             return;
@@ -58,6 +69,10 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.interpolate(this.lastKeyframe, this.nextKeyFrame, (t - this.lastKeyframe.instant) / (this.nextKeyFrame.instant - this.lastKeyframe.instant));
     }
 
+    /**
+     * Apply the animation matrix to the scene
+     * @memberof MyKeyframeAnimation
+     */
     apply() {
         if (this.matrix == null) {
             return;
@@ -65,6 +80,13 @@ export class MyKeyframeAnimation extends MyAnimation {
         this.scene.multMatrix(this.matrix);
     }
 
+    /**
+     * Interpolate between two keyframes according to the current frame
+     * @param {*} lastKeyframe
+     * @param {*} nextKeyFrame
+     * @param {*} t
+     * @memberof MyKeyframeAnimation
+     */
     interpolate(lastKeyframe, nextKeyFrame, t) {
         let newMatrix = mat4.create();
 
