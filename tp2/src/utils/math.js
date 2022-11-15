@@ -54,7 +54,6 @@ export function vectorDifference([x1, y1, z1], [x2, y2, z2]) {
 
 /**
  * Convert miliseconds to seconds without losing precision
- *
  * @export
  * @param {*} milis miliseconds
  * @return {*} seconds

@@ -81,6 +81,13 @@ export function parsePrimitives(sceneGraph, primitivesNode) {
     return null;
 }
 
+/**
+ * Parses the <patch> block.
+ * @param {MySceneGraph} sceneGraph
+ * @param {*} patchNode
+ * @param {*} primitiveId
+ * @return {*} 
+ */
 function parsePatch(sceneGraph, patchNode, primitiveId) {
     const [degreeU, degreeV, partsU, partsV] = sceneGraph.parseFloatProps(patchNode,
         'patch coordinates for ID ' + primitiveId, ['degree_u', 'degree_v', 'parts_u', 'parts_v']);
