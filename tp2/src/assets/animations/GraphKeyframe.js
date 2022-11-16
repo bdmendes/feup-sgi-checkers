@@ -1,6 +1,10 @@
 import { GraphTransformation } from '../transformations/GraphTransformation.js';
 import { XMLscene } from '../../XMLscene.js';
 
+/**
+ * @export
+ * @class GraphKeyframe
+ */
 export class GraphKeyframe {
     /**
      * Creates an instance of GraphKeyframe.

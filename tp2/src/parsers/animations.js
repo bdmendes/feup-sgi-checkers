@@ -44,6 +44,13 @@ export function parseAnimations(sceneGraph, animationsNode) {
     return null;
 }
 
+/**
+ * Parses the <keyframe> node.
+ * @param {MySceneGraph} sceneGraph 
+ * @param {*} keyframeNode 
+ * @param {*} keyFrameAnimation 
+ * @returns 
+ */
 function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     const instant = sceneGraph.reader.getFloat(keyframeNode, 'instant');
     if (instant == null) {

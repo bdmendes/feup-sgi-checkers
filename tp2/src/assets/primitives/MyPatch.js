@@ -1,6 +1,23 @@
 import { CGFnurbsSurface, CGFobject, CGFnurbsObject } from "../../../../lib/CGF.js";
 
+/**
+ * @export
+ * @class MyPatch
+ * @extends {CGFobject}
+ */
 export class MyPatch extends CGFobject {
+
+    /**
+     * Creates an instance of MyPatch.
+     * @param {*} scene
+     * @param {*} id
+     * @param {*} degreeU
+     * @param {*} degreeV
+     * @param {*} partsU
+     * @param {*} partsV
+     * @param {*} controlPoints
+     * @memberof MyPatch
+     */
     constructor(scene, id, degreeU, degreeV, partsU, partsV, controlPoints) {
         super(scene);
         this.id = id;
@@ -12,6 +29,10 @@ export class MyPatch extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * initBuffers of MyPatch primitive by calculating every vertice, normals, indices and texCoords
+     * @memberof MyPatch
+     */
     initBuffers() {
         const vertices = [];
         for (let u = 0; u < this.degreeU + 1; u++) {
@@ -30,6 +51,10 @@ export class MyPatch extends CGFobject {
         this.texCoords = this.obj.texCoords;
     }
 
+    /**
+     * display CGF nurbs object
+     * @memberof MyPatch
+     */
     display() {
         this.obj.display();
     }
