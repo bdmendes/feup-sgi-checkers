@@ -21,8 +21,8 @@
 
 ### [TP2 - Extended Scene Graph](tp2)
 - Items described in tp2 [README](https://git.fe.up.pt/sgi-meic/sgi-2022-2023/t05/sgi-t05-g04/-/blob/main/tp2/README.md)
-- Scene <!-- TO COMPLETE -->
-  - The scene represents a comfortable living room with a little donut over the dinner table and a modern center table, a sofa to watch TV and several lamps to allow night entertainment. Two art paintings are present in the living room walls to give some life and colors to the scene.
+- Scene
+  - The scene is once again a comfortable living room with a little donut over the dinner table and a modern center table, a sofa to watch TV and several lamps to allow night entertainment. We added upon the first delivery with a flying airplane, a fireplace, a barrel and other objects that are animated and highlighted, as suggested.
   - [Check out our scene here](https://paginas.fe.up.pt/~up201905951/sgi/tp2/)
 
 ----

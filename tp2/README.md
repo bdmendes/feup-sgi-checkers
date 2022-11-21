@@ -42,11 +42,11 @@ As an added bonus, we allow the user to keep the animations in a loop, if they d
 ### Scene description
 The scene represents a comfortable living room with a small donut on the dinner table and a modern center table, a sofa to watch TV and several lamps around the room to allow night entertainment. Two art paintings are present in the living room walls to give some colors to the scene.
 
-For this second delivery, we are showcasing the `MyPlane` primitive via the new barrel next to the sofa, the fireplace next to the TV, the bowl above the center table and the glass above the TV-facing table. We also changed the window primitive from `MyRectangle` to `MyPlane`, stretching its top control points to give it a more modern look.
+For this second delivery, we are showcasing the `MyPatch` primitive via the new barrel next to the sofa, the fireplace (the "tent") next to the TV, the bowl above the center table and the glass above the TV-facing table. We also changed the window primitive from `MyRectangle` to `MyPatch`, stretching its top control points to give it a more modern look.
 
 The TV-facing table, the donut and the glass on top of the TV-facing table are highlighted, showcasing scale and color changes.
 
-Lastly, animations are intended to make the scene more lively. We are displaying a paper plane flying around the room, while also moving its "wings" and going up and down. An orange is falling from the dinner table, just like magic. The TV is moving towards the sofa, for a lively movie night. The fireplace is stretching, to give the impression that flames are burning.
+Lastly, animations are intended to make the scene more lively. We are displaying a paper plane flying around the room, while also moving its "wings" and going up and down. An orange is falling from the dinner table, just like magic. The TV is moving towards the sofa, for a lively movie night. The fireplace is stretching, to give the impression that flames are burning. Chairs around the dinner table are moving around it, to give the impression that the family is having a buffet, having to move around the table to get their food.
 
 Check out our project [in this page](https://paginas.fe.up.pt/~up201905951/sgi/tp2/).
 
