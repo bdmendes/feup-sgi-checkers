@@ -178,7 +178,7 @@
 
     <transformations>
         <transformation id="tableTransform">
-            <translate x="6" y="0" z="-10" />
+            <translate x="6" y="0" z="-9" />
             <rotate axis="y" angle="-90" />
             <rotate axis="x" angle="-90" />
             <scale x="2" y="3" z="3" />
@@ -1145,6 +1145,124 @@
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>
+
+        <keyframeanim id="chairsAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="2">
+                <translation x="0.2" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="270" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="chairTranslateAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="1">
+                <translation x="0" y="0" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="3">
+                <translation x="0" y="0" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="4">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translation x="0" y="0" z="3" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
     </animations>
 
     <components>
@@ -1297,7 +1415,7 @@
             <children>
                 <primitiveref id="torus" />
             </children>
-            <highlighted r="1" g="0.55" b="0.58" scale_h="1.2" />
+            <highlighted r="1" g="0.55" b="0.58" scale_h="1.5" />
         </component>
 
         <component id="orange">
@@ -2102,18 +2220,6 @@
         </component>
 
         <component id="glassBases">
-            <transformation></transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="glassTop" />
-                <componentref id="glassBottom" />
-            </children>
-        </component>
-
-        <component id="glassTop">
             <transformation>
                 <translate x="0" y="6" z="0" />
             </transformation>
@@ -2123,11 +2229,14 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="glassBase" />
+                <componentref id="glassBottom" />
             </children>
+            <highlighted r="1" g="0.8" b="0" scale_h="1" />
         </component>
 
         <component id="glassBottom">
             <transformation>
+                <translate x="0" y="-6" z="0" />
                 <rotate axis="x" angle="180" />
             </transformation>
             <materials>
@@ -2154,7 +2263,7 @@
             <children>
                 <primitiveref id="flatTorus" />
             </children>
-            <highlighted r="0.6" g="0.6" b="0.6" scale_h="0.95" />
+            <highlighted r="0.6" g="0.6" b="0.6" scale_h="1.1" />
         </component>
 
         <component id="sofatableLegs">
@@ -2177,7 +2286,25 @@
 
         <component id="chairs">
             <transformation>
-                <translate x="3" y="0" z="-2" />
+                <translate x="3" y="0" z="-7" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+                <material id="darkBrown" />
+                <material id="inherit" />
+                <material id="neutralOrange" />
+                <material id="neutralPink" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chairsCentered" />
+            </children>
+            <animation id="chairsAnimation" />
+        </component>
+
+        <component id="chairsCentered">
+            <transformation>
+                <translate x="0" y="0" z="6" />
             </transformation>
             <materials>
                 <material id="metal" />
@@ -2209,6 +2336,7 @@
                 <componentref id="chairBack" />
                 <componentref id="chairLegs" />
             </children>
+            <animation id="chairTranslateAnimation" />
         </component>
 
         <component id="chair2">
@@ -2226,6 +2354,7 @@
                 <componentref id="chairBack" />
                 <componentref id="chairLegs" />
             </children>
+            <animation id="chairTranslateAnimation" />
         </component>
 
         <component id="chair3">
