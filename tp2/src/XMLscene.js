@@ -181,6 +181,10 @@ export class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
+    /**
+     * Function called each frame to update the scene and its animations
+     * @param {number} t 
+     */
     update(t) {
         if (this.firstUpdateTimeMilis == null) {
             this.firstUpdateTimeMilis = t;
