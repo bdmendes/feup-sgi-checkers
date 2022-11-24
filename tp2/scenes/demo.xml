@@ -493,65 +493,65 @@
         <keyframeanim id="flyingAnimation">
             <keyframe instant="0">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="0" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="2">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="45" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="45" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="4">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="90" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="6">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="135" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="135" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="8">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="180" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="10">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="225" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="225" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="12">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="270" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="270" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="14">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="315" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="315" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="16">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="360" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>

@@ -99,9 +99,9 @@ export class MyKeyframeAnimation extends MyAnimation {
         let rotateCoords = [0, 0, 0];
         let keyframeRotateCoords = (keyframe) => [keyframe.transformation.rotateX, keyframe.transformation.rotateY, keyframe.transformation.rotateZ];
         vec3.lerp(rotateCoords, keyframeRotateCoords(lastKeyframe), keyframeRotateCoords(nextKeyFrame), t);
-        mat4.rotateX(newMatrix, newMatrix, rotateCoords[0]);
-        mat4.rotateY(newMatrix, newMatrix, rotateCoords[1]);
         mat4.rotateZ(newMatrix, newMatrix, rotateCoords[2]);
+        mat4.rotateY(newMatrix, newMatrix, rotateCoords[1]);
+        mat4.rotateX(newMatrix, newMatrix, rotateCoords[0]);
 
         // Interpolate scale
         let scaleCoords = [0, 0, 0];
