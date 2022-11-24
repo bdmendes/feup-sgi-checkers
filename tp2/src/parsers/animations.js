@@ -67,6 +67,10 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
     let foundRotation = false;
     let foundScale = false;
 
+    let foundRotationZ = false;
+    let foundRotationY = false;
+    let foundRotationX = false;
+
     for (const keyframeChild of keyframeChildren) {
         if (keyframeChild.nodeName === 'translation') {
             if (foundRotation || foundScale) {
@@ -89,12 +93,17 @@ function parseKeyframe(sceneGraph, keyframeNode, keyFrameAnimation) {
             if (axis == null || angle == null) {
                 return "invalid axis or angle defined for rotation in keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
-            if (axis[0] == 1) {
-                transformation.rotateX = degreesToRadians(angle);
-            } else if (axis[1] == 1) {
-                transformation.rotateY = degreesToRadians(angle);
-            } else if (axis[2] == 1) {
+            if (axis[2] == 1 && !foundRotationZ && !foundRotationY && !foundRotationX) {
                 transformation.rotateZ = degreesToRadians(angle);
+                foundRotationZ = true;
+            } else if (axis[1] == 1 && foundRotationZ && !foundRotationY && !foundRotationX) {
+                transformation.rotateY = degreesToRadians(angle);
+                foundRotationY = true;
+            } else if (axis[0] == 1 && foundRotationZ && foundRotationY && !foundRotationX) {
+                transformation.rotateX = degreesToRadians(angle);
+                foundRotationX = true;
+            } else {
+                return "invalid rotation axis order for keyframe with instant = " + instant + " in animation with id = " + keyFrameAnimation.id;
             }
             foundRotation = true;
         } else if (keyframeChild.nodeName === 'scale') {

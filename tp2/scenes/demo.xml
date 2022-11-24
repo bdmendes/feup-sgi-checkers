@@ -82,7 +82,7 @@
             <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
 
-        <spot id="sofaSpotlight" enabled="1" angle="30" exponent="40">
+        <spot id="sofaSpotlight" enabled="0" angle="30" exponent="40">
             <location x="12" y="8" z="8" w="1" />
             <target x="12" y="5" z="8" />
             <ambient r="0.5" g="0.5" b="0.4" a="1.0" />
@@ -223,14 +223,13 @@
                 <controlpoint x="-4" y="3" z="0" />
                 <controlpoint x="-2" y="6" z="0" />
 
-
-                <controlpoint x="-2" y="0" z="2.6" />
+                <controlpoint x="-2" y="0" z="2.7" />
                 <controlpoint x="-4" y="3" z="5" />
-                <controlpoint x="-2" y="6" z="2.6" />
+                <controlpoint x="-2" y="6" z="2.7" />
 
-                <controlpoint x="2" y="0" z="2.6" />
+                <controlpoint x="2" y="0" z="2.7" />
                 <controlpoint x="4" y="3" z="5" />
-                <controlpoint x="2" y="6" z="2.6" />
+                <controlpoint x="2" y="6" z="2.7" />
 
                 <controlpoint x="2" y="0" z="0" />
                 <controlpoint x="4" y="3" z="0" />
@@ -239,26 +238,16 @@
         </primitive>
 
         <primitive id="coverBarrel">
-            <patch degree_u="3" degree_v="3" parts_u="10" parts_v="10">
-                <controlpoint x="-1.41" y="0" z="1.41" />
-                <controlpoint x="-2.2" y="0" z="0.8" />
-                <controlpoint x="-2.2" y="0" z="-0.8" />
-                <controlpoint x="-1.41" y="0" z="-1.41" />
+            <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="-2.7"/>
+                <controlpoint x="2" y="0" z="-2.7"/>
+                <controlpoint x="2" y="0" z="0"/>
 
-                <controlpoint x="-0.8" y="0" z="2.2" />
-                <controlpoint x="0" y="0" z="0.8" />
-                <controlpoint x="0" y="0" z="-0.8" />
-                <controlpoint x="-0.8" y="0" z="-2.2" />
-
-                <controlpoint x="0.8" y="0" z="2.2" />
-                <controlpoint x="0" y="0" z="0.8" />
-                <controlpoint x="0" y="0" z="-0.8" />
-                <controlpoint x="0.8" y="0" z="-2.2" />
-
-                <controlpoint x="1.41" y="0" z="1.41" />
-                <controlpoint x="2.2" y="0" z="0.8" />
-                <controlpoint x="2.2" y="0" z="-0.8" />
-                <controlpoint x="1.41" y="0" z="-1.41" />
+                <controlpoint x="-2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="2.7"/>
+                <controlpoint x="2" y="0" z="2.7"/>
+                <controlpoint x="2" y="0" z="0"/>
             </patch>
         </primitive>
 
@@ -472,86 +461,86 @@
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
-                <scale sx="1" sy="1.1" sz="1" />
+                <scale sx="1" sy="1.2" sz="1" />
             </keyframe>
             <keyframe instant="3">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
-                <scale sx="1" sy="0.8" sz="1" />
+                <scale sx="1" sy="0.8" sz="2" />
             </keyframe>
             <keyframe instant="6">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
-                <scale sx="1" sy="1.1" sz="1" />
+                <scale sx="1" sy="1.2" sz="1" />
             </keyframe>
         </keyframeanim>
 
         <keyframeanim id="flyingAnimation">
             <keyframe instant="0">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="0" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="2">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="45" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="45" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="4">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="90" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="90" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="6">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="135" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="135" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="8">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="180" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="180" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="10">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="225" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="225" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="12">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="270" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="270" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="14">
                 <translation x="0" y="-1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="315" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="315" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
             <keyframe instant="16">
                 <translation x="0" y="1" z="0" />
-                <rotation axis="x" angle="0" />
-                <rotation axis="y" angle="360" />
                 <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="360" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>

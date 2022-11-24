@@ -123,7 +123,9 @@
         <keyframeanim id="demoKeyframe">
             <keyframe instant="2">
                 <translation x="10" y="10" z="10" />
-                <rotation axis="x" angle="10" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
                 <scale sx="1" sy="1" sz="1" />
             </keyframe>
         </keyframeanim>
