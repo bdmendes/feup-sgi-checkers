@@ -24,7 +24,7 @@
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/pieces_wood.jpg" />
+        <texture id="woodTexture" file="scenes/images/pieces_wood.jpg" />
         <texture id="blackPieceTexture" file="scenes/images/dark_wood.jpg" />
         <texture id="blackPositionTexture" file="scenes/images/black_wood.jpg" />
         <texture id="whitePositionTexture" file="scenes/images/white_wood.jpg" />
@@ -122,7 +122,7 @@
             <materials>
                 <material id="darkBrown" />
             </materials>
-            <texture id="demoTexture" length_s="1" length_t="1" />
+            <texture id="woodTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="board" />
             </children>
@@ -134,10 +134,11 @@
             <materials>
                 <material id="darkBrown" />
             </materials>
-            <texture id="demoTexture" length_s="2" length_t="2" />
+            <texture id="woodTexture" length_s="2" length_t="2" />
             <children>
                 <componentref id="faces" />
                 <componentref id="positions" />
+                <componentref id="pieces" />
             </children>
         </component>
 
@@ -1213,6 +1214,263 @@
             <texture id="blackPositionTexture" length_s="2" length_t="2" />
             <children>
                 <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="pieces">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece1" />
+                <componentref id="blackPiece2" />
+                <componentref id="blackPiece3" />
+                <componentref id="blackPiece4" />
+                <componentref id="blackPiece5" />
+                <componentref id="blackPiece6" />
+                <componentref id="blackPiece7" />
+                <componentref id="blackPiece8" />
+                <componentref id="blackPiece9" />
+                <componentref id="blackPiece10" />
+                <componentref id="blackPiece11" />
+                <componentref id="blackPiece12" />
+            </children>
+        </component>
+
+        <component id="blackPiece1">
+            <transformation>
+                <translate x="-3.5" y="0" z="3.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece2">
+            <transformation>
+                <translate x="-1.5" y="0" z="3.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece3">
+            <transformation>
+                <translate x="0.5" y="0" z="3.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece4">
+            <transformation>
+                <translate x="2.5" y="0" z="3.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece5">
+            <transformation>
+                <translate x="-2.5" y="0" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece6">
+            <transformation>
+                <translate x="-0.5" y="0" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece7">
+            <transformation>
+                <translate x="1.5" y="0" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece8">
+            <transformation>
+                <translate x="3.5" y="0" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece9">
+            <transformation>
+                <translate x="-3.5" y="0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece10">
+            <transformation>
+                <translate x="-1.5" y="0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece11">
+            <transformation>
+                <translate x="0.5" y="0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece12">
+            <transformation>
+                <translate x="2.5" y="0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="blackPiece">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pieceSurface" />
+                <componentref id="demoBases" />
+            </children>
+        </component>
+
+        <component id="demoBases">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="demoTop" />
+                <componentref id="demoBottom" />
+            </children>
+        </component>
+
+        <component id="demoTop">
+            <transformation>
+                <translate x="0" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoCircle" />
+            </children>
+        </component>
+
+        <component id="demoBottom">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoCircle" />
+            </children>
+        </component>
+
+        <component id="pieceSurface">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="demoHalfBarrel" />
+                <componentref id="rotatedPatch" />
+            </children>
+        </component>
+
+        <component id="rotatedPatch">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoHalfBarrel" />
             </children>
         </component>
     </components>

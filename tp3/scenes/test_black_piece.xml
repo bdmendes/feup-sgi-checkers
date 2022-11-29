@@ -127,19 +127,6 @@
             </children>
         </component>
 
-        <component id="demoRectangle">
-            <transformation>
-                <translate x="0" y="0" z="2" />
-            </transformation>
-            <materials>
-                <material id="darkBrown" />
-            </materials>
-            <texture id="demoTexture" length_s="4" length_t="4" />
-            <children>
-                <primitiveref id="demoRectangle" />
-            </children>
-        </component>
-
         <component id="demoBases">
             <transformation></transformation>
             <materials>
