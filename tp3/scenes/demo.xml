@@ -18,6 +18,14 @@
             <from x="14" y="5" z="8" />
             <to x="-15" y="4" z="8" />
         </perspective>
+        <perspective id="player1Camera" near="0.1" far="500" angle="75">
+            <from x="3" y="5.5" z="-4" />
+            <to x="3" y="3.3" z="-7" />
+        </perspective>
+        <perspective id="player2Camera" near="0.1" far="500" angle="75">
+            <from x="3" y="5.5" z="-10" />
+            <to x="3" y="3.3" z="-7" />
+        </perspective>
         <ortho id="orthoSideCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
             <from x="2" y="5" z="15" />
             <to x="0" y="5" z="0" />
