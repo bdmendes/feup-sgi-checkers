@@ -4011,7 +4011,7 @@
                 <scale x="0.18" y="0.18" z="0.18" />
             </transformation>
             <materials>
-                <material id="neutral" />
+                <material id="inherit" />
             </materials>
             <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
