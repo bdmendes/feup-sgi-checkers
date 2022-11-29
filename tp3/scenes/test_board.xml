@@ -26,6 +26,7 @@
     <textures>
         <texture id="woodTexture" file="scenes/images/pieces_wood.jpg" />
         <texture id="blackPieceTexture" file="scenes/images/dark_wood.jpg" />
+        <texture id="whitePieceTexture" file="scenes/images/white_wood.jpg" />
         <texture id="blackPositionTexture" file="scenes/images/black_wood.jpg" />
         <texture id="whitePositionTexture" file="scenes/images/white_wood.jpg" />
     </textures>
@@ -1218,7 +1219,9 @@
         </component>
 
         <component id="pieces">
-            <transformation></transformation>
+            <transformation>
+                <translate x="0.5" y="0" z="0.5" />
+            </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -1236,12 +1239,25 @@
                 <componentref id="blackPiece10" />
                 <componentref id="blackPiece11" />
                 <componentref id="blackPiece12" />
+
+                <componentref id="whitePiece1" />
+                <componentref id="whitePiece2" />
+                <componentref id="whitePiece3" />
+                <componentref id="whitePiece4" />
+                <componentref id="whitePiece5" />
+                <componentref id="whitePiece6" />
+                <componentref id="whitePiece7" />
+                <componentref id="whitePiece8" />
+                <componentref id="whitePiece9" />
+                <componentref id="whitePiece10" />
+                <componentref id="whitePiece11" />
+                <componentref id="whitePiece12" />
             </children>
         </component>
 
         <component id="blackPiece1">
             <transformation>
-                <translate x="-3.5" y="0" z="3.5" />
+                <translate x="-4" y="0" z="3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1254,7 +1270,7 @@
 
         <component id="blackPiece2">
             <transformation>
-                <translate x="-1.5" y="0" z="3.5" />
+                <translate x="-2" y="0" z="3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1267,7 +1283,7 @@
 
         <component id="blackPiece3">
             <transformation>
-                <translate x="0.5" y="0" z="3.5" />
+                <translate x="0" y="0" z="3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1280,7 +1296,7 @@
 
         <component id="blackPiece4">
             <transformation>
-                <translate x="2.5" y="0" z="3.5" />
+                <translate x="2" y="0" z="3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1293,7 +1309,7 @@
 
         <component id="blackPiece5">
             <transformation>
-                <translate x="-2.5" y="0" z="2.5" />
+                <translate x="-3" y="0" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1306,7 +1322,7 @@
 
         <component id="blackPiece6">
             <transformation>
-                <translate x="-0.5" y="0" z="2.5" />
+                <translate x="-1" y="0" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1319,7 +1335,7 @@
 
         <component id="blackPiece7">
             <transformation>
-                <translate x="1.5" y="0" z="2.5" />
+                <translate x="1" y="0" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1332,7 +1348,7 @@
 
         <component id="blackPiece8">
             <transformation>
-                <translate x="3.5" y="0" z="2.5" />
+                <translate x="3" y="0" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1345,7 +1361,7 @@
 
         <component id="blackPiece9">
             <transformation>
-                <translate x="-3.5" y="0" z="1.5" />
+                <translate x="-4" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1358,7 +1374,7 @@
 
         <component id="blackPiece10">
             <transformation>
-                <translate x="-1.5" y="0" z="1.5" />
+                <translate x="-2" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1371,7 +1387,7 @@
 
         <component id="blackPiece11">
             <transformation>
-                <translate x="0.5" y="0" z="1.5" />
+                <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1384,7 +1400,7 @@
 
         <component id="blackPiece12">
             <transformation>
-                <translate x="2.5" y="0" z="1.5" />
+                <translate x="2" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1392,6 +1408,162 @@
             <texture id="inherit" />
             <children>
                 <componentref id="blackPiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece1">
+            <transformation>
+                <translate x="-3" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece2">
+            <transformation>
+                <translate x="-1" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece3">
+            <transformation>
+                <translate x="1" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece4">
+            <transformation>
+                <translate x="3" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece5">
+            <transformation>
+                <translate x="-4" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece6">
+            <transformation>
+                <translate x="-2" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece7">
+            <transformation>
+                <translate x="0" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece8">
+            <transformation>
+                <translate x="2" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece9">
+            <transformation>
+                <translate x="-3" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece10">
+            <transformation>
+                <translate x="-1" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece11">
+            <transformation>
+                <translate x="1" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece12">
+            <transformation>
+                <translate x="3" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
             </children>
         </component>
 
@@ -1404,6 +1576,21 @@
                 <material id="neutral" />
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pieceSurface" />
+                <componentref id="demoBases" />
+            </children>
+        </component>
+
+        <component id="whitePiece">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="pieceSurface" />
                 <componentref id="demoBases" />
