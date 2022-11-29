@@ -61,7 +61,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoHalfBarrel">
+        <primitive id="demoHalfPiece">
             <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
                 <controlpoint x="-3" y="1" z="0" />
@@ -804,7 +804,7 @@
 
         <component id="positionA5">
             <transformation>
-                <translate x="-7" y="-3" z="1" />
+                <translate x="-7" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
