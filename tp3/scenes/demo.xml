@@ -270,7 +270,7 @@
             </patch>
         </primitive>
 
-        <primitive id="coverBarrel">
+        <primitive id="circlePatch">
             <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0"/>
                 <controlpoint x="-2" y="0" z="-2.7"/>
@@ -1292,6 +1292,7 @@
                 <componentref id="fireplace" />
                 <componentref id="flyingPlane" />
                 <componentref id="board" />
+                <componentref id="timer" />
             </children>
         </component>
 
@@ -2483,7 +2484,7 @@
             </materials>
             <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="coverBarrel" />
+                <primitiveref id="circlePatch" />
             </children>
         </component>
 
@@ -2496,7 +2497,7 @@
             </materials>
             <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="coverBarrel" />
+                <primitiveref id="circlePatch" />
             </children>
         </component>
 
@@ -4081,6 +4082,283 @@
             <texture id="inherit"/>
             <children>
                 <primitiveref id="halfPiece" />
+            </children>
+        </component>
+
+
+
+        <component id="timer">
+            <transformation>
+                <translate x="0" y="3.7" z="-7" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="body" />
+                <componentref id="minutePlayer1" />
+                <componentref id="biggerSecondPlayer1" />
+                <componentref id="smallerSecondPlayer1" />
+                <componentref id="minutePlayer2" />
+                <componentref id="biggerSecondPlayer2" />
+                <componentref id="smallerSecondPlayer2" />
+                <componentref id="twoDotsPlayer1" />
+                <componentref id="twoDotsPlayer2" />
+            </children>
+        </component>
+
+        <component id="minutePlayer1">
+            <transformation>
+                <translate x="0" y="0" z="5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="biggerSecondPlayer1">
+            <transformation>
+                <translate x="0" y="0" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="smallerSecondPlayer1">
+            <transformation>
+                <translate x="0" y="0" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="minutePlayer2">
+            <transformation>
+                <translate x="0" y="0" z="-1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="biggerSecondPlayer2">
+            <transformation>
+                <translate x="0" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="smallerSecondPlayer2">
+            <transformation>
+                <translate x="0" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="display_number" />
+            </children>
+        </component>
+
+        <component id="body">
+            <transformation>
+                <scale x="1" y="2" z="7" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodTexture" length_s="2" length_t="2" />
+            <children>
+                <componentref id="timer_face1" />
+                <componentref id="timer_face2" />
+                <componentref id="timer_face3" />
+                <componentref id="timer_face4" />
+                <componentref id="timer_face5" />
+                <componentref id="timer_face6" />
+                <componentref id="timer_face6" />
+            </children>
+        </component>
+
+        <component id="timer_face1">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="timer_face2">
+            <transformation>
+                <translate x="0" y="0" z="-1" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="timer_face3">
+            <transformation>
+                <translate x="1" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="timer_face4">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="timer_face5">
+            <transformation>
+                <translate x="0" y="-1" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="timer_face6">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="display_number">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="darkOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="twoDotsPlayer1">
+            <transformation>
+                <translate x="0" y="0" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="timerDotUp" />
+                <componentref id="timerDotDown" />
+            </children>
+        </component>
+
+        <component id="twoDotsPlayer2">
+            <transformation>
+                <translate x="0" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <children>
+                <componentref id="timerDotUp" />
+                <componentref id="timerDotDown" />
+            </children>
+        </component>
+
+        <component id="timerDotUp">
+            <transformation>
+                <translate x="1.01" y="0.5" z="0.5" />
+                <rotate axis="z" angle="-90" />
+                <scale x="0.1" y="0.1" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="circlePatch" />
+            </children>
+        </component>
+
+        <component id="timerDotDown">
+            <transformation>
+                <translate x="1.01" y="-0.5" z="0.5" />
+                <rotate axis="z" angle="-90" />
+                <scale x="0.1" y="0.1" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="circlePatch" />
             </children>
         </component>
     </components>
