@@ -18,7 +18,7 @@ export class GraphComponent {
      * @param {*} id - the component id
      * @memberof GraphComponent
      */
-    constructor(scene, id) {
+    constructor(scene, id, pickable = false, visible = true) {
         this.id = id;
         this.scene = scene;
         this.children = {};
@@ -30,6 +30,8 @@ export class GraphComponent {
         this.animationID = null;
         this.highlight = null;
         this.enableHighlight = true;
+        this.pickable = pickable;
+        this.visible = visible;
     }
 
     /**
@@ -41,6 +43,8 @@ export class GraphComponent {
      * @memberof GraphComponent
      */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
+        this.scene.registerForPick(this.scene.currentPickId++, this);
+
         this.scene.pushMatrix();
 
         const material = this.renderMaterial(parentMaterial);
@@ -61,13 +65,18 @@ export class GraphComponent {
      */
     renderHighlight(texture) {
         if (this.highlight != null && this.enableHighlight && this.hasDirectPrimitiveDescendant()) {
-            this.scene.highlightShader.setUniformsValues({
-                scale: this.highlight.currentScale,
-                ratio: this.highlight.ratio,
-                r: this.highlight.color[0],
-                g: this.highlight.color[1],
-                b: this.highlight.color[2],
-            });
+            // Do not set external uniform if 2 shaders are used (e.g. when picking)
+            const pickingShaderDisabled = this.scene.activeShader != this.scene.pickShader;
+            if (pickingShaderDisabled) {
+                this.scene.highlightShader.setUniformsValues({
+                    scale: this.highlight.currentScale,
+                    ratio: this.highlight.ratio,
+                    r: this.highlight.color[0],
+                    g: this.highlight.color[1],
+                    b: this.highlight.color[2],
+                });
+            }
+
             texture?.texture.bind();
             if (!this.scene.graph.lastComponentNeededHighlight) {
                 this.scene.graph.lastComponentNeededHighlight = true;

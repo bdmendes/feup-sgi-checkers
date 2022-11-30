@@ -239,15 +239,15 @@
 
         <primitive id="coverBarrel">
             <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="0" />
 
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="0" />
             </patch>
         </primitive>
 
@@ -1276,7 +1276,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="walls" />
+                <componentref id="walls" visible="true" pickable="true" />
                 <componentref id="table" />
                 <componentref id="sofa" />
                 <componentref id="lamps" />

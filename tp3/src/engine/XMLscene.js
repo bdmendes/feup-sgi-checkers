@@ -24,21 +24,26 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        // For later use related to scene graph parsing
         this.sceneInited = false;
 
+        // Set relevant graphic properties
         this.initCameras();
-
         this.initShaders();
-
         this.enableTextures(true);
-
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+        // Debug axis object
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(20);
+
+        // Set refresh rate to 50 fps
+        this.setUpdatePeriod(1000 / 50);
+
+        // Enable picking
+        this.setPickEnabled(true);
     }
 
     initShaders() {
@@ -210,6 +215,12 @@ export class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
+        // Notify picking listeners
+        this.notifyPickListeners();
+
+        // Clear picking buffer
+        this.clearPickRegistration();
+
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -235,6 +246,9 @@ export class XMLscene extends CGFscene {
         }
 
         if (this.sceneInited) {
+            // Set pick id for use throughout the graph display
+            this.currentPickId = 0;
+
             // Draw axis
             this.setDefaultAppearance();
 
@@ -244,5 +258,27 @@ export class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    notifyPickListeners() {
+        if (this.pickMode) {
+            // results can only be retrieved when picking mode is false
+            return;
+        }
+
+        if (this.pickResults == null || this.pickResults.length == 0) {
+            // no objects were picked on the last frame
+            return;
+        }
+
+        // TODO: Notify pick listeners
+        for (let i = 0; i < this.pickResults.length; i++) {
+            const obj = this.pickResults[i][0];
+            if (obj) {
+                const customId = this.pickResults[i][1];
+                console.log("Picked object: " + obj + ", with pick id " + customId);
+            }
+        }
+        this.pickResults.splice(0, this.pickResults.length);
     }
 }
