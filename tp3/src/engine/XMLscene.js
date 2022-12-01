@@ -247,7 +247,7 @@ export class XMLscene extends CGFscene {
 
         if (this.sceneInited) {
             // Set pick id for use throughout the graph display
-            this.currentPickId = 0;
+            this.currentPickId = 1;
 
             // Draw axis
             this.setDefaultAppearance();

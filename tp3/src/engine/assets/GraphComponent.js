@@ -42,8 +42,16 @@ export class GraphComponent {
      * @param {number} [parent_length_t=1] - the length_t of the parent component
      * @memberof GraphComponent
      */
-    display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1) {
-        this.scene.registerForPick(this.scene.currentPickId++, this);
+    display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1, pickableParent = false) {
+        if (this.pickable) {
+            this.scene.registerForPick(this.scene.currentPickId++, this);
+        } else if (!pickableParent) {
+            this.scene.registerForPick(-1, null);
+        }
+
+        // if (!this.visible) {
+        //     return;
+        // }
 
         this.scene.pushMatrix();
 
@@ -54,7 +62,7 @@ export class GraphComponent {
         this.renderTransformations();
         this.renderAnimation();
 
-        this.renderChildren(material, texture, parent_length_s, parent_length_t);
+        this.renderChildren(material, texture, parent_length_s, parent_length_t, this.pickable || pickableParent);
 
         this.scene.popMatrix();
     }
@@ -171,7 +179,7 @@ export class GraphComponent {
      * @param {*} parent_length_t - the length_t of the parent component
      * @memberof GraphComponent
      */
-    renderChildren(material, texture, parent_length_s, parent_length_t) {
+    renderChildren(material, texture, parent_length_s, parent_length_t, pickableParent) {
         for (const key in this.children) {
             let length_s = this.length_s ?? parent_length_s;
             let length_t = this.length_t ?? parent_length_t;
@@ -188,7 +196,7 @@ export class GraphComponent {
             }
 
             if (this.animationID == null || this.scene.graph.animations[this.animationID].isVisible) {
-                this.children[key].display(material, texture, length_s, length_t);
+                this.children[key].display(material, texture, length_s, length_t, pickableParent);
             }
         }
     }

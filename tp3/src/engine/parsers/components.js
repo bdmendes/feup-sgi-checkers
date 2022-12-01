@@ -38,7 +38,10 @@ function parseComponent(sceneGraph, node) {
     let [error, componentID] = getID(sceneGraph, node);
     if (error) return componentID;
 
-    const component = new GraphComponent(sceneGraph.scene, componentID);
+    const pickable = getIntegerBooleanProperty(sceneGraph, node, 'pickable', false);
+    const visible = getIntegerBooleanProperty(sceneGraph, node, 'visible', true);
+
+    const component = new GraphComponent(sceneGraph.scene, componentID, pickable, visible);
 
     const nodeNames = [];
     for (let j = 0; j < node.children.length; j++) {
@@ -72,6 +75,24 @@ function parseComponent(sceneGraph, node) {
 
     sceneGraph.components[componentID] = component;
     return null;
+}
+
+function getIntegerBooleanProperty(sceneGraph, node, propertyName, defaultValue) {
+    const property = sceneGraph.reader.getString(node, propertyName, false);
+    let res;
+    if (property == '0') {
+        res = false;
+    } else if (property == '1') {
+        res = true;
+    } else {
+        if (property != null) {
+            sceneGraph.onXMLMinorError(
+                'unable to parse value component of the \'' + propertyName + '\' field for ID = ' +
+                lightId + '; assuming \'value = ' + defaultValue + '\'');
+        }
+        res = defaultValue;
+    }
+    return res;
 }
 
 
