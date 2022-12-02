@@ -1,7 +1,7 @@
 <sxs>
     <scene root="root" axis_length="5" />
 
-    <views default="mainCamera">
+    <views default="player1Camera">
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
             <from x="14" y="9" z="14" />
             <to x="0" y="0" z="0" />
@@ -272,34 +272,34 @@
 
         <primitive id="coverBarrel">
             <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="0" />
 
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="0" />
             </patch>
         </primitive>
 
         <primitive id="piecesFace">
             <patch degree_u="2" degree_v="3" parts_u="10" parts_v="10">
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="-2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
-                
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="0" y="-0.5" z="0"/>
-                <controlpoint x="0" y="-0.5" z="0"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="0" />
 
-                <controlpoint x="-2" y="0" z="0"/>
-                <controlpoint x="-2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="2.7"/>
-                <controlpoint x="2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="0" y="-0.5" z="0" />
+                <controlpoint x="0" y="-0.5" z="0" />
+                <controlpoint x="2" y="0" z="0" />
+
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="0" />
             </patch>
         </primitive>
 
@@ -1563,7 +1563,7 @@
             </children>
         </component>
 
-        <component id="walls">
+        <component id="walls" pickable="1">
             <transformation>
                 <scale x="15" y="8" z="15" />
                 <translate x="0" y="1" z="0" />
@@ -2546,10 +2546,6 @@
         </component>
 
 
-
-
-
-
         <component id="board">
             <transformation>
                 <translate x="3" y="3.3" z="-7" />
@@ -2711,7 +2707,7 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
-        
+
         <component id="smallBorder2">
             <transformation>
                 <scale x="0.8" y="0.1" z="1" />
@@ -3834,7 +3830,7 @@
             </children>
         </component>
 
-        <component id="whitePiece1">
+        <component id="whitePiece1" pickable="1">
             <transformation>
                 <translate x="-3" y="0" z="-4" />
             </transformation>
@@ -4025,7 +4021,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="demoTop" />
                 <componentref id="demoBottom" />
@@ -4039,7 +4035,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="piecesFace" />
             </children>
@@ -4053,7 +4049,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="piecesFace" />
             </children>
@@ -4064,7 +4060,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="woodTexture" length_s="1" length_t="1"/>
+            <texture id="woodTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="halfPiece" />
                 <componentref id="rotatedPatch" />
@@ -4078,7 +4074,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="halfPiece" />
             </children>
