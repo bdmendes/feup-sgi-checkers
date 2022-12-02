@@ -1307,6 +1307,8 @@
             <children>
                 <componentref id="board" />
                 <componentref id="timer" />
+                <componentref id="supportBlockPlayer1" />
+                <componentref id="supportBlockPlayer2" />
             </children>
         </component>
 
@@ -1425,7 +1427,7 @@
 
         <component id="donut">
             <transformation>
-                <translate x="2" y="0.3" z="1.15" />
+                <translate x="0" y="0.5" z="1.15" />
                 <scale x="0.1" y="0.05" z="0.05" />
             </transformation>
             <materials>
@@ -4363,6 +4365,129 @@
             <texture id="inherit" />
             <children>
                 <primitiveref id="circlePatch" />
+            </children>
+        </component>
+
+        <component id="supportBlockPlayer1">
+            <transformation>
+                <scale x="1" y="1" z="1.5" />
+                <translate x="7" y="0" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodTexture" length_s="2" length_t="2" />
+            <children>
+                <componentref id="supportBlockFace1" />
+                <componentref id="supportBlockFace2" />
+                <componentref id="supportBlockFace3" />
+                <componentref id="supportBlockFace4" />
+                <componentref id="supportBlockFace5" />
+                <componentref id="supportBlockFace6" />
+                <componentref id="supportBlockFace6" />
+            </children>
+        </component>
+
+        <component id="supportBlockPlayer2">
+            <transformation>
+                <scale x="1" y="1" z="1.5" />
+                <translate x="7" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodTexture" length_s="2" length_t="2" />
+            <children>
+                <componentref id="supportBlockFace1" />
+                <componentref id="supportBlockFace2" />
+                <componentref id="supportBlockFace3" />
+                <componentref id="supportBlockFace4" />
+                <componentref id="supportBlockFace5" />
+                <componentref id="supportBlockFace6" />
+                <componentref id="supportBlockFace6" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace1">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace2">
+            <transformation>
+                <translate x="0" y="0" z="-1" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace3">
+            <transformation>
+                <translate x="1" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace4">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace5">
+            <transformation>
+                <translate x="0" y="-1" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="supportBlockFace6">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
     </components>
