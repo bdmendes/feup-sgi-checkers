@@ -1,0 +1,194 @@
+<sxs>
+    <scene root="demoRoot" axis_length="5" />
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
+            <from x="15" y="11" z="15" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+    </views>
+
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </ambient>
+
+    <lights>
+        <omni id="demoLight" enabled="1">
+            <location x="9.8" y="20" z="10" w="1.0" />
+            <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1" linear="0" quadratic="0" />
+        </omni>
+    </lights>
+
+    <textures>
+        <texture id="demoTexture" file="scenes/images/pieces_wood.jpg" />
+        <texture id="blackPieceTexture" file="scenes/images/dark_wood.jpg" />
+    </textures>
+
+    <materials>
+        <material id="demoMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="neutral" shininess="2">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1" />
+            <specular r="0.3" g="0.3" b="0.3" a="1" />
+        </material>
+        <material id="darkBrown" shininess="2">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.6" g="0.5" b="0.45" a="1.0" />
+            <specular r="0.1" g="0.07" b="0.06" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="demoTransform">
+            <scale x="5" y="1" z="5" />
+            <rotate axis="x" angle="-45" />
+            <rotate axis="z" angle="-45" />
+        </transformation>
+    </transformations>
+
+    <primitives>
+        <primitive id="demoHalfBarrel">
+            <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-3" y="1" z="0" />
+                <controlpoint x="-2" y="2" z="0" />
+
+                <controlpoint x="-2" y="0" z="2.7" />
+                <controlpoint x="-3" y="1" z="4" />
+                <controlpoint x="-2" y="2" z="2.7" />
+
+                <controlpoint x="2" y="0" z="2.7" />
+                <controlpoint x="3" y="1" z="4" />
+                <controlpoint x="2" y="2" z="2.7" />
+
+                <controlpoint x="2" y="0" z="0" />
+                <controlpoint x="3" y="1" z="0" />
+                <controlpoint x="2" y="2" z="0" />
+            </patch>
+        </primitive>
+
+        <primitive id="demoCircle">
+            <patch degree_u="2" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="-2.7"/>
+                <controlpoint x="2" y="0" z="-2.7"/>
+                <controlpoint x="2" y="0" z="0"/>
+                
+                <controlpoint x="-2" y="0" z="0"/>
+                <controlpoint x="0" y="-1" z="0"/>
+                <controlpoint x="0" y="-1" z="0"/>
+                <controlpoint x="2" y="0" z="0"/>
+
+                <controlpoint x="-2" y="0" z="0"/>
+                <controlpoint x="-2" y="0" z="2.7"/>
+                <controlpoint x="2" y="0" z="2.7"/>
+                <controlpoint x="2" y="0" z="0"/>
+            </patch>
+        </primitive>
+
+        <primitive id="demoRectangle">
+            <rectangle x1="-2" x2="2" y1="0" y2="4" />
+        </primitive>
+    </primitives>
+
+    <animations>
+        <keyframeanim id="demoKeyframe">
+            <keyframe instant="2">
+                <translation x="10" y="10" z="10" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale sx="1" sy="1" sz="1" />
+            </keyframe>
+        </keyframeanim>
+    </animations>
+
+    <components>
+        <component id="demoRoot">
+            <transformation></transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="demoTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="demoBarril" />
+                <componentref id="demoBases" />
+            </children>
+        </component>
+
+        <component id="demoBases">
+            <transformation></transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="blackPieceTexture" length_s="4" length_t="4" />
+            <children>
+                <componentref id="demoTop" />
+                <componentref id="demoBottom" />
+            </children>
+        </component>
+
+        <component id="demoTop">
+            <transformation>
+                <translate x="0" y="2" z="0" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoCircle" />
+            </children>
+        </component>
+
+        <component id="demoBottom">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+                <texture id="inherit"/>
+            <children>
+                <primitiveref id="demoCircle" />
+            </children>
+        </component>
+
+        <component id="demoBarril">
+            <transformation></transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="demoTexture" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="demoHalfBarrel" />
+                <componentref id="rotatedPatch" />
+            </children>
+        </component>
+
+        <component id="rotatedPatch">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="demoTexture" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="demoHalfBarrel" />
+            </children>
+        </component>
+    </components>
+</sxs>
