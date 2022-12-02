@@ -72,7 +72,6 @@ export class MySceneGraph {
         // Default material
         this.defaultMaterial = new GraphMaterial(this.scene, -1, 1);
         this.defaultMaterial.addComponent("diffuse", 0.5, 0.5, 0.7);
-        this.defaultMaterial.apply();
 
         // Setup default axis
         this.axisCoords = [];

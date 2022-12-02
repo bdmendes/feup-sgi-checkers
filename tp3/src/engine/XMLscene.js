@@ -47,7 +47,8 @@ export class XMLscene extends CGFscene {
     }
 
     initShaders() {
-        this.highlightShader = new CGFshader(this.gl, "src/engine/assets/highlights/scale.vert", "src/engine/assets/highlights/color.frag");
+        this.highlightShader = new CGFshader(this.gl, "src/engine/shaders/highlight/scale.vert",
+            "src/engine/shaders/highlight/color.frag");
     }
 
     /**
@@ -217,9 +218,6 @@ export class XMLscene extends CGFscene {
     display() {
         // Notify picking listeners
         this.notifyPickListeners();
-
-        // Clear picking buffer
-        this.clearPickRegistration();
 
         // ---- BEGIN Background, camera and axis setup
 
