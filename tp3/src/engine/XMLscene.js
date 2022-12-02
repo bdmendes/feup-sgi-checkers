@@ -24,25 +24,32 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        // For later use related to scene graph parsing
         this.sceneInited = false;
 
+        // Set relevant graphic properties
         this.initCameras();
-
         this.initShaders();
-
         this.enableTextures(true);
-
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+        // Debug axis object
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(20);
+
+        // Set refresh rate to 50 fps
+        this.setUpdatePeriod(1000 / 50);
+
+        // Enable picking
+        this.pickListeners = [];
+        this.setPickEnabled(true);
     }
 
     initShaders() {
-        this.highlightShader = new CGFshader(this.gl, "src/engine/assets/highlights/scale.vert", "src/engine/assets/highlights/color.frag");
+        this.highlightShader = new CGFshader(this.gl, "src/engine/shaders/highlight/scale.vert",
+            "src/engine/shaders/highlight/color.frag");
     }
 
     /**
@@ -127,25 +134,37 @@ export class XMLscene extends CGFscene {
         this.initCameras();
 
         // Debug options
-        const debugFolder = this.gui.gui.addFolder('Debug');
-        debugFolder.open();
-        debugFolder.add(this.graph, 'displayAxis').name('Display axis');
-        debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
-        debugFolder.add(this.graph, 'displayNormals').name('Display normals');
-        debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
+        if (this.debugFolder) {
+            this.gui.gui.removeFolder(this.debugFolder);
+        }
+        this.debugFolder = this.gui.gui.addFolder('Debug');
+        this.debugFolder.open();
+        this.debugFolder.add(this.graph, 'displayAxis').name('Display axis');
+        this.debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
+        this.debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+        this.debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
 
         // Camera interface setup
-        this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
+        if (this.selectedCameraController) {
+            this.gui.gui.remove(this.selectedCameraController);
+        }
+        this.selectedCameraController = this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
             this.camera = this.graph.cameras[this.graph.selectedCameraID];
             this.interface.setActiveCamera(this.camera);
         });
 
         // Highlight pulse duration interface setup
-        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
+        if (this.highlightPulseController) {
+            this.gui.gui.remove(this.highlightPulseController);
+        }
+        this.highlightPulseController = this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
 
         // Lights interface setup
-        const lightsFolder = this.gui.gui.addFolder('Lights');
-        lightsFolder.open();
+        if (this.lightsFolder) {
+            this.gui.gui.removeFolder(this.lightsFolder);
+        }
+        this.lightsFolder = this.gui.gui.addFolder('Lights');
+        this.lightsFolder.open();
         const getIndexFromKey = (key) => {
             let i = 0;
             for (const k in this.graph.lights) {
@@ -155,7 +174,7 @@ export class XMLscene extends CGFscene {
             return -1;
         };
         for (const key in this.graph.lights) {
-            lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
+            this.lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
                 const index = getIndexFromKey(key);
                 if (this.graph.enabledLights[key]) {
                     this.graph.lights[key][0] = true;
@@ -168,14 +187,17 @@ export class XMLscene extends CGFscene {
         }
 
         // Highlights interface setup
-        const highlightsFolder = this.gui.gui.addFolder('Highlights');
-        highlightsFolder.open();
+        if (this.highlightsFolder) {
+            this.gui.gui.removeFolder(this.highlightsFolder);
+        }
+        this.highlightsFolder = this.gui.gui.addFolder('Highlights');
+        this.highlightsFolder.open();
         for (const key in this.graph.components) {
             const component = this.graph.components[key];
             if (component.highlight == null || !component.hasDirectPrimitiveDescendant()) {
                 continue;
             }
-            highlightsFolder.add(component, 'enableHighlight').name(key);
+            this.highlightsFolder.add(component, 'enableHighlight').name(key);
         }
 
         this.sceneInited = true;
@@ -210,6 +232,9 @@ export class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
+        // Notify picking listeners
+        this.notifyPickListeners();
+
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -235,6 +260,9 @@ export class XMLscene extends CGFscene {
         }
 
         if (this.sceneInited) {
+            // Set pick id for use throughout the graph display
+            this.currentPickId = 1;
+
             // Draw axis
             this.setDefaultAppearance();
 
@@ -244,5 +272,33 @@ export class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    notifyPickListeners() {
+        if (this.pickMode) {
+            // results can only be retrieved when picking mode is false
+            return;
+        }
+
+        if (this.pickResults == null || this.pickResults.length == 0) {
+            // no objects were picked on the last frame
+            return;
+        }
+
+        for (let i = 0; i < this.pickResults.length; i++) {
+            const component = this.pickResults[i][0];
+            if (component) {
+                for (const pickListener of this.pickListeners) {
+                    pickListener.notifyPick(component);
+                }
+            }
+        }
+        this.pickResults.splice(0, this.pickResults.length);
+    }
+
+    addPickListener(listener) {
+        if (this.pickListeners.indexOf(listener) === -1) {
+            this.pickListeners.push(listener);
+        }
     }
 }
