@@ -15,7 +15,7 @@ function getUrlVars() {
 
 function main() {
     const file = getUrlVars()["file"];
-    const gameController = new AppController(file ? [file] : ["demo.xml", "test_board.xml"]);
+    const gameController = new AppController(file ? [file] : ["house.xml", "board.xml"]);
     gameController.start();
 }
 

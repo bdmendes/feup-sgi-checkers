@@ -230,6 +230,20 @@
             </children>
         </component>
 
+        <component id="cube_face6">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
         <component id="borders">
             <transformation>
                 <rotate axis="x" angle="-90" />
