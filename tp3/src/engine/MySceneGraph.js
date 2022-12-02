@@ -32,10 +32,12 @@ export class MySceneGraph {
      * @constructor
      * @param {CGFscene} scene - MyScene object
      * @param {string} filename - the name of the file to be parsed
+     * @param {boolean} autoSceneLoad - if true, after the xml is parsed, it is loaded into the scene
      */
-    constructor(filename, scene) {
+    constructor(filename, scene, autoSceneLoad = false) {
         // Not loaded until XML loading is finished
         this.loadedOk = null;
+        this.autoSceneLoad = autoSceneLoad;
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
@@ -108,7 +110,9 @@ export class MySceneGraph {
 
         // As the graph loaded ok, signal the scene so that any additional
         // initialization depending on the graph can take place
-        this.scene.onGraphLoaded();
+        if (this.autoSceneLoad) {
+            this.scene.onGraphLoaded();
+        }
     }
 
     getNodeNames(nodes) {

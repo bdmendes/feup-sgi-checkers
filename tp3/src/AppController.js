@@ -19,9 +19,10 @@ export class AppController {
         this.graphs = {};
         this.selectedGraph = "";
         for (const filename of filenames) {
-            const graph = new MySceneGraph(filename, this.scene);
+            const activeScene = filename === filenames[0];
+            const graph = new MySceneGraph(filename, this.scene, activeScene);
             this.graphs[filename] = graph;
-            if (this.selectedGraph === "") {
+            if (activeScene) {
                 this.selectedGraph = filename;
                 this.scene.graph = graph;
                 this.datInterface.sceneGraph = graph;
@@ -45,7 +46,7 @@ export class AppController {
         this.scene.graph = this.graphs[this.selectedGraph];
         this.datInterface.sceneGraph = this.graphs[this.selectedGraph];
         if (forceUIUpdate) {
-            this.scene.onGraphLoaded(true);
+            this.scene.onGraphLoaded();
         }
     }
 
