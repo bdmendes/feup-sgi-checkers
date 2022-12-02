@@ -19,11 +19,11 @@
             <to x="-15" y="4" z="8" />
         </perspective>
         <perspective id="player1Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="5.5" z="-4" />
+            <from x="3" y="7" z="-4" />
             <to x="3" y="3.3" z="-7" />
         </perspective>
         <perspective id="player2Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="5.5" z="-10" />
+            <from x="3" y="7" z="-10" />
             <to x="3" y="3.3" z="-7" />
         </perspective>
         <ortho id="orthoSideCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
@@ -4370,7 +4370,7 @@
 
         <component id="supportBlockPlayer1">
             <transformation>
-                <scale x="1" y="1" z="1.5" />
+                <scale x="1" y="0.5" z="1.5" />
                 <translate x="7" y="0" z="2" />
             </transformation>
             <materials>
@@ -4390,7 +4390,7 @@
 
         <component id="supportBlockPlayer2">
             <transformation>
-                <scale x="1" y="1" z="1.5" />
+                <scale x="1" y="0.5" z="1.5" />
                 <translate x="7" y="0" z="-2" />
             </transformation>
             <materials>
