@@ -1,7 +1,21 @@
-import { GameController } from './game/GameController.js';
+import { AppController } from './AppController.js';
+
+/**
+ * Parse url variables to get the right file
+ * @return {*} 
+ */
+function getUrlVars() {
+    const vars = {};
+    const parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+        function (m, key, value) {
+            vars[decodeURIComponent(key)] = decodeURIComponent(value);
+        });
+    return vars;
+}
 
 function main() {
-    const gameController = new GameController(["demo.xml"]);
+    const file = getUrlVars()["file"];
+    const gameController = new AppController(file ? [file] : ["demo.xml", "test_animations.xml"]);
     gameController.start();
 }
 

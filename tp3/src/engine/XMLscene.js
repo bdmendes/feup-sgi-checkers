@@ -122,7 +122,12 @@ export class XMLscene extends CGFscene {
     /** Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
-    onGraphLoaded() {
+    onGraphLoaded(force = false) {
+        if (this.sceneInited && !force) {
+            // Do not run if background graphs are being loaded
+            return;
+        }
+
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
@@ -134,25 +139,37 @@ export class XMLscene extends CGFscene {
         this.initCameras();
 
         // Debug options
-        const debugFolder = this.gui.gui.addFolder('Debug');
-        debugFolder.open();
-        debugFolder.add(this.graph, 'displayAxis').name('Display axis');
-        debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
-        debugFolder.add(this.graph, 'displayNormals').name('Display normals');
-        debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
+        if (this.debugFolder) {
+            this.gui.gui.removeFolder(this.debugFolder);
+        }
+        this.debugFolder = this.gui.gui.addFolder('Debug');
+        this.debugFolder.open();
+        this.debugFolder.add(this.graph, 'displayAxis').name('Display axis');
+        this.debugFolder.add(this.graph, 'lightsAreVisible').name('Visible lights');
+        this.debugFolder.add(this.graph, 'displayNormals').name('Display normals');
+        this.debugFolder.add(this.graph, 'loopAnimations').name('Loop animations');
 
         // Camera interface setup
-        this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
+        if (this.selectedCameraController) {
+            this.gui.gui.remove(this.selectedCameraController);
+        }
+        this.selectedCameraController = this.gui.gui.add(this.graph, 'selectedCameraID', Object.keys(this.graph.cameras)).name('Camera').onChange(() => {
             this.camera = this.graph.cameras[this.graph.selectedCameraID];
             this.interface.setActiveCamera(this.camera);
         });
 
         // Highlight pulse duration interface setup
-        this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
+        if (this.highlightPulseController) {
+            this.gui.gui.remove(this.highlightPulseController);
+        }
+        this.highlightPulseController = this.gui.gui.add(this.graph, 'highlightPulseDuration', 0.5, 5).name('Pulse duration');
 
         // Lights interface setup
-        const lightsFolder = this.gui.gui.addFolder('Lights');
-        lightsFolder.open();
+        if (this.lightsFolder) {
+            this.gui.gui.removeFolder(this.lightsFolder);
+        }
+        this.lightsFolder = this.gui.gui.addFolder('Lights');
+        this.lightsFolder.open();
         const getIndexFromKey = (key) => {
             let i = 0;
             for (const k in this.graph.lights) {
@@ -162,7 +179,7 @@ export class XMLscene extends CGFscene {
             return -1;
         };
         for (const key in this.graph.lights) {
-            lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
+            this.lightsFolder.add(this.graph.enabledLights, key).name(key).onChange(() => {
                 const index = getIndexFromKey(key);
                 if (this.graph.enabledLights[key]) {
                     this.graph.lights[key][0] = true;
@@ -175,14 +192,17 @@ export class XMLscene extends CGFscene {
         }
 
         // Highlights interface setup
-        const highlightsFolder = this.gui.gui.addFolder('Highlights');
-        highlightsFolder.open();
+        if (this.highlightsFolder) {
+            this.gui.gui.removeFolder(this.highlightsFolder);
+        }
+        this.highlightsFolder = this.gui.gui.addFolder('Highlights');
+        this.highlightsFolder.open();
         for (const key in this.graph.components) {
             const component = this.graph.components[key];
             if (component.highlight == null || !component.hasDirectPrimitiveDescendant()) {
                 continue;
             }
-            highlightsFolder.add(component, 'enableHighlight').name(key);
+            this.highlightsFolder.add(component, 'enableHighlight').name(key);
         }
 
         this.sceneInited = true;
@@ -283,6 +303,8 @@ export class XMLscene extends CGFscene {
     }
 
     addPickListener(listener) {
-        this.pickListeners.push(listener);
+        if (this.pickListeners.indexOf(listener) === -1) {
+            this.pickListeners.push(listener);
+        }
     }
 }
