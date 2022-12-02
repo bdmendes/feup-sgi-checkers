@@ -43,6 +43,7 @@ export class XMLscene extends CGFscene {
         this.setUpdatePeriod(1000 / 50);
 
         // Enable picking
+        this.pickListeners = [];
         this.setPickEnabled(true);
     }
 
@@ -269,14 +270,19 @@ export class XMLscene extends CGFscene {
             return;
         }
 
-        // TODO: Notify pick listeners
         for (let i = 0; i < this.pickResults.length; i++) {
             const obj = this.pickResults[i][0];
             if (obj) {
                 const customId = this.pickResults[i][1];
-                console.log("Picked object: " + obj + ", with pick id " + customId);
+                for (const pickListener of this.pickListeners) {
+                    pickListener.notifyPick(obj, customId);
+                }
             }
         }
         this.pickResults.splice(0, this.pickResults.length);
+    }
+
+    addPickListener(listener) {
+        this.pickListeners.push(listener);
     }
 }
