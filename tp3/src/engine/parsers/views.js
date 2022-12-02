@@ -54,7 +54,6 @@ function parsePerspectiveCamera(sceneGraph, perspectiveNode) {
 
     // Checks for repeated IDs.
     if (sceneGraph.cameras[nodeID] != null) {
-        console.log(sceneGraph.cameras);
         return 'ID must be unique for each camera (conflict: ID = ' + nodeID + ')';
     }
 

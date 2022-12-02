@@ -1,6 +1,3 @@
-//import { CGFXMLreader } from "../../../../lib/CGF.js";
-import { MySceneGraph } from "../MySceneGraph.js";
-
 export async function parseIncludes(sceneGraph, includesNode) {
     const children = includesNode.children;
     const nodeNames = [];
@@ -30,7 +27,6 @@ async function parseInclude(sceneGraph, includeNode) {
 
     console.log('Loading additional scene from ' + filename + '...');
 
-    // Fetch file
     const response = await fetch('scenes/' + filename);
     if (!response.ok)
         return "unable to fetch file " + filename;
@@ -39,7 +35,6 @@ async function parseInclude(sceneGraph, includeNode) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(fileBlob, "text/xml");
 
-    // get root element
     const error = await sceneGraph.parseXMLFile(xmlDoc.documentElement, false);
     if (error != null)
         return error;
