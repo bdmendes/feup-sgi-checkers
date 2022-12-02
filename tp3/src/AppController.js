@@ -2,6 +2,7 @@ import { CGFapplication } from '../../lib/CGF.js';
 import { MyInterface } from './engine/MyInterface.js';
 import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
+import { GameController } from './game/GameController.js';
 
 export class AppController {
     constructor(filenames) {
@@ -19,13 +20,11 @@ export class AppController {
         this.graphs = {};
         this.selectedGraph = "";
         for (const filename of filenames) {
-            const activeScene = filename === filenames[0];
-            const graph = new MySceneGraph(filename, this.scene, activeScene);
+            const isActiveScene = filename === filenames[0];
+            const graph = new MySceneGraph(filename, this.scene, isActiveScene);
             this.graphs[filename] = graph;
-            if (activeScene) {
+            if (isActiveScene) {
                 this.selectedGraph = filename;
-                this.scene.graph = graph;
-                this.datInterface.sceneGraph = graph;
             }
         }
 
@@ -33,8 +32,8 @@ export class AppController {
         this.datInterface.gui.add(this, 'selectedGraph', Object.keys(this.graphs)).name('Current scene')
             .onChange(() => this.updateCurrentGraph(true));
 
-        // Add pick listener (move this to GameController later)
-        this.scene.addPickListener(this);
+        // Initialize game
+        this.gameController = new GameController(this.scene);
     }
 
     start() {
@@ -48,9 +47,5 @@ export class AppController {
         if (forceUIUpdate) {
             this.scene.onGraphLoaded();
         }
-    }
-
-    notifyPick(object, pickId) {
-        console.log("Picked object: " + object + ", with pickId " + pickId);
     }
 }

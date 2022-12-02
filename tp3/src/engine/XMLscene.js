@@ -286,11 +286,10 @@ export class XMLscene extends CGFscene {
         }
 
         for (let i = 0; i < this.pickResults.length; i++) {
-            const obj = this.pickResults[i][0];
-            if (obj) {
-                const customId = this.pickResults[i][1];
+            const component = this.pickResults[i][0];
+            if (component) {
                 for (const pickListener of this.pickListeners) {
-                    pickListener.notifyPick(obj, customId);
+                    pickListener.notifyPick(component);
                 }
             }
         }
