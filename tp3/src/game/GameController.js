@@ -1,5 +1,6 @@
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
+import { numberToRow, letterToColumn } from './util.js';
 
 const BLACK_PIECE_STR = 'blackPiece';
 const WHITE_PIECE_STR = 'whitePiece';
@@ -28,39 +29,72 @@ export class GameController {
     }
 
     pickPiece(component) {
-        if (this.game.currentPlayer === BLACK && component.id.includes('black') || this.game.currentPlayer === WHITE && component.id.includes('white')) {
-            if (this.selectedComponent != null) {
-                this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
-            }
-
-            this.selectedPosition = (this.game.currentPlayer === BLACK) ?
-                this.blackPositions.get(
-                    parseInt(component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length))
-                ) :
-                this.whitePositions.get(
-                    parseInt(component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length))
-                );
-
-            if (this.selectedComponent != null && this.selectedComponent.id === component.id) {
-                this.selectedComponent = null;
-                this.selectedPossibleMoves = null;
-                return;
-            }
-
-            this.selectedComponent = component;
-            this.selectedPossibleMoves = this.game.possibleMoves(this.selectedPosition).map(move => move[1]);
-            this.textureController.applyPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
-        } else {
-            console.log("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
+        if (this.selectedComponent != null) {
+            this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
         }
+
+        if (!((this.game.currentPlayer === BLACK && component.id.includes('black')) ||
+            (this.game.currentPlayer === WHITE && component.id.includes('white')))) {
+            console.log("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
+            this.clean();
+            return;
+        }
+
+        this.selectedPosition = (this.game.currentPlayer === BLACK) ?
+            this.blackPositions.get(
+                parseInt(component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length))
+            ) :
+            this.whitePositions.get(
+                parseInt(component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length))
+            );
+
+        if (this.selectedComponent != null && this.selectedComponent.id === component.id) {
+            this.clean()
+            return;
+        }
+
+        this.selectedComponent = component;
+        this.selectedPossibleMoves = this.game.possibleMoves(this.selectedPosition).map(move => move[1]);
+        this.textureController.applyPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
     }
 
     pickPosition(component) {
-        console.log("Picked position: " + component.id);
+        if (this.selectedComponent == null) {
+            console.log("Invalid position. Firstly, choose a valid " + (this.game.currentPlayer === BLACK ? "black piece" : "white piece"));
+            return;
+        }
+
+        if (this.selectedComponent != null) {
+            this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
+        }
+
+        let position = [numberToRow(component.id[component.id.length - 1]), letterToColumn(component.id[component.id.length - 2])];
+        let possible = false;
+
+        for (let i = 0; i < this.selectedPossibleMoves.length; i++) {
+            if (this.selectedPossibleMoves[i][0] === position[0] && this.selectedPossibleMoves[i][1] === position[1]) {
+                possible = true;
+                break;
+            }
+        }
+
+        if (!possible) {
+            this.clean();
+            return;
+        }
+
+        /*
+        TODO: make animation
+        
+        this.game.move(this.selectedPosition, position);
+        this.game.printBoard();
+        */
     }
 
-    letterToColumn(letter) {
-        return 7 - (letter.charCodeAt(0) - 65);
+    clean() {
+        this.selectedComponent = null;
+        this.selectedPossibleMoves = null;
+        this.selectedPosition = null;
     }
 
     initGame() {
