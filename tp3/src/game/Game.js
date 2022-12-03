@@ -181,11 +181,7 @@ export class Game {
         return this.currentPlayer === WHITE ? BLACK : WHITE;
     }
 
-    columnToLetter(column) {
-        return String.fromCharCode(65 + column);
-    }
-
     letterToColumn(letter) {
-        return letter.charCodeAt(0) - 65;
+        return 7 - (letter.charCodeAt(0) - 65);
     }
 }
