@@ -20,7 +20,7 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1" linear="0" quadratic="0" />
-        </omni>
+        </omni>7
     </lights>
 
     <textures>
@@ -230,6 +230,20 @@
             </children>
         </component>
 
+        <component id="cube_face6">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
         <component id="borders">
             <transformation>
                 <rotate axis="x" angle="-90" />
@@ -386,7 +400,7 @@
             </children>
         </component>
 
-        <component id="positionA1">
+        <component id="positionA1" pickable="1">
             <transformation>
                 <translate x="-7" y="-7" z="1" />
             </transformation>
@@ -399,7 +413,7 @@
             </children>
         </component>
 
-        <component id="positionB1">
+        <component id="positionB1" pickable="1">
             <transformation>
                 <translate x="-5" y="-7" z="1" />
             </transformation>
@@ -411,7 +425,7 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
-        <component id="positionC1">
+        <component id="positionC1" pickable="1">
             <transformation>
                 <translate x="-3" y="-7" z="1" />
             </transformation>
@@ -424,7 +438,7 @@
             </children>
         </component>
 
-        <component id="positionD1">
+        <component id="positionD1" pickable="1">
             <transformation>
                 <translate x="-1" y="-7" z="1" />
             </transformation>
@@ -437,7 +451,7 @@
             </children>
         </component>
 
-        <component id="positionE1">
+        <component id="positionE1" pickable="1">
             <transformation>
                 <translate x="1" y="-7" z="1" />
             </transformation>
@@ -450,7 +464,7 @@
             </children>
         </component>
 
-        <component id="positionF1">
+        <component id="positionF1" pickable="1">
             <transformation>
                 <translate x="3" y="-7" z="1" />
             </transformation>
@@ -463,7 +477,7 @@
             </children>
         </component>
 
-        <component id="positionG1">
+        <component id="positionG1" pickable="1">
             <transformation>
                 <translate x="5" y="-7" z="1" />
             </transformation>
@@ -476,7 +490,7 @@
             </children>
         </component>
 
-        <component id="positionH1">
+        <component id="positionH1" pickable="1">
             <transformation>
                 <translate x="7" y="-7" z="1" />
             </transformation>
@@ -489,7 +503,7 @@
             </children>
         </component>
 
-        <component id="positionA2">
+        <component id="positionA2" pickable="1">
             <transformation>
                 <translate x="-7" y="-5" z="1" />
             </transformation>
@@ -502,7 +516,7 @@
             </children>
         </component>
 
-        <component id="positionB2">
+        <component id="positionB2" pickable="1">
             <transformation>
                 <translate x="-5" y="-5" z="1" />
             </transformation>
@@ -515,7 +529,7 @@
             </children>
         </component>
 
-        <component id="positionC2">
+        <component id="positionC2" pickable="1">
             <transformation>
                 <translate x="-3" y="-5" z="1" />
             </transformation>
@@ -528,7 +542,7 @@
             </children>
         </component>
 
-        <component id="positionD2">
+        <component id="positionD2" pickable="1">
             <transformation>
                 <translate x="-1" y="-5" z="1" />
             </transformation>
@@ -541,7 +555,7 @@
             </children>
         </component>
 
-        <component id="positionE2">
+        <component id="positionE2" pickable="1">
             <transformation>
                 <translate x="1" y="-5" z="1" />
             </transformation>
@@ -554,7 +568,7 @@
             </children>
         </component>
 
-        <component id="positionF2">
+        <component id="positionF2" pickable="1">
             <transformation>
                 <translate x="3" y="-5" z="1" />
             </transformation>
@@ -567,7 +581,7 @@
             </children>
         </component>
 
-        <component id="positionG2">
+        <component id="positionG2" pickable="1">
             <transformation>
                 <translate x="5" y="-5" z="1" />
             </transformation>
@@ -580,7 +594,7 @@
             </children>
         </component>
 
-        <component id="positionH2">
+        <component id="positionH2" pickable="1">
             <transformation>
                 <translate x="7" y="-5" z="1" />
             </transformation>
@@ -593,7 +607,7 @@
             </children>
         </component>
 
-        <component id="positionA3">
+        <component id="positionA3" pickable="1">
             <transformation>
                 <translate x="-7" y="-3" z="1" />
             </transformation>
@@ -606,7 +620,7 @@
             </children>
         </component>
 
-        <component id="positionB3">
+        <component id="positionB3" pickable="1">
             <transformation>
                 <translate x="-5" y="-3" z="1" />
             </transformation>
@@ -619,7 +633,7 @@
             </children>
         </component>
 
-        <component id="positionC3">
+        <component id="positionC3" pickable="1">
             <transformation>
                 <translate x="-3" y="-3" z="1" />
             </transformation>
@@ -632,7 +646,7 @@
             </children>
         </component>
 
-        <component id="positionD3">
+        <component id="positionD3" pickable="1">
             <transformation>
                 <translate x="-1" y="-3" z="1" />
             </transformation>
@@ -645,7 +659,7 @@
             </children>
         </component>
 
-        <component id="positionE3">
+        <component id="positionE3" pickable="1">
             <transformation>
                 <translate x="1" y="-3" z="1" />
             </transformation>
@@ -658,7 +672,7 @@
             </children>
         </component>
 
-        <component id="positionF3">
+        <component id="positionF3" pickable="1">
             <transformation>
                 <translate x="3" y="-3" z="1" />
             </transformation>
@@ -671,7 +685,7 @@
             </children>
         </component>
 
-        <component id="positionG3">
+        <component id="positionG3" pickable="1">
             <transformation>
                 <translate x="5" y="-3" z="1" />
             </transformation>
@@ -684,7 +698,7 @@
             </children>
         </component>
 
-        <component id="positionH3">
+        <component id="positionH3" pickable="1">
             <transformation>
                 <translate x="7" y="-3" z="1" />
             </transformation>
@@ -697,7 +711,7 @@
             </children>
         </component>
 
-        <component id="positionA4">
+        <component id="positionA4" pickable="1">
             <transformation>
                 <translate x="-7" y="-1" z="1" />
             </transformation>
@@ -710,7 +724,7 @@
             </children>
         </component>
 
-        <component id="positionB4">
+        <component id="positionB4" pickable="1">
             <transformation>
                 <translate x="-5" y="-1" z="1" />
             </transformation>
@@ -723,7 +737,7 @@
             </children>
         </component>
 
-        <component id="positionC4">
+        <component id="positionC4" pickable="1">
             <transformation>
                 <translate x="-3" y="-1" z="1" />
             </transformation>
@@ -736,7 +750,7 @@
             </children>
         </component>
 
-        <component id="positionD4">
+        <component id="positionD4" pickable="1">
             <transformation>
                 <translate x="-1" y="-1" z="1" />
             </transformation>
@@ -749,7 +763,7 @@
             </children>
         </component>
 
-        <component id="positionE4">
+        <component id="positionE4" pickable="1">
             <transformation>
                 <translate x="1" y="-1" z="1" />
             </transformation>
@@ -762,7 +776,7 @@
             </children>
         </component>
 
-        <component id="positionF4">
+        <component id="positionF4" pickable="1">
             <transformation>
                 <translate x="3" y="-1" z="1" />
             </transformation>
@@ -775,7 +789,7 @@
             </children>
         </component>
 
-        <component id="positionG4">
+        <component id="positionG4" pickable="1">
             <transformation>
                 <translate x="5" y="-1" z="1" />
             </transformation>
@@ -788,7 +802,7 @@
             </children>
         </component>
 
-        <component id="positionH4">
+        <component id="positionH4" pickable="1">
             <transformation>
                 <translate x="7" y="-1" z="1" />
             </transformation>
@@ -801,7 +815,7 @@
             </children>
         </component>
 
-        <component id="positionA5">
+        <component id="positionA5" pickable="1">
             <transformation>
                 <translate x="-7" y="1" z="1" />
             </transformation>
@@ -814,7 +828,7 @@
             </children>
         </component>
 
-        <component id="positionB5">
+        <component id="positionB5" pickable="1">
             <transformation>
                 <translate x="-5" y="1" z="1" />
             </transformation>
@@ -827,7 +841,7 @@
             </children>
         </component>
 
-        <component id="positionC5">
+        <component id="positionC5" pickable="1">
             <transformation>
                 <translate x="-3" y="1" z="1" />
             </transformation>
@@ -840,7 +854,7 @@
             </children>
         </component>
 
-        <component id="positionD5">
+        <component id="positionD5" pickable="1">
             <transformation>
                 <translate x="-1" y="1" z="1" />
             </transformation>
@@ -853,7 +867,7 @@
             </children>
         </component>
 
-        <component id="positionE5">
+        <component id="positionE5" pickable="1">
             <transformation>
                 <translate x="1" y="1" z="1" />
             </transformation>
@@ -866,7 +880,7 @@
             </children>
         </component>
 
-        <component id="positionF5">
+        <component id="positionF5" pickable="1">
             <transformation>
                 <translate x="3" y="1" z="1" />
             </transformation>
@@ -879,7 +893,7 @@
             </children>
         </component>
 
-        <component id="positionG5">
+        <component id="positionG5" pickable="1">
             <transformation>
                 <translate x="5" y="1" z="1" />
             </transformation>
@@ -892,7 +906,7 @@
             </children>
         </component>
 
-        <component id="positionH5">
+        <component id="positionH5" pickable="1">
             <transformation>
                 <translate x="7" y="1" z="1" />
             </transformation>
@@ -905,7 +919,7 @@
             </children>
         </component>
 
-        <component id="positionA6">
+        <component id="positionA6" pickable="1">
             <transformation>
                 <translate x="-7" y="3" z="1" />
             </transformation>
@@ -918,7 +932,7 @@
             </children>
         </component>
 
-        <component id="positionB6">
+        <component id="positionB6" pickable="1">
             <transformation>
                 <translate x="-5" y="3" z="1" />
             </transformation>
@@ -931,7 +945,7 @@
             </children>
         </component>
 
-        <component id="positionC6">
+        <component id="positionC6" pickable="1">
             <transformation>
                 <translate x="-3" y="3" z="1" />
             </transformation>
@@ -944,7 +958,7 @@
             </children>
         </component>
 
-        <component id="positionD6">
+        <component id="positionD6" pickable="1">
             <transformation>
                 <translate x="-1" y="3" z="1" />
             </transformation>
@@ -957,7 +971,7 @@
             </children>
         </component>
 
-        <component id="positionE6">
+        <component id="positionE6" pickable="1">
             <transformation>
                 <translate x="1" y="3" z="1" />
             </transformation>
@@ -970,7 +984,7 @@
             </children>
         </component>
 
-        <component id="positionF6">
+        <component id="positionF6" pickable="1">
             <transformation>
                 <translate x="3" y="3" z="1" />
             </transformation>
@@ -983,7 +997,7 @@
             </children>
         </component>
 
-        <component id="positionG6">
+        <component id="positionG6" pickable="1">
             <transformation>
                 <translate x="5" y="3" z="1" />
             </transformation>
@@ -996,7 +1010,7 @@
             </children>
         </component>
 
-        <component id="positionH6">
+        <component id="positionH6" pickable="1">
             <transformation>
                 <translate x="7" y="3" z="1" />
             </transformation>
@@ -1009,7 +1023,7 @@
             </children>
         </component>
 
-        <component id="positionA7">
+        <component id="positionA7" pickable="1">
             <transformation>
                 <translate x="-7" y="5" z="1" />
             </transformation>
@@ -1022,7 +1036,7 @@
             </children>
         </component>
 
-        <component id="positionB7">
+        <component id="positionB7" pickable="1">
             <transformation>
                 <translate x="-5" y="5" z="1" />
             </transformation>
@@ -1035,7 +1049,7 @@
             </children>
         </component>
 
-        <component id="positionC7">
+        <component id="positionC7" pickable="1">
             <transformation>
                 <translate x="-3" y="5" z="1" />
             </transformation>
@@ -1048,7 +1062,7 @@
             </children>
         </component>
 
-        <component id="positionD7">
+        <component id="positionD7" pickable="1">
             <transformation>
                 <translate x="-1" y="5" z="1" />
             </transformation>
@@ -1061,7 +1075,7 @@
             </children>
         </component>
 
-        <component id="positionE7">
+        <component id="positionE7" pickable="1">
             <transformation>
                 <translate x="1" y="5" z="1" />
             </transformation>
@@ -1074,7 +1088,7 @@
             </children>
         </component>
 
-        <component id="positionF7">
+        <component id="positionF7" pickable="1">
             <transformation>
                 <translate x="3" y="5" z="1" />
             </transformation>
@@ -1087,7 +1101,7 @@
             </children>
         </component>
 
-        <component id="positionG7">
+        <component id="positionG7" pickable="1">
             <transformation>
                 <translate x="5" y="5" z="1" />
             </transformation>
@@ -1100,7 +1114,7 @@
             </children>
         </component>
 
-        <component id="positionH7">
+        <component id="positionH7" pickable="1">
             <transformation>
                 <translate x="7" y="5" z="1" />
             </transformation>
@@ -1113,7 +1127,7 @@
             </children>
         </component>
 
-        <component id="positionA8">
+        <component id="positionA8" pickable="1">
             <transformation>
                 <translate x="-7" y="7" z="1" />
             </transformation>
@@ -1126,7 +1140,7 @@
             </children>
         </component>
 
-        <component id="positionB8">
+        <component id="positionB8" pickable="1">
             <transformation>
                 <translate x="-5" y="7" z="1" />
             </transformation>
@@ -1139,7 +1153,7 @@
             </children>
         </component>
 
-        <component id="positionC8">
+        <component id="positionC8" pickable="1">
             <transformation>
                 <translate x="-3" y="7" z="1" />
             </transformation>
@@ -1152,7 +1166,7 @@
             </children>
         </component>
 
-        <component id="positionD8">
+        <component id="positionD8" pickable="1">
             <transformation>
                 <translate x="-1" y="7" z="1" />
             </transformation>
@@ -1165,7 +1179,7 @@
             </children>
         </component>
 
-        <component id="positionE8">
+        <component id="positionE8" pickable="1">
             <transformation>
                 <translate x="1" y="7" z="1" />
             </transformation>
@@ -1178,7 +1192,7 @@
             </children>
         </component>
 
-        <component id="positionF8">
+        <component id="positionF8" pickable="1">
             <transformation>
                 <translate x="3" y="7" z="1" />
             </transformation>
@@ -1191,7 +1205,7 @@
             </children>
         </component>
 
-        <component id="positionG8">
+        <component id="positionG8" pickable="1">
             <transformation>
                 <translate x="5" y="7" z="1" />
             </transformation>
@@ -1204,7 +1218,7 @@
             </children>
         </component>
 
-        <component id="positionH8">
+        <component id="positionH8" pickable="1">
             <transformation>
                 <translate x="7" y="7" z="1" />
             </transformation>
@@ -1254,7 +1268,7 @@
             </children>
         </component>
 
-        <component id="blackPiece1">
+        <component id="blackPiece1" pickable="1">
             <transformation>
                 <translate x="-4" y="0" z="3" />
             </transformation>
@@ -1267,7 +1281,7 @@
             </children>
         </component>
 
-        <component id="blackPiece2">
+        <component id="blackPiece2" pickable="1">
             <transformation>
                 <translate x="-2" y="0" z="3" />
             </transformation>
@@ -1280,7 +1294,7 @@
             </children>
         </component>
 
-        <component id="blackPiece3">
+        <component id="blackPiece3" pickable="1">
             <transformation>
                 <translate x="0" y="0" z="3" />
             </transformation>
@@ -1293,7 +1307,7 @@
             </children>
         </component>
 
-        <component id="blackPiece4">
+        <component id="blackPiece4" pickable="1">
             <transformation>
                 <translate x="2" y="0" z="3" />
             </transformation>
@@ -1306,7 +1320,7 @@
             </children>
         </component>
 
-        <component id="blackPiece5">
+        <component id="blackPiece5" pickable="1">
             <transformation>
                 <translate x="-3" y="0" z="2" />
             </transformation>
@@ -1319,7 +1333,7 @@
             </children>
         </component>
 
-        <component id="blackPiece6">
+        <component id="blackPiece6" pickable="1">
             <transformation>
                 <translate x="-1" y="0" z="2" />
             </transformation>
@@ -1332,7 +1346,7 @@
             </children>
         </component>
 
-        <component id="blackPiece7">
+        <component id="blackPiece7" pickable="1">
             <transformation>
                 <translate x="1" y="0" z="2" />
             </transformation>
@@ -1345,7 +1359,7 @@
             </children>
         </component>
 
-        <component id="blackPiece8">
+        <component id="blackPiece8" pickable="1">
             <transformation>
                 <translate x="3" y="0" z="2" />
             </transformation>
@@ -1358,7 +1372,7 @@
             </children>
         </component>
 
-        <component id="blackPiece9">
+        <component id="blackPiece9" pickable="1">
             <transformation>
                 <translate x="-4" y="0" z="1" />
             </transformation>
@@ -1371,7 +1385,7 @@
             </children>
         </component>
 
-        <component id="blackPiece10">
+        <component id="blackPiece10" pickable="1">
             <transformation>
                 <translate x="-2" y="0" z="1" />
             </transformation>
@@ -1384,7 +1398,7 @@
             </children>
         </component>
 
-        <component id="blackPiece11">
+        <component id="blackPiece11" pickable="1">
             <transformation>
                 <translate x="0" y="0" z="1" />
             </transformation>
@@ -1397,7 +1411,7 @@
             </children>
         </component>
 
-        <component id="blackPiece12">
+        <component id="blackPiece12" pickable="1">
             <transformation>
                 <translate x="2" y="0" z="1" />
             </transformation>
@@ -1410,46 +1424,7 @@
             </children>
         </component>
 
-        <component id="whitePiece1">
-            <transformation>
-                <translate x="-3" y="0" z="-4" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="whitePiece" />
-            </children>
-        </component>
-
-        <component id="whitePiece2">
-            <transformation>
-                <translate x="-1" y="0" z="-4" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="whitePiece" />
-            </children>
-        </component>
-
-        <component id="whitePiece3">
-            <transformation>
-                <translate x="1" y="0" z="-4" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="whitePiece" />
-            </children>
-        </component>
-
-        <component id="whitePiece4">
+        <component id="whitePiece1" pickable="1">
             <transformation>
                 <translate x="3" y="0" z="-4" />
             </transformation>
@@ -1462,9 +1437,9 @@
             </children>
         </component>
 
-        <component id="whitePiece5">
+        <component id="whitePiece2" pickable="1">
             <transformation>
-                <translate x="-4" y="0" z="-3" />
+                <translate x="1" y="0" z="-4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1475,9 +1450,9 @@
             </children>
         </component>
 
-        <component id="whitePiece6">
+        <component id="whitePiece3" pickable="1">
             <transformation>
-                <translate x="-2" y="0" z="-3" />
+                <translate x="-1" y="0" z="-4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1488,9 +1463,9 @@
             </children>
         </component>
 
-        <component id="whitePiece7">
+        <component id="whitePiece4" pickable="1">
             <transformation>
-                <translate x="0" y="0" z="-3" />
+                <translate x="-3" y="0" z="-4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1501,7 +1476,7 @@
             </children>
         </component>
 
-        <component id="whitePiece8">
+        <component id="whitePiece5" pickable="1">
             <transformation>
                 <translate x="2" y="0" z="-3" />
             </transformation>
@@ -1514,9 +1489,9 @@
             </children>
         </component>
 
-        <component id="whitePiece9">
+        <component id="whitePiece6" pickable="1">
             <transformation>
-                <translate x="-3" y="0" z="-2" />
+                <translate x="0" y="0" z="-3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1527,9 +1502,9 @@
             </children>
         </component>
 
-        <component id="whitePiece10">
+        <component id="whitePiece7" pickable="1">
             <transformation>
-                <translate x="-1" y="0" z="-2" />
+                <translate x="-2" y="0" z="-3" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1540,7 +1515,33 @@
             </children>
         </component>
 
-        <component id="whitePiece11">
+        <component id="whitePiece8" pickable="1">
+            <transformation>
+                <translate x="-4" y="0" z="-3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece9" pickable="1">
+            <transformation>
+                <translate x="3" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece10" pickable="1">
             <transformation>
                 <translate x="1" y="0" z="-2" />
             </transformation>
@@ -1553,9 +1554,22 @@
             </children>
         </component>
 
-        <component id="whitePiece12">
+        <component id="whitePiece11" pickable="1">
             <transformation>
-                <translate x="3" y="0" z="-2" />
+                <translate x="-1" y="0" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="whitePiece" />
+            </children>
+        </component>
+
+        <component id="whitePiece12" pickable="1">
+            <transformation>
+                <translate x="-3" y="0" z="-2" />
             </transformation>
             <materials>
                 <material id="inherit" />

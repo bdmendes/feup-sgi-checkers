@@ -19,7 +19,7 @@ export function parseTextures(sceneGraph, texturesNode) {
 
         // Checks for repeated IDs.
         if (sceneGraph.textures[textureID] != null)
-            return 'ID must be unique for each light (conflict: ID = ' +
+            return 'ID must be unique for each texture (conflict: ID = ' +
                 textureID + ')';
 
         // Get shininess of the current texture.

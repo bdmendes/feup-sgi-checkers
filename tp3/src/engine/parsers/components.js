@@ -312,11 +312,14 @@ function referenceComponentChildren(sceneGraph) {
                     return 'component with ID ' + componentID + ' has a <componentref> with an invalid ID: ' + id;
                 }
                 component.children[id] = sceneGraph.components[id];
-            } else {
+            } else if (element == "primitiveref") {
                 if (sceneGraph.primitives[id] == null) {
+                    console.log(element)
                     return 'component with ID ' + componentID + ' has a <primitiveref> with an invalid ID: ' + id;
                 }
                 component.children[id] = sceneGraph.primitives[id];
+            } else {
+                component.children[id] = element;
             }
         }
     }
