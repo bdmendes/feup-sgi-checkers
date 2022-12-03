@@ -22,11 +22,11 @@
             <to x="-15" y="4" z="8" />
         </perspective>
         <perspective id="player1Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="5.5" z="-4" />
+            <from x="3" y="6.5" z="-4.5" />
             <to x="3" y="3.3" z="-7" />
         </perspective>
         <perspective id="player2Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="5.5" z="-10" />
+            <from x="3" y="6.5" z="-9.5" />
             <to x="3" y="3.3" z="-7" />
         </perspective>
         <ortho id="orthoSideCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
@@ -257,7 +257,7 @@
             </patch>
         </primitive>
 
-        <primitive id="coverBarrel">
+        <primitive id="circlePatch">
             <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
                 <controlpoint x="-2" y="0" z="-2.7" />
@@ -1288,11 +1288,11 @@
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
-                <material id="inherit"></material>
+                <material id="inherit" />
             </materials>
-            <texture id="inherit"></texture>
+            <texture id="inherit" />
             <children>
-                <componentref id="board"></componentref>
+                <componentref id="boardComponents" />
             </children>
         </component>
 
@@ -1411,7 +1411,7 @@
 
         <component id="donut">
             <transformation>
-                <translate x="2" y="0.3" z="1.15" />
+                <translate x="0" y="0.5" z="1.15" />
                 <scale x="0.1" y="0.05" z="0.05" />
             </transformation>
             <materials>
@@ -2401,7 +2401,7 @@
             </materials>
             <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="coverBarrel" />
+                <primitiveref id="circlePatch" />
             </children>
         </component>
 
@@ -2414,7 +2414,7 @@
             </materials>
             <texture id="lampTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="coverBarrel" />
+                <primitiveref id="circlePatch" />
             </children>
         </component>
 

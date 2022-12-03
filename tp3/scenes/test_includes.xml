@@ -45,7 +45,7 @@
             </materials>
             <texture id="inherit" length_s="1" length_t="1" />
             <children>
-                <componentref id="board" />
+                <componentref id="boardComponents" />
             </children>
         </component>
     </components>
