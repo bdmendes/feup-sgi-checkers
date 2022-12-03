@@ -3,8 +3,8 @@ const WHITE_MAN = 1;
 const BLACK_MAN = 2;
 const WHITE_KING = 3;
 const BLACK_KING = 4;
-const WHITE = 1;
-const BLACK = 2;
+export const WHITE = 1;
+export const BLACK = 2;
 
 export class Game {
     constructor() {
@@ -179,9 +179,5 @@ export class Game {
             }
         }
         return this.currentPlayer === WHITE ? BLACK : WHITE;
-    }
-
-    letterToColumn(letter) {
-        return 7 - (letter.charCodeAt(0) - 65);
     }
 }

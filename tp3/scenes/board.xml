@@ -29,6 +29,8 @@
         <texture id="whitePieceTexture" file="scenes/images/white_wood.jpg" />
         <texture id="blackPositionTexture" file="scenes/images/black_wood.jpg" />
         <texture id="whitePositionTexture" file="scenes/images/white_wood.jpg" />
+        <texture id="possibleMoveTexture" file="scenes/images/possible_move.jpg" />
+        <texture id="selectedPieceTexture" file="scenes/images/selected_piece.jpg" />
     </textures>
 
     <materials>
