@@ -20,7 +20,7 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1" linear="0" quadratic="0" />
-        </omni>
+        </omni>7
     </lights>
 
     <textures>
@@ -1504,7 +1504,7 @@
 
         <component id="whitePiece7" pickable="1">
             <transformation>
-                <translate x="0" y="0" z="-3" />
+                <translate x="-2" y="0" z="-3" />
             </transformation>
             <materials>
                 <material id="inherit" />

@@ -1,6 +1,6 @@
 <sxs>
     <includes>
-        <include file="test_board.xml" />
+        <include file="board.xml" />
     </includes>
 
     <scene root="root" axis_length="5" />
