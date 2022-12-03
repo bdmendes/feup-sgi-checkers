@@ -9,7 +9,3 @@ export function letterToColumn(letter) {
 export function rowToNumber(row) {
     return 7 - row;
 }
-
-export function numberToRow(number) {
-    return 7 - number;
-}

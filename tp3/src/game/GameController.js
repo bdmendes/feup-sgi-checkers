@@ -1,6 +1,6 @@
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
-import { numberToRow, letterToColumn } from './util.js';
+import { rowToNumber, letterToColumn } from './util.js';
 
 const BLACK_PIECE_STR = 'blackPiece';
 const WHITE_PIECE_STR = 'whitePiece';
@@ -68,7 +68,7 @@ export class GameController {
             this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
         }
 
-        let position = [numberToRow(component.id[component.id.length - 1]), letterToColumn(component.id[component.id.length - 2])];
+        let position = [rowToNumber(component.id[component.id.length - 1]), letterToColumn(component.id[component.id.length - 2])];
         let possible = false;
 
         for (let i = 0; i < this.selectedPossibleMoves.length; i++) {
@@ -85,7 +85,7 @@ export class GameController {
 
         /*
         TODO: make animation
-        
+
         this.game.move(this.selectedPosition, position);
         this.game.printBoard();
         */
