@@ -1,5 +1,6 @@
 import { CGFXMLreader } from '../../../lib/CGF.js';
 
+import { parseIncludes } from './parsers/includes.js';
 import { parseScene } from './parsers/scene.js';
 import { parseView } from './parsers/views.js';
 import { parsePrimitives } from './parsers/primitives.js';
@@ -13,16 +14,17 @@ import { parseAnimations } from './parsers/animations.js';
 import { GraphMaterial } from './assets/materials/GraphMaterial.js';
 
 // Order of the groups in the XML document.
-const SCENE_INDEX = 0;
-const VIEWS_INDEX = 1;
-const AMBIENT_INDEX = 2;
-const LIGHTS_INDEX = 3;
-const TEXTURES_INDEX = 4;
-const MATERIALS_INDEX = 5;
-const TRANSFORMATIONS_INDEX = 6;
-const PRIMITIVES_INDEX = 7;
-const ANIMATIONS_INDEX = 8;
-const COMPONENTS_INDEX = 9;
+const INCLUDES_INDEX = 0;
+const SCENE_INDEX = 1;
+const VIEWS_INDEX = 2;
+const AMBIENT_INDEX = 3;
+const LIGHTS_INDEX = 4;
+const TEXTURES_INDEX = 5;
+const MATERIALS_INDEX = 6;
+const TRANSFORMATIONS_INDEX = 7;
+const PRIMITIVES_INDEX = 8;
+const ANIMATIONS_INDEX = 9;
+const COMPONENTS_INDEX = 10;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -38,6 +40,7 @@ export class MySceneGraph {
         // Not loaded until XML loading is finished
         this.loadedOk = null;
         this.autoSceneLoad = autoSceneLoad;
+        this.filename = filename;
 
         // Establish bidirectional references between scene and graph.
         this.scene = scene;
@@ -96,11 +99,10 @@ export class MySceneGraph {
     /*
      * Callback to be executed after successful reading
      */
-    onXMLReady() {
-        console.log('XML Loading finished.');
-        const rootElement = this.reader.xmlDoc.documentElement;
+    async onXMLReady(rootElement = null, requireSceneConfigurations = true) {
+        rootElement ??= this.reader.xmlDoc.documentElement;
 
-        const error = this.parseXMLFile(rootElement);
+        const error = await this.parseXMLFile(rootElement, requireSceneConfigurations);
         if (error != null) {
             this.onXMLError(error);
             return;
@@ -127,7 +129,7 @@ export class MySceneGraph {
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement - the root element of the XML document
      */
-    parseXMLFile(rootElement) {
+    async parseXMLFile(rootElement, requireSceneConfigurations = true) {
         if (rootElement.nodeName != 'sxs') return 'root tag <sxs> missing';
 
         const nodes = rootElement.children;
@@ -135,56 +137,86 @@ export class MySceneGraph {
 
         // Processes each node, verifying errors.
         let error;
+        let index;
+
+        // Used to skip proprietary start blocks, for retrocompatibility with the standard SXS
+        let startOffset = 0;
+
+        // <includes>
+        if ((index = nodeNames.indexOf('includes')) == -1)
+            startOffset -= 1;
+        else {
+            if (index != INCLUDES_INDEX)
+                return 'tag <includes> out of order';
+
+            // Parse includes block
+            if ((error = await parseIncludes(this, nodes[index])) != null) return error;
+        }
+
+        if ((error = this.parseStandardSXS(nodes, nodeNames, startOffset, requireSceneConfigurations)) != null) return error;
+    }
+
+    parseStandardSXS(nodes, nodeNames, startOffset, requireSceneConfigurations) {
+        let error;
+        let index;
 
         // <scene>
-        let index;
         if ((index = nodeNames.indexOf('scene')) == -1)
             return 'tag <scene> missing';
         else {
-            if (index != SCENE_INDEX)
-                this.onXMLMinorError('tag <scene> out of order ' + index);
+            if (index != SCENE_INDEX + startOffset)
+                this.onXMLMinorError('tag <scene> out of order');
 
             // Parse scene block
-            if ((error = parseScene(this, nodes[index])) != null) return error;
+            if (requireSceneConfigurations) {
+                if ((error = parseScene(this, nodes[index])) != null) return error;
+            }
         }
 
         // <views>
         if ((index = nodeNames.indexOf('views')) == -1)
             return 'tag <views> missing';
         else {
-            if (index != VIEWS_INDEX)
+            if (index != VIEWS_INDEX + startOffset)
                 this.onXMLMinorError('tag <views> out of order');
 
             // Parse views block
-            if ((error = parseView(this, nodes[index])) != null) return error;
+            if (requireSceneConfigurations) {
+                if ((error = parseView(this, nodes[index])) != null) return error;
+            }
         }
 
         // <ambient>
         if ((index = nodeNames.indexOf('ambient')) == -1)
             return 'tag <ambient> missing';
         else {
-            if (index != AMBIENT_INDEX)
+            if (index != AMBIENT_INDEX + startOffset)
                 this.onXMLMinorError('tag <ambient> out of order');
 
             // Parse ambient block
-            if ((error = parseAmbient(this, nodes[index])) != null) return error;
+            if (requireSceneConfigurations) {
+                if ((error = parseAmbient(this, nodes[index])) != null) return error;
+            }
         }
 
         // <lights>
         if ((index = nodeNames.indexOf('lights')) == -1)
             return 'tag <lights> missing';
         else {
-            if (index != LIGHTS_INDEX)
+            if (index != LIGHTS_INDEX + startOffset)
                 this.onXMLMinorError('tag <lights> out of order');
 
             // Parse lights block
-            if ((error = parseLights(this, nodes[index])) != null) return error;
+            if (requireSceneConfigurations) {
+                if ((error = parseLights(this, nodes[index])) != null) return error;
+            }
         }
+
         // <textures>
         if ((index = nodeNames.indexOf('textures')) == -1)
             return 'tag <textures> missing';
         else {
-            if (index != TEXTURES_INDEX)
+            if (index != TEXTURES_INDEX + startOffset)
                 this.onXMLMinorError('tag <textures> out of order');
 
             // Parse textures block
@@ -195,7 +227,7 @@ export class MySceneGraph {
         if ((index = nodeNames.indexOf('materials')) == -1)
             return 'tag <materials> missing';
         else {
-            if (index != MATERIALS_INDEX)
+            if (index != MATERIALS_INDEX + startOffset)
                 this.onXMLMinorError('tag <materials> out of order');
 
             // Parse materials block
@@ -206,7 +238,7 @@ export class MySceneGraph {
         if ((index = nodeNames.indexOf('transformations')) == -1)
             return 'tag <transformations> missing';
         else {
-            if (index != TRANSFORMATIONS_INDEX)
+            if (index != TRANSFORMATIONS_INDEX + startOffset)
                 this.onXMLMinorError('tag <transformations> out of order');
 
             // Parse transformations block
@@ -218,7 +250,7 @@ export class MySceneGraph {
         if ((index = nodeNames.indexOf('animations')) == -1)
             return 'tag <animations> missing';
         else {
-            if (index != ANIMATIONS_INDEX)
+            if (index != ANIMATIONS_INDEX + startOffset)
                 this.onXMLMinorError('tag <animations> out of order');
 
             // Parse animations block
@@ -230,7 +262,7 @@ export class MySceneGraph {
         if ((index = nodeNames.indexOf('primitives')) == -1)
             return 'tag <primitives> missing';
         else {
-            if (index != PRIMITIVES_INDEX)
+            if (index != PRIMITIVES_INDEX + startOffset)
                 this.onXMLMinorError('tag <primitives> out of order');
 
             // Parse primitives block
@@ -241,14 +273,12 @@ export class MySceneGraph {
         if ((index = nodeNames.indexOf('components')) == -1)
             return 'tag <components> missing';
         else {
-            if (index != COMPONENTS_INDEX)
+            if (index != COMPONENTS_INDEX + startOffset)
                 this.onXMLMinorError('tag <components> out of order');
 
             // Parse components block
             if ((error = parseComponents(this, nodes[index])) != null) return error;
         }
-
-        console.log('all parsed');
     }
 
     /**

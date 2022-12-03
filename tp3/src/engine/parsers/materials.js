@@ -21,7 +21,7 @@ export function parseMaterials(sceneGraph, materialsNode) {
 
         // Checks for repeated IDs.
         if (sceneGraph.materials[materialID] != null)
-            return 'ID must be unique for each light (conflict: ID = ' +
+            return 'ID must be unique for each material (conflict: ID = ' +
                 materialID + ')';
 
         // Get shininess of the current material.
