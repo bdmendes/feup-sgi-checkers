@@ -3,8 +3,8 @@ const WHITE_MAN = 1;
 const BLACK_MAN = 2;
 const WHITE_KING = 3;
 const BLACK_KING = 4;
-const WHITE = 1;
-const BLACK = 2;
+export const WHITE = 1;
+export const BLACK = 2;
 
 export class Game {
     constructor() {
@@ -19,7 +19,7 @@ export class Game {
 
         // Initialize game state
         this.currentPlayer = BLACK;
-        this.moves = []; // (from, to) pairs eg. [[2, 1], [4, 0]]
+        this.moves = []; // (from, to, isCapture) tuples eg. [[2, 1], [4, 0], false]
         this.previousBoards = [];
     }
 
@@ -45,22 +45,23 @@ export class Game {
         return true;
     }
 
-    possibleMoves(from, forceJump = true) {
-        // If no jumps are available from this position but there are jumps available, discard this move
-        if (forceJump) {
-            const jumpStarts = [];
+    possibleMoves(from, forceCaptures = true) {
+        // If no captures are available from this position but there are captures available, discard this move
+        if (forceCaptures) {
+            const captureStarts = [];
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
                     const moves = this._possibleMovesSingle([i, j]);
-                    moves.forEach(move => {
-                        if (Math.abs(move[0][0] - move[1][0]) === 2) {
-                            jumpStarts.push(move[0]);
+                    for (const move of moves) {
+                        const isCapture = move[2];
+                        if (isCapture) {
+                            captureStarts.push(move[0]);
                         }
-                    });
+                    }
                 }
             }
-            const jumpStartingFrom = jumpStarts.filter(start => start[0] === from[0] && start[1] === from[1]);
-            if (jumpStartingFrom.length === 0 && jumpStarts.length > 0) {
+            const capturesStartingFrom = captureStarts.filter(start => start[0] === from[0] && start[1] === from[1]);
+            if (capturesStartingFrom.length === 0 && captureStarts.length > 0) {
                 return [];
             }
         }
@@ -84,18 +85,29 @@ export class Game {
             ? this.board[row][col] === BLACK_KING || this.board[row][col] === BLACK_MAN
             : this.board[row][col] === WHITE_KING || this.board[row][col] === WHITE_MAN;
         const isPiece = (row, col) => this.board[row][col] !== EMPTY;
+        const ownPiece = (row, col) => insideBoard(row, col) && isPiece(row, col) && !isEnemy(row, col);
 
         // Calculate possible valid moves
-        let to = [];
+        let to = [], toCaptures = [], toNonCaptures = [];
         if (piece == WHITE_MAN) {
             to = [[row + 1, col - 1], [row + 1, col + 1]];
         } else if (piece == BLACK_MAN) {
             to = [[row - 1, col - 1], [row - 1, col + 1]];
         } else if (piece == BLACK_KING || piece == WHITE_KING) {
             for (let i = 1; i < 8; i++) {
+                if (ownPiece(row - i, col - i)) break;
                 to.push([row - i, col - i]);
+            }
+            for (let i = 1; i < 8; i++) {
+                if (ownPiece(row - i, col + i)) break;
                 to.push([row - i, col + i]);
+            }
+            for (let i = 1; i < 8; i++) {
+                if (ownPiece(row + i, col - i)) break;
                 to.push([row + i, col - i]);
+            }
+            for (let i = 1; i < 8; i++) {
+                if (ownPiece(row + i, col + i)) break;
                 to.push([row + i, col + i]);
             }
         } else {
@@ -105,31 +117,38 @@ export class Game {
         // Discard out of bounds moves (first pass)
         to = to.filter(([row, col]) => insideBoard(row, col));
 
-        // Convert enemy taps to jumps
-        to = to.map(([row, col]) => {
-            if (isEnemy(row, col, player)) {
-                const [rowDiff, colDiff] = [row - from[0], col - from[1]];
-                return [row + rowDiff, col + colDiff];
+        // Convert enemy taps to captures; do not jump over own pieces
+        to.filter(([row, col]) => isEnemy(row, col, player)).forEach(([row, col]) => {
+            let [rowDiff, colDiff] = [Math.sign(row - from[0]), Math.sign(col - from[1])];
+            if (piece === WHITE_KING || piece === BLACK_KING) {
+                for (let i = 1; i < 7; i++) {
+                    if (ownPiece(row + i * rowDiff, col + i * colDiff)) {
+                        break;
+                    }
+                    toCaptures.push([row + i * rowDiff, col + i * colDiff]);
+                }
+            } else {
+                toCaptures.push([row + rowDiff, col + colDiff]);
             }
-            return [row, col];
         });
+        toNonCaptures = to.filter(([row, col]) => !isEnemy(row, col, player));
 
         // Discard out of bounds moves (second pass)
-        to = to.filter(([row, col]) => insideBoard(row, col));
+        toCaptures = toCaptures.filter(([row, col]) => insideBoard(row, col));
 
         // Discard moves that land on a piece
-        to = to.filter(([row, col]) => !isPiece(row, col));
+        toCaptures = toCaptures.filter(([row, col]) => !isPiece(row, col));
+        toNonCaptures = toNonCaptures.filter(([row, col]) => !isPiece(row, col));
 
-        // If there are jumps, discard all other moves
-        const jumps = to.filter(([row, _]) => Math.abs(row - from[0]) >= 2);
-        if (jumps.length >= 1) {
-            to = jumps;
+        // If there are captures, discard all other moves; else return all moves
+        if (toCaptures.length > 0) {
+            return toCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], true]);
         }
 
-        return to.map(([row, col]) => [[from[0], from[1]], [row, col]]);
+        return toNonCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], false]);
     }
 
-    move(from, to) {
+    move(from, to, checkValid = false) {
         // Discard if it is not the current player's turn
         const piece = this.board[from[0]][from[1]];
         const player = piece === WHITE_KING || piece === WHITE_MAN ? WHITE : BLACK;
@@ -138,9 +157,11 @@ export class Game {
         }
 
         // Discard if the move is not valid
-        const possibleMoves = this.possibleMoves(from, true, true);
-        if (!possibleMoves.some(move => move[1][0] === to[0] && move[1][1] === to[1])) {
-            return false;
+        if (checkValid) {
+            const possibleMoves = this.possibleMoves(from, true, true);
+            if (!possibleMoves.some(move => move[1][0] === to[0] && move[1][1] === to[1])) {
+                return false;
+            }
         }
 
         // Save previous board
@@ -155,7 +176,7 @@ export class Game {
         }
         this.board[from[0]][from[1]] = EMPTY;
 
-        // Capture opponent pieces if it is a jump
+        // Capture opponent pieces if it is a capture
         if (Math.abs(to[0] - from[0]) >= 2) {
             const [rowDiff, colDiff] = [to[0] - from[0], to[1] - from[1]];
             for (let i = 1; i < Math.abs(rowDiff); i++) {
@@ -178,9 +199,5 @@ export class Game {
             }
         }
         return this.currentPlayer === WHITE ? BLACK : WHITE;
-    }
-
-    letterToColumn(letter) {
-        return 7 - (letter.charCodeAt(0) - 65);
     }
 }
