@@ -1,3 +1,4 @@
+import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
 import { rowToNumber, letterToColumn } from './util.js';
@@ -10,12 +11,14 @@ export class GameController {
         this.scene = scene;
         this.scene.addPickListener(this);
         this.textureController = new TextureController(scene);
+        this.animationController = new AnimationController(scene);
         this.blackPositions = null;
         this.whitePositions = null;
         this.game = null;
         this.selectedComponent = null;
         this.selectedPossibleMoves = null;
         this.selectedPosition = null;
+        this.selectedId = null;
 
         this.initGame();
     }
@@ -39,14 +42,14 @@ export class GameController {
             this.clean();
             return;
         }
+        this.selectedId = (this.game.currentPlayer === BLACK) ?
+            component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length)
+            :
+            component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length);
 
         this.selectedPosition = (this.game.currentPlayer === BLACK) ?
-            this.blackPositions.get(
-                parseInt(component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length))
-            ) :
-            this.whitePositions.get(
-                parseInt(component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length))
-            );
+            this.blackPositions.get(this.selectedId) :
+            this.whitePositions.get(this.selectedId);
 
         if (this.selectedComponent != null && this.selectedComponent.id === component.id) {
             this.clean()
@@ -83,12 +86,14 @@ export class GameController {
             return;
         }
 
-        /*
-        TODO: make animation
-
+        this.animationController.injectMoveAnimation(this.selectedComponent, this.selectedPosition, position);
+        if (this.game.currentPlayer === BLACK) {
+            this.blackPositions.set(this.selectedId, position);
+        } else {
+            this.whitePositions.set(this.selectedId, position);
+        }
         this.game.move(this.selectedPosition, position);
         this.game.printBoard();
-        */
     }
 
     clean() {
@@ -101,33 +106,33 @@ export class GameController {
         this.game = new Game();
 
         this.blackPositions = new Map([
-            [1, [7, 0]],
-            [2, [7, 2]],
-            [3, [7, 4]],
-            [4, [7, 6]],
-            [5, [6, 1]],
-            [6, [6, 3]],
-            [7, [6, 5]],
-            [8, [6, 7]],
-            [9, [5, 0]],
-            [10, [5, 2]],
-            [11, [5, 4]],
-            [12, [5, 6]],
+            ["1", [7, 0]],
+            ["2", [7, 2]],
+            ["3", [7, 4]],
+            ["4", [7, 6]],
+            ["5", [6, 1]],
+            ["6", [6, 3]],
+            ["7", [6, 5]],
+            ["8", [6, 7]],
+            ["9", [5, 0]],
+            ["10", [5, 2]],
+            ["11", [5, 4]],
+            ["12", [5, 6]],
         ]);
 
         this.whitePositions = new Map([
-            [1, [0, 1]],
-            [2, [0, 3]],
-            [3, [0, 5]],
-            [4, [0, 7]],
-            [5, [1, 0]],
-            [6, [1, 2]],
-            [7, [1, 4]],
-            [8, [1, 6]],
-            [9, [2, 1]],
-            [10, [2, 3]],
-            [11, [2, 5]],
-            [12, [2, 7]],
+            ["4", [0, 1]],
+            ["3", [0, 3]],
+            ["2", [0, 5]],
+            ["1", [0, 7]],
+            ["8", [1, 0]],
+            ["7", [1, 2]],
+            ["6", [1, 4]],
+            ["5", [1, 6]],
+            ["12", [2, 1]],
+            ["11", [2, 3]],
+            ["10", [2, 5]],
+            ["9", [2, 7]],
         ]);
     }
 }

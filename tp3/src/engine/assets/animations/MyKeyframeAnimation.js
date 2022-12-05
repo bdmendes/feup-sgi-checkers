@@ -26,6 +26,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @param {GraphKeyframe} keyframe 
      */
     addKeyframe(keyframe) {
+        console.log("keyframe pila");
         this.keyframes.push(keyframe);
         this.keyframes.sort((a, b) => a.instant - b.instant);
     }
