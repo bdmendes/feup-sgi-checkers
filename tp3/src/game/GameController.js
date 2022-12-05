@@ -92,7 +92,38 @@ export class GameController {
         } else {
             this.whitePositions.set(this.selectedId, position);
         }
+
+        // clone board
+        const currBoard = this.game.board.map(row => row.slice());
         this.game.move(this.selectedPosition, position);
+        const newBoard = this.game.board.map(row => row.slice());
+        ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
+        for (let i = 0; i < currBoard.length; i++) {
+            for (let j = 0; j < currBoard[i].length; j++) {
+                if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
+                    if (currBoard[i][j] === BLACK) {
+                        for (let [key, value] of this.blackPositions) {
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations["blackPiece" + key].isVisible = false;
+                                this.blackPositions.delete(key);
+                                break;
+                            }
+                        }
+                    } else {
+                        for (let [key, value] of this.whitePositions) {
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations["whitePiece" + key].isVisible = false;
+                                this.whitePositions.delete(key);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //////
+
         this.game.printBoard();
     }
 
