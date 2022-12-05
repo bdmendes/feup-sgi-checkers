@@ -107,7 +107,10 @@ export class Game {
 
         // Convert enemy taps to jumps
         toJumps = to.filter(([row, col]) => isEnemy(row, col, player)).map(([row, col]) => {
-            const [rowDiff, colDiff] = [row - from[0], col - from[1]];
+            let [rowDiff, colDiff] = [Math.sign(row - from[0]), Math.sign(col - from[1])];
+            if (piece === WHITE_KING || piece === BLACK_KING) {
+                return [1, 2, 3, 4, 5, 6].map(i => [row + i * rowDiff, col + i * colDiff]);
+            }
             return [row + rowDiff, col + colDiff];
         });
         toNonJumps = to.filter(([row, col]) => !isEnemy(row, col, player));
