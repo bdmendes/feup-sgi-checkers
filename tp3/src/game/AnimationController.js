@@ -18,8 +18,7 @@ export class AnimationController {
         } else {
             const midKeyframe = new GraphKeyframe(this.scene, 1);
             midKeyframe.transformation = { rotateX: 0, rotateY: 0, rotateZ: 0, translationCoords: [final[1] - initial[1], 0, final[0] - initial[0]], scaleCoords: [1, 1, 1] }
-            console.log(typeof this.scene.graph.animations[component.animationID]);
-            (this.scene.graph.animations[component.id]).addKeyframe(midKeyframe);
+            this.scene.graph.animations[component.id].addKeyframe(midKeyframe);
         }
     }
 }
