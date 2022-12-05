@@ -85,6 +85,7 @@ export class Game {
             ? this.board[row][col] === BLACK_KING || this.board[row][col] === BLACK_MAN
             : this.board[row][col] === WHITE_KING || this.board[row][col] === WHITE_MAN;
         const isPiece = (row, col) => this.board[row][col] !== EMPTY;
+        const ownPiece = (row, col) => insideBoard(row, col) && isPiece(row, col) && !isEnemy(row, col);
 
         // Calculate possible valid moves
         let to = [], toCaptures = [], toNonCaptures = [];
@@ -93,21 +94,20 @@ export class Game {
         } else if (piece == BLACK_MAN) {
             to = [[row - 1, col - 1], [row - 1, col + 1]];
         } else if (piece == BLACK_KING || piece == WHITE_KING) {
-            const shouldBreak = (row, col) => insideBoard(row, col) && isPiece(row, col) && !isEnemy(row, col);
             for (let i = 1; i < 8; i++) {
-                if (shouldBreak(row - i, col - i)) break;
+                if (ownPiece(row - i, col - i)) break;
                 to.push([row - i, col - i]);
             }
             for (let i = 1; i < 8; i++) {
-                if (shouldBreak(row - i, col + i)) break;
+                if (ownPiece(row - i, col + i)) break;
                 to.push([row - i, col + i]);
             }
             for (let i = 1; i < 8; i++) {
-                if (shouldBreak(row + i, col - i)) break;
+                if (ownPiece(row + i, col - i)) break;
                 to.push([row + i, col - i]);
             }
             for (let i = 1; i < 8; i++) {
-                if (shouldBreak(row + i, col + i)) break;
+                if (ownPiece(row + i, col + i)) break;
                 to.push([row + i, col + i]);
             }
         } else {
@@ -117,11 +117,16 @@ export class Game {
         // Discard out of bounds moves (first pass)
         to = to.filter(([row, col]) => insideBoard(row, col));
 
-        // Convert enemy taps to captures
+        // Convert enemy taps to captures; do not jump over own pieces
         to.filter(([row, col]) => isEnemy(row, col, player)).forEach(([row, col]) => {
             let [rowDiff, colDiff] = [Math.sign(row - from[0]), Math.sign(col - from[1])];
             if (piece === WHITE_KING || piece === BLACK_KING) {
-                [1, 2, 3, 4, 5, 6].forEach(i => toCaptures.push([row + i * rowDiff, col + i * colDiff]));
+                for (let i = 1; i < 7; i++) {
+                    if (ownPiece(row + i * rowDiff, col + i * colDiff)) {
+                        break;
+                    }
+                    toCaptures.push([row + i * rowDiff, col + i * colDiff]);
+                }
             } else {
                 toCaptures.push([row + rowDiff, col + colDiff]);
             }
