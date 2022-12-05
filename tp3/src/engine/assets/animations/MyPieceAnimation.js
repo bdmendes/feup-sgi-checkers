@@ -45,6 +45,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             this.pendingKeyframes[0].instant = t + 1;
             this.keyframes[this.keyframes.length - 1].instant = t;
             super.addKeyframe(this.pendingKeyframes[0]);
+            this.lastUpdate = false;
             this.pendingKeyframes.pop();
         }
         super.update(t);
