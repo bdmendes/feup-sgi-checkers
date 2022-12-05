@@ -45,13 +45,13 @@ export class Game {
         return true;
     }
 
-    possibleMoves(from, forceJump = true, forceCurrentPlayer = false) {
-        // Force jump if there is one and only one jump available
+    possibleMoves(from, forceJump = true) {
+        // If no jumps are available from this position but there are jumps available, discard this move
         if (forceJump) {
             const jumpStarts = [];
             for (let i = 0; i < 8; i++) {
                 for (let j = 0; j < 8; j++) {
-                    const moves = this._possibleMovesSingle([i, j], forceCurrentPlayer);
+                    const moves = this._possibleMovesSingle([i, j]);
                     moves.forEach(move => {
                         if (Math.abs(move[0][0] - move[1][0]) === 2) {
                             jumpStarts.push(move[0]);
@@ -59,23 +59,22 @@ export class Game {
                     });
                 }
             }
-            if (jumpStarts.length === 1) {
-                if (jumpStarts[0][0] !== from[0] || jumpStarts[0][1] !== from[1]) {
-                    return [];
-                }
+            const jumpStartingFrom = jumpStarts.filter(start => start[0] === from[0] && start[1] === from[1]);
+            if (jumpStartingFrom.length === 0 && jumpStarts.length > 0) {
+                return [];
             }
         }
 
         // Return all possible moves from the given position
-        return this._possibleMovesSingle(from, forceCurrentPlayer);
+        return this._possibleMovesSingle(from);
     }
 
-    _possibleMovesSingle(from, forceCurrentPlayer = false) {
+    _possibleMovesSingle(from) {
         const [row, col] = from;
         const piece = this.board[row][col];
         const player = piece === WHITE_KING || piece === WHITE_MAN ? WHITE : BLACK;
 
-        if (piece === EMPTY || (forceCurrentPlayer && player !== this.currentPlayer)) {
+        if (piece === EMPTY || player !== this.currentPlayer) {
             return [];
         }
 
@@ -118,12 +117,12 @@ export class Game {
         // Discard out of bounds moves (second pass)
         to = to.filter(([row, col]) => insideBoard(row, col));
 
-        // Discard moves that are blocked by own pieces
-        to = to.filter(([row, col]) => !(isPiece(row, col) && !isEnemy(row, col, player)));
+        // Discard moves that land on a piece
+        to = to.filter(([row, col]) => !isPiece(row, col));
 
-        // If there is one and only one jump, discard all other moves
+        // If there are jumps, discard all other moves
         const jumps = to.filter(([row, _]) => Math.abs(row - from[0]) >= 2);
-        if (jumps.length === 1) {
+        if (jumps.length >= 1) {
             to = jumps;
         }
 
