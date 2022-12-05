@@ -86,7 +86,7 @@ export class Game {
         const isPiece = (row, col) => this.board[row][col] !== EMPTY;
 
         // Calculate possible valid moves
-        let to = [];
+        let to = [], toJumps = [], toNonJumps = [];
         if (piece == WHITE_MAN) {
             to = [[row + 1, col - 1], [row + 1, col + 1]];
         } else if (piece == BLACK_MAN) {
@@ -106,27 +106,25 @@ export class Game {
         to = to.filter(([row, col]) => insideBoard(row, col));
 
         // Convert enemy taps to jumps
-        to = to.map(([row, col]) => {
-            if (isEnemy(row, col, player)) {
-                const [rowDiff, colDiff] = [row - from[0], col - from[1]];
-                return [row + rowDiff, col + colDiff];
-            }
-            return [row, col];
+        toJumps = to.filter(([row, col]) => isEnemy(row, col, player)).map(([row, col]) => {
+            const [rowDiff, colDiff] = [row - from[0], col - from[1]];
+            return [row + rowDiff, col + colDiff];
         });
+        toNonJumps = to.filter(([row, col]) => !isEnemy(row, col, player));
 
         // Discard out of bounds moves (second pass)
-        to = to.filter(([row, col]) => insideBoard(row, col));
+        toJumps = toJumps.filter(([row, col]) => insideBoard(row, col));
 
         // Discard moves that land on a piece
-        to = to.filter(([row, col]) => !isPiece(row, col));
+        toJumps = toJumps.filter(([row, col]) => !isPiece(row, col));
+        toNonJumps = toNonJumps.filter(([row, col]) => !isPiece(row, col));
 
-        // If there are jumps, discard all other moves
-        const jumps = to.filter(([row, _]) => Math.abs(row - from[0]) >= 2);
-        if (jumps.length >= 1) {
-            to = jumps;
+        // If there are jumps, discard all other moves; else return all moves
+        if (toJumps.length > 0) {
+            return toJumps.map(([row, col]) => [[from[0], from[1]], [row, col]]);
         }
 
-        return to.map(([row, col]) => [[from[0], from[1]], [row, col]]);
+        return toNonJumps.map(([row, col]) => [[from[0], from[1]], [row, col]]);
     }
 
     move(from, to) {
