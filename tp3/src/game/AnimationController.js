@@ -23,9 +23,9 @@ export class AnimationController {
         }
     }
 
-    /*injectCameraAnimation(camera, turn) {
+    injectCameraAnimation(camera, turn) {
         let camara_animation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, camera, turn);
         this.scene.graph.animations[this.scene.graph.selectedCameraID] = camara_animation;
         this.scene.graph.cameraAnimation = this.scene.graph.selectedCameraID
-    }*/
+    }
 }
