@@ -43,9 +43,9 @@ export class GameController {
             return;
         }
         this.selectedId = (this.game.currentPlayer === BLACK) ?
-            component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length)
+            parseInt(component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length))
             :
-            component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length);
+            parseInt(component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length));
 
         this.selectedPosition = (this.game.currentPlayer === BLACK) ?
             this.blackPositions.get(this.selectedId) :
@@ -91,7 +91,38 @@ export class GameController {
         } else {
             this.whitePositions.set(this.selectedId, position);
         }
+
+        // clone board
+        const currBoard = this.game.board.map(row => row.slice());
         this.game.move(this.selectedPosition, position);
+        const newBoard = this.game.board.map(row => row.slice());
+        ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
+        for (let i = 0; i < currBoard.length; i++) {
+            for (let j = 0; j < currBoard[i].length; j++) {
+                if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
+                    if (currBoard[i][j] === BLACK) {
+                        for (let [key, value] of this.blackPositions) {
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations["blackPiece" + key].isVisible = false;
+                                this.blackPositions.delete(key);
+                                break;
+                            }
+                        }
+                    } else {
+                        for (let [key, value] of this.whitePositions) {
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations["whitePiece" + key].isVisible = false;
+                                this.whitePositions.delete(key);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //////
+
         this.game.printBoard();
 
         this.animationController.injectMoveAnimation(this.selectedComponent, this.selectedPosition, position);
@@ -108,33 +139,33 @@ export class GameController {
         this.game = new Game();
 
         this.blackPositions = new Map([
-            ["1", [7, 0]],
-            ["2", [7, 2]],
-            ["3", [7, 4]],
-            ["4", [7, 6]],
-            ["5", [6, 1]],
-            ["6", [6, 3]],
-            ["7", [6, 5]],
-            ["8", [6, 7]],
-            ["9", [5, 0]],
-            ["10", [5, 2]],
-            ["11", [5, 4]],
-            ["12", [5, 6]],
+            [1, [7, 0]],
+            [2, [7, 2]],
+            [3, [7, 4]],
+            [4, [7, 6]],
+            [5, [6, 1]],
+            [6, [6, 3]],
+            [7, [6, 5]],
+            [8, [6, 7]],
+            [9, [5, 0]],
+            [10, [5, 2]],
+            [11, [5, 4]],
+            [12, [5, 6]],
         ]);
 
         this.whitePositions = new Map([
-            ["4", [0, 1]],
-            ["3", [0, 3]],
-            ["2", [0, 5]],
-            ["1", [0, 7]],
-            ["8", [1, 0]],
-            ["7", [1, 2]],
-            ["6", [1, 4]],
-            ["5", [1, 6]],
-            ["12", [2, 1]],
-            ["11", [2, 3]],
-            ["10", [2, 5]],
-            ["9", [2, 7]],
+            [1, [0, 7]],
+            [2, [0, 5]],
+            [3, [0, 3]],
+            [4, [0, 1]],
+            [5, [1, 6]],
+            [6, [1, 4]],
+            [7, [1, 2]],
+            [8, [1, 0]],
+            [9, [2, 7]],
+            [10, [2, 5]],
+            [11, [2, 3]],
+            [12, [2, 1]],
         ]);
     }
 }
