@@ -19,7 +19,7 @@ export class Game {
 
         // Initialize game state
         this.currentPlayer = BLACK;
-        this.moves = []; // (from, to, isCapture) tuples eg. [[2, 1], [4, 0], false]
+        this.moves = []; // (from, to, isCapture, nextToPlay) tuples eg. [[2, 1], [4, 0], false, WHITE]
         this.previousBoards = [];
     }
 
@@ -142,10 +142,10 @@ export class Game {
 
         // If there are captures, discard all other moves; else return all moves
         if (toCaptures.length > 0) {
-            return toCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], true]);
+            return toCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], true, null]);
         }
 
-        return toNonCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], false]);
+        return toNonCaptures.map(([row, col]) => [[from[0], from[1]], [row, col], false, null]);
     }
 
     move(from, to, checkValid = false) {
@@ -176,17 +176,31 @@ export class Game {
         }
         this.board[from[0]][from[1]] = EMPTY;
 
-        // Capture opponent pieces if it is a capture
+        // Capture opponent pieces if it is a capture and check for double captures
+        let isCapture = false;
+        let nextToPlay = this.currentPlayer === WHITE ? BLACK : WHITE;
         if (Math.abs(to[0] - from[0]) >= 2) {
+            isCapture = true;
+
+            // Capture pieces on the way
             const [rowDiff, colDiff] = [to[0] - from[0], to[1] - from[1]];
             for (let i = 1; i < Math.abs(rowDiff); i++) {
                 this.board[from[0] + i * rowDiff / Math.abs(rowDiff)][from[1] + i * colDiff / Math.abs(colDiff)] = EMPTY;
             }
+
+            // Check if there is a double capture available for the current player
+            const moves = this._possibleMovesSingle(to);
+            for (const move of moves) {
+                if (move[2]) {
+                    nextToPlay = this.currentPlayer;
+                    break;
+                }
+            }
         }
 
-        // Add move, change player and return
-        this.moves.push([from, to]);
-        this.currentPlayer = this.currentPlayer === WHITE ? BLACK : WHITE;
+        // Add move, update player and return
+        this.moves.push([from, to, isCapture, nextToPlay]);
+        this.currentPlayer = nextToPlay;
         return true;
     }
 
