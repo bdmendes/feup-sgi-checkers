@@ -383,7 +383,23 @@ function parseHighlighted(componentID, sceneGraph, node, component, highlightInd
         return 'component ' + componentID + ' must have a highlight block with non null scale_h';
     }
 
+    const enableHighlightProperty = sceneGraph.reader.getString(highlightedNode, 'enabled', false);
+    let enableHighlight;
+    if (enableHighlightProperty == '0') {
+        enableHighlight = false;
+    } else if (enableHighlightProperty == '1') {
+        enableHighlight = true;
+    } else {
+        if (enableHighlightProperty != null) {
+            sceneGraph.onXMLMinorError(
+                'unable to parse value component of the \'enable highlight\' field for component with ID = ' +
+                componentID + '; assuming \'value = 1\'');
+        }
+        enableHighlight = true;
+    }
+
     component.highlight = new GraphHighlight(sceneGraph.scene, color, scaleH);
+    component.enableHighlight = enableHighlight;
 
     return null;
 }
