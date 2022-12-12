@@ -1423,7 +1423,7 @@
             <children>
                 <primitiveref id="torus" />
             </children>
-            <highlighted r="1" g="0.55" b="0.58" scale_h="1.5" />
+            <highlighted r="1" g="0.55" b="0.58" scale_h="1.5" enabled="0" />
         </component>
 
         <component id="orange">
@@ -2138,7 +2138,7 @@
                 <primitiveref id="glassBase" />
                 <componentref id="glassBottom" />
             </children>
-            <highlighted r="1" g="0.8" b="0" scale_h="1" />
+            <highlighted r="1" g="0.8" b="0" scale_h="1" enabled="0" />
         </component>
 
         <component id="glassBottom">
@@ -2170,7 +2170,7 @@
             <children>
                 <primitiveref id="flatTorus" />
             </children>
-            <highlighted r="0.6" g="0.6" b="0.6" scale_h="1.1" />
+            <highlighted r="0.6" g="0.6" b="0.6" scale_h="1.1" enabled="0" />
         </component>
 
         <component id="sofatableLegs">
