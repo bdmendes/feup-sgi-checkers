@@ -127,8 +127,7 @@
         <texture id="fireplaceTexture" file="scenes/images/fireplace.jpg" />
         <texture id="goldTexture" file="scenes/images/gold.jpg" />
         <texture id="planeTexture" file="scenes/images/plane.jpg" />
-
-
+        <texture id="tableTexture" file="scenes/images/table.jpg" />
     </textures>
 
     <materials>
@@ -1739,7 +1738,7 @@
                 <material id="darkBrown" />
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" length_s="2" length_t="2" />
+            <texture id="tableTexture" length_s="2" length_t="2" />
             <children>
                 <componentref id="cube_face1" />
                 <componentref id="cube_face2" />
