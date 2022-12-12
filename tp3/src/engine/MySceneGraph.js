@@ -70,6 +70,7 @@ export class MySceneGraph {
         this.transformations = {};
         this.cameras = {};
         this.animations = {};
+        this.cameraAnimations = null;
 
         // Optimization variables
         this.lastComponentNeededHighlight = false;

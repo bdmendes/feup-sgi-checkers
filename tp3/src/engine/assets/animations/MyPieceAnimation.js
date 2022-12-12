@@ -29,7 +29,6 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
     }
 
     addKeyframe(keyframe) {
-        console.log("keyframe buceta")
         keyframe.transformation.translationCoords[0] = keyframe.transformation.translationCoords[0] + this.keyframes[this.keyframes.length - 1].transformation.translationCoords[0];
         keyframe.transformation.translationCoords[2] = keyframe.transformation.translationCoords[2] + this.keyframes[this.keyframes.length - 1].transformation.translationCoords[2];
         this.pendingKeyframes.push(keyframe);

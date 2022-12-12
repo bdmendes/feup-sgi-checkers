@@ -1,5 +1,6 @@
 import { GraphKeyframe } from "../engine/assets/animations/GraphKeyframe.js";
 import { MyPieceAnimation } from "../engine/assets/animations/MyPieceAnimation.js";
+import { MyCameraAnimation } from "../engine/assets/animations/MyCameraAnimation.js";
 
 export class AnimationController {
     constructor(scene) {
@@ -21,4 +22,10 @@ export class AnimationController {
             this.scene.graph.animations[component.id].addKeyframe(midKeyframe);
         }
     }
+
+    /*injectCameraAnimation(camera, turn) {
+        let camara_animation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, camera, turn);
+        this.scene.graph.animations[this.scene.graph.selectedCameraID] = camara_animation;
+        this.scene.graph.cameraAnimation = this.scene.graph.selectedCameraID
+    }*/
 }

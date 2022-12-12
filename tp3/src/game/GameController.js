@@ -86,7 +86,6 @@ export class GameController {
             return;
         }
 
-        this.animationController.injectMoveAnimation(this.selectedComponent, this.selectedPosition, position);
         if (this.game.currentPlayer === BLACK) {
             this.blackPositions.set(this.selectedId, position);
         } else {
@@ -94,6 +93,9 @@ export class GameController {
         }
         this.game.move(this.selectedPosition, position);
         this.game.printBoard();
+
+        this.animationController.injectMoveAnimation(this.selectedComponent, this.selectedPosition, position);
+        this.animationController.injectCameraAnimation(this.scene.camera, this.game.currentPlayer);
     }
 
     clean() {

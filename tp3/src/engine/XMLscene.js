@@ -227,6 +227,10 @@ export class XMLscene extends CGFscene {
         for (const key in this.graph.animations) {
             this.graph.animations[key].update(updateTimeSeconds);
         }
+
+        if (this.graph.cameraAnimation != null) {
+            this.graph.animations[this.graph.cameraAnimation].apply();
+        }
     }
 
     /**
