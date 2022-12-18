@@ -1,9 +1,7 @@
 import { CGFcamera } from '../../../../../lib/CGF.js';
 import { XMLscene } from '../../XMLscene.js';
-import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
-import { degreesToRadians } from '../../../engine/utils/math.js';
-import { BLACK, WHITE } from '../../../game/Game.js';
+import { BLACK } from '../../../game/Game.js';
 
 const CAMERA_P1 = [3, 6.5, -4.5];
 const CAMERA_P2 = [3, 6.5, -9.5];

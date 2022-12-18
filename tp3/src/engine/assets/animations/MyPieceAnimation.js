@@ -2,7 +2,6 @@ import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
-import { GraphTransformation } from '../transformations/GraphTransformation.js';
 
 /**
  * @export
