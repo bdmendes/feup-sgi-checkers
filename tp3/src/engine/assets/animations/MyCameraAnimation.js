@@ -53,12 +53,14 @@ export class MyCameraAnimation extends MyAnimation {
             return;
         }
 
+        let partial = 5 * (this.finalTime - t);
+        let angle = partial * (Math.PI / 2) / 2.5
         if (this.turn == BLACK) {
             this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
-                vec3.fromValues(from[0], from[1], from[2] - 5 * (this.finalTime - t)), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
+                vec3.fromValues(from[0] + 4 * Math.sin(angle), from[1], from[2] - partial), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
         } else {
             this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
-                vec3.fromValues(from[0], from[1], from[2] + 5 * (this.finalTime - t)), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
+                vec3.fromValues(from[0] + 4 * Math.sin(angle), from[1], from[2] + partial), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
         }
         return;
     }

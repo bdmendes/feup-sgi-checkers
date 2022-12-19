@@ -89,8 +89,6 @@ export class GameController {
         for (let i = 0; i < currBoard.length; i++) {
             for (let j = 0; j < currBoard[i].length; j++) {
                 if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
-                    console.log(i);
-                    console.log(j);
                     if (currBoard[i][j] === BLACK) {
                         for (let [key, piece] of this.pieces) {
                             let value = piece.getPosition();
