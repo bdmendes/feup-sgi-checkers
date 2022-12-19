@@ -1,4 +1,3 @@
-import { GraphKeyframe } from "../engine/assets/animations/GraphKeyframe.js";
 import { MyPieceAnimation } from "../engine/assets/animations/MyPieceAnimation.js";
 import { MyCameraAnimation } from "../engine/assets/animations/MyCameraAnimation.js";
 

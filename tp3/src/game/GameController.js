@@ -84,10 +84,10 @@ export class GameController {
         ////// TEMPORARY CODE TO CLONE BOARD
         const newBoard = this.game.board.map(row => row.slice());
 
-        this.selectedPiece.setPosition(pickedPosition);
-
         ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
         this.removeCapturedPiece(currBoard, newBoard);
+
+        this.selectedPiece.setPosition(pickedPosition);
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 

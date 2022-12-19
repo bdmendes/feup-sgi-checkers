@@ -21,6 +21,13 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.currentTime = 0;
         this.startTime = -1;
 
+        this._addInitialKeyframe();
+
+        this.isVisible = true;
+        this.pendingKeyframes = [];
+    }
+
+    _addInitialKeyframe() {
         const initialKeyframe = new GraphKeyframe(scene, 0);
         initialKeyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
@@ -28,13 +35,10 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             scaleCoords: [1, 1, 1]
         }
         this.addKeyframe(initialKeyframe);
-
-        this.isVisible = true;
-        this.pendingKeyframes = [];
     }
 
     addMidKeyframe(initial_pos, final_pos) {
-        let lastKeyFrame = this.keyframes[this.keyframes.length - 1]
+        let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
         keyframe.transformation = {
@@ -45,7 +49,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
                 final_pos[0] - initial_pos[0] + lastKeyFrame.transformation.translationCoords[2]
             ],
             scaleCoords: [1, 1, 1]
-        }
+        };
         this.pendingKeyframes.push(keyframe);
     }
 
