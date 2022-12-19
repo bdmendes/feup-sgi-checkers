@@ -48,6 +48,7 @@ export class MyCameraAnimation extends MyAnimation {
         if (t > this.finalTime) {
             if (!this.lastUpdate) {
                 this._setNewCameraPosition(this._calculateCameraPosition(1))
+                this.apply();
                 this.lastUpdate = true;
                 this.scene.graph.cameraAnimations = null;
             }
@@ -55,6 +56,7 @@ export class MyCameraAnimation extends MyAnimation {
         }
 
         this._setNewCameraPosition(this._calculateCameraPosition((CAMERA_ANIMATION_TIME - (this.finalTime - t)) / CAMERA_ANIMATION_TIME));
+        this.apply();
     }
 
     /**
