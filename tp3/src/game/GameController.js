@@ -79,6 +79,7 @@ export class GameController {
         const currBoard = this.game.board.map(row => row.slice());
 
         this.game.move(this.selectedPiece.getPosition(), pickedPosition)
+        this.game.printBoard();
 
         ////// TEMPORARY CODE TO CLONE BOARD
         const newBoard = this.game.board.map(row => row.slice());
@@ -114,7 +115,6 @@ export class GameController {
         //////
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
-        this.game.printBoard();
 
         let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
         this.animationController.injectMoveAnimation(pickedComponent, from, to);

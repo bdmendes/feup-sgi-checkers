@@ -9,25 +9,30 @@ export class TextureController {
     }
 
     applyPossibleMoveTexture(position, possibleFinalPositions) {
-        let positionID = 'position' + columnToLetter(position[1]) + rowToNumber(position[0]);
+        let positionID = this._getPositionID(position[0], position[1]);
         this.scene.graph.components[positionID].tempTextureID = SELECTED_PIECE_TEXTURE;
 
         for (let i = 0; i < possibleFinalPositions.length; i++) {
             let move = possibleFinalPositions[i];
-            let positionID = 'position' + columnToLetter(move[1]) + rowToNumber(move[0]);
+            positionID = this._getPositionID(move[0], move[1]);
 
             this.scene.graph.components[positionID].tempTextureID = POSSIBLE_MOVE_TEXTURE;
         }
     }
 
     cleanPossibleMoveTexture(position, possibleFinalPositions) {
-        let positionID = 'position' + columnToLetter(position[1]) + rowToNumber(position[0]);
+        let positionID = this._getPositionID(position[0], position[1]);
         this.scene.graph.components[positionID].tempTextureID = null;
+
         for (let i = 0; i < possibleFinalPositions.length; i++) {
             let move = possibleFinalPositions[i];
-            let positionID = 'position' + columnToLetter(move[1]) + rowToNumber(move[0]);
+            positionID = this._getPositionID(move[0], move[1]);
 
             this.scene.graph.components[positionID].tempTextureID = null;
         }
+    }
+
+    _getPositionID(x, y) {
+        return 'position' + columnToLetter(y) + rowToNumber(x);
     }
 }
