@@ -1,9 +1,9 @@
+import { parsePosition, checkValidPosition, getInitialPositions } from './gameUtils.js';
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
 import { MyPiece } from './MyPiece.js';
-import { parsePosition } from './gameUtils.js';
-import { checkValidPosition } from './gameUtils.js';
+
 
 export class GameController {
     constructor(scene) {
@@ -95,8 +95,6 @@ export class GameController {
                         for (let [key, piece] of this.pieces) {
                             let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
-                                console.log(this.scene.graph.animations);
-                                console.log(key);
                                 this.scene.graph.animations[key].isVisible = false;
                                 this.pieces.delete(key);
                                 break;
@@ -142,35 +140,7 @@ export class GameController {
     initGame() {
         this.game = new Game();
 
-        let initBlackPositions = new Map([
-            [1, [7, 0]],
-            [2, [7, 2]],
-            [3, [7, 4]],
-            [4, [7, 6]],
-            [5, [6, 1]],
-            [6, [6, 3]],
-            [7, [6, 5]],
-            [8, [6, 7]],
-            [9, [5, 0]],
-            [10, [5, 2]],
-            [11, [5, 4]],
-            [12, [5, 6]],
-        ]);
-
-        let initWhitePositions = new Map([
-            [1, [0, 7]],
-            [2, [0, 5]],
-            [3, [0, 3]],
-            [4, [0, 1]],
-            [5, [1, 6]],
-            [6, [1, 4]],
-            [7, [1, 2]],
-            [8, [1, 0]],
-            [9, [2, 7]],
-            [10, [2, 5]],
-            [11, [2, 3]],
-            [12, [2, 1]],
-        ]);
+        let [initBlackPositions, initWhitePositions] = getInitialPositions();
 
         for (let [key, value] of initBlackPositions) {
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
