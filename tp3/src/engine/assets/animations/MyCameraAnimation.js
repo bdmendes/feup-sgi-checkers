@@ -27,7 +27,6 @@ export class MyCameraAnimation extends MyAnimation {
         this.finalTime = 0;
         this.radius = 2.5;
 
-        this.lastUpdate = false;
         this.firstUpdate = false;
     }
 
@@ -46,12 +45,9 @@ export class MyCameraAnimation extends MyAnimation {
         if (t < this.initialTime) { return; }
 
         if (t > this.finalTime) {
-            if (!this.lastUpdate) {
-                this._setNewCameraPosition(this._calculateCameraPosition(1))
-                this.apply();
-                this.lastUpdate = true;
-                this.scene.graph.cameraAnimations = null;
-            }
+            this._setNewCameraPosition(this._calculateCameraPosition(1))
+            this.apply();
+            delete this.scene.graph.animations[this.id];
             return;
         }
 
