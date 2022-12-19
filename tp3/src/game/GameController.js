@@ -99,6 +99,8 @@ export class GameController {
         if (currentPlayer != nextToPlay) {
             this.animationController.injectCameraAnimation();
         }
+
+        this.selectedPiece = null;
     }
 
     clean(error = null) {
