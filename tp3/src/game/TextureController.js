@@ -1,4 +1,4 @@
-import { columnToLetter, rowToNumber } from './util.js';
+import { columnToLetter, rowToNumber } from './gameUtils.js';
 
 const POSSIBLE_MOVE_TEXTURE = 'possibleMoveTexture';
 const SELECTED_PIECE_TEXTURE = 'selectedPieceTexture';
@@ -20,7 +20,7 @@ export class TextureController {
         }
     }
 
-    clearPossibleMoveTexture(position, possibleFinalPositions) {
+    cleanPossibleMoveTexture(position, possibleFinalPositions) {
         let positionID = 'position' + columnToLetter(position[1]) + rowToNumber(position[0]);
         this.scene.graph.components[positionID].tempTextureID = null;
         for (let i = 0; i < possibleFinalPositions.length; i++) {

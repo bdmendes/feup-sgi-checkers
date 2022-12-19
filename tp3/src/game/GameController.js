@@ -1,25 +1,27 @@
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
-import { rowToNumber, letterToColumn } from './util.js';
-
-const BLACK_PIECE_STR = 'blackPiece';
-const WHITE_PIECE_STR = 'whitePiece';
+import { MyPiece } from './MyPiece.js';
+import { parsePosition } from './gameUtils.js';
+import { checkValidPosition } from './gameUtils.js';
 
 export class GameController {
     constructor(scene) {
         this.scene = scene;
         this.scene.addPickListener(this);
+
+        // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene);
-        this.blackPositions = null;
-        this.whitePositions = null;
-        this.game = null;
-        this.selectedComponent = null;
-        this.selectedPossibleMoves = null;
-        this.selectedPosition = null;
-        this.selectedId = null;
 
+        // game
+        this.game = null;
+        this.pieces = new Map();
+
+        // selected piece
+        this.selectedPiece = null;
+
+        // init game
         this.initGame();
     }
 
@@ -32,87 +34,80 @@ export class GameController {
     }
 
     pickPiece(component) {
-        if (this.selectedComponent != null) {
-            this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
+        if (this.selectedPiece != null) {
+            this.cleanTextures();
         }
 
-        if (!((this.game.currentPlayer === BLACK && component.id.includes('black')) ||
-            (this.game.currentPlayer === WHITE && component.id.includes('white')))) {
-            console.log("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
-            this.clean();
+        let previousComponentID = this.selectedPiece != null ? this.selectedPiece.getComponentID() : null;
+
+        this.selectedPiece = this.pieces.get(component.id);
+
+        if (this.game.currentPlayer != this.selectedPiece.getColor()) {
+            this.clean("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
-        this.selectedId = (this.game.currentPlayer === BLACK) ?
-            parseInt(component.id.substring(component.id.indexOf(BLACK_PIECE_STR) + BLACK_PIECE_STR.length))
-            :
-            parseInt(component.id.substring(component.id.indexOf(WHITE_PIECE_STR) + WHITE_PIECE_STR.length));
 
-        this.selectedPosition = (this.game.currentPlayer === BLACK) ?
-            this.blackPositions.get(this.selectedId) :
-            this.whitePositions.get(this.selectedId);
-
-        if (this.selectedComponent != null && this.selectedComponent.id === component.id) {
+        if (previousComponentID === component.id) {
             this.clean()
             return;
         }
 
-        this.selectedComponent = component;
-        this.selectedPossibleMoves = this.game.possibleMoves(this.selectedPosition).map(move => move[1]);
-        this.textureController.applyPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
+        this.selectedPiece.setPossibleMoves(this.game.possibleMoves(this.selectedPiece.getPosition()).map(move => move[1]));
+        this.textureController.applyPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
     }
 
     pickPosition(component) {
-        if (this.selectedComponent == null) {
-            console.log("Invalid position. Firstly, choose a valid " + (this.game.currentPlayer === BLACK ? "black piece" : "white piece"));
+        if (this.selectedPiece == null) {
+            this.clean("Invalid position. Firstly, choose a valid " + (this.game.currentPlayer === BLACK ? "black piece" : "white piece"))
             return;
         }
 
-        if (this.selectedComponent != null) {
-            this.textureController.clearPossibleMoveTexture(this.selectedPosition, this.selectedPossibleMoves);
+        if (this.selectedPiece != null) {
+            this.cleanTextures();
         }
 
-        let position = [rowToNumber(component.id[component.id.length - 1]), letterToColumn(component.id[component.id.length - 2])];
-        let possible = false;
+        let pickedPosition = parsePosition(component);
 
-        for (let i = 0; i < this.selectedPossibleMoves.length; i++) {
-            if (this.selectedPossibleMoves[i][0] === position[0] && this.selectedPossibleMoves[i][1] === position[1]) {
-                possible = true;
-                break;
-            }
-        }
-
-        if (!possible) {
-            this.clean();
+        if (!checkValidPosition(this.selectedPiece.getPossibleMoves(), pickedPosition)) {
+            this.clean("Invalid move");
             return;
         }
 
-        if (this.game.currentPlayer === BLACK) {
-            this.blackPositions.set(this.selectedId, position);
-        } else {
-            this.whitePositions.set(this.selectedId, position);
-        }
+        let currentPlayer = this.game.currentPlayer;
 
-        // clone board
+        ////// TEMPORARY CODE TO CLONE BOARD
         const currBoard = this.game.board.map(row => row.slice());
-        this.game.move(this.selectedPosition, position);
+
+        this.game.move(this.selectedPiece.getPosition(), pickedPosition)
+
+        ////// TEMPORARY CODE TO CLONE BOARD
         const newBoard = this.game.board.map(row => row.slice());
+
+        this.selectedPiece.setPosition(pickedPosition);
+
         ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
         for (let i = 0; i < currBoard.length; i++) {
             for (let j = 0; j < currBoard[i].length; j++) {
                 if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
+                    console.log(i);
+                    console.log(j);
                     if (currBoard[i][j] === BLACK) {
-                        for (let [key, value] of this.blackPositions) {
+                        for (let [key, piece] of this.pieces) {
+                            let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations["blackPiece" + key].isVisible = false;
-                                this.blackPositions.delete(key);
+                                console.log(this.scene.graph.animations);
+                                console.log(key);
+                                this.scene.graph.animations[key].isVisible = false;
+                                this.pieces.delete(key);
                                 break;
                             }
                         }
                     } else {
-                        for (let [key, value] of this.whitePositions) {
+                        for (let [key, piece] of this.pieces) {
+                            let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
                                 this.scene.graph.animations["whitePiece" + key].isVisible = false;
-                                this.whitePositions.delete(key);
+                                this.pieces.delete(key);
                                 break;
                             }
                         }
@@ -120,25 +115,34 @@ export class GameController {
                 }
             }
         }
-
         //////
 
+        let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
         this.game.printBoard();
 
-        this.animationController.injectMoveAnimation(this.selectedComponent, this.selectedPosition, position);
-        this.animationController.injectCameraAnimation(this.scene.camera, this.game.currentPlayer);
+        let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
+        this.animationController.injectMoveAnimation(pickedComponent, from, to);
+
+        if (currentPlayer != nextToPlay) {
+            this.animationController.injectCameraAnimation(this.scene.camera, this.game.currentPlayer);
+        }
     }
 
-    clean() {
-        this.selectedComponent = null;
-        this.selectedPossibleMoves = null;
-        this.selectedPosition = null;
+    clean(error = null) {
+        if (error != null) {
+            console.log(error);
+        }
+        this.selectedPiece = null;
+    }
+
+    cleanTextures() {
+        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
     }
 
     initGame() {
         this.game = new Game();
 
-        this.blackPositions = new Map([
+        let initBlackPositions = new Map([
             [1, [7, 0]],
             [2, [7, 2]],
             [3, [7, 4]],
@@ -153,7 +157,7 @@ export class GameController {
             [12, [5, 6]],
         ]);
 
-        this.whitePositions = new Map([
+        let initWhitePositions = new Map([
             [1, [0, 7]],
             [2, [0, 5]],
             [3, [0, 3]],
@@ -167,5 +171,13 @@ export class GameController {
             [11, [2, 3]],
             [12, [2, 1]],
         ]);
+
+        for (let [key, value] of initBlackPositions) {
+            this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
+        }
+
+        for (let [key, value] of initWhitePositions) {
+            this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        }
     }
 }
