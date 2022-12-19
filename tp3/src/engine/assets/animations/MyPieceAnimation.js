@@ -22,16 +22,30 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.startTime = -1;
 
         const initialKeyframe = new GraphKeyframe(scene, 0);
-        initialKeyframe.transformation = { rotateX: 0, rotateY: 0, rotateZ: 0, translationCoords: [0, 0, 0], scaleCoords: [1, 1, 1] }
-        super.addKeyframe(initialKeyframe);
+        initialKeyframe.transformation = {
+            rotateX: 0, rotateY: 0, rotateZ: 0,
+            translationCoords: [0, 0, 0],
+            scaleCoords: [1, 1, 1]
+        }
+        this.addKeyframe(initialKeyframe);
 
         this.isVisible = true;
         this.pendingKeyframes = [];
     }
 
-    addKeyframe(keyframe) {
-        keyframe.transformation.translationCoords[0] = keyframe.transformation.translationCoords[0] + this.keyframes[this.keyframes.length - 1].transformation.translationCoords[0];
-        keyframe.transformation.translationCoords[2] = keyframe.transformation.translationCoords[2] + this.keyframes[this.keyframes.length - 1].transformation.translationCoords[2];
+    addMidKeyframe(initial_pos, final_pos) {
+        let lastKeyFrame = this.keyframes[this.keyframes.length - 1]
+
+        const keyframe = new GraphKeyframe(this.scene, -1);
+        keyframe.transformation = {
+            rotateX: 0, rotateY: 0, rotateZ: 0,
+            translationCoords: [
+                final_pos[1] - initial_pos[1] + lastKeyFrame.transformation.translationCoords[0],
+                0,
+                final_pos[0] - initial_pos[0] + lastKeyFrame.transformation.translationCoords[2]
+            ],
+            scaleCoords: [1, 1, 1]
+        }
         this.pendingKeyframes.push(keyframe);
     }
 
@@ -42,11 +56,11 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      */
     update(t) {
         if (this.pendingKeyframes.length > 0) {
-            this.pendingKeyframes[0].instant = t + 1;
+            this.pendingKeyframes[0].instant = t + MY_PIECE_ANIMATION_TIME;
             this.keyframes[this.keyframes.length - 1].instant = t;
-            super.addKeyframe(this.pendingKeyframes[0]);
-            this.lastUpdate = false;
+            this.addKeyframe(this.pendingKeyframes[0]);
             this.pendingKeyframes.pop();
+            this.lastUpdate = false;
         }
         super.update(t);
     }

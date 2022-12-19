@@ -66,7 +66,6 @@ export class MyCameraAnimation extends MyAnimation {
 
     _calculateCameraPosition(partial_time) {
         let angle = partial_time * Math.PI;
-        console.log(angle);
         return [
             (this.initialCamera.position[0] > this.initialCamera.target[0]) ?
                 this.initialCamera.position[0] - CAMERA_STRETCH_FACTOR * this.radius * Math.sin(angle) :
