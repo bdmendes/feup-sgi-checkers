@@ -1,11 +1,11 @@
 import { CGFcamera } from '../../../../../lib/CGF.js';
 import { XMLscene } from '../../XMLscene.js';
 import { MyAnimation } from './MyAnimation.js';
-import { BLACK } from '../../../game/Game.js';
+import { MY_PIECE_ANIMATION_TIME } from './MyPieceAnimation.js';
 
-const CAMERA_P1 = [3, 6.5, -4.5];
-const CAMERA_P2 = [3, 6.5, -9.5];
-const CAMERA_TO_BOARD = [3, 3.3, -7];
+// stretch_factor = 1 => perfect circle
+const CAMERA_STRETCH_FACTOR = 1.5;
+export const CAMERA_ANIMATION_TIME = 1;
 
 /**
  * @export
@@ -17,15 +17,18 @@ export class MyCameraAnimation extends MyAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id, camera, turn) {
+    constructor(scene, id, camera) {
         super(id);
         this.scene = scene;
+        this.initialCamera = camera;
         this.camera = camera;
-        this.turn = turn;
-        this.firstUpdate = true;
+
         this.initialTime = 0;
-        this.lastUpdate = false;
         this.finalTime = 0;
+        this.radius = 2.5;
+
+        this.lastUpdate = false;
+        this.firstUpdate = false;
     }
 
     /**
@@ -34,35 +37,24 @@ export class MyCameraAnimation extends MyAnimation {
      * @memberof MyKeyframeAnimation
      */
     update(t) {
-        let from = (this.turn == BLACK) ? CAMERA_P1 : CAMERA_P2;
-
-        if (this.firstUpdate) {
-            this.initialTime = t + 1;
-            this.finalTime = t + 2;
-            this.firstUpdate = false;
+        if (!this.firstUpdate) {
+            this.initialTime = t + MY_PIECE_ANIMATION_TIME;
+            this.finalTime = this.initialTime + CAMERA_ANIMATION_TIME;
+            this.firstUpdate = true;
         }
 
         if (t < this.initialTime) { return; }
+
         if (t > this.finalTime) {
             if (!this.lastUpdate) {
-                this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
-                    vec3.fromValues(from[0], from[1], from[2]), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
+                this._setNewCameraPosition(this._calculateCameraPosition(1))
                 this.lastUpdate = true;
                 this.scene.graph.cameraAnimations = null;
             }
             return;
         }
 
-        let partial = 5 * (this.finalTime - t);
-        let angle = partial * (Math.PI / 2) / 2.5
-        if (this.turn == BLACK) {
-            this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
-                vec3.fromValues(from[0] + 4 * Math.sin(angle), from[1], from[2] - partial), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
-        } else {
-            this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
-                vec3.fromValues(from[0] + 4 * Math.sin(angle), from[1], from[2] + partial), vec3.fromValues(CAMERA_TO_BOARD[0], CAMERA_TO_BOARD[1], CAMERA_TO_BOARD[2]));
-        }
-        return;
+        this._setNewCameraPosition(this._calculateCameraPosition((CAMERA_ANIMATION_TIME - (this.finalTime - t)) / CAMERA_ANIMATION_TIME));
     }
 
     /**
@@ -72,5 +64,24 @@ export class MyCameraAnimation extends MyAnimation {
     apply() {
         this.scene.camera = this.camera;
         this.scene.interface.setActiveCamera(this.camera);
+    }
+
+    _calculateCameraPosition(partial_time) {
+        let angle = partial_time * Math.PI;
+        console.log(angle);
+        return [
+            (this.initialCamera.position[0] > this.initialCamera.target[0]) ?
+                this.initialCamera.position[0] - CAMERA_STRETCH_FACTOR * this.radius * Math.sin(angle) :
+                this.initialCamera.position[0] + CAMERA_STRETCH_FACTOR * this.radius * Math.sin(angle),
+            this.initialCamera.position[1],
+            (this.initialCamera.position[2] > this.initialCamera.target[2]) ?
+                this.initialCamera.position[2] - 2 * this.radius * partial_time :
+                this.initialCamera.position[2] + 2 * this.radius * partial_time
+        ];
+    }
+
+    _setNewCameraPosition(position) {
+        this.camera = new CGFcamera(this.camera.fov, this.camera.near, this.camera.far,
+            vec3.fromValues(position[0], position[1], position[2]), this.camera.target);
     }
 }

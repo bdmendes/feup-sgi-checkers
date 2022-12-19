@@ -3,6 +3,8 @@ import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
 
+export const MY_PIECE_ANIMATION_TIME = 1;
+
 /**
  * @export
  * @class MyPieceAnimation

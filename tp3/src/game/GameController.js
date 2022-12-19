@@ -94,8 +94,10 @@ export class GameController {
         let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
         this.animationController.injectMoveAnimation(pickedComponent, from, to);
 
+        // force game camera
+        this._setGameCamera();
         if (currentPlayer != nextToPlay) {
-            this.animationController.injectCameraAnimation(this.scene.camera, this.game.currentPlayer);
+            this.animationController.injectCameraAnimation();
         }
     }
 
@@ -122,6 +124,14 @@ export class GameController {
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
+    }
+
+    _setGameCamera(gameCameraID = "gameCamera") {
+        if (this.scene.graph.selectedCameraID == gameCameraID) { return; }
+
+        this.scene.graph.selectedCameraID = gameCameraID;
+        this.scene.camera = this.scene.graph.cameras[gameCameraID];
+        this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
     }
 
     ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
