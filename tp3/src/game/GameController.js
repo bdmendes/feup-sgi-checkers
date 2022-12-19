@@ -87,32 +87,7 @@ export class GameController {
         this.selectedPiece.setPosition(pickedPosition);
 
         ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
-        for (let i = 0; i < currBoard.length; i++) {
-            for (let j = 0; j < currBoard[i].length; j++) {
-                if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
-                    if (currBoard[i][j] === BLACK) {
-                        for (let [key, piece] of this.pieces) {
-                            let value = piece.getPosition();
-                            if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations[key].isVisible = false;
-                                this.pieces.delete(key);
-                                break;
-                            }
-                        }
-                    } else {
-                        for (let [key, piece] of this.pieces) {
-                            let value = piece.getPosition();
-                            if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations["whitePiece" + key].isVisible = false;
-                                this.pieces.delete(key);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //////
+        this.removeCapturedPiece(currBoard, newBoard);
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
@@ -146,6 +121,35 @@ export class GameController {
 
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        }
+    }
+
+    ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
+    removeCapturedPiece(currBoard, newBoard) {
+        for (let i = 0; i < currBoard.length; i++) {
+            for (let j = 0; j < currBoard[i].length; j++) {
+                if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
+                    if (currBoard[i][j] === BLACK) {
+                        for (let [key, piece] of this.pieces) {
+                            let value = piece.getPosition();
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations[key].isVisible = false;
+                                this.pieces.delete(key);
+                                break;
+                            }
+                        }
+                    } else {
+                        for (let [key, piece] of this.pieces) {
+                            let value = piece.getPosition();
+                            if (value[0] === i && value[1] === j) {
+                                this.scene.graph.animations["whitePiece" + key].isVisible = false;
+                                this.pieces.delete(key);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
