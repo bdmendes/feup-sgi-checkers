@@ -2,8 +2,9 @@ import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
+import { distanceBetweenPoints } from "../../utils/math.js"
 
-export const MY_PIECE_ANIMATION_TIME = 1;
+export const MY_PIECE_ANIMATION_TIME = 2;
 
 /**
  * @export
@@ -70,13 +71,20 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             this.pendingKeyframes.pop();
             this.lastUpdate = false;
         }
+
         super.update(t);
 
-        let currentPosition = [this.initialPos[0] + this.matrix[12], this.initialPos[1] + this.matrix[14]];
+        let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
 
-        // TODO: check colision and inject animation
         for (let i = 0; i < this.capturedPieces.length; i++) {
-            this.scene.graph.animations[this.capturedPieces[i].getComponentID()].isVisible = false;
+            if (this._checkCollision(this.capturedPieces[i].getPosition(), currentPosition)) {
+                // TODO: inject animation
+                this.scene.graph.animations[this.capturedPieces[i].getComponentID()].isVisible = false;
+            }
         }
+    }
+
+    _checkCollision(p1, p2) {
+        return distanceBetweenPoints(p1[0], p1[1], p2[0], p2[1]) < 0.8;
     }
 }

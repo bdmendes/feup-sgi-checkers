@@ -135,7 +135,7 @@ export class GameController {
                 }
             });
         }
-
+        console.log(capturedPieces);
         return capturedPieces;
     }
 
