@@ -75,25 +75,16 @@ export class GameController {
 
         let currentPlayer = this.game.currentPlayer;
 
-        ////// TEMPORARY CODE TO CLONE BOARD
-        const currBoard = this.game.board.map(row => row.slice());
-
         this.game.move(this.selectedPiece.getPosition(), pickedPosition)
         this.game.printBoard();
         this.selectedPiece.setPosition(pickedPosition);
-
-        ////// TEMPORARY CODE TO CLONE BOARD
-        const newBoard = this.game.board.map(row => row.slice());
-
-        ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
-        this.removeCapturedPiece(currBoard, newBoard);
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
         let capturedPieces = this._getCapturedPieces(from, to);
 
         let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
-        this.animationController.injectMoveAnimation(pickedComponent, from, to);
+        this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
 
         // force game camera
         this._setGameCamera();
@@ -154,34 +145,5 @@ export class GameController {
         this.scene.graph.selectedCameraID = gameCameraID;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
-    }
-
-    ////// TEMPORARY CODE TO REMOVE CAPTURED PIECES
-    removeCapturedPiece(currBoard, newBoard) {
-        for (let i = 0; i < currBoard.length; i++) {
-            for (let j = 0; j < currBoard[i].length; j++) {
-                if (newBoard[i][j] === 0 && currBoard[i][j] !== 0) {
-                    if (currBoard[i][j] === BLACK) {
-                        for (let [key, piece] of this.pieces) {
-                            let value = piece.getPosition();
-                            if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations[key].isVisible = false;
-                                //this.pieces.delete(key);
-                                break;
-                            }
-                        }
-                    } else {
-                        for (let [key, piece] of this.pieces) {
-                            let value = piece.getPosition();
-                            if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations[key].isVisible = false;
-                                //this.pieces.delete(key);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

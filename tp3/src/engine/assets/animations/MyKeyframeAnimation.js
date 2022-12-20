@@ -71,7 +71,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         }
 
         // Calculate current transformation matrix
-        this.interpolate(this.lastKeyframe, this.nextKeyFrame, (t - this.lastKeyframe.instant) / (this.nextKeyFrame.instant - this.lastKeyframe.instant));
+        this.matrix = this.interpolate(this.lastKeyframe, this.nextKeyFrame, (t - this.lastKeyframe.instant) / (this.nextKeyFrame.instant - this.lastKeyframe.instant));
     }
 
     /**
@@ -113,6 +113,6 @@ export class MyKeyframeAnimation extends MyAnimation {
         vec3.lerp(scaleCoords, lastKeyframe.transformation.scaleCoords, nextKeyFrame.transformation.scaleCoords, t);
         mat4.scale(newMatrix, newMatrix, scaleCoords);
 
-        this.matrix = newMatrix;
+        return newMatrix;
     }
 }

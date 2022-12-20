@@ -25,6 +25,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
         this.isVisible = true;
         this.pendingKeyframes = [];
+        this.capturedPieces = [];
     }
 
     _addInitialKeyframe() {
@@ -37,7 +38,8 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initialPos, finalPos) {
+    addMidKeyframe(initialPos, finalPos, capturedPieces) {
+        this.capturedPieces.push(...capturedPieces);
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
@@ -67,5 +69,10 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             this.lastUpdate = false;
         }
         super.update(t);
+
+        // TODO: check colision and inject animation
+        for (let i = 0; i < this.capturedPieces.length; i++) {
+            this.scene.graph.animations[this.capturedPieces[i]].isVisible = false;
+        }
     }
 }
