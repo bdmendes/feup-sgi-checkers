@@ -37,16 +37,16 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initial_pos, final_pos) {
+    addMidKeyframe(initialPos, finalPos) {
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
         keyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [
-                final_pos[1] - initial_pos[1] + lastKeyFrame.transformation.translationCoords[0],
+                finalPos[1] - initialPos[1] + lastKeyFrame.transformation.translationCoords[0],
                 0,
-                final_pos[0] - initial_pos[0] + lastKeyFrame.transformation.translationCoords[2]
+                finalPos[0] - initialPos[0] + lastKeyFrame.transformation.translationCoords[2]
             ],
             scaleCoords: [1, 1, 1]
         };

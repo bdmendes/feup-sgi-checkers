@@ -6,13 +6,13 @@ export class AnimationController {
         this.scene = scene;
     }
 
-    injectMoveAnimation(component, initial_pos, final_pos) {
+    injectMoveAnimation(component, initialPos, finalPos) {
         if (component.animationID == null) {
             let animation = new MyPieceAnimation(this.scene, component.id);
             this.scene.graph.animations[animation.id] = animation;
             component.animationID = animation.id;
         }
-        this.scene.graph.animations[component.id].addMidKeyframe(initial_pos, final_pos)
+        this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos)
     }
 
     injectCameraAnimation() {
