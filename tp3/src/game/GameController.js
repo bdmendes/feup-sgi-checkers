@@ -90,25 +90,7 @@ export class GameController {
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
-        let capturedPieces = [];
-
-        /*if (isCapture) {
-            let xdelta = (to[0] > from[0]) ? 1 : -1;
-            let ydelta = (to[1] > from[1]) ? 1 : -1;
-            let current = from;
-            while (current[0] != to[0] && current[1] != to[1]) {
-                current[0] += xdelta;
-                current[1] += ydelta;
-
-                this.pieces.forEach((piece, key) => {
-                    if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
-                        capturedPieces.push(piece.getComponentID());
-                    }
-                });
-            }
-        }*/
-
-        console.log(capturedPieces);
+        let capturedPieces = this._getCapturedPieces(from, to);
 
         let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
         this.animationController.injectMoveAnimation(pickedComponent, from, to);
@@ -148,6 +130,24 @@ export class GameController {
         }
     }
 
+    _getCapturedPieces(from, to) {
+        let capturedPieces = [];
+        let xdelta = (to[0] > from[0]) ? 1 : -1;
+        let ydelta = (to[1] > from[1]) ? 1 : -1;
+        let current = from.slice();
+        while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
+            current[0] += xdelta;
+            current[1] += ydelta;
+            this.pieces.forEach((piece, key) => {
+                if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
+                    capturedPieces.push(key);
+                }
+            });
+        }
+
+        return capturedPieces;
+    }
+
     _setGameCamera(gameCameraID = "gameCamera") {
         if (this.scene.graph.selectedCameraID == gameCameraID) { return; }
 
@@ -166,7 +166,7 @@ export class GameController {
                             let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
                                 this.scene.graph.animations[key].isVisible = false;
-                                this.pieces.delete(key);
+                                //this.pieces.delete(key);
                                 break;
                             }
                         }
@@ -175,7 +175,7 @@ export class GameController {
                             let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
                                 this.scene.graph.animations[key].isVisible = false;
-                                this.pieces.delete(key);
+                                //this.pieces.delete(key);
                                 break;
                             }
                         }
