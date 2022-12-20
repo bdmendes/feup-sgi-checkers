@@ -28,7 +28,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
     }
 
     _addInitialKeyframe() {
-        const initialKeyframe = new GraphKeyframe(scene, 0);
+        const initialKeyframe = new GraphKeyframe(this.scene, 0);
         initialKeyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [0, 0, 0],
