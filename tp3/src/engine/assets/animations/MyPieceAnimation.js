@@ -4,7 +4,7 @@ import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
 import { distanceBetweenPoints } from "../../utils/math.js"
 
-export const MY_PIECE_ANIMATION_TIME = 2;
+export const MY_PIECE_ANIMATION_TIME = 1;
 
 /**
  * @export
@@ -16,9 +16,9 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id, initialPos) {
-        super(scene, id);
-        this.scene = scene;
+    constructor(animationController, id, initialPos) {
+        super(animationController.scene, id);
+        this.animationController = animationController;
 
         this.initialPos = initialPos;
         this.currentTime = 0;
@@ -78,8 +78,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
         for (let i = 0; i < this.capturedPieces.length; i++) {
             if (this._checkCollision(this.capturedPieces[i].getPosition(), currentPosition)) {
-                // TODO: inject animation
-                this.scene.graph.animations[this.capturedPieces[i].getComponentID()].isVisible = false;
+                this.animationController.injectCaptureAnimation(this.capturedPieces[i].getComponentID());
             }
         }
     }

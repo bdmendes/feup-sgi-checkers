@@ -8,11 +8,16 @@ export class AnimationController {
 
     injectMoveAnimation(component, initialPos, finalPos, capturedPieces) {
         if (component.animationID == null) {
-            let animation = new MyPieceAnimation(this.scene, component.id, initialPos);
+            let animation = new MyPieceAnimation(this, component.id, initialPos);
             this.scene.graph.animations[animation.id] = animation;
             component.animationID = animation.id;
         }
         this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos, capturedPieces);
+    }
+
+    injectCaptureAnimation(componentID) {
+        // TODO: implement
+        this.scene.graph.animations[componentID].isVisible = false;
     }
 
     injectCameraAnimation() {
