@@ -91,6 +91,26 @@ export class GameController {
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
+        let capturedPieces = [];
+
+        /*if (isCapture) {
+            let xdelta = (to[0] > from[0]) ? 1 : -1;
+            let ydelta = (to[1] > from[1]) ? 1 : -1;
+            let current = from;
+            while (current[0] != to[0] && current[1] != to[1]) {
+                current[0] += xdelta;
+                current[1] += ydelta;
+
+                this.pieces.forEach((piece, key) => {
+                    if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
+                        capturedPieces.push(piece.getComponentID());
+                    }
+                });
+            }
+        }*/
+
+        console.log(capturedPieces);
+
         let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
         this.animationController.injectMoveAnimation(pickedComponent, from, to);
 
@@ -100,6 +120,7 @@ export class GameController {
             this.animationController.injectCameraAnimation();
         }
 
+        capturedPieces = null;
         this.selectedPiece = null;
     }
 
