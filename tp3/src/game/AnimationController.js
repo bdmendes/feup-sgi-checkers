@@ -8,7 +8,7 @@ export class AnimationController {
 
     injectMoveAnimation(component, initialPos, finalPos, capturedPieces) {
         if (component.animationID == null) {
-            let animation = new MyPieceAnimation(this.scene, component.id);
+            let animation = new MyPieceAnimation(this.scene, component.id, initialPos);
             this.scene.graph.animations[animation.id] = animation;
             component.animationID = animation.id;
         }

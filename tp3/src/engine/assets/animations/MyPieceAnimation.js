@@ -15,9 +15,11 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id) {
+    constructor(scene, id, initialPos) {
         super(scene, id);
         this.scene = scene;
+
+        this.initialPos = initialPos;
         this.currentTime = 0;
         this.startTime = -1;
 
@@ -72,7 +74,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
         // TODO: check colision and inject animation
         for (let i = 0; i < this.capturedPieces.length; i++) {
-            this.scene.graph.animations[this.capturedPieces[i]].isVisible = false;
+            this.scene.graph.animations[this.capturedPieces[i].getComponentID()].isVisible = false;
         }
     }
 }

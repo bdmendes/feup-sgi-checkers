@@ -131,7 +131,7 @@ export class GameController {
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
                 if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
-                    capturedPieces.push(key);
+                    capturedPieces.push(piece);
                 }
             });
         }

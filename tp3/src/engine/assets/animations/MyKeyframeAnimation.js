@@ -50,7 +50,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         const afterLastInstant = t > this.keyframes[this.keyframes.length - 1].instant;
         if (beforeFirstInstant || afterLastInstant) {
             if (!this.lastUpdate && afterLastInstant && this.keyframes.length > 1) {
-                this.interpolate(this.keyframes[this.keyframes.length - 2], this.keyframes[this.keyframes.length - 1], 1);
+                this.matrix = this.interpolate(this.keyframes[this.keyframes.length - 2], this.keyframes[this.keyframes.length - 1], 1);
                 this.lastUpdate = true;
             }
             return;
