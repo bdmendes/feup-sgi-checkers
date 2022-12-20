@@ -74,5 +74,6 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         for (let i = 0; i < this.capturedPieces.length; i++) {
             this.scene.graph.animations[this.capturedPieces[i]].isVisible = false;
         }
+        this.capturedPieces = [];
     }
 }
