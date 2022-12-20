@@ -153,7 +153,7 @@ export class GameController {
                         for (let [key, piece] of this.pieces) {
                             let value = piece.getPosition();
                             if (value[0] === i && value[1] === j) {
-                                this.scene.graph.animations["whitePiece" + key].isVisible = false;
+                                this.scene.graph.animations[key].isVisible = false;
                                 this.pieces.delete(key);
                                 break;
                             }
