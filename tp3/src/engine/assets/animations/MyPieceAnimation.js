@@ -72,6 +72,8 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         }
         super.update(t);
 
+        let currentPosition = [this.initialPos[0] + this.matrix[12], this.initialPos[1] + this.matrix[14]];
+
         // TODO: check colision and inject animation
         for (let i = 0; i < this.capturedPieces.length; i++) {
             this.scene.graph.animations[this.capturedPieces[i].getComponentID()].isVisible = false;
