@@ -64,3 +64,12 @@ export function getInitialPositions() {
         [12, [2, 1]],
     ])];
 }
+
+export function getInitialStack() {
+    return {
+        blackStackPos: [-0.25, 10.5],
+        blackStack: [],
+        whiteStackPos: [7.25, 10.5],
+        whiteStack: [],
+    };
+}

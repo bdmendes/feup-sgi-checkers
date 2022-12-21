@@ -1,4 +1,4 @@
-import { parsePosition, checkValidPosition, getInitialPositions } from './gameUtils.js';
+import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from './gameUtils.js';
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
@@ -121,12 +121,7 @@ export class GameController {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
-        this.stackState = {
-            blackStackPos: [-0.25, 10.5],
-            blackStack: [],
-            whiteStackPos: [7.25, 10.5],
-            whiteStack: [],
-        }
+        this.stackState = getInitialStack();
     }
 
     _getCapturedPieces(from, to) {
