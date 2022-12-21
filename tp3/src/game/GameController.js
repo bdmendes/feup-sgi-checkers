@@ -10,19 +10,20 @@ export class GameController {
         this.scene = scene;
         this.scene.addPickListener(this);
 
-        // controllers
-        this.textureController = new TextureController(scene);
-        this.animationController = new AnimationController(scene);
-
         // game
         this.game = null;
         this.pieces = new Map();
+        this.stackState = null;
 
         // selected piece
         this.selectedPiece = null;
 
         // init game
         this.initGame();
+
+        // controllers
+        this.textureController = new TextureController(scene);
+        this.animationController = new AnimationController(scene, this.stackState);
     }
 
     notifyPick(component) {
@@ -89,7 +90,7 @@ export class GameController {
         // force game camera
         this._setGameCamera();
         if (currentPlayer != nextToPlay) {
-            this.animationController.injectCameraAnimation();
+            this.animationController.injectCameraAnimation(isCapture);
         }
 
         capturedPieces = null;
@@ -118,6 +119,13 @@ export class GameController {
 
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        }
+
+        this.stackState = {
+            blackStackPos: [-0.25, 10.5],
+            blackStack: [],
+            whiteStackPos: [7.25, 10.5],
+            whiteStack: [],
         }
     }
 

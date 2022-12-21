@@ -16,11 +16,12 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(animationController, id, initialPos) {
+    constructor(animationController, id, initialPos, isCaptured = false) {
         super(animationController.scene, id);
         this.animationController = animationController;
 
         this.initialPos = initialPos;
+        this.isCaptured = isCaptured;
         this.currentTime = 0;
         this.startTime = -1;
 
@@ -29,6 +30,10 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.isVisible = true;
         this.pendingKeyframes = [];
         this.capturedPieces = [];
+    }
+
+    setIsCaptured(isCaptured) {
+        this.isCaptured = isCaptured;
     }
 
     _addInitialKeyframe() {
@@ -41,7 +46,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initialPos, finalPos, capturedPieces) {
+    addMidKeyframe(initialPos, finalPos, capturedPieces = []) {
         this.capturedPieces.push(...capturedPieces);
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
@@ -74,16 +79,40 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
         super.update(t);
 
-        let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
-
-        for (let i = 0; i < this.capturedPieces.length; i++) {
-            if (this._checkCollision(this.capturedPieces[i].getPosition(), currentPosition)) {
-                this.animationController.injectCaptureAnimation(this.capturedPieces[i].getComponentID());
+        if (!this.lastUpdate) {
+            if (this.isCaptured) {
+                this._handleCaptureAnimation(t);
+            } else {
+                this._checkColision();
             }
         }
     }
 
-    _checkCollision(p1, p2) {
+    _handleCaptureAnimation(t) {
+        let timePercentage = (t - this.lastKeyframe.instant) / MY_PIECE_ANIMATION_TIME;
+        // reset y
+        // need to implement stack logic
+        this.matrix[13] = 0;
+        this.matrix = mat4.translate(this.matrix, this.matrix, [0, this._calculateY(timePercentage), 0]);
+    }
+
+    _calculateY(timePercentage) {
+        return -(Math.pow(timePercentage * 4 - 2, 2)) + 4
+    }
+
+    _checkColision() {
+        let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
+
+        for (let i = 0; i < this.capturedPieces.length; i++) {
+            if (this._isCollision(this.capturedPieces[i].getPosition(), currentPosition)) {
+                if (!this.capturedPieces[i].IsCaptured()) {
+                    this.animationController.injectCaptureAnimation(this.capturedPieces[i]);
+                }
+            }
+        }
+    }
+
+    _isCollision(p1, p2) {
         return distanceBetweenPoints(p1[0], p1[1], p2[0], p2[1]) < 0.8;
     }
 }

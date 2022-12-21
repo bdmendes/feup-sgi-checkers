@@ -5,6 +5,7 @@ export class MyPiece {
         this.color = color;
         this.pos = pos;
         this.possibleMoves = null;
+        this.isCaptured = false;
     }
 
     getID() {
@@ -17,6 +18,14 @@ export class MyPiece {
 
     getPosition() {
         return this.pos;
+    }
+
+    IsCaptured() {
+        return this.isCaptured;
+    }
+
+    setIsCaptured(isCaptured) {
+        this.isCaptured = isCaptured;
     }
 
     setPosition(pos) {
