@@ -1,37 +1,9 @@
 export class MyPiece {
-    constructor(id, componentID, color, pos) {
+    constructor(id, componentID, color, position) {
         this.id = id;
         this.componentID = componentID; // component id in the xml
         this.color = color;
-        this.pos = pos;
+        this.position = position;
         this.possibleMoves = null;
-    }
-
-    getID() {
-        return this.id;
-    }
-
-    getComponentID() {
-        return this.componentID;
-    }
-
-    getPosition() {
-        return this.pos;
-    }
-
-    setPosition(pos) {
-        this.pos = pos;
-    }
-
-    getColor() {
-        return this.color;
-    }
-
-    getPossibleMoves() {
-        return this.possibleMoves;
-    }
-
-    setPossibleMoves(possibleMoves) {
-        this.possibleMoves = possibleMoves;
     }
 }

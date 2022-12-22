@@ -38,11 +38,11 @@ export class GameController {
             this.cleanTextures();
         }
 
-        let previousComponentID = this.selectedPiece != null ? this.selectedPiece.getComponentID() : null;
+        let previousComponentID = this.selectedPiece != null ? this.selectedPiece.componentID : null;
 
         this.selectedPiece = this.pieces.get(component.id);
 
-        if (this.game.currentPlayer != this.selectedPiece.getColor()) {
+        if (this.game.currentPlayer != this.selectedPiece.color) {
             this.clean("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
@@ -52,8 +52,8 @@ export class GameController {
             return;
         }
 
-        this.selectedPiece.setPossibleMoves(this.game.possibleMoves(this.selectedPiece.getPosition()).map(move => move[1]));
-        this.textureController.applyPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
+        this.selectedPiece.possibleMoves = this.game.possibleMoves(this.selectedPiece.position).map(move => move[1]);
+        this.textureController.applyPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
     pickPosition(component) {
@@ -68,22 +68,22 @@ export class GameController {
 
         let pickedPosition = parsePosition(component);
 
-        if (!checkValidPosition(this.selectedPiece.getPossibleMoves(), pickedPosition)) {
+        if (!checkValidPosition(this.selectedPiece.possibleMoves, pickedPosition)) {
             this.clean("Invalid move");
             return;
         }
 
         let currentPlayer = this.game.currentPlayer;
 
-        this.game.move(this.selectedPiece.getPosition(), pickedPosition)
+        this.game.move(this.selectedPiece.position, pickedPosition)
         this.game.printBoard();
-        this.selectedPiece.setPosition(pickedPosition);
+        this.selectedPiece.position = pickedPosition;
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
         let capturedPieces = this._getCapturedPieces(from, to);
 
-        let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
+        let pickedComponent = this.scene.graph.components[this.selectedPiece.componentID];
         this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
 
         // force game camera
@@ -104,7 +104,7 @@ export class GameController {
     }
 
     cleanTextures() {
-        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
+        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
     initGame() {
@@ -130,7 +130,7 @@ export class GameController {
             current[0] += xdelta;
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
-                if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
+                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(key);
                 }
             });
