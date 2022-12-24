@@ -4,7 +4,11 @@
     </includes>
     <scene root="root" axis_length="5" />
 
-    <views default="player1Camera">
+    <views default="gameCamera">
+        <perspective id="gameCamera" near="0.1" far="500" angle="75">
+            <from x="3" y="6.5" z="-4.5" />
+            <to x="3" y="3.3" z="-7" />
+        </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
             <from x="14" y="9" z="14" />
             <to x="0" y="0" z="0" />
@@ -127,8 +131,7 @@
         <texture id="fireplaceTexture" file="scenes/images/fireplace.jpg" />
         <texture id="goldTexture" file="scenes/images/gold.jpg" />
         <texture id="planeTexture" file="scenes/images/plane.jpg" />
-
-
+        <texture id="tableTexture" file="scenes/images/table.jpg" />
     </textures>
 
     <materials>
@@ -1739,7 +1742,7 @@
                 <material id="darkBrown" />
                 <material id="inherit" />
             </materials>
-            <texture id="trunkTexture" length_s="2" length_t="2" />
+            <texture id="tableTexture" length_s="2" length_t="2" />
             <children>
                 <componentref id="cube_face1" />
                 <componentref id="cube_face2" />

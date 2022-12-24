@@ -1,5 +1,6 @@
 import { CGFscene, CGFshader } from '../../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../../lib/CGF.js';
+import { MyPieceAnimation } from './assets/animations/MyPieceAnimation.js';
 import { vectorDifference, milisToSeconds } from './utils/math.js';
 
 /**

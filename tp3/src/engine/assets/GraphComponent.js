@@ -25,6 +25,7 @@ export class GraphComponent {
         this.materialIDs = []; // length >= 1
         this.transformations = []; // length >= 0
         this.textureID = null; // nonnull
+        this.tempTextureID = null;
         this.length_s = null;
         this.length_t = null;
         this.animationID = null;
@@ -125,19 +126,26 @@ export class GraphComponent {
      * @memberof GraphComponent
      */
     renderTexture(material, parentTexture) {
-        if (this.textureID === "inherit") {
-            material.setTexture(parentTexture === null ? null : parentTexture.texture);
-            material.apply();
-            return parentTexture;
+        let texture = null;
+
+        if (this.tempTextureID != null) {
+            texture = this.scene.graph.textures[this.tempTextureID];
+            material.setTexture(texture.texture);
+        } else {
+            if (this.textureID === "inherit") {
+                material.setTexture(parentTexture === null ? null : parentTexture.texture);
+                material.apply();
+                return parentTexture;
+            }
+
+            if (this.textureID === "none") {
+                material.material.setTexture(texture);
+            } else {
+                texture = this.scene.graph.textures[this.textureID];
+                material.setTexture(texture.texture);
+            }
         }
 
-        let texture = null;
-        if (this.textureID === "none") {
-            material.material.setTexture(texture);
-        } else {
-            texture = this.scene.graph.textures[this.textureID];
-            material.setTexture(texture.texture);
-        }
         material.apply();
         return texture;
     }
