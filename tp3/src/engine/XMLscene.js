@@ -40,6 +40,8 @@ export class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
 
         // Set refresh rate to 50 fps
+        this.lastSecondInstant = -1;
+        this.timeListeners = [];
         this.setUpdatePeriod(1000 / 50);
 
         // Enable picking
@@ -219,6 +221,10 @@ export class XMLscene extends CGFscene {
         }
 
         const updateTimeSeconds = milisToSeconds(t - this.firstUpdateTimeMilis);
+        if (Math.floor(updateTimeSeconds) != this.lastSecondInstant) {
+            this.lastSecondInstant = Math.floor(updateTimeSeconds);
+            this.notifyTimeListeners();
+        }
 
         // Update highlights instant
         for (const key in this.graph.components) {
@@ -280,6 +286,12 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
+    notifyTimeListeners() {
+        for (const timeListener of this.timeListeners) {
+            timeListener.notifyTime();
+        }
+    }
+
     notifyPickListeners() {
         if (this.pickMode) {
             // results can only be retrieved when picking mode is false
@@ -305,6 +317,12 @@ export class XMLscene extends CGFscene {
     addPickListener(listener) {
         if (this.pickListeners.indexOf(listener) === -1) {
             this.pickListeners.push(listener);
+        }
+    }
+
+    addTimeListener(listener) {
+        if (this.timeListeners.indexOf(listener) === -1) {
+            this.timeListeners.push(listener);
         }
     }
 }

@@ -255,6 +255,25 @@
             </children>
         </component>
 
+        <component id="switchCameraButton" visible="0" pickable="1">
+            <transformation>
+                <translate x="-0.35" y="1" z="0.9" />
+                <scale x="0.12" y="0.2" z="0.03" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="switchCameraButtonTop" />
+            </children>
+        </component>
+
         <component id="startButtonTop">
             <transformation>
                 <translate x="0" y="1" z="0" />
@@ -315,6 +334,21 @@
             <text string="Travel" scale_y="2.5" scale_x="0.5"/>
         </component>
 
+        <component id="switchCameraButtonTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="Camera" scale_y="2.5" scale_x="0.5"/>
+        </component>
+
         <component id="faces">
             <transformation>
                 <scale x="5" y="0.5" z="5" />
@@ -347,6 +381,7 @@
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
+                <componentref id="switchCameraButton" />
         </children>
         </component>
 
@@ -363,6 +398,7 @@
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
+                <componentref id="switchCameraButton" />
         </children>
         </component>
 
@@ -1912,7 +1948,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber1" />
             </children>
         </component>
 
@@ -1925,7 +1961,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber2" />
             </children>
         </component>
 
@@ -1938,7 +1974,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber3" />
             </children>
         </component>
 
@@ -1951,7 +1987,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber4" />
             </children>
         </component>
 
@@ -1964,7 +2000,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber5" />
             </children>
         </component>
 
@@ -1977,7 +2013,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="display_number" />
+                <componentref id="displayNumber6" />
             </children>
         </component>
 
@@ -2083,7 +2119,7 @@
             </children>
         </component>
 
-        <component id="display_number">
+        <component id="displayNumber1">
             <transformation>
                 <scale x="1" y="1" z="0.45" />
                 <translate x="1.01" y="0" z="-1.1" />
@@ -2096,7 +2132,87 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="3" scale_y="2"/>
+            <text string="0" scale_x="2" scale_y="3"/>
+        </component>
+
+        <component id="displayNumber2">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="timerDisplayOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="2" scale_y="3" />
+        </component>
+
+        <component id="displayNumber3">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="timerDisplayOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="2" scale_y="3"/>
+        </component>
+
+        <component id="displayNumber4">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="timerDisplayOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="2" scale_y="3"/>
+        </component>
+
+        <component id="displayNumber5">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="timerDisplayOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="2" scale_y="3"/>
+        </component>
+
+        <component id="displayNumber6">
+            <transformation>
+                <scale x="1" y="1" z="0.45" />
+                <translate x="1.01" y="0" z="-1.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="timerDisplayOled" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="2" scale_y="3"/>
         </component>
 
         <component id="twoDotsPlayer1">

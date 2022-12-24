@@ -4,12 +4,14 @@ import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
 import { MyPiece } from './MyPiece.js';
 import { BoardButton } from './BoardButton.js';
+import { BoardClock } from './BoardClock.js';
 
 
 export class GameController {
     constructor(scene) {
         this.scene = scene;
         this.scene.addPickListener(this);
+        this.scene.addTimeListener(this);
 
         // controllers
         this.textureController = new TextureController(scene);
@@ -20,6 +22,9 @@ export class GameController {
         this.pieces = new Map();
         this.blackButtons = {};
         this.whiteButtons = {};
+        this.blackRemainingSeconds = 5 * 60;
+        this.whiteRemainingSeconds = 5 * 60;
+        this.clock = null;
 
         // selected piece
         this.selectedPiece = null;
@@ -36,6 +41,20 @@ export class GameController {
         } else if (component.id.includes('Button')) {
             this.pickButton(component);
         }
+    }
+
+    notifyTime() {
+        // TODO: Review async clock and buttons loading
+        if (this.clock == null) {
+            return;
+        }
+
+        if (this.game.currentPlayer === BLACK) {
+            this.blackRemainingSeconds -= 1;
+        } else {
+            this.whiteRemainingSeconds -= 1;
+        }
+        this.clock.update(this.blackRemainingSeconds, this.whiteRemainingSeconds);
     }
 
     pickButton(component) {
@@ -135,6 +154,9 @@ export class GameController {
         // TODO: Find better way to make sure graph is loaded
         await new Promise(r => setTimeout(r, 1000));
 
+        // Init clock
+        this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
+
         // Init buttons console
         const blackConsoleID = 'blackPlayerButtons';
         const whiteConsoleID = 'whitePlayerButtons';
@@ -162,10 +184,12 @@ export class GameController {
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
                 consoleComponent, player, () => { this.switchScene() });
-        }
 
-        console.log(this.blackButtons);
-        console.log(this.whiteButtons);
+            // Init switch scene button
+            const switchCameraButtonID = 'switchCameraButton';
+            consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
+                consoleComponent, player, () => { this.switchCamera() });
+        }
     }
 
     _getCapturedPieces(from, to) {
@@ -217,5 +241,10 @@ export class GameController {
 
     start() {
         alert("TODO: Start");
+    }
+
+    switchCamera() {
+        // TODO: If camera does not return to current player, do not switch when he moves
+        this.animationController.injectCameraAnimation();
     }
 }
