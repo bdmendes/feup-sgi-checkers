@@ -3,6 +3,7 @@ import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
 import { MyPiece } from './MyPiece.js';
+import { BoardButton } from './BoardButton.js';
 
 
 export class GameController {
@@ -17,6 +18,8 @@ export class GameController {
         // game
         this.game = null;
         this.pieces = new Map();
+        this.blackButtons = {};
+        this.whiteButtons = {};
 
         // selected piece
         this.selectedPiece = null;
@@ -30,7 +33,15 @@ export class GameController {
             this.pickPiece(component);
         } else if (component.id.includes('position')) {
             this.pickPosition(component);
+        } else if (component.id.includes('Button')) {
+            this.pickButton(component);
         }
+    }
+
+    pickButton(component) {
+        const buttonsMap = this.game.currentPlayer === BLACK ? this.blackButtons : this.whiteButtons;
+        const button = buttonsMap[component.id];
+        button.pick();
     }
 
     pickPiece(component) {
@@ -90,6 +101,7 @@ export class GameController {
         this._setGameCamera();
         if (currentPlayer != nextToPlay) {
             this.animationController.injectCameraAnimation();
+            this._updateBoardControls();
         }
 
         capturedPieces = null;
@@ -107,7 +119,7 @@ export class GameController {
         this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
-    initGame() {
+    async initGame() {
         this.game = new Game();
 
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
@@ -119,6 +131,41 @@ export class GameController {
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
+
+        // TODO: Find better way to make sure graph is loaded
+        await new Promise(r => setTimeout(r, 1000));
+
+        // Init buttons console
+        const blackConsoleID = 'blackPlayerButtons';
+        const whiteConsoleID = 'whitePlayerButtons';
+        for (const player of [BLACK, WHITE]) {
+            const consoleID = player === BLACK ? blackConsoleID : whiteConsoleID;
+            let consoleComponent = this.scene.graph.components[consoleID];
+            const consoleButtons = player === BLACK ? this.blackButtons : this.whiteButtons;
+
+            // Init start button
+            const startButtonID = 'startButton';
+            consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
+                consoleComponent, player, () => { this.start() });
+
+            // Init undo button
+            const undoButtonID = 'undoButton';
+            consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
+                consoleComponent, player, () => { this.undo() });
+
+            // Init movie button
+            const movieButtonID = 'movieButton';
+            consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
+                consoleComponent, player, () => { this.movie() });
+
+            // Init switch scene button
+            const switchSceneButtonID = 'switchSceneButton';
+            consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
+                consoleComponent, player, () => { this.switchScene() });
+        }
+
+        console.log(this.blackButtons);
+        console.log(this.whiteButtons);
     }
 
     _getCapturedPieces(from, to) {
@@ -145,5 +192,30 @@ export class GameController {
         this.scene.graph.selectedCameraID = gameCameraID;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
+    }
+
+    _updateBoardControls() {
+        for (const buttonID in this.whiteButtons) {
+            this.whiteButtons[buttonID].updateVisibility(this.game);
+        }
+        for (const buttonID in this.blackButtons) {
+            this.blackButtons[buttonID].updateVisibility(this.game);
+        }
+    }
+
+    undo() {
+        alert("TODO: Undo");
+    }
+
+    movie() {
+        alert("TODO: Movie");
+    }
+
+    switchScene() {
+        alert("TODO: Switch Scene");
+    }
+
+    start() {
+        alert("TODO: Start");
     }
 }

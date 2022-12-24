@@ -179,7 +179,7 @@
             </children>
         </component>
 
-        <component id="startButton">
+        <component id="startButton" pickable="1">
             <transformation>
                 <translate x="0.65" y="1" z="0.9" />
                 <scale x="0.12" y="0.2" z="0.03" />
@@ -198,7 +198,7 @@
             </children>
         </component>
 
-        <component id="undoButton" visible="0">
+        <component id="undoButton" visible="0" pickable="1">
             <transformation>
                 <translate x="0.4" y="1" z="0.9" />
                 <scale x="0.12" y="0.2" z="0.03" />
@@ -217,7 +217,7 @@
             </children>
         </component>
 
-        <component id="movieButton" visible="0">
+        <component id="movieButton" visible="0" pickable="1">
             <transformation>
                 <translate x="0.15" y="1" z="0.9" />
                 <scale x="0.12" y="0.2" z="0.03" />
@@ -236,7 +236,7 @@
             </children>
         </component>
 
-        <component id="switchSceneButton" visible="0">
+        <component id="switchSceneButton" visible="0" pickable="1">
             <transformation>
                 <translate x="-0.1" y="1" z="0.9" />
                 <scale x="0.12" y="0.2" z="0.03" />
