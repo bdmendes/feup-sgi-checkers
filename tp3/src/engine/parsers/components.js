@@ -40,8 +40,9 @@ function parseComponent(sceneGraph, node) {
     if (error) return componentID;
 
     const pickable = getIntegerBooleanProperty(sceneGraph, node, componentID, 'pickable', false);
+    const visible = getIntegerBooleanProperty(sceneGraph, node, componentID, 'visible', true);
 
-    const component = new GraphComponent(sceneGraph.scene, componentID, pickable);
+    const component = new GraphComponent(sceneGraph.scene, componentID, pickable, visible);
 
     const nodeNames = [];
     for (let j = 0; j < node.children.length; j++) {
@@ -413,26 +414,11 @@ function parseText(componentID, sceneGraph, node, component, textIndex) {
     let zOffset = sceneGraph.reader.getFloat(textNode, 'z_off', false);
     let scaleX = sceneGraph.reader.getFloat(textNode, 'scale_x', false);
     let scaleY = sceneGraph.reader.getFloat(textNode, 'scale_y', false);
-
-    if (xOffset == null) {
-        xOffset = 0;
-    }
-    if (yOffset == null) {
-        yOffset = 0;
-    }
-    if (zOffset == null) {
-        zOffset = 0.01;
-    }
-    if (scaleX == null) {
-        scaleX = 1;
-    }
-    if (scaleY == null) {
-        scaleY = 1;
-    }
+    let gap = sceneGraph.reader.getFloat(textNode, 'gap', false);
 
     const forceFront = getIntegerBooleanProperty(sceneGraph, textNode, componentID, 'front', false);
 
-    const graphText = new GraphText(sceneGraph.scene, string, xOffset, yOffset, zOffset, scaleX, scaleY, forceFront);
+    const graphText = new GraphText(sceneGraph.scene, string, xOffset, yOffset, zOffset, gap, scaleX, scaleY, forceFront);
     component.text = graphText;
     return null;
 }

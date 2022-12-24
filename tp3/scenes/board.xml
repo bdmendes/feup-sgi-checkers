@@ -179,6 +179,142 @@
             </children>
         </component>
 
+        <component id="startButton">
+            <transformation>
+                <translate x="0.65" y="1" z="0.9" />
+                <scale x="0.12" y="0.2" z="0.03" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="startButtonTop" />
+            </children>
+        </component>
+
+        <component id="undoButton" visible="0">
+            <transformation>
+                <translate x="0.4" y="1" z="0.9" />
+                <scale x="0.12" y="0.2" z="0.03" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="undoButtonTop" />
+            </children>
+        </component>
+
+        <component id="movieButton" visible="0">
+            <transformation>
+                <translate x="0.15" y="1" z="0.9" />
+                <scale x="0.12" y="0.2" z="0.03" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="movieButtonTop" />
+            </children>
+        </component>
+
+        <component id="switchSceneButton" visible="0">
+            <transformation>
+                <translate x="-0.1" y="1" z="0.9" />
+                <scale x="0.12" y="0.2" z="0.03" />
+            </transformation>
+            <materials>
+                <material id="darkBrown" />
+            </materials>
+            <texture id="woodTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="cube_face1" />
+                <componentref id="cube_face2" />
+                <componentref id="cube_face3" />
+                <componentref id="cube_face4" />
+                <componentref id="cube_face5" />
+                <componentref id="switchSceneButtonTop" />
+            </children>
+        </component>
+
+        <component id="startButtonTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="Start" scale_y="2.5" scale_x="0.5"/>
+        </component>
+
+        <component id="movieButtonTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="Recap" scale_y="2.5" scale_x="0.5"/>
+        </component>
+
+        <component id="undoButtonTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="Undo" scale_y="2.5" scale_x="0.5"/>
+        </component>
+
+        <component id="switchSceneButtonTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="Travel" scale_y="2.5" scale_x="0.5"/>
+        </component>
+
         <component id="faces">
             <transformation>
                 <scale x="5" y="0.5" z="5" />
@@ -195,7 +331,39 @@
                 <componentref id="cube_face4" />
                 <componentref id="cube_face5" />
                 <componentref id="borders" />
+                <componentref id="blackPlayerButtons" />
+                <componentref id="whitePlayerButtons" />
             </children>
+        </component>
+
+        <component id="blackPlayerButtons">
+            <transformation></transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+        <children>
+                <componentref id="startButton" />
+                <componentref id="movieButton" />
+                <componentref id="undoButton" />
+                <componentref id="switchSceneButton" />
+        </children>
+        </component>
+
+        <component id="whitePlayerButtons" visible="0">
+            <transformation>
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+        <children>
+                <componentref id="startButton" />
+                <componentref id="movieButton" />
+                <componentref id="undoButton" />
+                <componentref id="switchSceneButton" />
+        </children>
         </component>
 
         <component id="cube_face1">
@@ -1928,7 +2096,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" x_off="0.5" y_off="0" scale_x="3" scale_y="2"/>
+            <text string="0" scale_x="3" scale_y="2"/>
         </component>
 
         <component id="twoDotsPlayer1">

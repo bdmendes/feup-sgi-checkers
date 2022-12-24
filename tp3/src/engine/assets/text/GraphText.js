@@ -16,16 +16,17 @@ export class GraphText {
      *
      */
     constructor(scene, text, xOffset, yOffset, zOffset,
-        scaleX = 1, scaleY = 1, forceFront = false,
+        gap, scaleX, scaleY, forceFront,
         fontTexturePath = "src/engine/assets/text/oolite-font.trans.png") {
         this.scene = scene;
         this.text = text;
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
-        this.zOffset = zOffset;
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
-        this.forceFront = forceFront;
+        this.xOffset = xOffset ?? 0;
+        this.yOffset = yOffset ?? 0;
+        this.zOffset = zOffset ?? 0.01;
+        this.scaleX = scaleX ?? 1;
+        this.scaleY = scaleY ?? 1;
+        this.gap = gap ?? 0.5;
+        this.forceFront = forceFront ?? false;
         this.fontTexture = new CGFtexture(scene, fontTexturePath);
         this.fontMaterial = new CGFappearance(scene);
         this.fontMaterial.setTexture(this.fontTexture);
@@ -67,14 +68,15 @@ export class GraphText {
     }
 
     _drawText() {
-        this.scene.translate(this.xOffset, this.yOffset, this.zOffset);
         this.scene.scale(this.scaleX, this.scaleY, 1);
+        this.scene.translate(-this.text.length / 4 + 0.4, 0, 0); // Center the text
+        this.scene.translate(this.xOffset, this.yOffset, this.zOffset);
 
         for (const char of this.text) {
-            const charCood = this._charCoord(char);
+            const charCood = this._charCoord(char.toUpperCase());
             this.scene.textShader.setUniformsValues({ 'charCoords': charCood });
             this.quad.display();
-            this.scene.translate(1, 0, 0);
+            this.scene.translate(this.gap, 0, 0.001);
         }
     }
 

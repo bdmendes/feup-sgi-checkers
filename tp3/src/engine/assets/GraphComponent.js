@@ -18,7 +18,7 @@ export class GraphComponent {
      * @param {*} id - the component id
      * @memberof GraphComponent
      */
-    constructor(scene, id, pickable = false) {
+    constructor(scene, id, pickable = false, visible = true) {
         this.id = id;
         this.scene = scene;
         this.children = {};
@@ -33,6 +33,7 @@ export class GraphComponent {
         this.enableHighlight = true;
         this.text = null;
         this.pickable = pickable;
+        this.visible = visible;
     }
 
     /**
@@ -44,6 +45,10 @@ export class GraphComponent {
      * @memberof GraphComponent
      */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1, pickableParent = false) {
+        if (!this.visible) {
+            return;
+        }
+
         if (this.pickable) {
             this.scene.registerForPick(this.scene.currentPickId++, this);
         } else if (!pickableParent) {

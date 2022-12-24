@@ -7,11 +7,13 @@ uniform sampler2D uSampler;
 
 void main() {
 	vec4 color = texture2D(uSampler, vTextureCoord);
+	vec4 white = vec4(1.0, 1.0, 1.0, 1.0);
+	vec4 black = vec4(0.0, 0.0, 0.0, 1.0);
 
-	if (color.a < 0.5)
+	if (color.a < 0.4)
 		discard;
+	else if (color.a < 0.7)
+		gl_FragColor = mix(white, black, 0.9);
 	else
-		gl_FragColor = color;
+		gl_FragColor = mix(white, black, 0.25);
 }
-
-

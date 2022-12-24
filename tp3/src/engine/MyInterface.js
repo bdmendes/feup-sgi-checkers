@@ -18,7 +18,7 @@ export class MyInterface extends CGFinterface {
      */
     init(application) {
         super.init(application);
-        this.gui = new dat.GUI();
+        this.gui = new dat.GUI({ 'closed': true });
         this.initKeys();
         return true;
     }
