@@ -223,6 +223,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+                                    
         </component>
 
         <component id="cube_face3">
@@ -265,6 +266,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+
         </component>
 
         <component id="cube_face6">
@@ -1926,6 +1928,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <text string="0" x_off="0.5" y_off="0" scale_x="3" scale_y="2"/>
         </component>
 
         <component id="twoDotsPlayer1">

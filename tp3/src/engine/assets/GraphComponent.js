@@ -31,6 +31,7 @@ export class GraphComponent {
         this.animationID = null;
         this.highlight = null;
         this.enableHighlight = true;
+        this.text = null;
         this.pickable = pickable;
     }
 
@@ -57,6 +58,8 @@ export class GraphComponent {
 
         this.renderTransformations();
         this.renderAnimation();
+
+        this.renderText(material);
 
         this.renderChildren(material, texture, parent_length_s, parent_length_t, this.pickable || pickableParent);
 
@@ -201,6 +204,12 @@ export class GraphComponent {
             if (this.animationID == null || this.scene.graph.animations[this.animationID].isVisible) {
                 this.children[key].display(material, texture, length_s, length_t, pickableParent);
             }
+        }
+    }
+
+    renderText(material) {
+        if (this.text != null) {
+            this.text.draw(material);
         }
     }
 

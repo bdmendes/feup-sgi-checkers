@@ -1,6 +1,5 @@
 import { CGFscene, CGFshader } from '../../../lib/CGF.js';
 import { CGFaxis, CGFcamera } from '../../../lib/CGF.js';
-import { MyPieceAnimation } from './assets/animations/MyPieceAnimation.js';
 import { vectorDifference, milisToSeconds } from './utils/math.js';
 
 /**
@@ -48,9 +47,15 @@ export class XMLscene extends CGFscene {
         this.setPickEnabled(true);
     }
 
+    /**
+     * Initializes the scene shaders.
+     */
     initShaders() {
         this.highlightShader = new CGFshader(this.gl, "src/engine/shaders/highlight/scale.vert",
             "src/engine/shaders/highlight/color.frag");
+
+        this.textShader = new CGFshader(this.gl, "src/engine/shaders/text/font.vert", "src/engine/shaders/text/font.frag");
+        this.textShader.setUniformsValues({ 'dims': [16, 16] });
     }
 
     /**

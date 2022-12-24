@@ -1,6 +1,7 @@
 import { GraphComponent } from "../assets/GraphComponent.js";
 import { GraphHighlight } from "../assets/highlights/GraphHighlight.js";
 import { GraphTransformation } from "../assets/transformations/GraphTransformation.js";
+import { GraphText } from "../assets/text/GraphText.js";
 
 /**
      * Parses the <components> block
@@ -53,6 +54,7 @@ function parseComponent(sceneGraph, node) {
     const childrenIndex = nodeNames.indexOf('children');
     const animationIndex = nodeNames.indexOf('animation');
     const highlightedIndex = nodeNames.indexOf('highlighted');
+    const textIndex = nodeNames.indexOf('text');
 
     error = parseTransformations(componentID, sceneGraph, node, component, transformationIndex);
     if (error != null) { return error; }
@@ -70,6 +72,9 @@ function parseComponent(sceneGraph, node) {
     if (error != null) { return error; }
 
     error = parseHighlighted(componentID, sceneGraph, node, component, highlightedIndex);
+    if (error != null) { return error; }
+
+    error = parseText(componentID, sceneGraph, node, component, textIndex);
     if (error != null) { return error; }
 
     sceneGraph.components[componentID] = component;
@@ -383,23 +388,51 @@ function parseHighlighted(componentID, sceneGraph, node, component, highlightInd
         return 'component ' + componentID + ' must have a highlight block with non null scale_h';
     }
 
-    const enableHighlightProperty = sceneGraph.reader.getString(highlightedNode, 'enabled', false);
-    let enableHighlight;
-    if (enableHighlightProperty == '0') {
-        enableHighlight = false;
-    } else if (enableHighlightProperty == '1') {
-        enableHighlight = true;
-    } else {
-        if (enableHighlightProperty != null) {
-            sceneGraph.onXMLMinorError(
-                'unable to parse value component of the \'enable highlight\' field for component with ID = ' +
-                componentID + '; assuming \'value = 1\'');
-        }
-        enableHighlight = true;
-    }
+    const enableHighlight = getIntegerBooleanProperty(sceneGraph, node, componentID, 'enabled', false);
 
     component.highlight = new GraphHighlight(sceneGraph.scene, color, scaleH);
     component.enableHighlight = enableHighlight;
 
+    return null;
+}
+
+function parseText(componentID, sceneGraph, node, component, textIndex) {
+    if (textIndex == -1) {
+        return null;
+    }
+
+    const textNode = node.children[textIndex];
+
+    const string = sceneGraph.reader.getString(textNode, 'string');
+    if (string == null) {
+        return 'component ' + componentID + ' text block must have non null string';
+    }
+
+    let xOffset = sceneGraph.reader.getFloat(textNode, 'x_off', false);
+    let yOffset = sceneGraph.reader.getFloat(textNode, 'y_off', false);
+    let zOffset = sceneGraph.reader.getFloat(textNode, 'z_off', false);
+    let scaleX = sceneGraph.reader.getFloat(textNode, 'scale_x', false);
+    let scaleY = sceneGraph.reader.getFloat(textNode, 'scale_y', false);
+
+    if (xOffset == null) {
+        xOffset = 0;
+    }
+    if (yOffset == null) {
+        yOffset = 0;
+    }
+    if (zOffset == null) {
+        zOffset = 0.01;
+    }
+    if (scaleX == null) {
+        scaleX = 1;
+    }
+    if (scaleY == null) {
+        scaleY = 1;
+    }
+
+    const forceFront = getIntegerBooleanProperty(sceneGraph, textNode, componentID, 'front', false);
+
+    const graphText = new GraphText(sceneGraph.scene, string, xOffset, yOffset, zOffset, scaleX, scaleY, forceFront);
+    component.text = graphText;
     return null;
 }
