@@ -23,6 +23,9 @@ export class GameController {
 
         // init game
         this.initGame();
+
+        // to call when the user pick start button
+        this._initGameCamera();
     }
 
     notifyPick(component) {
@@ -87,7 +90,7 @@ export class GameController {
         this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
 
         // force game camera
-        this._setGameCamera();
+        this._setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
             this.animationController.injectCameraAnimation();
         }
@@ -139,10 +142,20 @@ export class GameController {
         return capturedPieces;
     }
 
-    _setGameCamera(gameCameraID = "gameCamera") {
-        if (this.scene.graph.selectedCameraID == gameCameraID) { return; }
+    _initGameCamera() {
+        // TODO: call when the game start (after implement start button) to get game camera position instead of hardcoded values
+        // this.cameraBlackPosition = this.scene.graph.cameras["gameCamera"].position;
+        // this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        // this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
 
+        this.cameraBlackPosition = vec3.fromValues(3, 6.5, -4.5);
+        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        this.cameraTarget = vec3.fromValues(3, 3.3, -7);
+    }
+
+    _setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
         this.scene.graph.selectedCameraID = gameCameraID;
+        this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
     }
