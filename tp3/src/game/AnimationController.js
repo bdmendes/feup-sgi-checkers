@@ -7,13 +7,14 @@ export class AnimationController {
         this.stackState = stackState;
     }
 
-    injectMoveAnimation(component, initialPos, finalPos, capturedPieces) {
+    injectMoveAnimation(component, initialPos, finalPos, toKing, capturedPieces) {
         if (component.animationID == null) {
             let animation = new MyPieceAnimation(this, component.id, initialPos);
             this.scene.graph.animations[component.id] = animation;
             component.animationID = component.id;
         }
-        this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos, false, capturedPieces);
+
+        this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos, false, toKing, capturedPieces);
     }
 
     injectCaptureAnimation(capturedPiece) {
@@ -42,7 +43,11 @@ export class AnimationController {
             ];
             this.stackState.blackStack++;
         }
-        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true);
+
+        if (component.tempTextureID != null) {
+            component.tempTextureID = null;
+        }
+        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true, false);
     }
 
     injectCameraAnimation(isCapture) {

@@ -88,7 +88,8 @@ export class GameController {
         let capturedPieces = this._getCapturedPieces(from, to);
 
         let pickedComponent = this.scene.graph.components[this.selectedPiece.componentID];
-        this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
+        this.animationController.injectMoveAnimation(pickedComponent, from, to,
+            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
 
         // force game camera
         this._setGameCamera(currentPlayer);

@@ -13,10 +13,11 @@ export class GraphKeyframe {
      * @param {GraphTransformation} transformation
      * @memberof GraphMaterial
      */
-    constructor(scene, instant, transformation = [], isCapture = false) {
+    constructor(scene, instant, transformation = []) {
         this.scene = scene;
         this.instant = instant;
         this.transformation = transformation;
-        this.isCapture = isCapture;
+        this.isCapture = false;
+        this.toKing = false;
     }
 }

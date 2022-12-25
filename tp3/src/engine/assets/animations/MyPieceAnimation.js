@@ -6,6 +6,8 @@ import { distanceBetweenPoints } from "../../utils/math.js"
 
 export const MY_PIECE_ANIMATION_TIME = 1;
 const PIECE_HEIGHT = 0.25;
+const BLACK_KING_TEXTURE = 'blackPieceKingTexture';
+const WHITE_KING_TEXTURE = 'whitePieceKingTexture';
 
 /**
  * @export
@@ -31,6 +33,8 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.isVisible = true;
         this.pendingKeyframes = [];
         this.capturedPieces = [];
+
+        this.finalUpdate = false;
     }
 
     _addInitialKeyframe() {
@@ -43,12 +47,13 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initialPos, finalPos, isCapture, capturedPieces = []) {
+    addMidKeyframe(initialPos, finalPos, isCapture, toKing, capturedPieces = []) {
         this.capturedPieces.push(...capturedPieces);
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
         keyframe.isCapture = isCapture;
+        keyframe.toKing = toKing;
         keyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [
@@ -72,13 +77,21 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             this.keyframes[this.keyframes.length - 1].instant = t;
             this.addKeyframe(this.pendingKeyframes[0]);
             this.pendingKeyframes.pop();
-            this.lastUpdate = false;
+            super.lastUpdate = this.finalUpdate = false;
         }
 
         super.update(t);
 
+        if (this.finalUpdate) {
+            return
+        }
+
         if (this.lastUpdate) {
+            if (this.nextKeyFrame.toKing && this.scene.graph.components[this.id].tempTextureID == null) {
+                this.scene.graph.components[this.id].tempTextureID = (this.id.includes('black')) ? BLACK_KING_TEXTURE : WHITE_KING_TEXTURE;
+            }
             this.capturedPieces = [];
+            this.finalUpdate = true;
             return;
         }
 

@@ -26,7 +26,9 @@
     <textures>
         <texture id="woodTexture" file="scenes/images/pieces_wood.jpg" />
         <texture id="blackPieceTexture" file="scenes/images/dark_wood.jpg" />
+        <texture id="blackPieceKingTexture" file="scenes/images/dark_wood_king.jpg" />
         <texture id="whitePieceTexture" file="scenes/images/white_wood.jpg" />
+        <texture id="whitePieceKingTexture" file="scenes/images/white_wood_king.jpg" />
         <texture id="blackPositionTexture" file="scenes/images/black_wood.jpg" />
         <texture id="whitePositionTexture" file="scenes/images/white_wood.jpg" />
         <texture id="possibleMoveTexture" file="scenes/images/possible_move.jpg" />
@@ -1312,7 +1314,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1325,7 +1327,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1338,7 +1340,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1351,7 +1353,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1364,7 +1366,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1377,7 +1379,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1390,7 +1392,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1403,7 +1405,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1416,7 +1418,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1429,7 +1431,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1442,7 +1444,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1455,7 +1457,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="blackPiece" />
             </children>
@@ -1625,7 +1627,7 @@
             <materials>
                 <material id="neutral" />
             </materials>
-            <texture id="blackPieceTexture" length_s="1" length_t="1" />
+            <texture id="inherit" length_s="1" length_t="1" />
             <children>
                 <componentref id="pieceSurface" />
                 <componentref id="demoBases" />
