@@ -79,12 +79,15 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
         super.update(t);
 
-        if (!this.lastUpdate) {
-            if (this.isCaptured) {
-                this._handleCaptureAnimation(t);
-            } else {
-                this._checkColision();
-            }
+        if (this.lastUpdate) {
+            this.capturedPieces = [];
+            return;
+        }
+
+        if (this.isCaptured) {
+            this._handleCaptureAnimation(t);
+        } else {
+            this._checkColision();
         }
     }
 
@@ -104,8 +107,8 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
 
         for (let i = 0; i < this.capturedPieces.length; i++) {
-            if (this._isCollision(this.capturedPieces[i].getPosition(), currentPosition)) {
-                if (!this.capturedPieces[i].IsCaptured()) {
+            if (this._isCollision(this.capturedPieces[i].position, currentPosition)) {
+                if (!this.capturedPieces[i].isCaptured) {
                     this.animationController.injectCaptureAnimation(this.capturedPieces[i]);
                 }
             }

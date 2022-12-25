@@ -24,6 +24,8 @@ export class GameController {
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this.stackState);
+        // to call when the user pick start button
+        this._initGameCamera();
     }
 
     notifyPick(component) {
@@ -39,11 +41,11 @@ export class GameController {
             this.cleanTextures();
         }
 
-        let previousComponentID = this.selectedPiece != null ? this.selectedPiece.getComponentID() : null;
+        let previousComponentID = this.selectedPiece != null ? this.selectedPiece.componentID : null;
 
         this.selectedPiece = this.pieces.get(component.id);
 
-        if (this.game.currentPlayer != this.selectedPiece.getColor()) {
+        if (this.game.currentPlayer != this.selectedPiece.color) {
             this.clean("Invalid piece to play. Turn: " + (this.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
@@ -53,8 +55,8 @@ export class GameController {
             return;
         }
 
-        this.selectedPiece.setPossibleMoves(this.game.possibleMoves(this.selectedPiece.getPosition()).map(move => move[1]));
-        this.textureController.applyPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
+        this.selectedPiece.possibleMoves = this.game.possibleMoves(this.selectedPiece.position).map(move => move[1]);
+        this.textureController.applyPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
     pickPosition(component) {
@@ -69,26 +71,26 @@ export class GameController {
 
         let pickedPosition = parsePosition(component);
 
-        if (!checkValidPosition(this.selectedPiece.getPossibleMoves(), pickedPosition)) {
+        if (!checkValidPosition(this.selectedPiece.possibleMoves, pickedPosition)) {
             this.clean("Invalid move");
             return;
         }
 
         let currentPlayer = this.game.currentPlayer;
 
-        this.game.move(this.selectedPiece.getPosition(), pickedPosition)
+        this.game.move(this.selectedPiece.position, pickedPosition)
         this.game.printBoard();
-        this.selectedPiece.setPosition(pickedPosition);
+        this.selectedPiece.position = pickedPosition;
 
         let [from, to, isCapture, nextToPlay] = this.game.moves[this.game.moves.length - 1];
 
         let capturedPieces = this._getCapturedPieces(from, to);
 
-        let pickedComponent = this.scene.graph.components[this.selectedPiece.getComponentID()];
+        let pickedComponent = this.scene.graph.components[this.selectedPiece.componentID];
         this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
 
         // force game camera
-        this._setGameCamera();
+        this._setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
             this.animationController.injectCameraAnimation(isCapture);
         }
@@ -105,7 +107,7 @@ export class GameController {
     }
 
     cleanTextures() {
-        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.getPosition(), this.selectedPiece.getPossibleMoves());
+        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
     initGame() {
@@ -133,7 +135,7 @@ export class GameController {
             current[0] += xdelta;
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
-                if (piece.getPosition()[0] === current[0] && piece.getPosition()[1] === current[1]) {
+                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(piece);
                 }
             });
@@ -141,10 +143,20 @@ export class GameController {
         return capturedPieces;
     }
 
-    _setGameCamera(gameCameraID = "gameCamera") {
-        if (this.scene.graph.selectedCameraID == gameCameraID) { return; }
+    _initGameCamera() {
+        // TODO: call when the game start (after implement start button) to get game camera position instead of hardcoded values
+        // this.cameraBlackPosition = this.scene.graph.cameras["gameCamera"].position;
+        // this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        // this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
 
+        this.cameraBlackPosition = vec3.fromValues(3, 6.5, -4.5);
+        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        this.cameraTarget = vec3.fromValues(3, 3.3, -7);
+    }
+
+    _setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
         this.scene.graph.selectedCameraID = gameCameraID;
+        this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
     }

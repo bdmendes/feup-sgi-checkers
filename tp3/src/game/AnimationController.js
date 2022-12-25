@@ -18,19 +18,17 @@ export class AnimationController {
     }
 
     injectCaptureAnimation(capturedPiece) {
-        let component = this.scene.graph.components[capturedPiece.getComponentID()];
+        let component = this.scene.graph.components[capturedPiece.componentID];
         if (component.animationID == null) {
-            let animation = new MyPieceAnimation(this, component.id, capturedPiece.getPosition());
+            let animation = new MyPieceAnimation(this, component.id, capturedPiece.position);
             this.scene.graph.animations[animation.id] = animation;
             component.animationID = animation.id;
         }
 
-        console.log(component.id);
         let color = component.id.includes('black') ? BLACK : WHITE;
-        console.log((color == BLACK) ? this.stackState.blackStackPos : this.stackState.whiteStackPos);
-        capturedPiece.setIsCaptured(true);
-        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.getPosition(), (color == BLACK) ? this.stackState.blackStackPos : this.stackState.whiteStackPos);
-        this.scene.graph.animations[capturedPiece.getComponentID()].setIsCaptured(true);
+        capturedPiece.isCaptured = true;
+        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, (color == BLACK) ? this.stackState.blackStackPos : this.stackState.whiteStackPos);
+        this.scene.graph.animations[capturedPiece.componentID].setIsCaptured(true);
     }
 
     injectCameraAnimation(isCapture) {
