@@ -1,6 +1,5 @@
 import { MyPieceAnimation } from "../engine/assets/animations/MyPieceAnimation.js";
 import { MyCameraAnimation } from "../engine/assets/animations/MyCameraAnimation.js";
-import { BLACK, WHITE } from "./Game.js";
 
 export class AnimationController {
     constructor(scene, stackState) {
@@ -11,24 +10,23 @@ export class AnimationController {
     injectMoveAnimation(component, initialPos, finalPos, capturedPieces) {
         if (component.animationID == null) {
             let animation = new MyPieceAnimation(this, component.id, initialPos);
-            this.scene.graph.animations[animation.id] = animation;
-            component.animationID = animation.id;
+            this.scene.graph.animations[component.id] = animation;
+            component.animationID = component.id;
         }
-        this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos, capturedPieces);
+        this.scene.graph.animations[component.id].addMidKeyframe(initialPos, finalPos, false, capturedPieces);
     }
 
     injectCaptureAnimation(capturedPiece) {
         let component = this.scene.graph.components[capturedPiece.componentID];
         if (component.animationID == null) {
             let animation = new MyPieceAnimation(this, component.id, capturedPiece.position);
-            this.scene.graph.animations[animation.id] = animation;
-            component.animationID = animation.id;
+            this.scene.graph.animations[component.id] = animation;
+            component.animationID = component.id;
         }
 
-        let color = component.id.includes('black') ? BLACK : WHITE;
         capturedPiece.isCaptured = true;
-        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, (color == BLACK) ? this.stackState.blackStackPos : this.stackState.whiteStackPos);
-        this.scene.graph.animations[capturedPiece.componentID].setIsCaptured(true);
+        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position,
+            (component.id.includes('black')) ? this.stackState.blackStackPos : this.stackState.whiteStackPos, true);
     }
 
     injectCameraAnimation(isCapture) {

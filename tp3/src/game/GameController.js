@@ -24,6 +24,7 @@ export class GameController {
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this.stackState);
+
         // to call when the user pick start button
         this._initGameCamera();
     }

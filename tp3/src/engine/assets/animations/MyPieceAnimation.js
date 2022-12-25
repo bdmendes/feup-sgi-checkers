@@ -32,10 +32,6 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.capturedPieces = [];
     }
 
-    setIsCaptured(isCaptured) {
-        this.isCaptured = isCaptured;
-    }
-
     _addInitialKeyframe() {
         const initialKeyframe = new GraphKeyframe(this.scene, 0);
         initialKeyframe.transformation = {
@@ -46,11 +42,12 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initialPos, finalPos, capturedPieces = []) {
+    addMidKeyframe(initialPos, finalPos, isCapture, capturedPieces = []) {
         this.capturedPieces.push(...capturedPieces);
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
+        keyframe.isCapture = isCapture;
         keyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [
@@ -84,7 +81,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             return;
         }
 
-        if (this.isCaptured) {
+        if (this.nextKeyFrame.isCapture) {
             this._handleCaptureAnimation(t);
         } else {
             this._checkColision();
