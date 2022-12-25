@@ -25,8 +25,24 @@ export class AnimationController {
         }
 
         capturedPiece.isCaptured = true;
-        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position,
-            (component.id.includes('black')) ? this.stackState.blackStackPos : this.stackState.whiteStackPos, true);
+
+        let pos = [0, 0, 0];
+        if (component.id.includes('black')) {
+            pos = [
+                this.stackState.whiteStackPos[0] + ((this.stackState.whiteStack % 2 == 0) ? -0.75 : 0.75),
+                this.stackState.whiteStackPos[1],
+                Math.floor(this.stackState.whiteStack / 2)
+            ];
+            this.stackState.whiteStack++;
+        } else {
+            pos = [
+                this.stackState.blackStackPos[0] + ((this.stackState.blackStack % 2 == 0) ? 0.75 : -0.75),
+                this.stackState.blackStackPos[1],
+                Math.floor(this.stackState.blackStack / 2)
+            ];
+            this.stackState.blackStack++;
+        }
+        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true);
     }
 
     injectCameraAnimation(isCapture) {

@@ -5,6 +5,7 @@ import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
 import { distanceBetweenPoints } from "../../utils/math.js"
 
 export const MY_PIECE_ANIMATION_TIME = 1;
+const PIECE_HEIGHT = 0.25;
 
 /**
  * @export
@@ -52,7 +53,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [
                 finalPos[1] - initialPos[1] + lastKeyFrame.transformation.translationCoords[0],
-                0,
+                (finalPos.length == 2) ? 0 : (finalPos[2] * PIECE_HEIGHT),
                 finalPos[0] - initialPos[0] + lastKeyFrame.transformation.translationCoords[2]
             ],
             scaleCoords: [1, 1, 1]
@@ -90,10 +91,11 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
     _handleCaptureAnimation(t) {
         let timePercentage = (t - this.lastKeyframe.instant) / MY_PIECE_ANIMATION_TIME;
+
         // reset y
-        // need to implement stack logic
         this.matrix[13] = 0;
-        this.matrix = mat4.translate(this.matrix, this.matrix, [0, this._calculateY(timePercentage), 0]);
+        let y_offset = this.nextKeyFrame.transformation.translationCoords[1] * timePercentage;
+        this.matrix = mat4.translate(this.matrix, this.matrix, [0, this._calculateY(timePercentage) + y_offset, 0]);
     }
 
     _calculateY(timePercentage) {

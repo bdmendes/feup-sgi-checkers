@@ -67,9 +67,9 @@ export function getInitialPositions() {
 
 export function getInitialStack() {
     return {
-        blackStackPos: [-0.25, 10.5],
-        blackStack: [],
-        whiteStackPos: [7.25, 10.5],
-        whiteStack: [],
+        blackStackPos: [6.5, 10.5],
+        blackStack: 0,
+        whiteStackPos: [0.5, 10.5],
+        whiteStack: 0,
     };
 }
