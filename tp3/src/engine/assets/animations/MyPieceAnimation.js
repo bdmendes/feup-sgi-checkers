@@ -2,8 +2,12 @@ import { XMLscene } from '../../XMLscene.js';
 import { GraphKeyframe } from './GraphKeyframe.js';
 import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
+import { distanceBetweenPoints } from "../../utils/math.js"
 
 export const MY_PIECE_ANIMATION_TIME = 1;
+const PIECE_HEIGHT = 0.25;
+const BLACK_KING_TEXTURE = 'blackPieceKingTexture';
+const WHITE_KING_TEXTURE = 'whitePieceKingTexture';
 
 /**
  * @export
@@ -15,9 +19,11 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id) {
-        super(scene, id);
-        this.scene = scene;
+    constructor(animationController, id, initialPos, isCaptured = false) {
+        super(animationController.scene, id);
+        this.animationController = animationController;
+
+        this.initialPos = initialPos;
         this.currentTime = 0;
         this.startTime = -1;
 
@@ -26,6 +32,8 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.isVisible = true;
         this.pendingKeyframes = [];
         this.capturedPieces = [];
+
+        this.finalUpdate = false;
     }
 
     _addInitialKeyframe() {
@@ -38,16 +46,18 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         this.addKeyframe(initialKeyframe);
     }
 
-    addMidKeyframe(initialPos, finalPos, capturedPieces) {
+    addMidKeyframe(initialPos, finalPos, isJump, toKing, capturedPieces = []) {
         this.capturedPieces.push(...capturedPieces);
         let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
+        keyframe.isJump = isJump;
+        keyframe.toKing = toKing;
         keyframe.transformation = {
             rotateX: 0, rotateY: 0, rotateZ: 0,
             translationCoords: [
                 finalPos[1] - initialPos[1] + lastKeyFrame.transformation.translationCoords[0],
-                0,
+                (finalPos.length == 2) ? 0 : (finalPos[2] * PIECE_HEIGHT),
                 finalPos[0] - initialPos[0] + lastKeyFrame.transformation.translationCoords[2]
             ],
             scaleCoords: [1, 1, 1]
@@ -66,14 +76,57 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             this.keyframes[this.keyframes.length - 1].instant = t;
             this.addKeyframe(this.pendingKeyframes[0]);
             this.pendingKeyframes.pop();
-            this.lastUpdate = false;
+            super.lastUpdate = this.finalUpdate = false;
         }
+
         super.update(t);
 
-        // TODO: check colision and inject animation
-        for (let i = 0; i < this.capturedPieces.length; i++) {
-            this.scene.graph.animations[this.capturedPieces[i]].isVisible = false;
+        if (this.finalUpdate) {
+            return
         }
-        this.capturedPieces = [];
+
+        if (this.lastUpdate) {
+            if (this.nextKeyFrame.toKing && this.scene.graph.components[this.id].tempTextureID == null) {
+                this.scene.graph.components[this.id].tempTextureID = (this.id.includes('black')) ? BLACK_KING_TEXTURE : WHITE_KING_TEXTURE;
+            }
+            this.capturedPieces = [];
+            this.finalUpdate = true;
+            return;
+        }
+
+        if (this.nextKeyFrame.isJump) {
+            this._handleCaptureAnimation(t);
+        } else {
+            this._checkColision();
+        }
+    }
+
+    _handleCaptureAnimation(t) {
+        let timePercentage = (t - this.lastKeyframe.instant) / MY_PIECE_ANIMATION_TIME;
+
+        // reset y
+        this.matrix[13] = 0;
+        let y_offset = this.nextKeyFrame.transformation.translationCoords[1] * timePercentage;
+        this.matrix = mat4.translate(this.matrix, this.matrix, [0, this._calculateY(timePercentage) + y_offset, 0]);
+    }
+
+    _calculateY(timePercentage) {
+        return -(Math.pow(timePercentage * 4 - 2, 2)) + 4
+    }
+
+    _checkColision() {
+        let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
+
+        for (let i = 0; i < this.capturedPieces.length; i++) {
+            if (this._isCollision(this.capturedPieces[i].position, currentPosition)) {
+                if (!this.capturedPieces[i].isCaptured) {
+                    this.animationController.injectCaptureAnimation(this.capturedPieces[i]);
+                }
+            }
+        }
+    }
+
+    _isCollision(p1, p2) {
+        return distanceBetweenPoints(p1[0], p1[1], p2[0], p2[1]) < 0.8;
     }
 }

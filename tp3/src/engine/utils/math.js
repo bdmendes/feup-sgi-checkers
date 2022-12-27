@@ -61,3 +61,15 @@ export function vectorDifference([x1, y1, z1], [x2, y2, z2]) {
 export function milisToSeconds(milis) {
     return milis / 1000;
 }
+
+/**
+ * Calculate the distance between two points
+ * @param {*} x1 
+ * @param {*} y1 
+ * @param {*} x2 
+ * @param {*} y2 
+ * @returns 
+ */
+export function distanceBetweenPoints(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}

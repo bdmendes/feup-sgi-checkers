@@ -17,5 +17,7 @@ export class GraphKeyframe {
         this.scene = scene;
         this.instant = instant;
         this.transformation = transformation;
+        this.isJump = false;
+        this.toKing = false;
     }
 }
