@@ -1,4 +1,4 @@
-import { parsePosition, checkValidPosition, getInitialPositions } from './gameUtils.js';
+import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from './gameUtils.js';
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
@@ -10,19 +10,20 @@ export class GameController {
         this.scene = scene;
         this.scene.addPickListener(this);
 
-        // controllers
-        this.textureController = new TextureController(scene);
-        this.animationController = new AnimationController(scene);
-
         // game
         this.game = null;
         this.pieces = new Map();
+        this.stackState = null;
 
         // selected piece
         this.selectedPiece = null;
 
         // init game
         this.initGame();
+
+        // controllers
+        this.textureController = new TextureController(scene);
+        this.animationController = new AnimationController(scene, this.stackState);
 
         // to call when the user pick start button
         this._initGameCamera();
@@ -87,12 +88,13 @@ export class GameController {
         let capturedPieces = this._getCapturedPieces(from, to);
 
         let pickedComponent = this.scene.graph.components[this.selectedPiece.componentID];
-        this.animationController.injectMoveAnimation(pickedComponent, from, to, capturedPieces);
+        this.animationController.injectMoveAnimation(pickedComponent, from, to,
+            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
 
         // force game camera
         this._setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
-            this.animationController.injectCameraAnimation();
+            this.animationController.injectCameraAnimation(isCapture);
         }
 
         capturedPieces = null;
@@ -122,6 +124,8 @@ export class GameController {
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
+
+        this.stackState = getInitialStack();
     }
 
     _getCapturedPieces(from, to) {
@@ -134,11 +138,10 @@ export class GameController {
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
                 if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
-                    capturedPieces.push(key);
+                    capturedPieces.push(piece);
                 }
             });
         }
-
         return capturedPieces;
     }
 

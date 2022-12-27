@@ -5,5 +5,6 @@ export class MyPiece {
         this.color = color;
         this.position = position;
         this.possibleMoves = null;
+        this.isCaptured = false;
     }
 }
