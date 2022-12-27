@@ -86,6 +86,7 @@ export class Game {
             : this.board[row][col] === WHITE_KING || this.board[row][col] === WHITE_MAN;
         const isPiece = (row, col) => this.board[row][col] !== EMPTY;
         const ownPiece = (row, col) => insideBoard(row, col) && isPiece(row, col) && !isEnemy(row, col);
+        const enemyPiece = (row, col) => insideBoard(row, col) && isPiece(row, col) && isEnemy(row, col);
 
         // Calculate possible valid moves
         let to = [], toCaptures = [], toNonCaptures = [];
@@ -94,21 +95,19 @@ export class Game {
         } else if (piece == BLACK_MAN) {
             to = [[row - 1, col - 1], [row - 1, col + 1]];
         } else if (piece == BLACK_KING || piece == WHITE_KING) {
-            for (let i = 1; i < 8; i++) {
-                if (ownPiece(row - i, col - i)) break;
-                to.push([row - i, col - i]);
-            }
-            for (let i = 1; i < 8; i++) {
-                if (ownPiece(row - i, col + i)) break;
-                to.push([row - i, col + i]);
-            }
-            for (let i = 1; i < 8; i++) {
-                if (ownPiece(row + i, col - i)) break;
-                to.push([row + i, col - i]);
-            }
-            for (let i = 1; i < 8; i++) {
-                if (ownPiece(row + i, col + i)) break;
-                to.push([row + i, col + i]);
+            for (let rowDiff of [-1, 1]) {
+                for (let colDiff of [-1, 1]) {
+                    let enemyJumps = 0;
+                    for (let i = 1; i < 8; i++) {
+                        const position = [row + rowDiff * i, col + colDiff * i];
+                        const isJumpOverOwnPiece = ownPiece(position[0], position[1]);
+                        const isJumpOverSecondEnemyPiece = enemyPiece(position[0], position[1]) && ++enemyJumps > 1;
+                        if (isJumpOverOwnPiece || isJumpOverSecondEnemyPiece) {
+                            break;
+                        }
+                        to.push([position[0], position[1]]);
+                    }
+                }
             }
         } else {
             throw new Error("Invalid piece");
@@ -117,12 +116,12 @@ export class Game {
         // Discard out of bounds moves (first pass)
         to = to.filter(([row, col]) => insideBoard(row, col));
 
-        // Convert enemy taps to captures; do not jump over own pieces
+        // Convert enemy taps to captures
         to.filter(([row, col]) => isEnemy(row, col, player)).forEach(([row, col]) => {
-            let [rowDiff, colDiff] = [Math.sign(row - from[0]), Math.sign(col - from[1])];
+            const [rowDiff, colDiff] = [Math.sign(row - from[0]), Math.sign(col - from[1])];
             if (piece === WHITE_KING || piece === BLACK_KING) {
                 for (let i = 1; i < 7; i++) {
-                    if (ownPiece(row + i * rowDiff, col + i * colDiff)) {
+                    if (ownPiece(row + i * rowDiff, col + i * colDiff) || enemyPiece(row + i * rowDiff, col + i * colDiff)) {
                         break;
                     }
                     toCaptures.push([row + i * rowDiff, col + i * colDiff]);
