@@ -2,6 +2,7 @@ import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
+import { UIController } from './UIController.js';
 import { MyPiece } from './MyPiece.js';
 import { BoardButton } from './BoardButton.js';
 import { BoardClock } from './BoardClock.js';
@@ -22,6 +23,8 @@ export class GameController {
         this.whiteRemainingSeconds = 5 * 60;
         this.clock = null;
         this.stackState = null;
+        this.hintWhite = false;
+        this.hintBlack = false;
 
         // selected piece
         this.selectedPiece = null;
@@ -32,6 +35,7 @@ export class GameController {
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this.stackState);
+        this.uiController = new UIController();
 
         // to call when the user pick start button
         this._initGameCamera();
@@ -99,6 +103,8 @@ export class GameController {
         if (this.selectedPiece != null) {
             this.cleanTextures();
         }
+
+        // TODO: Illuminate picked position and follow animation
 
         let pickedPosition = parsePosition(component);
 
@@ -231,6 +237,11 @@ export class GameController {
         this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
+    }
+
+    startGame(hintWhite, hintBlack) {
+        this.hintWhite = hintWhite;
+        this.hintBlack = hintBlack;
     }
 
     _updateBoardControls() {
