@@ -7,6 +7,7 @@ import { BoardButton } from '../view/BoardButton.js';
 import { BoardClock } from '../view/BoardClock.js';
 import { InGameState } from '../state/InGameState.js';
 import { StartState } from '../state/StartState.js';
+import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 
 
 export class GameController {
@@ -27,6 +28,8 @@ export class GameController {
         this.whiteButtons = {};
         this.blackRemainingSeconds = 5 * 60;
         this.whiteRemainingSeconds = 5 * 60;
+        this.whiteAuxiliaryBoard = null;
+        this.blackAuxiliaryBoard = null;
         this.clock = null;
         this.stackState = null;
 
@@ -76,6 +79,10 @@ export class GameController {
 
         // Init clock
         this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
+
+        // Init auxiliary boards
+        this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer2"], WHITE);
+        this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer1"], BLACK);
 
         // Init buttons console
         const blackConsoleID = 'blackPlayerButtons';

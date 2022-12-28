@@ -62,6 +62,13 @@ export class InGameState extends GameState {
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
             (this.gameController.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
 
+        // Update captured pieces marker
+        if (currentPlayer === BLACK) {
+            this.gameController.blackAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+        } else {
+            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+        }
+
         // force game camera
         this.gameController.setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
