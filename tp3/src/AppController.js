@@ -39,6 +39,8 @@ export class AppController {
         this.gameController = new GameController(this.scene);
 
         // Hook start button to game initialization
+        document.getElementById('modal').style.display = 'none';
+
         document.getElementById('startButton').onclick = () => {
             this.gameController.start(); // TODO: Inject hints here
             document.getElementById('modal').style.display = 'none';

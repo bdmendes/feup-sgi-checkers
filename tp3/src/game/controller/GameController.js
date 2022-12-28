@@ -1,3 +1,4 @@
+import { CGFcamera } from '../../../../lib/CGF.js';
 import { getInitialPositions, getInitialStack } from '../view/Board.js';
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
@@ -71,6 +72,12 @@ export class GameController {
 
         this.stackState = getInitialStack();
 
+        this._initGameCamera();
+        console.log(this.scene.graph.cameras["gameCamera"].position);
+        console.log(this.cameraBlackPosition);
+        console.log(this.cameraWhitePosition);
+        console.log(this.cameraTarget);
+
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
 
         for (let [key, value] of initBlackPositions) {
@@ -99,7 +106,7 @@ export class GameController {
             // Init start button
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
-                consoleComponent, player, () => { this.start() });
+                consoleComponent, player, () => { document.getElementById('modal').style.display = 'flex'; });
 
             // Init undo button
             const undoButtonID = 'undoButton';
@@ -152,16 +159,19 @@ export class GameController {
     }
 
     _initGameCamera() {
-        this.cameraBlackPosition = this.scene.graph.cameras["gameCamera"].position;
+        this.cameraBlackPosition = vec3.fromValues(3, 6.5, -4.5);
         this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
         this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
     }
 
     setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
+        let camera = new CGFcamera(this.scene.camera.fov, this.scene.camera.near, this.scene.camera.far,
+            currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition, this.cameraTarget);
+
         this.scene.graph.selectedCameraID = gameCameraID;
-        this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
+        this.scene.graph.cameras[gameCameraID] = camera;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
-        this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
+        this.scene.interface.setActiveCamera(this.scene.camera);
     }
 
     undo() {
@@ -187,12 +197,11 @@ export class GameController {
         this.hintBlack = hintBlack;
 
         this.state = new InGameState(this);
-
-        // Init game camera
-        this._initGameCamera();
     }
 
     switchCamera() {
+        this.setGameCamera(this.game.currentPlayer);
+
         // TODO: If camera does not return to current player, do not switch when he moves
         this.animationController.injectCameraAnimation();
     }
