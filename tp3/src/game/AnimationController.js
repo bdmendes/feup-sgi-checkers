@@ -9,7 +9,7 @@ export class AnimationController {
 
     injectMoveAnimation(component, initialPos, finalPos, toKing, capturedPieces) {
         if (component.animationID == null) {
-            let animation = new MyPieceAnimation(this, component.id, initialPos);
+            const animation = new MyPieceAnimation(this, component.id, initialPos);
             this.scene.graph.animations[component.id] = animation;
             component.animationID = component.id;
         }
@@ -51,7 +51,7 @@ export class AnimationController {
     }
 
     injectCameraAnimation(isCapture) {
-        let camara_animation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture);
+        const camara_animation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture);
         this.scene.graph.animations[this.scene.graph.selectedCameraID] = camara_animation;
     }
 }

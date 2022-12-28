@@ -18,7 +18,7 @@ export class GraphComponent {
      * @param {*} id - the component id
      * @memberof GraphComponent
      */
-    constructor(scene, id, pickable = false) {
+    constructor(scene, id, pickable = false, visible = true) {
         this.id = id;
         this.scene = scene;
         this.children = {};
@@ -31,7 +31,9 @@ export class GraphComponent {
         this.animationID = null;
         this.highlight = null;
         this.enableHighlight = true;
+        this.text = null;
         this.pickable = pickable;
+        this.visible = visible;
     }
 
     /**
@@ -43,6 +45,10 @@ export class GraphComponent {
      * @memberof GraphComponent
      */
     display(parentMaterial, parentTexture = null, parent_length_s = 1, parent_length_t = 1, pickableParent = false) {
+        if (!this.visible) {
+            return;
+        }
+
         if (this.pickable) {
             this.scene.registerForPick(this.scene.currentPickId++, this);
         } else if (!pickableParent) {
@@ -57,6 +63,8 @@ export class GraphComponent {
 
         this.renderTransformations();
         this.renderAnimation();
+
+        this.renderText(material);
 
         this.renderChildren(material, texture, parent_length_s, parent_length_t, this.pickable || pickableParent);
 
@@ -201,6 +209,12 @@ export class GraphComponent {
             if (this.animationID == null || this.scene.graph.animations[this.animationID].isVisible) {
                 this.children[key].display(material, texture, length_s, length_t, pickableParent);
             }
+        }
+    }
+
+    renderText(material) {
+        if (this.text != null) {
+            this.text.draw(material);
         }
     }
 
