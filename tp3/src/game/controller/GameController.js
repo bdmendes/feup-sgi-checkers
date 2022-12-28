@@ -1,4 +1,4 @@
-import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from '../view/Board.js';
+import { getInitialPositions, getInitialStack } from '../view/Board.js';
 import { AnimationController } from './AnimationController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
@@ -14,12 +14,14 @@ export class GameController {
         this.scene = scene;
         this.scene.addPickListener(this);
         this.scene.addTimeListener(this);
+        this.scene.addGraphLoadedListener(this);
+        this.graphLoaded = false;
 
         // state
         this.state = new StartState(this);
 
         // game
-        this.game = new Game();
+        this.game = new Game(); // TODO: Start here the game? How to reset?
         this.pieces = new Map();
         this.blackButtons = {};
         this.whiteButtons = {};
@@ -34,9 +36,6 @@ export class GameController {
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
-
-        // TODO: Review async clock and buttons loading
-        this._hookPickableObjects();
     }
 
     notifyPick(component) {
@@ -51,69 +50,17 @@ export class GameController {
     }
 
     notifyTime() {
+        this.state.updateButtonsVisibility();
         this.state.onTimeElapsed();
     }
 
-    clean(error = null) {
-        if (error != null) {
-            console.log(error);
+    notifyGraphLoaded() {
+        if (this.graphLoaded) {
+            // TODO: What happens when the graph is changed to another scenario?
+            console.log("Graph already loaded. Ignoring this call. TODO!");
+            return;
         }
-        this.selectedPiece = null;
-    }
-
-    cleanTextures() {
-        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
-    }
-
-    getCapturedPieces(from, to) {
-        let capturedPieces = [];
-        let xdelta = (to[0] > from[0]) ? 1 : -1;
-        let ydelta = (to[1] > from[1]) ? 1 : -1;
-        let current = from.slice();
-        while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
-            current[0] += xdelta;
-            current[1] += ydelta;
-            this.pieces.forEach((piece, key) => {
-                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
-                    capturedPieces.push(piece);
-                }
-            });
-        }
-        return capturedPieces;
-    }
-
-    _initGameCamera() {
-        // TODO: call when the game start (after implement start button) to get game camera position instead of hardcoded values
-        // this.cameraBlackPosition = this.scene.graph.cameras["gameCamera"].position;
-        // this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
-        // this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
-
-        this.cameraBlackPosition = vec3.fromValues(3, 6.5, -4.5);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
-        this.cameraTarget = vec3.fromValues(3, 3.3, -7);
-    }
-
-    setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
-        this.scene.graph.selectedCameraID = gameCameraID;
-        this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
-        this.scene.camera = this.scene.graph.cameras[gameCameraID];
-        this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
-    }
-
-    updateBoardControls() {
-        for (const buttonID in this.whiteButtons) {
-            this.whiteButtons[buttonID].updateVisibility(this.game);
-        }
-        for (const buttonID in this.blackButtons) {
-            this.blackButtons[buttonID].updateVisibility(this.game);
-        }
-    }
-
-    async _hookPickableObjects() {
-        // TODO: Find better way to call this rather than in constructor
-        await new Promise(r => setTimeout(r, 1000));
-
-        console.log("aa");
+        this.graphLoaded = true;
 
         this.stackState = getInitialStack();
 
@@ -165,6 +112,47 @@ export class GameController {
         }
     }
 
+    clean(error = null) {
+        if (error != null) {
+            console.log(error);
+        }
+        this.selectedPiece = null;
+    }
+
+    cleanTextures() {
+        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
+    }
+
+    getCapturedPieces(from, to) {
+        let capturedPieces = [];
+        let xdelta = (to[0] > from[0]) ? 1 : -1;
+        let ydelta = (to[1] > from[1]) ? 1 : -1;
+        let current = from.slice();
+        while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
+            current[0] += xdelta;
+            current[1] += ydelta;
+            this.pieces.forEach((piece, key) => {
+                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
+                    capturedPieces.push(piece);
+                }
+            });
+        }
+        return capturedPieces;
+    }
+
+    _initGameCamera() {
+        this.cameraBlackPosition = this.scene.graph.cameras["gameCamera"].position;
+        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+    }
+
+    setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
+        this.scene.graph.selectedCameraID = gameCameraID;
+        this.scene.graph.cameras[gameCameraID].position = currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition;
+        this.scene.camera = this.scene.graph.cameras[gameCameraID];
+        this.scene.interface.setActiveCamera(this.scene.graph.cameras[gameCameraID]);
+    }
+
     undo() {
         alert("TODO: Undo");
     }
@@ -178,6 +166,12 @@ export class GameController {
     }
 
     start() {
+        if (this.state instanceof InGameState) {
+            // TODO: Resign
+            alert("Game already started. TODO: Resign");
+            return;
+        }
+
         alert("Game started!! :)");
         this.state = new InGameState(this);
 

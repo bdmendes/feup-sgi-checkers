@@ -11,12 +11,10 @@ export class BoardButton {
         this.handler();
     }
 
-    updateVisibility(game) {
-        this.parentConsole.visible = game.currentPlayer === this.player;
-
-        // TODO: update visibility of the button based on game state
-        this.component.visible = true;
-
-        console.log("updateVisibility: " + this.component.id + " " + this.component.visible);
+    setText(text) {
+        const graphText = this.component.children[this.component.id + "Top"]?.text;
+        if (graphText) {
+            graphText.text = text;
+        }
     }
 }

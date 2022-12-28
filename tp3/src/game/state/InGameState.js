@@ -33,7 +33,7 @@ export class InGameState extends GameState {
 
     onPositionPicked(component) {
         if (this.gameController.selectedPiece == null) {
-            this.gameController.clean("Invalid position. Firstly, choose a valid " + (this.game.currentPlayer === BLACK ? "black piece" : "white piece"))
+            this.gameController.clean("Invalid position. Firstly, choose a valid " + (this.gameController.game.currentPlayer === BLACK ? "black piece" : "white piece"))
             return;
         }
 
@@ -72,7 +72,6 @@ export class InGameState extends GameState {
             }
             this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
             this.gameController.animationController.injectCameraAnimation(isCapture);
-            this.gameController.updateBoardControls();
 
             if (this.gameController.game.winner() != null) {
                 alert("Winner: " + this.gameController.game.winner());
@@ -101,5 +100,23 @@ export class InGameState extends GameState {
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
+    }
+
+    updateButtonsVisibility() {
+        if (this.gameController.game.currentPlayer === BLACK) {
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
+            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+        } else {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
+        }
+
+        const buttonsMap = this.gameController.game.currentPlayer === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
+        for (let button in buttonsMap) {
+            buttonsMap[button].component.visible = true;
+            if (button === "startButton") {
+                buttonsMap[button].setText("ABANDON");
+            }
+        }
     }
 }
