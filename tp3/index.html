@@ -3,8 +3,8 @@
 
 <head lang="en">
     <meta charset="UTF-8">
-    <title>SGI - Graphic Engine</title>
-    <link rel="icon" href="data:,">
+    <title>SGI - Checkers</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
 
     <style>
         body,
@@ -18,6 +18,10 @@
         canvas {
             width: 100%;
             height: 100%;
+        }
+
+        a {
+            color: inherit;
         }
 
         .wrapper {
@@ -109,9 +113,10 @@
         <div class="front modal" id="modal">
             <div>
                 <h2 style="margin-top: 0;">Start Game</h2>
-                <div style="margin-bottom: 1em;">Hello! You have reached a warm place to place some regular, american
-                    checkers.
-                    Please, make yourself at home and select your preferred settings below.</div>
+                <div style="margin-bottom: 1em;">Hello! You have reached a warm place to play some regular,
+                    <a href="https://en.wikipedia.org/wiki/English_draughts" target="_blank">american checkers</a>.
+                    Please, make yourself at home and select your preferred settings below.
+                </div>
 
                 <label for="cars">Where would you like to play?</label>
                 <select name="scenario" id="scenario">
