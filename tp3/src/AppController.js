@@ -2,7 +2,7 @@ import { CGFapplication } from '../../lib/CGF.js';
 import { MyInterface } from './engine/MyInterface.js';
 import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
-import { GameController } from './game/GameController.js';
+import { GameController } from './game/controller/GameController.js';
 
 export class AppController {
     constructor(filenames) {

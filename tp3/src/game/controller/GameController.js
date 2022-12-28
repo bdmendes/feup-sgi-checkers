@@ -1,10 +1,10 @@
-import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from './gameUtils.js';
+import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from '../view/Board.js';
 import { AnimationController } from './AnimationController.js';
-import { Game, BLACK, WHITE } from './Game.js';
+import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
-import { MyPiece } from './MyPiece.js';
-import { BoardButton } from './BoardButton.js';
-import { BoardClock } from './BoardClock.js';
+import { MyPiece } from '../view/MyPiece.js';
+import { BoardButton } from '../view/BoardButton.js';
+import { BoardClock } from '../view/BoardClock.js';
 
 
 export class GameController {

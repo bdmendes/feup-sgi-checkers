@@ -1,5 +1,5 @@
-import { MyPieceAnimation } from "../engine/assets/animations/MyPieceAnimation.js";
-import { MyCameraAnimation } from "../engine/assets/animations/MyCameraAnimation.js";
+import { MyPieceAnimation } from "../../engine/assets/animations/MyPieceAnimation.js";
+import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
 
 export class AnimationController {
     constructor(scene, stackState) {
@@ -18,9 +18,9 @@ export class AnimationController {
     }
 
     injectCaptureAnimation(capturedPiece) {
-        let component = this.scene.graph.components[capturedPiece.componentID];
+        const component = this.scene.graph.components[capturedPiece.componentID];
         if (component.animationID == null) {
-            let animation = new MyPieceAnimation(this, component.id, capturedPiece.position);
+            const animation = new MyPieceAnimation(this, component.id, capturedPiece.position);
             this.scene.graph.animations[component.id] = animation;
             component.animationID = component.id;
         }
@@ -51,7 +51,7 @@ export class AnimationController {
     }
 
     injectCameraAnimation(isCapture) {
-        const camara_animation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture);
-        this.scene.graph.animations[this.scene.graph.selectedCameraID] = camara_animation;
+        const cameraAnimation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture);
+        this.scene.graph.animations[this.scene.graph.selectedCameraID] = cameraAnimation;
     }
 }

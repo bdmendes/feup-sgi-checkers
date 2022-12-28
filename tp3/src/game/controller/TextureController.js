@@ -1,4 +1,4 @@
-import { columnToLetter, rowToNumber } from './gameUtils.js';
+import { columnToLetter, rowToNumber } from '../view/Board.js';
 
 const POSSIBLE_MOVE_TEXTURE = 'possibleMoveTexture';
 const SELECTED_PIECE_TEXTURE = 'selectedPieceTexture';

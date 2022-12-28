@@ -25,7 +25,7 @@ export class GraphText {
         this.zOffset = zOffset ?? 0.01;
         this.scaleX = scaleX ?? 1;
         this.scaleY = scaleY ?? 1;
-        this.gap = gap ?? 0.5;
+        this.gap = gap ?? 0.55;
         this.forceFront = forceFront ?? false;
         this.fontTexture = new CGFtexture(scene, fontTexturePath);
         this.fontMaterial = new CGFappearance(scene);
