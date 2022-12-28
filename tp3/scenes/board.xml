@@ -1522,7 +1522,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1535,7 +1535,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1548,7 +1548,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1561,7 +1561,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1574,7 +1574,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1587,7 +1587,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1600,7 +1600,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1613,7 +1613,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1626,7 +1626,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1639,7 +1639,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1652,7 +1652,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1665,7 +1665,7 @@
             </materials>
             <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="blackPiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1676,9 +1676,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1689,9 +1689,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1702,9 +1702,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1715,9 +1715,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1728,9 +1728,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1741,9 +1741,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1754,9 +1754,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1767,9 +1767,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1780,9 +1780,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1793,9 +1793,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1806,9 +1806,9 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whitePieceTexture" length_s="1" length_t="1" />
             <children>
-                <componentref id="whitePiece" />
+                <componentref id="piece" />
             </children>
         </component>
 
@@ -1819,36 +1819,21 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
-            <children>
-                <componentref id="whitePiece" />
-            </children>
-        </component>
-
-        <component id="blackPiece">
-            <transformation>
-                <translate x="0" y="1" z="0" />
-                <scale x="0.18" y="0.18" z="0.18" />
-            </transformation>
-            <materials>
-                <material id="neutral" />
-            </materials>
-            <texture id="inherit" length_s="1" length_t="1" />
-            <children>
-                <componentref id="pieceSurface" />
-                <componentref id="demoBases" />
-            </children>
-        </component>
-
-        <component id="whitePiece">
-            <transformation>
-                <translate x="0" y="1" z="0" />
-                <scale x="0.18" y="0.18" z="0.18" />
-            </transformation>
-            <materials>
-                <material id="neutral" />
-            </materials>
             <texture id="whitePieceTexture" length_s="1" length_t="1" />
+            <children>
+                <componentref id="piece" />
+            </children>
+        </component>
+
+        <component id="piece">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+                <scale x="0.18" y="0.18" z="0.18" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="inherit" />
             <children>
                 <componentref id="pieceSurface" />
                 <componentref id="demoBases" />
