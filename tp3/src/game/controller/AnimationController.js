@@ -2,9 +2,9 @@ import { MyPieceAnimation } from "../../engine/assets/animations/MyPieceAnimatio
 import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
 
 export class AnimationController {
-    constructor(scene, stackState) {
+    constructor(scene, gameController) {
         this.scene = scene;
-        this.stackState = stackState;
+        this.gameController = gameController;
     }
 
     injectMoveAnimation(component, initialPos, finalPos, toKing, capturedPieces) {
@@ -30,18 +30,18 @@ export class AnimationController {
         let pos = [0, 0, 0];
         if (component.id.includes('black')) {
             pos = [
-                this.stackState.whiteStackPos[0] + ((this.stackState.whiteStack % 2 == 0) ? -0.75 : 0.75),
-                this.stackState.whiteStackPos[1],
-                Math.floor(this.stackState.whiteStack / 2)
+                this.gameController.stackState.whiteStackPos[0] + ((this.gameController.stackState.whiteStack % 2 == 0) ? -0.75 : 0.75),
+                this.gameController.stackState.whiteStackPos[1],
+                Math.floor(this.gameController.stackState.whiteStack / 2)
             ];
-            this.stackState.whiteStack++;
+            this.gameController.stackState.whiteStack++;
         } else {
             pos = [
-                this.stackState.blackStackPos[0] + ((this.stackState.blackStack % 2 == 0) ? 0.75 : -0.75),
-                this.stackState.blackStackPos[1],
-                Math.floor(this.stackState.blackStack / 2)
+                this.gameController.stackState.blackStackPos[0] + ((this.gameController.stackState.blackStack % 2 == 0) ? 0.75 : -0.75),
+                this.gameController.stackState.blackStackPos[1],
+                Math.floor(this.gameController.stackState.blackStack / 2)
             ];
-            this.stackState.blackStack++;
+            this.gameController.stackState.blackStack++;
         }
 
         if (component.tempTextureID != null) {
