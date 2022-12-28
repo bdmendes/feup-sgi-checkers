@@ -2,8 +2,8 @@ import { CGFapplication } from '../../lib/CGF.js';
 import { MyInterface } from './engine/MyInterface.js';
 import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
-import { GameController } from './game/GameController.js';
-import { UIController } from './game/UIController.js';
+import { GameController } from './game/controller/GameController.js';
+import { UIController } from './game/controller/UIController.js';
 
 export class AppController {
     constructor(filenames) {
@@ -40,7 +40,7 @@ export class AppController {
 
         // Hook start button to game initialization
         document.getElementById('startButton').onclick = () => {
-            this.gameController.startGame();
+            this.gameController.start(); // TODO: Inject hints here
             document.getElementById('modal').style.display = 'none';
             (new UIController()).flashToast("Game started!", 3000);
         };

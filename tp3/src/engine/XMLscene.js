@@ -47,6 +47,9 @@ export class XMLscene extends CGFscene {
         // Enable picking
         this.pickListeners = [];
         this.setPickEnabled(true);
+
+        // Enable load notifications
+        this.graphLoadedListeners = [];
     }
 
     /**
@@ -209,6 +212,7 @@ export class XMLscene extends CGFscene {
         }
 
         this.sceneInited = true;
+        this.notifyGraphLoadedListeners();
     }
 
     /**
@@ -292,6 +296,12 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    notifyGraphLoadedListeners() {
+        for (const graphLoadedListener of this.graphLoadedListeners) {
+            graphLoadedListener.notifyGraphLoaded(this.graph.filename);
+        }
+    }
+
     notifyPickListeners() {
         if (this.pickMode) {
             // results can only be retrieved when picking mode is false
@@ -323,6 +333,12 @@ export class XMLscene extends CGFscene {
     addTimeListener(listener) {
         if (this.timeListeners.indexOf(listener) === -1) {
             this.timeListeners.push(listener);
+        }
+    }
+
+    addGraphLoadedListener(listener) {
+        if (this.graphLoadedListeners.indexOf(listener) === -1) {
+            this.graphLoadedListeners.push(listener);
         }
     }
 }

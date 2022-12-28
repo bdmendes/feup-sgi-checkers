@@ -2273,9 +2273,8 @@
                 <componentref id="supportBlockFace1" />
                 <componentref id="supportBlockFace2" />
                 <componentref id="supportBlockFace3" />
-                <componentref id="supportBlockFace4" />
+                <componentref id="supportBlockFace4Black" />
                 <componentref id="supportBlockFace5" />
-                <componentref id="supportBlockFace6" />
                 <componentref id="supportBlockFace6" />
             </children>
         </component>
@@ -2293,9 +2292,8 @@
                 <componentref id="supportBlockFace1" />
                 <componentref id="supportBlockFace2" />
                 <componentref id="supportBlockFace3" />
-                <componentref id="supportBlockFace4" />
+                <componentref id="supportBlockFace4White" />
                 <componentref id="supportBlockFace5" />
-                <componentref id="supportBlockFace6" />
                 <componentref id="supportBlockFace6" />
             </children>
         </component>
@@ -2341,7 +2339,7 @@
             </children>
         </component>
 
-        <component id="supportBlockFace4">
+        <component id="supportBlockFace4Black">
             <transformation>
                 <translate x="-1" y="0" z="0" />
                 <rotate axis="y" angle="-90" />
@@ -2353,6 +2351,22 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
+            <text string="0" scale_x="0.8" scale_y="1.8"/>
+        </component>
+
+        <component id="supportBlockFace4White">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+            <text string="0" scale_x="0.8" scale_y="1.8"/>
         </component>
 
         <component id="supportBlockFace5">
