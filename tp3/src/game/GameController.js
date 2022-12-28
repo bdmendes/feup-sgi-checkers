@@ -4,16 +4,24 @@ import { Game, BLACK, WHITE } from './Game.js';
 import { TextureController } from './TextureController.js';
 import { UIController } from './UIController.js';
 import { MyPiece } from './MyPiece.js';
+import { BoardButton } from './BoardButton.js';
+import { BoardClock } from './BoardClock.js';
 
 
 export class GameController {
     constructor(scene) {
         this.scene = scene;
         this.scene.addPickListener(this);
+        this.scene.addTimeListener(this);
 
         // game
         this.game = null;
         this.pieces = new Map();
+        this.blackButtons = {};
+        this.whiteButtons = {};
+        this.blackRemainingSeconds = 5 * 60;
+        this.whiteRemainingSeconds = 5 * 60;
+        this.clock = null;
         this.stackState = null;
         this.hintWhite = false;
         this.hintBlack = false;
@@ -38,7 +46,29 @@ export class GameController {
             this.pickPiece(component);
         } else if (component.id.includes('position')) {
             this.pickPosition(component);
+        } else if (component.id.includes('Button')) {
+            this.pickButton(component);
         }
+    }
+
+    notifyTime() {
+        // TODO: Review async clock and buttons loading
+        if (this.clock == null) {
+            return;
+        }
+
+        if (this.game.currentPlayer === BLACK) {
+            this.blackRemainingSeconds -= 1;
+        } else {
+            this.whiteRemainingSeconds -= 1;
+        }
+        this.clock.update(this.blackRemainingSeconds, this.whiteRemainingSeconds);
+    }
+
+    pickButton(component) {
+        const buttonsMap = this.game.currentPlayer === BLACK ? this.blackButtons : this.whiteButtons;
+        const button = buttonsMap[component.id];
+        button.pick();
     }
 
     pickPiece(component) {
@@ -101,6 +131,7 @@ export class GameController {
         this._setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
             this.animationController.injectCameraAnimation(isCapture);
+            this._updateBoardControls();
         }
 
         capturedPieces = null;
@@ -118,8 +149,9 @@ export class GameController {
         this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
-    initGame() {
+    async initGame() {
         this.game = new Game();
+        this.stackState = getInitialStack();
 
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
 
@@ -131,7 +163,45 @@ export class GameController {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
-        this.stackState = getInitialStack();
+        // TODO: Find better way to make sure graph is loaded
+        await new Promise(r => setTimeout(r, 1000));
+
+        // Init clock
+        this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
+
+        // Init buttons console
+        const blackConsoleID = 'blackPlayerButtons';
+        const whiteConsoleID = 'whitePlayerButtons';
+        for (const player of [BLACK, WHITE]) {
+            const consoleID = player === BLACK ? blackConsoleID : whiteConsoleID;
+            let consoleComponent = this.scene.graph.components[consoleID];
+            const consoleButtons = player === BLACK ? this.blackButtons : this.whiteButtons;
+
+            // Init start button
+            const startButtonID = 'startButton';
+            consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
+                consoleComponent, player, () => { this.start() });
+
+            // Init undo button
+            const undoButtonID = 'undoButton';
+            consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
+                consoleComponent, player, () => { this.undo() });
+
+            // Init movie button
+            const movieButtonID = 'movieButton';
+            consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
+                consoleComponent, player, () => { this.movie() });
+
+            // Init switch scene button
+            const switchSceneButtonID = 'switchSceneButton';
+            consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
+                consoleComponent, player, () => { this.switchScene() });
+
+            // Init switch scene button
+            const switchCameraButtonID = 'switchCameraButton';
+            consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
+                consoleComponent, player, () => { this.switchCamera() });
+        }
     }
 
     _getCapturedPieces(from, to) {
@@ -172,5 +242,35 @@ export class GameController {
     startGame(hintWhite, hintBlack) {
         this.hintWhite = hintWhite;
         this.hintBlack = hintBlack;
+    }
+
+    _updateBoardControls() {
+        for (const buttonID in this.whiteButtons) {
+            this.whiteButtons[buttonID].updateVisibility(this.game);
+        }
+        for (const buttonID in this.blackButtons) {
+            this.blackButtons[buttonID].updateVisibility(this.game);
+        }
+    }
+
+    undo() {
+        alert("TODO: Undo");
+    }
+
+    movie() {
+        alert("TODO: Movie");
+    }
+
+    switchScene() {
+        alert("TODO: Switch Scene");
+    }
+
+    start() {
+        alert("TODO: Start");
+    }
+
+    switchCamera() {
+        // TODO: If camera does not return to current player, do not switch when he moves
+        this.animationController.injectCameraAnimation();
     }
 }
