@@ -8,6 +8,7 @@ import { BoardClock } from '../view/BoardClock.js';
 import { InGameState } from '../state/InGameState.js';
 import { StartState } from '../state/StartState.js';
 import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
+import { UIController } from './UIController.js';
 
 
 export class GameController {
@@ -32,6 +33,8 @@ export class GameController {
         this.blackAuxiliaryBoard = null;
         this.clock = null;
         this.stackState = null;
+        this.hintWhite = false;
+        this.hintBlack = false;
 
         // selected piece
         this.selectedPiece = null;
@@ -39,6 +42,7 @@ export class GameController {
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
+        this.uiController = new UIController();
     }
 
     notifyPick(component) {
@@ -172,14 +176,16 @@ export class GameController {
         alert("TODO: Switch Scene");
     }
 
-    start() {
+    start(hintWhite, hintBlack) {
         if (this.state instanceof InGameState) {
             // TODO: Resign
             alert("Game already started. TODO: Resign");
             return;
         }
 
-        alert("Game started!! :)");
+        this.hintWhite = hintWhite;
+        this.hintBlack = hintBlack;
+
         this.state = new InGameState(this);
 
         // Init game camera
