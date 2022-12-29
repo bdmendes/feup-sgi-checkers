@@ -68,6 +68,12 @@ export class GraphText {
     }
 
     _drawText() {
+        // Do not set external uniform if 2 shaders are used (e.g. when picking)
+        const pickingShaderDisabled = this.scene.activeShader != this.scene.pickShader;
+        if (!pickingShaderDisabled) {
+            return;
+        }
+
         this.scene.scale(this.scaleX, this.scaleY, 1);
         this.scene.translate(-this.text.length / 4 + 0.4, 0, 0); // Center the text
         this.scene.translate(this.xOffset, this.yOffset, this.zOffset);

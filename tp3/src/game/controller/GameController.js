@@ -10,6 +10,7 @@ import { InGameState } from '../state/InGameState.js';
 import { StartState } from '../state/StartState.js';
 import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
+import { InMovieState } from '../state/InMovieState.js';
 
 
 export class GameController {
@@ -24,12 +25,12 @@ export class GameController {
         this.state = new StartState(this);
 
         // game
-        this.game = new Game(); // TODO: Start here the game? How to reset?
+        this.game = null;
         this.pieces = new Map();
         this.blackButtons = {};
         this.whiteButtons = {};
-        this.blackRemainingSeconds = 5 * 60;
-        this.whiteRemainingSeconds = 5 * 60;
+        this.blackRemainingSeconds = null;
+        this.whiteRemainingSeconds = null;
         this.whiteAuxiliaryBoard = null;
         this.blackAuxiliaryBoard = null;
         this.clock = null;
@@ -45,6 +46,15 @@ export class GameController {
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
         this.uiController = new UIController();
+
+        // saved state for resetting
+        this.savedAnimations = {};
+        this.savedPieces = new Map();
+        this.savedWhiteSeconds = 0;
+        this.savedBlackSeconds = 0;
+        this.savedWhiteCapturedPieces = 0;
+        this.savedBlackCapturedPieces = 0;
+        this.savedStackState = null;
     }
 
     notifyPick(component) {
@@ -58,28 +68,25 @@ export class GameController {
     }
 
     notifyTime() {
-        this.state.updateButtonsVisibility();
         this.state.onTimeElapsed();
     }
 
     notifyGraphLoaded() {
         if (this.graphLoaded) {
-            // TODO: What happens when the graph is changed to another scenario?
-            console.log("Graph already loaded. Ignoring this call. TODO!");
             return;
         }
         this.graphLoaded = true;
 
-        this.stackState = getInitialStack();
+        // Init camera
+        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
+        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+        this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
 
-        this._initGameCamera();
-
+        // Init pieces
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
-
         for (let [key, value] of initBlackPositions) {
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
         }
-
         for (let [key, value] of initWhitePositions) {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
@@ -88,6 +95,7 @@ export class GameController {
         this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
 
         // Init auxiliary boards
+        this.stackState = getInitialStack();
         this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer2"], WHITE);
         this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer1"], BLACK);
 
@@ -103,7 +111,6 @@ export class GameController {
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
-                    // give 250ms to click on the button
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
                     }, 300);
@@ -117,12 +124,21 @@ export class GameController {
             // Init movie button
             const movieButtonID = 'movieButton';
             consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
-                consoleComponent, player, () => { this.movie() });
+                consoleComponent, player, () => {
+                    if (this.state instanceof InMovieState) {
+                        this.state.destruct();
+                        this.state = new InGameState(this);
+                        return;
+                    }
+
+                    this.state = new InMovieState(this);
+                    this.state.init();
+                });
 
             // Init switch scene button
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => { this.switchScene() });
+                consoleComponent, player, () => { alert("TODO: Switch Scene"); });
 
             // Init switch scene button
             const switchCameraButtonID = 'switchCameraButton';
@@ -133,7 +149,7 @@ export class GameController {
 
     clean(error = null) {
         if (error != null) {
-            console.log(error);
+            this.uiController.flashToast(error);
         }
         this.selectedPiece = null;
     }
@@ -142,6 +158,7 @@ export class GameController {
         this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
+    // TODO: Move this outahere!
     getCapturedPieces(from, to) {
         let capturedPieces = [];
         let xdelta = (to[0] > from[0]) ? 1 : -1;
@@ -159,11 +176,86 @@ export class GameController {
         return capturedPieces;
     }
 
-    _initGameCamera() {
-        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
-        this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+    undo() {
+        alert("TODO: Undo");
     }
+
+    start(hintBlack, hintWhite) {
+        if (this.state instanceof InGameState) {
+            if (!confirm("Do you want to restart the game? All progress will be lost.")) {
+                return;
+            }
+        }
+
+        this.game = new Game();
+        this.reset();
+
+        this.hintBlack = hintBlack;
+        this.hintWhite = hintWhite;
+
+        this.state.destruct();
+        this.state = new InGameState(this);
+        this.state.init();
+
+        this.setGameCamera(this.game.currentPlayer);
+
+        this.uiController.flashToast("Game started! Good luck!");
+    }
+
+    reset() {
+        // Put pieces in their initial positions
+        const [initBlackPositions, initWhitePositions] = getInitialPositions();
+        for (const [id, piece] of this.pieces) {
+            const component = this.scene.graph.components[id];
+            if (component.animationID != null) {
+                this.savedAnimations[id] = this.scene.graph.animations[component.animationID];
+                component.animationID = null;
+            }
+            this.savedPieces.set(id, { ...piece });
+            piece.position = (piece.color == BLACK ? initBlackPositions : initWhitePositions).get(piece.id);
+            piece.isCaptured = false;
+        }
+
+        // Save time and reset it
+        this.savedWhiteSeconds = this.whiteRemainingSeconds;
+        this.savedBlackSeconds = this.blackRemainingSeconds;
+        this.whiteRemainingSeconds = 5 * 60;
+        this.blackRemainingSeconds = 5 * 60;
+        this.clock.update(0, 0);
+
+        // Reset captured pieces
+        this.savedStackState = { ...this.stackState };
+        this.savedWhiteCapturedPieces = this.whiteAuxiliaryBoard.getCapturedPieces();
+        this.savedBlackCapturedPieces = this.blackAuxiliaryBoard.getCapturedPieces();
+        this.stackState = getInitialStack();
+        this.whiteAuxiliaryBoard.setCapturedPieces(0);
+        this.blackAuxiliaryBoard.setCapturedPieces(0);
+    }
+
+    undoReset() {
+        // Restore piece positions
+        for (const [id, _] of this.pieces) {
+            const component = this.scene.graph.components[id];
+            if (this.savedAnimations[id] != null) {
+                component.animationID = this.savedAnimations[id].id;
+                this.scene.graph.animations[component.animationID] = this.savedAnimations[component.animationID];
+            }
+            this.pieces.set(id, { ...this.savedPieces.get(id) });
+        }
+
+        // Restore time
+        this.whiteRemainingSeconds = this.savedWhiteSeconds;
+        this.blackRemainingSeconds = this.savedBlackSeconds;
+        this.clock.update(this.whiteRemainingSeconds, this.blackRemainingSeconds);
+
+        // Restore captured pieces
+        this.whiteAuxiliaryBoard.setCapturedPieces(this.savedWhiteCapturedPieces);
+        this.blackAuxiliaryBoard.setCapturedPieces(this.savedBlackCapturedPieces);
+        this.stackState = { ...this.savedStackState };
+    }
+
+    //////////////////////////////////////////////////////////////
+    // CAMERA CONTROLLER??
 
     setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
         let camera = new CGFcamera(this.scene.camera.fov, this.scene.camera.near, this.scene.camera.far,
@@ -173,32 +265,6 @@ export class GameController {
         this.scene.graph.cameras[gameCameraID] = camera;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.camera);
-    }
-
-    undo() {
-        alert("TODO: Undo");
-    }
-
-    movie() {
-        alert("TODO: Movie");
-    }
-
-    switchScene() {
-        alert("TODO: Switch Scene");
-    }
-
-    start(hintBlack, hintWhite) {
-        if (this.state instanceof InGameState) {
-            // TODO: Resign
-            alert("Game already started. TODO: Resign");
-            return;
-        }
-
-        this.hintBlack = hintBlack;
-        this.hintWhite = hintWhite;
-
-        this.state = new InGameState(this);
-        this.setGameCamera(this.game.currentPlayer);
     }
 
     switchCamera() {

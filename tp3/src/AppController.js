@@ -45,7 +45,6 @@ export class AppController {
             let value = document.getElementById('hints').value;
             this.gameController.start(value == 'both' || value == 'black', value == 'both' || value == 'white');
             document.getElementById('modal').style.visibility = 'hidden';
-            (new UIController()).flashToast("Game started!", 3000);
         };
     }
 

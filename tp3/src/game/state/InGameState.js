@@ -18,6 +18,7 @@ export class InGameState extends GameState {
         this.gameController.selectedPiece = this.gameController.pieces.get(component.id);
 
         if (this.gameController.game.currentPlayer != this.gameController.selectedPiece.color) {
+            alert(this.gameController.game.currentPlayer + " " + this.gameController.selectedPiece.color)
             this.gameController.clean("Invalid piece to play. Turn: " + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
@@ -51,8 +52,7 @@ export class InGameState extends GameState {
 
         let currentPlayer = this.gameController.game.currentPlayer;
 
-        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition)
-        this.gameController.game.printBoard();
+        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition);
         this.gameController.selectedPiece.position = pickedPosition;
 
         let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
@@ -85,7 +85,7 @@ export class InGameState extends GameState {
                 alert("Winner: " + this.gameController.game.winner());
                 this.gameController.state = new GameOverState(this.gameController);
 
-                // TODO: Flash winner and reset board component. XML Component cloned somehow?
+                // TODO: Flash winner and reset game
             }
         }
 
@@ -108,9 +108,10 @@ export class InGameState extends GameState {
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
+        this._updateButtonsVisibility();
     }
 
-    updateButtonsVisibility() {
+    _updateButtonsVisibility() {
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
             this.gameController.blackButtons["startButton"].parentConsole.visible = true;
