@@ -14,12 +14,13 @@ import { InMovieState } from '../state/InMovieState.js';
 
 
 export class GameController {
-    constructor(scene) {
+    constructor(scene, sceneSwitcher) {
         this.scene = scene;
         this.scene.addPickListener(this);
         this.scene.addTimeListener(this);
         this.scene.addGraphLoadedListener(this);
         this.graphLoaded = false;
+        this.sceneSwitcher = sceneSwitcher;
 
         // state
         this.state = new StartState(this);
@@ -75,8 +76,8 @@ export class GameController {
         this.state.onTimeElapsed();
     }
 
-    notifyGraphLoaded() {
-        if (this.graphLoaded) {
+    notifyGraphLoaded(force = false) {
+        if (this.graphLoaded && !force) {
             return;
         }
         this.graphLoaded = true;
@@ -85,15 +86,6 @@ export class GameController {
         this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
         this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
         this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
-
-        // Init pieces
-        let [initBlackPositions, initWhitePositions] = getInitialPositions();
-        for (let [key, value] of initBlackPositions) {
-            this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
-        }
-        for (let [key, value] of initWhitePositions) {
-            this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
-        }
 
         // Init clock
         this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
@@ -142,7 +134,7 @@ export class GameController {
             // Init switch scene button
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => { alert("TODO: Switch Scene"); });
+                consoleComponent, player, () => { this.sceneSwitcher(); });
 
             // Init switch scene button
             const switchCameraButtonID = 'switchCameraButton';
@@ -199,7 +191,17 @@ export class GameController {
         }
 
         this.game = new Game();
+
         this.reset();
+
+        // Init pieces
+        let [initBlackPositions, initWhitePositions] = getInitialPositions();
+        for (let [key, value] of initBlackPositions) {
+            this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
+        }
+        for (let [key, value] of initWhitePositions) {
+            this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        }
 
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;

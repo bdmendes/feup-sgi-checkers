@@ -238,7 +238,7 @@
             </children>
         </component>
 
-        <component id="switchSceneButton" visible="0" pickable="1">
+        <component id="switchSceneButton" visible="1" pickable="1">
             <transformation>
                 <translate x="-0.1" y="1" z="0.9" />
                 <scale x="0.12" y="0.2" z="0.03" />

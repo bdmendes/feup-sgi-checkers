@@ -4,7 +4,7 @@ import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
 import { distanceBetweenPoints } from "../../utils/math.js"
 
-export const MY_PIECE_ANIMATION_TIME = 1;
+export const MY_PIECE_ANIMATION_TIME = 0.8;
 const PIECE_HEIGHT = 0.25;
 const BLACK_KING_TEXTURE = 'blackPieceKingTexture';
 const WHITE_KING_TEXTURE = 'whitePieceKingTexture';

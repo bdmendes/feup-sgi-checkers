@@ -36,7 +36,7 @@ export class AppController {
             .onChange(() => this.updateCurrentGraph(true));
 
         // Initialize game
-        this.gameController = new GameController(this.scene);
+        this.gameController = new GameController(this.scene, () => this.nextScene());
 
         // Hook start button to game initialization
         document.getElementById('modal').style.visibility = 'hidden';
@@ -56,15 +56,32 @@ export class AppController {
     updateCurrentGraph(forceUIUpdate = true, copyBoard = true) {
         this.scene.graph = this.graphs[this.selectedGraph];
         this.datInterface.sceneGraph = this.graphs[this.selectedGraph];
+
         if (forceUIUpdate) {
             this.scene.onGraphLoaded();
+            this.gameController.notifyGraphLoaded();
         }
+
         if (copyBoard) {
             const board = this.graphs[this.lastSelectedGraph].components['board'];
-            if (board) {
-                this.graphs[this.selectedGraph].components['board'] = board.board;
-                this.lastSelectedGraph = this.selectedGraph;
+            if (board != null) {
+                this.graphs[this.selectedGraph].components['board'] = board;
+                for (const [id, _] of this.gameController.pieces) {
+                    const animation = this.graphs[this.lastSelectedGraph].animations[id];
+                    if (animation != null) {
+                        this.graphs[this.selectedGraph].animations[id] = animation;
+                    }
+                }
             }
         }
+
+        this.lastSelectedGraph = this.selectedGraph;
+    }
+
+    nextScene() {
+        const filenames = Object.keys(this.graphs);
+        const index = filenames.indexOf(this.selectedGraph);
+        this.selectedGraph = filenames[(index + 1) % filenames.length];
+        this.updateCurrentGraph(true);
     }
 }
