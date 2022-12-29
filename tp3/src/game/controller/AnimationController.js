@@ -25,29 +25,44 @@ export class AnimationController {
             component.animationID = component.id;
         }
 
-        capturedPiece.isCaptured = true;
-
         let pos = [0, 0, 0];
         if (component.id.includes('black')) {
+            if (capturedPiece.isCaptured) {
+                this.gameController.stackState.whiteStack--;
+            }
             pos = [
                 this.gameController.stackState.whiteStackPos[0] + ((this.gameController.stackState.whiteStack % 2 == 0) ? -0.75 : 0.75),
                 this.gameController.stackState.whiteStackPos[1],
                 Math.floor(this.gameController.stackState.whiteStack / 2)
             ];
-            this.gameController.stackState.whiteStack++;
+            if (!capturedPiece.isCaptured) {
+                this.gameController.stackState.whiteStack++;
+            }
         } else {
+            if (capturedPiece.isCaptured) {
+                this.gameController.stackState.blackStack--;
+            }
             pos = [
                 this.gameController.stackState.blackStackPos[0] + ((this.gameController.stackState.blackStack % 2 == 0) ? 0.75 : -0.75),
                 this.gameController.stackState.blackStackPos[1],
                 Math.floor(this.gameController.stackState.blackStack / 2)
             ];
-            this.gameController.stackState.blackStack++;
+            if (!capturedPiece.isCaptured) {
+                this.gameController.stackState.blackStack++;
+            }
         }
 
         if (component.tempTextureID != null) {
             component.tempTextureID = null;
         }
-        this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true, false);
+
+        if (!capturedPiece.isCaptured) {
+            this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true, false);
+            capturedPiece.isCaptured = true;
+        } else {
+            this.scene.graph.animations[component.id].addMidKeyframe(pos, capturedPiece.position, true, false);
+            capturedPiece.isCaptured = false;
+        }
     }
 
     injectCameraAnimation(isCapture, isMove = true) {

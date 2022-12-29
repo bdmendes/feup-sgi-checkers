@@ -41,6 +41,9 @@ export class GameController {
         // selected piece
         this.selectedPiece = null;
 
+        // captured pieces
+        this.capturedPieces = {};
+
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
@@ -151,7 +154,7 @@ export class GameController {
             current[0] += xdelta;
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
-                if (!p.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
+                if (!piece.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(piece);
                 }
             });

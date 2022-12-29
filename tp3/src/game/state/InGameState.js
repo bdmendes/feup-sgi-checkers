@@ -59,6 +59,8 @@ export class InGameState extends GameState {
 
         let capturedPieces = this.gameController.getCapturedPieces(from, to);
 
+        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces;
+
         let pickedComponent = this.gameController.scene.graph.components[this.gameController.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
             (this.gameController.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
@@ -133,18 +135,25 @@ export class InGameState extends GameState {
             return;
         }
 
-        let [from, to, isCapture, _] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
+        let [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
 
+        let currentPlayer = this.gameController.game.currentPlayer;
         let piece = this.gameController.getPieceInPosition(to);
 
-        if (isCapture) {
-            console.log("TODO: Undo capture");
+        let capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
+        if (currentPlayer === BLACK) {
+            this.gameController.whiteAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
+        } else {
+            this.gameController.blackAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
         }
 
         let component = this.gameController.scene.graph.components[piece.componentID];
         this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
 
-        let currentPlayer = this.gameController.game.currentPlayer;
+        for (let i = 0; i < capturedPieces.length; i++) {
+            this.gameController.animationController.injectCaptureAnimation(capturedPieces[i]);
+        }
+
         this.gameController.game.undo();
         this.gameController.game.printBoard();
         piece.position = from;
