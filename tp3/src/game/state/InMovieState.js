@@ -18,6 +18,8 @@ export class InMovieState extends GameState {
                 if (button === "movieButton") {
                     buttonsMap[button].component.visible = true;
                     buttonsMap[button].setText("PLAY");
+                } else if (button === "switchCameraButton") {
+                    buttonsMap[button].component.visible = true;
                 } else {
                     buttonsMap[button].component.visible = false;
                 }
