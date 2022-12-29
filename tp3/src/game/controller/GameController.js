@@ -226,7 +226,7 @@ export class GameController {
 
     undoReset() {
         // Restore piece positions
-        for (const [id, piece] in this.pieces) {
+        for (const [id, _] in this.pieces) {
             const component = this.scene.graph.components[id];
             component.animationID = this.savedAnimations[id].id;
             this.scene.graph.animations[component.animationID] = this.savedAnimations[id];
