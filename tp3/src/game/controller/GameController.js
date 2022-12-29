@@ -42,6 +42,9 @@ export class GameController {
         // selected piece
         this.selectedPiece = null;
 
+        // captured pieces
+        this.capturedPieces = {};
+
         // controllers
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
@@ -55,6 +58,7 @@ export class GameController {
         this.savedWhiteCapturedPieces = 0;
         this.savedBlackCapturedPieces = 0;
         this.savedStackState = null;
+        this.savedCapturedPieces = null;
     }
 
     notifyPick(component) {
@@ -119,7 +123,7 @@ export class GameController {
             // Init undo button
             const undoButtonID = 'undoButton';
             consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
-                consoleComponent, player, () => { this.undo() });
+                consoleComponent, player, () => { this.state.undo() });
 
             // Init movie button
             const movieButtonID = 'movieButton';
@@ -168,7 +172,7 @@ export class GameController {
             current[0] += xdelta;
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
-                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
+                if (!piece.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(piece);
                 }
             });
@@ -176,8 +180,15 @@ export class GameController {
         return capturedPieces;
     }
 
-    undo() {
-        alert("TODO: Undo");
+    getPieceInPosition(position) {
+        let piece = null;
+
+        this.pieces.forEach((p, key) => {
+            if (!p.isCaptured && p.position[0] === position[0] && p.position[1] === position[1]) {
+                piece = p;
+            }
+        });
+        return piece;
     }
 
     start(hintBlack, hintWhite) {
@@ -224,6 +235,7 @@ export class GameController {
         this.clock.update(0, 0);
 
         // Reset captured pieces
+        this.savedCapturedPieces = { ...this.capturedPieces };
         this.savedStackState = { ...this.stackState };
         this.savedWhiteCapturedPieces = this.whiteAuxiliaryBoard.getCapturedPieces();
         this.savedBlackCapturedPieces = this.blackAuxiliaryBoard.getCapturedPieces();
@@ -252,6 +264,7 @@ export class GameController {
         this.whiteAuxiliaryBoard.setCapturedPieces(this.savedWhiteCapturedPieces);
         this.blackAuxiliaryBoard.setCapturedPieces(this.savedBlackCapturedPieces);
         this.stackState = { ...this.savedStackState };
+        this.capturedPieces = { ...this.savedCapturedPieces };
     }
 
     //////////////////////////////////////////////////////////////

@@ -18,7 +18,6 @@ export class InGameState extends GameState {
         this.gameController.selectedPiece = this.gameController.pieces.get(component.id);
 
         if (this.gameController.game.currentPlayer != this.gameController.selectedPiece.color) {
-            alert(this.gameController.game.currentPlayer + " " + this.gameController.selectedPiece.color)
             this.gameController.clean("Invalid piece to play. Turn: " + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
@@ -58,6 +57,8 @@ export class InGameState extends GameState {
         let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
 
         let capturedPieces = this.gameController.getCapturedPieces(from, to);
+
+        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces.map(piece => piece.componentID);
 
         let pickedComponent = this.gameController.scene.graph.components[this.gameController.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
@@ -126,6 +127,44 @@ export class InGameState extends GameState {
             if (button === "startButton") {
                 buttonsMap[button].setText("ABANDON");
             }
+        }
+    }
+
+    undo() {
+        if (this.gameController.game.moves.length === 0) {
+            return;
+        }
+
+        let [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
+
+        let currentPlayer = this.gameController.game.currentPlayer;
+
+        let piece = this.gameController.getPieceInPosition(to);
+
+        let capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
+        if (currentPlayer === BLACK) {
+            this.gameController.whiteAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
+        } else {
+            this.gameController.blackAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
+        }
+
+        let component = this.gameController.scene.graph.components[piece.componentID];
+        this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
+
+        for (let i = 0; i < capturedPieces.length; i++) {
+            this.gameController.animationController.injectCaptureAnimation(this.gameController.pieces.get(capturedPieces[i]));
+        }
+
+        this.gameController.game.undo();
+        this.gameController.game.printBoard();
+        piece.position = from;
+
+        this.gameController.whiteRemainingSeconds = 5 * 60;
+        this.gameController.blackRemainingSeconds = 5 * 60;
+        this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
+
+        if (this.gameController.game.currentPlayer != currentPlayer) {
+            this.gameController.animationController.injectCameraAnimation(false);
         }
     }
 }

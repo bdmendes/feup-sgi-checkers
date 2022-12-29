@@ -14,6 +14,13 @@ export class AuxiliaryBoard {
         }
     }
 
+    removeCapturedPieces(numberOfPieces) {
+        const graphText = this.component.children["supportBlockFace4" + (this.player === WHITE ? 'White' : 'Black')]?.text;
+        if (graphText) {
+            graphText.text = (parseInt(graphText.text) - numberOfPieces).toString();
+        }
+    }
+
     setCapturedPieces(numberOfPieces) {
         const graphText = this.component.children["supportBlockFace4" + (this.player === WHITE ? 'White' : 'Black')]?.text;
         if (graphText) {
