@@ -150,7 +150,7 @@ export class GameController {
 
     clean(error = null) {
         if (error != null) {
-            console.log(error);
+            this.uiController.flashToast(error);
         }
         this.selectedPiece = null;
     }
@@ -201,7 +201,7 @@ export class GameController {
         for (const [id, piece] of this.pieces) {
             const component = this.scene.graph.components[id];
 
-            this.savedAnimations[id] = this.scene.graph.animations[component.animationID];
+            this.savedAnimations[id] = { ...this.scene.graph.animations[component.animationID] };
             component.animationID = null;
 
             this.savedPieces.set(id, { ...piece });
@@ -226,12 +226,12 @@ export class GameController {
 
     undoReset() {
         // Restore piece positions
+        this.pieces = this.savedPieces;
         for (const [id, _] in this.pieces) {
             const component = this.scene.graph.components[id];
             component.animationID = this.savedAnimations[id].id;
             this.scene.graph.animations[component.animationID] = this.savedAnimations[id];
         }
-        this.pieces = this.savedPieces;
 
         // Restore time
         this.whiteRemainingSeconds = this.savedWhiteSeconds;

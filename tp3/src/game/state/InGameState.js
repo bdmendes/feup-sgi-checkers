@@ -51,8 +51,7 @@ export class InGameState extends GameState {
 
         let currentPlayer = this.gameController.game.currentPlayer;
 
-        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition)
-        this.gameController.game.printBoard();
+        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition);
         this.gameController.selectedPiece.position = pickedPosition;
 
         let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
