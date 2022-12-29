@@ -85,7 +85,7 @@ export class InGameState extends GameState {
                 alert("Winner: " + this.gameController.game.winner());
                 this.gameController.state = new GameOverState(this.gameController);
 
-                // TODO: Flash winner and reset board component. XML Component cloned somehow?
+                // TODO: Flash winner and reset game
             }
         }
 
@@ -108,9 +108,10 @@ export class InGameState extends GameState {
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
+        this._updateButtonsVisibility();
     }
 
-    updateButtonsVisibility() {
+    _updateButtonsVisibility() {
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
             this.gameController.blackButtons["startButton"].parentConsole.visible = true;
