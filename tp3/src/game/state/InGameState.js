@@ -158,6 +158,10 @@ export class InGameState extends GameState {
         this.gameController.game.printBoard();
         piece.position = from;
 
+        this.gameController.whiteRemainingSeconds = 5 * 60;
+        this.gameController.blackRemainingSeconds = 5 * 60;
+        this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
+
         if (this.gameController.game.currentPlayer != currentPlayer) {
             this.gameController.animationController.injectCameraAnimation(false);
         }
