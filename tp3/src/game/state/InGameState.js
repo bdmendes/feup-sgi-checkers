@@ -51,15 +51,14 @@ export class InGameState extends GameState {
 
         let currentPlayer = this.gameController.game.currentPlayer;
 
-        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition)
-        this.gameController.game.printBoard();
+        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition);
         this.gameController.selectedPiece.position = pickedPosition;
 
         let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
 
         let capturedPieces = this.gameController.getCapturedPieces(from, to);
 
-        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces;
+        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces.map(piece => piece.componentID);
 
         let pickedComponent = this.gameController.scene.graph.components[this.gameController.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
@@ -87,7 +86,7 @@ export class InGameState extends GameState {
                 alert("Winner: " + this.gameController.game.winner());
                 this.gameController.state = new GameOverState(this.gameController);
 
-                // TODO: Flash winner and reset board component. XML Component cloned somehow?
+                // TODO: Flash winner and reset game
             }
         }
 
@@ -110,9 +109,10 @@ export class InGameState extends GameState {
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
+        this._updateButtonsVisibility();
     }
 
-    updateButtonsVisibility() {
+    _updateButtonsVisibility() {
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
             this.gameController.blackButtons["startButton"].parentConsole.visible = true;
@@ -138,6 +138,7 @@ export class InGameState extends GameState {
         let [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
 
         let currentPlayer = this.gameController.game.currentPlayer;
+
         let piece = this.gameController.getPieceInPosition(to);
 
         let capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
@@ -151,7 +152,7 @@ export class InGameState extends GameState {
         this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
 
         for (let i = 0; i < capturedPieces.length; i++) {
-            this.gameController.animationController.injectCaptureAnimation(capturedPieces[i]);
+            this.gameController.animationController.injectCaptureAnimation(this.gameController.pieces.get(capturedPieces[i]));
         }
 
         this.gameController.game.undo();

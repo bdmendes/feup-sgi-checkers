@@ -72,7 +72,7 @@
         }
 
         .hide {
-            animation: fadeOut 0.25s;
+            animation: fadeOut 0.5s;
         }
 
         .show {
@@ -94,7 +94,6 @@
 
             100% {
                 opacity: 0;
-                visibility: hidden;
             }
         }
     </style>
@@ -112,7 +111,12 @@
         <div class="front toast hidden" id="toast">Toast</div>
         <div class="front modal" id="modal">
             <div>
-                <h2 style="margin-top: 0;">Start Game</h2>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h2 style="margin-top: 0;">Start Game</h2>
+                    <button type="button" id="closeModalButton"
+                        onclick="document.getElementById('modal').style.visibility = 'hidden';"
+                        style="background-color: transparent; border: none; color: whitesmoke; font-size: 1.5em; font-weight: bold;">&times;</button>
+                </div>
                 <div style="margin-bottom: 1em;">Hello! You have reached a warm place to play some regular,
                     <a href="https://en.wikipedia.org/wiki/English_draughts" target="_blank">american checkers</a>.
                     Please, make yourself at home and select your preferred settings below.

@@ -19,7 +19,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(animationController, id, initialPos, isCaptured = false) {
+    constructor(animationController, id, initialPos) {
         super(animationController.scene, id);
         this.animationController = animationController;
 
