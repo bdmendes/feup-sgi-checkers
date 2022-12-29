@@ -210,6 +210,6 @@ export class GameController {
 
         // TODO: If camera does not return to current player, do not switch when he moves
         // I think this is impossible beacuse the camera can not be in the exact position of the other player
-        this.animationController.injectCameraAnimation();
+        this.animationController.injectCameraAnimation(false, false);
     }
 }

@@ -50,8 +50,8 @@ export class AnimationController {
         this.scene.graph.animations[component.id].addMidKeyframe(capturedPiece.position, pos, true, false);
     }
 
-    injectCameraAnimation(isCapture) {
-        const cameraAnimation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture);
+    injectCameraAnimation(isCapture, isMove = true) {
+        const cameraAnimation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture, isMove);
         this.scene.graph.animations[this.scene.graph.selectedCameraID] = cameraAnimation;
     }
 }

@@ -17,11 +17,12 @@ export class MyCameraAnimation extends MyAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id, camera, isCapture) {
+    constructor(scene, id, camera, isCapture, isMove = true) {
         super(id);
         this.scene = scene;
         this.initialCamera = camera;
         this.camera = camera;
+        this.isMove = isMove;
 
         this.initialTime = (isCapture) ? 0.5 : 0;
         this.finalTime = 0;
@@ -37,7 +38,7 @@ export class MyCameraAnimation extends MyAnimation {
      */
     update(t) {
         if (!this.firstUpdate) {
-            this.initialTime += t + MY_PIECE_ANIMATION_TIME;
+            this.initialTime += t + ((this.isMove) ? MY_PIECE_ANIMATION_TIME : 0);
             this.finalTime = this.initialTime + CAMERA_ANIMATION_TIME;
             this.firstUpdate = true;
         }
