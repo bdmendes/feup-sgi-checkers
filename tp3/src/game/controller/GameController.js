@@ -227,6 +227,7 @@ export class GameController {
         this.savedStackState = { ...this.stackState };
         this.savedWhiteCapturedPieces = this.whiteAuxiliaryBoard.getCapturedPieces();
         this.savedBlackCapturedPieces = this.blackAuxiliaryBoard.getCapturedPieces();
+        this.stackState = getInitialStack();
         this.whiteAuxiliaryBoard.setCapturedPieces(0);
         this.blackAuxiliaryBoard.setCapturedPieces(0);
     }
