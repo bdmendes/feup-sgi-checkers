@@ -111,7 +111,6 @@ export class GameController {
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
-                    // give 250ms to click on the button
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
                     }, 300);
@@ -159,6 +158,7 @@ export class GameController {
         this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
     }
 
+    // TODO: Move this outahere!
     getCapturedPieces(from, to) {
         let capturedPieces = [];
         let xdelta = (to[0] > from[0]) ? 1 : -1;
@@ -182,7 +182,9 @@ export class GameController {
 
     start(hintBlack, hintWhite) {
         if (this.state instanceof InGameState) {
-            // TODO: Confirm restart
+            if (!confirm("Do you want to restart the game? All progress will be lost.")) {
+                return;
+            }
         }
 
         this.game = new Game();
@@ -191,8 +193,13 @@ export class GameController {
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;
 
+        this.state.destruct();
         this.state = new InGameState(this);
+        this.state.init();
+
         this.setGameCamera(this.game.currentPlayer);
+
+        this.uiController.flashToast("Game started! Good luck!");
     }
 
     reset() {
@@ -200,10 +207,10 @@ export class GameController {
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
             const component = this.scene.graph.components[id];
-
-            this.savedAnimations[id] = { ...this.scene.graph.animations[component.animationID] };
-            component.animationID = null;
-
+            if (component.animationID != null) {
+                this.savedAnimations[id] = this.scene.graph.animations[component.animationID];
+                component.animationID = null;
+            }
             this.savedPieces.set(id, { ...piece });
             piece.position = (piece.color == BLACK ? initBlackPositions : initWhitePositions).get(piece.id);
             piece.isCaptured = false;
@@ -226,11 +233,13 @@ export class GameController {
 
     undoReset() {
         // Restore piece positions
-        this.pieces = this.savedPieces;
-        for (const [id, _] in this.pieces) {
+        for (const [id, _] of this.pieces) {
             const component = this.scene.graph.components[id];
-            component.animationID = this.savedAnimations[id].id;
-            this.scene.graph.animations[component.animationID] = this.savedAnimations[id];
+            if (this.savedAnimations[id] != null) {
+                component.animationID = this.savedAnimations[id].id;
+                this.scene.graph.animations[component.animationID] = this.savedAnimations[component.animationID];
+            }
+            this.pieces.set(id, { ...this.savedPieces.get(id) });
         }
 
         // Restore time

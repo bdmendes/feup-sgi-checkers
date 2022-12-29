@@ -7,6 +7,7 @@ export class InMovieState extends GameState {
         super(gameController);
         this.currentMove = 0;
         this.currentToPlay = BLACK;
+        this.flashedMovieEnd = false;
     }
 
     init() {
@@ -16,17 +17,22 @@ export class InMovieState extends GameState {
             for (let button in buttonsMap) {
                 if (button === "movieButton") {
                     buttonsMap[button].component.visible = true;
-                    buttonsMap[button].setText("STOP");
+                    buttonsMap[button].setText("PLAY");
                 } else {
                     buttonsMap[button].component.visible = false;
                 }
             }
         }
+
+        this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
     onTimeElapsed() {
         if (this.currentMove >= this.gameController.game.moves.length) {
-            // TODO: Flash movie finished
+            if (!this.flashedMovieEnd) {
+                this.flashedMovieEnd = true;
+                this.gameController.uiController.flashToast("Movie ended! Press PLAY to go back to the game.", null, true);
+            }
             return;
         }
 
@@ -71,9 +77,12 @@ export class InMovieState extends GameState {
                 buttonsMap[button].component.visible = true;
                 if (button === "movieButton") {
                     buttonsMap[button].component.visible = true;
-                    buttonsMap[button].setText("RECAP");
+                    buttonsMap[button].setText("Watch");
                 }
             }
         }
+
+        this.gameController.uiController.hideToast();
+        this.gameController.uiController.flashToast("Back to the game!");
     }
 }

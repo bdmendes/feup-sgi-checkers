@@ -303,7 +303,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Recap" scale_y="2.5" scale_x="0.5"/>
+            <text string="Watch" scale_y="2.5" scale_x="0.5"/>
         </component>
 
         <component id="undoButtonTop">

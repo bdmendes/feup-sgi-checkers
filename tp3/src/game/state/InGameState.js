@@ -18,6 +18,7 @@ export class InGameState extends GameState {
         this.gameController.selectedPiece = this.gameController.pieces.get(component.id);
 
         if (this.gameController.game.currentPlayer != this.gameController.selectedPiece.color) {
+            alert(this.gameController.game.currentPlayer + " " + this.gameController.selectedPiece.color)
             this.gameController.clean("Invalid piece to play. Turn: " + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }

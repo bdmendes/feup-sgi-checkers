@@ -21,8 +21,8 @@ export class AuxiliaryBoard {
         }
     }
 
-    getCapturedPieces(player) {
-        const graphText = this.component.children["supportBlockFace4" + (player === WHITE ? 'White' : 'Black')]?.text;
+    getCapturedPieces() {
+        const graphText = this.component.children["supportBlockFace4" + (this.player === WHITE ? 'White' : 'Black')]?.text;
         if (graphText) {
             return parseInt(graphText.text);
         }

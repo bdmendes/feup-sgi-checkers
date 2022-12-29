@@ -8,8 +8,4 @@ export class GameOverState extends GameState {
     onPiecePicked(_) {
         this.gameController.uiController.flashToast("Eager, aren't you? Start a new game first!");
     }
-
-    onPositionPicked(_) {
-        this.gameController.uiController.flashToast("Eager, aren't you? Start a new game first!");
-    }
 }
