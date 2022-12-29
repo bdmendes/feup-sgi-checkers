@@ -28,7 +28,8 @@ export class InGameState extends GameState {
         }
 
         this.gameController.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.gameController.selectedPiece.position).map(move => move[1]);
-        this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves);
+        this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
+            this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
     }
 
     onPositionPicked(component) {
