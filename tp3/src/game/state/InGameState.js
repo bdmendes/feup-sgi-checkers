@@ -9,8 +9,6 @@ export class InGameState extends GameState {
     }
 
     onPiecePicked(component) {
-        this.gameController.setGameCamera(this.gameController.game.currentPlayer);
-
         if (this.gameController.selectedPiece != null) {
             this.gameController.cleanTextures();
         }

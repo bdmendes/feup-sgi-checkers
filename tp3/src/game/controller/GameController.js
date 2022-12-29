@@ -36,6 +36,7 @@ export class GameController {
         this.stackState = null;
         this.hintWhite = false;
         this.hintBlack = false;
+        this.cameraAnimation = 0;
 
         // selected piece
         this.selectedPiece = null;
@@ -106,7 +107,12 @@ export class GameController {
             // Init start button
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
-                consoleComponent, player, () => { document.getElementById('modal').style.display = 'flex'; });
+                consoleComponent, player, () => {
+                    // give 250ms to click on the button
+                    setTimeout(function () {
+                        document.getElementById('modal').style.display = 'flex';
+                    }, 300);
+                });
 
             // Init undo button
             const undoButtonID = 'undoButton';
@@ -200,9 +206,14 @@ export class GameController {
     }
 
     switchCamera() {
-        this.setGameCamera(this.game.currentPlayer);
+        if (this.cameraAnimation++ % 2 == 0) {
+            this.setGameCamera(this.game.currentPlayer);
+        } else {
+            this.setGameCamera((this.game.currentPlayer == BLACK) ? WHITE : BLACK);
+        }
 
         // TODO: If camera does not return to current player, do not switch when he moves
+        // I think this is impossible beacuse the camera can not be in the exact position of the other player
         this.animationController.injectCameraAnimation();
     }
 }
