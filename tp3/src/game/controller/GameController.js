@@ -53,7 +53,6 @@ export class GameController {
         } else if (component.id.includes('position')) {
             this.state.onPositionPicked(component);
         } else if (component.id.includes('Button')) {
-            console.log(component.id);
             this.state.onButtonPicked(component);
         }
     }
@@ -74,10 +73,6 @@ export class GameController {
         this.stackState = getInitialStack();
 
         this._initGameCamera();
-        console.log(this.scene.graph.cameras["gameCamera"].position);
-        console.log(this.cameraBlackPosition);
-        console.log(this.cameraWhitePosition);
-        console.log(this.cameraTarget);
 
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
 
@@ -165,7 +160,7 @@ export class GameController {
     }
 
     _initGameCamera() {
-        this.cameraBlackPosition = vec3.fromValues(3, 6.5, -4.5);
+        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
         this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
         this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
     }
@@ -203,6 +198,7 @@ export class GameController {
         this.hintBlack = hintBlack;
 
         this.state = new InGameState(this);
+        this.setGameCamera(this.game.currentPlayer);
     }
 
     switchCamera() {
