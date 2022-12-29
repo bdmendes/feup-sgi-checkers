@@ -112,7 +112,7 @@ export class GameController {
             // Init undo button
             const undoButtonID = 'undoButton';
             consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
-                consoleComponent, player, () => { this.undo() });
+                consoleComponent, player, () => { this.state.undo() });
 
             // Init movie button
             const movieButtonID = 'movieButton';
@@ -151,12 +151,22 @@ export class GameController {
             current[0] += xdelta;
             current[1] += ydelta;
             this.pieces.forEach((piece, key) => {
-                if (piece.position[0] === current[0] && piece.position[1] === current[1]) {
+                if (!p.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(piece);
                 }
             });
         }
         return capturedPieces;
+    }
+
+    getPieceInPosition(position) {
+        let piece = null;
+        this.pieces.forEach((p, key) => {
+            if (!p.isCaptured && p.position[0] === position[0] && p.position[1] === position[1]) {
+                piece = p;
+            }
+        });
+        return piece;
     }
 
     _initGameCamera() {
@@ -173,10 +183,6 @@ export class GameController {
         this.scene.graph.cameras[gameCameraID] = camera;
         this.scene.camera = this.scene.graph.cameras[gameCameraID];
         this.scene.interface.setActiveCamera(this.scene.camera);
-    }
-
-    undo() {
-        alert("TODO: Undo");
     }
 
     movie() {

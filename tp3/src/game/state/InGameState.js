@@ -127,4 +127,30 @@ export class InGameState extends GameState {
             }
         }
     }
+
+    undo() {
+        if (this.gameController.game.moves.length === 0) {
+            return;
+        }
+
+        let [from, to, isCapture, _] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
+
+        let piece = this.gameController.getPieceInPosition(to);
+
+        if (isCapture) {
+            console.log("TODO: Undo capture");
+        }
+
+        let component = this.gameController.scene.graph.components[piece.componentID];
+        this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
+
+        let currentPlayer = this.gameController.game.currentPlayer;
+        this.gameController.game.undo();
+        this.gameController.game.printBoard();
+        piece.position = from;
+
+        if (this.gameController.game.currentPlayer != currentPlayer) {
+            this.gameController.animationController.injectCameraAnimation(false);
+        }
+    }
 }

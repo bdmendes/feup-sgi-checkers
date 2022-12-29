@@ -18,4 +18,6 @@ export class GameState {
     onTimeElapsed() { }
 
     updateButtonsVisibility() { }
+
+    undo() { }
 }
