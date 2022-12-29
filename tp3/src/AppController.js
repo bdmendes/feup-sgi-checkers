@@ -39,11 +39,12 @@ export class AppController {
         this.gameController = new GameController(this.scene);
 
         // Hook start button to game initialization
-        document.getElementById('modal').style.display = 'none';
+        document.getElementById('modal').style.visibility = 'hidden';
 
         document.getElementById('startButton').onclick = () => {
-            this.gameController.start(); // TODO: Inject hints here
-            document.getElementById('modal').style.display = 'none';
+            let value = document.getElementById('hints').value;
+            this.gameController.start(value == 'both' || value == 'black', value == 'both' || value == 'white');
+            document.getElementById('modal').style.visibility = 'hidden';
             (new UIController()).flashToast("Game started!", 3000);
         };
     }

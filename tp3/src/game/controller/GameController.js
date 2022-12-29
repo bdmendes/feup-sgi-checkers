@@ -105,7 +105,7 @@ export class GameController {
                 consoleComponent, player, () => {
                     // give 250ms to click on the button
                     setTimeout(function () {
-                        document.getElementById('modal').style.display = 'flex';
+                        document.getElementById('modal').style.visibility = 'visible';
                     }, 300);
                 });
 
@@ -187,15 +187,15 @@ export class GameController {
         alert("TODO: Switch Scene");
     }
 
-    start(hintWhite, hintBlack) {
+    start(hintBlack, hintWhite) {
         if (this.state instanceof InGameState) {
             // TODO: Resign
             alert("Game already started. TODO: Resign");
             return;
         }
 
-        this.hintWhite = hintWhite;
         this.hintBlack = hintBlack;
+        this.hintWhite = hintWhite;
 
         this.state = new InGameState(this);
         this.setGameCamera(this.game.currentPlayer);
