@@ -4,10 +4,10 @@
     </includes>
     <scene root="root" axis_length="5" />
 
-    <views default="mainCamera">
+    <views default="gameCamera">
         <perspective id="gameCamera" near="0.1" far="500" angle="75">
-            <from x="3" y="6.5" z="-4.5" />
-            <to x="3" y="3.3" z="-7" />
+            <from x="-3.5" y="7" z="4.5" />
+            <to x="-3.5" y="3.3" z="2" />
         </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
             <from x="6" y="15" z="14" />
@@ -53,7 +53,7 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1" g="1" b="1" a="1.0" />
             <specular r="1" g="1" b="1" a="1.0" />
-            <attenuation constant="0" linear="0.04  " quadratic="0" />
+            <attenuation constant="0" linear="0.04" quadratic="0" />
         </omni>
         <omni id="sunLight2" enabled="1">
             <location x="10" y="10" z="-10" w="1.0" />
@@ -92,6 +92,8 @@
         <texture id="beachBottomTexture" file="scenes/images/beach_map/ny.png" />
         <texture id="sandTexture" file="scenes/images/beach_map/sand.png" />
         <texture id="beachBallTexture" file="scenes/images/beachball.jpg" />
+        <texture id="umbrellaTexture" file="scenes/images/stripes.png" />
+        <texture id="beachWoodTexture" file="scenes/images/beachwood.jpg" />
     </textures>
 
     <materials>
@@ -132,7 +134,7 @@
             <sphere radius="1" slices="20" stacks="20" />
         </primitive>
         <primitive id="triangle">
-            <triangle x1="0" y1="0" z1="0" x2="3" y2="0" z2="0" x3="0" y3="3" z3="0" />
+            <triangle x1="0" y1="0" z1="0" x2="-3" y2="3" z2="0.6" x3="3" y3="3" z3="0.6" />
         </primitive>
 
         <primitive id="halfBarrel">
@@ -170,6 +172,7 @@
                 <componentref id="table" />
                 <componentref id="gameBoard" />
                 <componentref id="beachBall" />
+                <componentref id="umbrella" />
             </children>
         </component>
 
@@ -184,6 +187,105 @@
             <texture id="beachBallTexture" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="umbrella">
+            <transformation>
+                <rotate axis="z" angle="10" />
+                <translate x="-8" y="10" z="-3" />
+                <rotate axis="x" angle="90" />
+                <scale x="1" y="1" z="10" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="umbrellaSupport" />
+                <componentref id="umbrellaTop" />
+            </children>
+        </component>
+
+        <component id="umbrellaSupport">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+                <scale x="1" y="1" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="rocksTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+        </component>
+
+        <component id="umbrellaTop">
+            <transformation>
+                <translate x="0" y="0" z="-0.01" />
+                <scale x="1" y="1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="umbrellaTexture" length_s="5" length_t="1" />
+            <children>
+                <componentref id="triangle1" />
+                <componentref id="triangle2" />
+                <componentref id="triangle3" />
+                <componentref id="triangle4" />
+            </children>
+        </component>
+
+        <component id="triangle1">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="triangle2">
+            <transformation>
+                <rotate axis="z" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="triangle3">
+            <transformation>
+                <rotate axis="z" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="triangle" />
+            </children>
+        </component>
+
+        <component id="triangle4">
+            <transformation>
+                <rotate axis="z" angle="270" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="triangle" />
             </children>
         </component>
 
@@ -414,7 +516,7 @@
                 <material id="darkBrown" />
                 <material id="inherit" />
             </materials>
-            <texture id="tableTexture" length_s="2" length_t="2" />
+            <texture id="beachWoodTexture" length_s="2" length_t="2" />
             <children>
                 <componentref id="cube_face1" />
                 <componentref id="cube_face2" />
