@@ -93,12 +93,12 @@
         <texture id="bankTexture" file="scenes/images/bank.jpg" />
         <texture id="groundTexture" file="scenes/images/ground_grey.jpg" />
         <texture id="tableTexture" file="scenes/images/table.jpg" />
-        <texture id="beachTopTexture" file="scenes/images/beach_map/py.png" />
-        <texture id="beachWestTexture" file="scenes/images/beach_map/pz.png" />
-        <texture id="beachSouthTexture" file="scenes/images/beach_map/px.png" />
-        <texture id="beachNorthTexture" file="scenes/images/beach_map/nz.png" />
-        <texture id="beachEastTexture" file="scenes/images/beach_map/nx.png" />
-        <texture id="beachBottomTexture" file="scenes/images/beach_map/ny.png" />
+        <texture id="beachTopTexture" file="scenes/images/beach_skymap/top.jpg" />
+        <texture id="beachWestTexture" file="scenes/images/beach_skymap/side3.jpg" />
+        <texture id="beachSouthTexture" file="scenes/images/beach_skymap/side4.jpg" />
+        <texture id="beachNorthTexture" file="scenes/images/beach_skymap/side1.jpg" />
+        <texture id="beachEastTexture" file="scenes/images/beach_skymap/side2.jpg" />
+        <texture id="beachBottomTexture" file="scenes/images/beach_skymap/bottom.jpg" />
         <texture id="sandTexture" file="scenes/images/beach_map/sand.png" />
         <texture id="beachBallTexture" file="scenes/images/beachball.jpg" />
         <texture id="umbrellaTexture" file="scenes/images/stripes.png" />
@@ -187,6 +187,14 @@
                 <controlpoint x="-2" y="0" z="2.7" />
                 <controlpoint x="2" y="0" z="2.7" />
                 <controlpoint x="2" y="0" z="0" />
+            </patch>
+        </primitive>
+        <primitive id="wallPatch">
+            <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="-1" y="-1" z="0" />
+                <controlpoint x="-1" y="1" z="0" />
+                <controlpoint x="1" y="-1" z="0" />
+                <controlpoint x="1" y="1" z="0" />
             </patch>
         </primitive>
     </primitives>
@@ -567,8 +575,8 @@
 
         <component id="walls" pickable="1">
             <transformation>
-                <scale x="15" y="15" z="15" />
-                <translate x="0" y="0" z="0" />
+                <scale x="15" y="8" z="15" />
+                <translate x="0" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="neutral" />
@@ -594,7 +602,7 @@
             </materials>
             <texture id="beachWestTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -608,7 +616,7 @@
             </materials>
             <texture id="beachNorthTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -622,7 +630,7 @@
             </materials>
             <texture id="beachEastTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -636,13 +644,14 @@
             </materials>
             <texture id="beachSouthTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
         <component id="wall5">
             <transformation>
                 <translate x="0" y="1" z="0" />
+                <rotate axis="y" angle="90" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -650,13 +659,14 @@
             </materials>
             <texture id="beachTopTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
         <component id="wall6">
             <transformation>
                 <translate x="0" y="-1" z="0" />
+                <rotate axis="y" angle="90" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -664,7 +674,7 @@
             </materials>
             <texture id="beachBottomTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -678,7 +688,6 @@
             </materials>
             <texture id="sandTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
             </children>
         </component>
 
