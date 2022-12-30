@@ -22,7 +22,6 @@ export class GameController {
         this.scene.addTimeListener(this);
         this.scene.addGraphLoadedListener(this);
         this.firstGraphLoaded = false;
-        this.loadedGraphs = [];
         this.graphSwitcher = graphSwitcher;
 
         // state
@@ -88,22 +87,15 @@ export class GameController {
         }
         this.firstGraphLoaded = true;
 
-        // Hook camera (only once per graph, to maintain original camera position)
-        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
-            this.cameraTarget = vec3.fromValues(this.scene.graph.cameras["gameCamera"].target[0],
-                this.scene.graph.cameras["gameCamera"].target[1], this.scene.graph.cameras["gameCamera"].target[2]);
-            this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-            this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1],
-                this.cameraBlackPosition[2] + 2 * (this.cameraTarget[2] - this.cameraBlackPosition[2]));
-        }
+        // Hook camera
+        this.cameraTarget = vec3.fromValues(this.scene.graph.cameras["gameCamera"].target[0],
+            this.scene.graph.cameras["gameCamera"].target[1], this.scene.graph.cameras["gameCamera"].target[2]);
+        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
+        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1],
+            this.cameraBlackPosition[2] + 2 * (this.cameraTarget[2] - this.cameraBlackPosition[2]));
 
-        // Init light
+        // Hook light
         this.lightController.setSpotlight();
-
-        // Reset game camera
-        if (this.game != null) {
-            this.setGameCamera(this.game.currentPlayer);
-        }
 
         // Hook clock
         this.clock = new BoardClock(this.scene.graph.components["timer"]);
@@ -182,11 +174,6 @@ export class GameController {
             const switchCameraButtonID = 'switchCameraButton';
             consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
                 consoleComponent, player, () => { this.switchCamera() });
-        }
-
-        // Remember that graph was loaded
-        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
-            this.loadedGraphs.push(this.scene.graph.filename);
         }
     }
 
@@ -337,8 +324,6 @@ export class GameController {
             this.setGameCamera((this.game.currentPlayer == BLACK) ? WHITE : BLACK);
         }
 
-        // TODO: If camera does not return to current player, do not switch when he moves
-        // I think this is impossible beacuse the camera can not be in the exact position of the other player
         this.animationController.injectCameraAnimation(false, false);
     }
 }
