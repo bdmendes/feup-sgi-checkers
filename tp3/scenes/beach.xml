@@ -6,7 +6,7 @@
 
     <views default="gameCamera">
         <perspective id="gameCamera" near="0.1" far="500" angle="75">
-            <from x="-3.5" y="7" z="4.5" />
+            <from x="-3.5" y="7.5" z="5.5" />
             <to x="-3.5" y="3.3" z="2" />
         </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">

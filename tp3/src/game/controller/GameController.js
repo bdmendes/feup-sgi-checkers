@@ -87,10 +87,11 @@ export class GameController {
 
         // Hook camera (only once per graph, to maintain original camera position)
         if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
-            this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-            this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
             this.cameraTarget = vec3.fromValues(this.scene.graph.cameras["gameCamera"].target[0],
                 this.scene.graph.cameras["gameCamera"].target[1], this.scene.graph.cameras["gameCamera"].target[2]);
+            this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
+            this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1],
+                this.cameraBlackPosition[2] + 2 * (this.cameraTarget[2] - this.cameraBlackPosition[2]));
         }
         if (this.game != null) {
             this.setGameCamera(this.game.currentPlayer);
