@@ -83,10 +83,11 @@ export class InGameState extends GameState {
             this.gameController.animationController.injectCameraAnimation(isCapture);
 
             if (this.gameController.game.winner() != null) {
-                alert("Winner: " + this.gameController.game.winner());
+                this.gameController.state.destruct();
                 this.gameController.state = new GameOverState(this.gameController);
-
-                // TODO: Flash winner and reset game
+                this.gameController.state.init();
+                const winner = this.gameController.game.winner() == WHITE ? "White" : "Black";
+                this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winner}`);
             }
         }
 
@@ -94,17 +95,24 @@ export class InGameState extends GameState {
     }
 
     onTimeElapsed() {
+        const gameOver = (winningPlayer) => {
+            const winning = winningPlayer == WHITE ? "White" : "Black";
+            const loser = winningPlayer == WHITE ? "Black" : "White";
+            this.gameController.state.destruct();
+            this.gameController.state = new GameOverState(this.gameController);
+            this.gameController.state.init();
+            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
+        };
+
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.blackRemainingSeconds -= 1;
             if (this.gameController.blackRemainingSeconds === 0) {
-                this.gameController.state = new GameOverState(this.gameController);
-                // TODO: Flash winner
+                gameOver(WHITE);
             }
         } else {
             this.gameController.whiteRemainingSeconds -= 1;
             if (this.gameController.blackRemainingSeconds === 0) {
-                this.gameController.state = new GameOverState(this.gameController);
-                // TODO: Flash winner
+                gameOver(BLACK);
             }
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,

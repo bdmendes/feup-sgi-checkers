@@ -11,6 +11,7 @@ import { StartState } from '../state/StartState.js';
 import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
+import { GameOverState } from '../state/GameOverState.js';
 
 
 export class GameController {
@@ -141,7 +142,8 @@ export class GameController {
                 consoleComponent, player, () => {
                     if (this.state instanceof InMovieState) {
                         this.state.destruct();
-                        this.state = new InGameState(this);
+                        this.state = this.game.winner() == null ? new InGameState(this) : new GameOverState(this);
+                        this.state.init();
                         return;
                     }
 
