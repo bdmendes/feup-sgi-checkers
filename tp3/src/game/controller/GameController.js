@@ -176,7 +176,9 @@ export class GameController {
     }
 
     cleanTextures() {
-        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
+        if (this.selectedPiece != null) {
+            this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
+        }
     }
 
     // TODO: Move this outahere!
@@ -241,6 +243,10 @@ export class GameController {
     }
 
     reset() {
+        // Clean selections
+        this.clean();
+        this.cleanTextures();
+
         // Put pieces in their initial positions
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
