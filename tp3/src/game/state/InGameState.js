@@ -151,6 +151,7 @@ export class InGameState extends GameState {
         }
 
         let component = this.gameController.scene.graph.components[piece.componentID];
+        this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
 
         for (let i = 0; i < capturedPieces.length; i++) {
