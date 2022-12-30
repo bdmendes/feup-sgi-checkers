@@ -6,6 +6,8 @@ import { GameOverState } from './GameOverState.js';
 export class InGameState extends GameState {
     constructor(gameController) {
         super(gameController);
+        this.notifiedNoValidMovesOnce = false;
+        this.notifiedClickDropOnce = false;
     }
 
     onPiecePicked(component) {
@@ -29,6 +31,17 @@ export class InGameState extends GameState {
         }
 
         this.gameController.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.gameController.selectedPiece.position).map(move => move[1]);
+
+        if (this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite) {
+            if (!this.notifiedClickDropOnce && this.gameController.selectedPiece.possibleMoves.length > 0) {
+                this.gameController.uiController.flashToast("Awesome! Now click on a valid square to move!");
+                this.notifiedClickDropOnce = true;
+            } else if (this.gameController.selectedPiece.possibleMoves.length == 0 && !this.notifiedNoValidMovesOnce) {
+                this.gameController.uiController.flashToast("No valid moves for this piece. Try another one!");
+                this.notifiedNoValidMovesOnce = true;
+            }
+        }
+
         this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
             this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
         this.gameController.lightController.enableSpotlight(this.gameController.selectedPiece);
@@ -85,10 +98,11 @@ export class InGameState extends GameState {
             this.gameController.animationController.injectCameraAnimation(isCapture);
 
             if (this.gameController.game.winner() != null) {
-                alert("Winner: " + this.gameController.game.winner());
+                this.gameController.state.destruct();
                 this.gameController.state = new GameOverState(this.gameController);
-
-                // TODO: Flash winner and reset game
+                this.gameController.state.init();
+                const winner = this.gameController.game.winner() == WHITE ? "White" : "Black";
+                this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winner}`);
             }
         }
 
@@ -96,17 +110,24 @@ export class InGameState extends GameState {
     }
 
     onTimeElapsed() {
+        const gameOver = (winningPlayer) => {
+            const winning = winningPlayer == WHITE ? "White" : "Black";
+            const loser = winningPlayer == WHITE ? "Black" : "White";
+            this.gameController.state.destruct();
+            this.gameController.state = new GameOverState(this.gameController);
+            this.gameController.state.init();
+            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
+        };
+
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.blackRemainingSeconds -= 1;
             if (this.gameController.blackRemainingSeconds === 0) {
-                this.gameController.state = new GameOverState(this.gameController);
-                // TODO: Flash winner
+                gameOver(WHITE);
             }
         } else {
             this.gameController.whiteRemainingSeconds -= 1;
             if (this.gameController.blackRemainingSeconds === 0) {
-                this.gameController.state = new GameOverState(this.gameController);
-                // TODO: Flash winner
+                gameOver(BLACK);
             }
         }
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
@@ -127,7 +148,11 @@ export class InGameState extends GameState {
         for (let button in buttonsMap) {
             buttonsMap[button].component.visible = true;
             if (button === "startButton") {
-                buttonsMap[button].setText("ABANDON");
+                buttonsMap[button].setText("Abandon");
+            } else if (button === "undoButton") {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+            } else if (button === "movieButton") {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
             }
         }
     }

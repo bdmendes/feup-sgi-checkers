@@ -12,18 +12,22 @@ import { StartState } from '../state/StartState.js';
 import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
+import { GameOverState } from '../state/GameOverState.js';
 
 
 export class GameController {
-    constructor(scene) {
+    constructor(scene, graphSwitcher) {
         this.scene = scene;
         this.scene.addPickListener(this);
         this.scene.addTimeListener(this);
         this.scene.addGraphLoadedListener(this);
-        this.graphLoaded = false;
+        this.firstGraphLoaded = false;
+        this.loadedGraphs = [];
+        this.graphSwitcher = graphSwitcher;
 
         // state
         this.state = new StartState(this);
+        this.state.init();
 
         // game
         this.game = null;
@@ -77,36 +81,46 @@ export class GameController {
         this.state.onTimeElapsed();
     }
 
-    notifyGraphLoaded() {
-        if (this.graphLoaded) {
+    notifyGraphLoaded(force = false) {
+        // Stop concurrent calls
+        if (this.firstGraphLoaded && !force) {
             return;
         }
-        this.graphLoaded = true;
+        this.firstGraphLoaded = true;
 
-        // Init camera
-        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
-        this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+        // Hook camera (only once per graph, to maintain original camera position)
+        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
+            this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
+            this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+            this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+        }
 
         // Init light
         this.lightController.setSpotlight();
 
-        // Init pieces
-        let [initBlackPositions, initWhitePositions] = getInitialPositions();
-        for (let [key, value] of initBlackPositions) {
-            this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
-        }
-        for (let [key, value] of initWhitePositions) {
-            this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        // Reset game camera
+        if (this.game != null) {
+            this.setGameCamera(this.game.currentPlayer);
         }
 
-        // Init clock
-        this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
+        // Hook clock
+        this.clock = new BoardClock(this.scene.graph.components["timer"]);
+        if (this.blackRemainingSeconds != null) {
+            this.clock.update(this.blackRemainingSeconds, this.whiteRemainingSeconds);
+        }
 
-        // Init auxiliary boards
-        this.stackState = getInitialStack();
-        this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer2"], WHITE);
-        this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer1"], BLACK);
+        // Hook auxiliary boards
+        if (this.blackAuxiliaryBoard == null) {
+            this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene.graph.components["supportBlockPlayer2"], WHITE);
+            this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene.graph.components["supportBlockPlayer1"], BLACK);
+        } else {
+            this.whiteCapturedPieces = this.whiteAuxiliaryBoard.getCapturedPieces();
+            this.blackCapturedPieces = this.blackAuxiliaryBoard.getCapturedPieces();
+            this.whiteAuxiliaryBoard.component = this.scene.graph.components["supportBlockPlayer2"];
+            this.blackAuxiliaryBoard.component = this.scene.graph.components["supportBlockPlayer1"];
+            this.whiteAuxiliaryBoard.setCapturedPieces(this.whiteCapturedPieces);
+            this.blackAuxiliaryBoard.setCapturedPieces(this.blackCapturedPieces);
+        }
 
         // Init buttons console
         const blackConsoleID = 'blackPlayerButtons';
@@ -120,6 +134,17 @@ export class GameController {
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
+                    if (this.state instanceof InGameState) {
+                        if (!confirm("Do you want to restart the game? All progress will be lost.")) {
+                            return;
+                        }
+                        this.reset();
+                        this.state.destruct();
+                        this.state = new StartState(this);
+                        this.state.init();
+                        return;
+                    }
+
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
                     }, 300);
@@ -136,7 +161,8 @@ export class GameController {
                 consoleComponent, player, () => {
                     if (this.state instanceof InMovieState) {
                         this.state.destruct();
-                        this.state = new InGameState(this);
+                        this.state = this.game.winner() == null ? new InGameState(this) : new GameOverState(this);
+                        this.state.init();
                         return;
                     }
 
@@ -147,12 +173,17 @@ export class GameController {
             // Init switch scene button
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => { alert("TODO: Switch Scene"); });
+                consoleComponent, player, () => { this.graphSwitcher(); });
 
             // Init switch scene button
             const switchCameraButtonID = 'switchCameraButton';
             consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
                 consoleComponent, player, () => { this.switchCamera() });
+        }
+
+        // Remember that graph was loaded
+        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
+            this.loadedGraphs.push(this.scene.graph.filename);
         }
     }
 
@@ -165,7 +196,9 @@ export class GameController {
     }
 
     cleanTextures() {
-        this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
+        if (this.selectedPiece != null) {
+            this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
+        }
     }
 
     // TODO: Move this outahere!
@@ -198,14 +231,18 @@ export class GameController {
     }
 
     start(hintBlack, hintWhite) {
-        if (this.state instanceof InGameState) {
-            if (!confirm("Do you want to restart the game? All progress will be lost.")) {
-                return;
-            }
-        }
-
         this.game = new Game();
+
         this.reset();
+
+        // Init pieces
+        let [initBlackPositions, initWhitePositions] = getInitialPositions();
+        for (let [key, value] of initBlackPositions) {
+            this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
+        }
+        for (let [key, value] of initWhitePositions) {
+            this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
+        }
 
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;
@@ -220,6 +257,10 @@ export class GameController {
     }
 
     reset() {
+        // Clean selections
+        this.clean();
+        this.cleanTextures();
+
         // Put pieces in their initial positions
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
