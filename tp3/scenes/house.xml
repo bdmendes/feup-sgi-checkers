@@ -345,6 +345,15 @@
         <primitive id="baseLeftTriangle">
             <triangle x1="1.5" y1="0" z1="0" x2="0" y2="0" z2="0" x3="1.5" y3="-0.7" z3="0" />
         </primitive>
+
+        <primitive id="wallPatch">
+            <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="-1" y="-1" z="0" />
+                <controlpoint x="-1" y="1" z="0" />
+                <controlpoint x="1" y="-1" z="0" />
+                <controlpoint x="1" y="1" z="0" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations>
@@ -1580,7 +1589,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -1625,7 +1634,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -1639,7 +1648,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
                 <componentref id="window" />
             </children>
         </component>
@@ -1654,7 +1663,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -1668,7 +1677,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
@@ -1682,7 +1691,7 @@
             </materials>
             <texture id="groundTexture" length_s="2" length_t="2" />
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="wallPatch" />
             </children>
         </component>
 
