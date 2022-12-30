@@ -89,7 +89,7 @@ export class GameController {
         this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
 
         // Init light
-        this.lightController.initLight();
+        this.lightController.setSpotlight();
 
         // Init pieces
         let [initBlackPositions, initWhitePositions] = getInitialPositions();

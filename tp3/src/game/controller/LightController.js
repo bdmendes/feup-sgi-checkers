@@ -3,7 +3,7 @@ const BOARD_POSITION_SIZE = 0.4;
 export class LightController {
     constructor(scene) {
         this.scene = scene;
-        this.key = 'gameSpotlight';
+        this.key = null;
         this.initialLightPosition = null;
     }
 
@@ -16,7 +16,8 @@ export class LightController {
         return -1;
     }
 
-    initLight() {
+    setSpotlight(key = 'gameSpotlight') {
+        this.key = key;
         this.initialLightPosition = this.scene.lights[this.getIndexFromKey(this.key)].position;
     }
 
