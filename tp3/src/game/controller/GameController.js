@@ -161,7 +161,7 @@ export class GameController {
             this.uiController.flashToast(error);
         }
         this.selectedPiece = null;
-        this.lightController.disableSpotLight();
+        this.lightController.disableSpotlight();
     }
 
     cleanTextures() {

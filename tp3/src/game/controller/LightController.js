@@ -21,7 +21,7 @@ export class LightController {
         this.initialLightPosition = this.scene.lights[this.getIndexFromKey(this.key)].position;
     }
 
-    enableSpotLight(piece) {
+    enableSpotlight(piece) {
         this.scene.graph.enabledLights[this.key] = true;
         this.scene.graph.lights[this.key][0] = true;
         this.scene.lights[this.getIndexFromKey(this.key)].position = [
@@ -32,7 +32,7 @@ export class LightController {
         this.scene.lights[this.getIndexFromKey(this.key)].enable();
     }
 
-    disableSpotLight() {
+    disableSpotlight() {
         this.scene.graph.enabledLights[this.key] = false;
         this.scene.graph.lights[this.key][0] = false;
         this.scene.lights[this.getIndexFromKey(this.key)].disable();

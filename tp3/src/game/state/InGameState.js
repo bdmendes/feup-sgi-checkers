@@ -11,7 +11,7 @@ export class InGameState extends GameState {
     onPiecePicked(component) {
         if (this.gameController.selectedPiece != null) {
             this.gameController.cleanTextures();
-            this.gameController.lightController.disableSpotLight();
+            this.gameController.lightController.disableSpotlight();
         }
 
         const previousComponentID = this.gameController.selectedPiece != null ? this.gameController.selectedPiece.componentID : null;
@@ -31,7 +31,7 @@ export class InGameState extends GameState {
         this.gameController.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.gameController.selectedPiece.position).map(move => move[1]);
         this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
             this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
-        this.gameController.lightController.enableSpotLight(this.gameController.selectedPiece);
+        this.gameController.lightController.enableSpotlight(this.gameController.selectedPiece);
     }
 
     onPositionPicked(component) {
