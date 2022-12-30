@@ -24,9 +24,9 @@ export class MyCameraAnimation extends MyAnimation {
         this.camera = camera;
         this.isMove = isMove;
 
-        this.initialTime = (isCapture) ? 0.5 : 0;
+        this.initialTime = isCapture ? 0.5 : 0;
         this.finalTime = 0;
-        this.radius = 2.5;
+        this.radius = Math.abs(this.camera.position[2] - this.camera.target[2]);
 
         this.firstUpdate = false;
     }

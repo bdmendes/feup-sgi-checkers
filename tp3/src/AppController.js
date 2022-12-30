@@ -4,6 +4,7 @@ import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
 import { GameController } from './game/controller/GameController.js';
 import { UIController } from './game/controller/UIController.js';
+import { BLACK } from './game/model/Game.js';
 
 export class AppController {
     constructor(fileNames, graphNames) {
@@ -43,11 +44,13 @@ export class AppController {
         document.getElementById('modal').style.visibility = 'hidden';
 
         document.getElementById('startButton').onclick = () => {
-            const hintValue = document.getElementById('hints').value;
-            const scenarioValue = document.getElementById('scenario').value;
-            this.switchScene(scenarioValue);
-            this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
-            document.getElementById('modal').style.visibility = 'hidden';
+            setTimeout(() => {
+                document.getElementById('modal').style.visibility = 'hidden';
+                const hintValue = document.getElementById('hints').value;
+                const scenarioValue = document.getElementById('scenario').value;
+                this.switchScene(scenarioValue);
+                this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
+            }, 250);
         };
     }
 
@@ -84,7 +87,7 @@ export class AppController {
         this.lastSelectedGraph = this.selectedGraph;
     }
 
-    switchScene(filename = null) {
+    switchScene(filename = null, resetCamera = true) {
         if (filename != null) {
             this.selectedGraph = filename;
         } else {
@@ -96,6 +99,7 @@ export class AppController {
         if (this.lastSelectedGraph == this.selectedGraph) {
             return;
         }
+
         this.gameController.uiController.flashToast('Welcome to ' + this.graphNames[this.selectedGraph] + '!');
         this.updateCurrentGraph(true);
     }

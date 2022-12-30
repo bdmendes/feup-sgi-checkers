@@ -25,14 +25,6 @@
             <from x="14" y="5" z="8" />
             <to x="-15" y="4" z="8" />
         </perspective>
-        <perspective id="player1Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="6.5" z="-4.5" />
-            <to x="3" y="3.3" z="-7" />
-        </perspective>
-        <perspective id="player2Camera" near="0.1" far="500" angle="75">
-            <from x="3" y="6.5" z="-9.5" />
-            <to x="3" y="3.3" z="-7" />
-        </perspective>
         <ortho id="orthoSideCamera" near="0" far="500" left="-20" right="20" top="20" bottom="-20">
             <from x="2" y="5" z="15" />
             <to x="0" y="5" z="0" />
@@ -58,8 +50,8 @@
         </omni>
         <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
             <!-- located on board position [0,0] -->
-            <location x="1.6" y="5" z="-8.4" w="1" />
-            <target x="1.6" y="3.3" z="-8.4" />
+            <location x="3" y="5" z="-7" w="1" />
+            <target x="3" y="3.3" z="-7" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -191,50 +183,11 @@
             </patch>
         </primitive>
 
-        <primitive id="halfPiece">
-            <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
-                <controlpoint x="-2" y="0" z="0" />
-                <controlpoint x="-3" y="1" z="0" />
-                <controlpoint x="-2" y="2" z="0" />
-
-                <controlpoint x="-2" y="0" z="2.7" />
-                <controlpoint x="-3" y="1" z="4" />
-                <controlpoint x="-2" y="2" z="2.7" />
-
-                <controlpoint x="2" y="0" z="2.7" />
-                <controlpoint x="3" y="1" z="4" />
-                <controlpoint x="2" y="2" z="2.7" />
-
-                <controlpoint x="2" y="0" z="0" />
-                <controlpoint x="3" y="1" z="0" />
-                <controlpoint x="2" y="2" z="0" />
-            </patch>
-        </primitive>
-
         <primitive id="circlePatch">
             <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
                 <controlpoint x="-2" y="0" z="-2.7" />
                 <controlpoint x="2" y="0" z="-2.7" />
-                <controlpoint x="2" y="0" z="0" />
-
-                <controlpoint x="-2" y="0" z="0" />
-                <controlpoint x="-2" y="0" z="2.7" />
-                <controlpoint x="2" y="0" z="2.7" />
-                <controlpoint x="2" y="0" z="0" />
-            </patch>
-        </primitive>
-
-        <primitive id="piecesFace">
-            <patch degree_u="2" degree_v="3" parts_u="10" parts_v="10">
-                <controlpoint x="-2" y="0" z="0" />
-                <controlpoint x="-2" y="0" z="-2.7" />
-                <controlpoint x="2" y="0" z="-2.7" />
-                <controlpoint x="2" y="0" z="0" />
-
-                <controlpoint x="-2" y="0" z="0" />
-                <controlpoint x="0" y="-0.5" z="0" />
-                <controlpoint x="0" y="-0.5" z="0" />
                 <controlpoint x="2" y="0" z="0" />
 
                 <controlpoint x="-2" y="0" z="0" />

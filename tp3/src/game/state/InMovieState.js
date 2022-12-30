@@ -1,6 +1,5 @@
 import { GameState } from './GameState.js';
 import { BLACK, Game } from '../model/Game.js';
-import { getInitialPositions } from '../view/Board.js';
 
 export class InMovieState extends GameState {
     constructor(gameController) {

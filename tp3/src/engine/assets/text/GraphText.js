@@ -17,7 +17,8 @@ export class GraphText {
      */
     constructor(scene, text, xOffset, yOffset, zOffset,
         gap, scaleX, scaleY, forceFront,
-        fontTexturePath = "src/engine/assets/text/oolite-font.trans.png") {
+        fontTexturePath = "src/engine/assets/text/oolite-font.trans.png",
+        doNotDrawEmptyText = true) {
         this.scene = scene;
         this.text = text;
         this.xOffset = xOffset ?? 0;
@@ -34,6 +35,10 @@ export class GraphText {
     }
 
     draw(previousMaterial) {
+        if (this.text == null || this.text.length == 0) {
+            return;
+        }
+
         // Save the current shader
         const currentShader = this.scene.activeShader;
 

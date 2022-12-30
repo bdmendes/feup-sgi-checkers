@@ -20,8 +20,7 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1" linear="0" quadratic="0" />
-        </omni>7
-    </lights>
+        </omni>7 </lights>
 
     <textures>
         <texture id="woodTexture" file="scenes/images/pieces_wood.jpg" />
@@ -71,7 +70,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoHalfPiece">
+        <primitive id="halfPiece">
             <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
                 <controlpoint x="-3" y="1" z="0" />
@@ -125,12 +124,7 @@
         </primitive>
 
         <primitive id="rectangle">
-            <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
-                <controlpoint x="1" y="1" z="0" />
-                <controlpoint x="1" y="-1" z="0" />
-                <controlpoint x="-1" y="1" z="0" />
-                <controlpoint x="-1" y="-1" z="0" />
-            </patch>
+            <rectangle x1="-1" x2="1" y1="-1" y2="1" />
         </primitive>
     </primitives>
 
@@ -188,8 +182,8 @@
 
         <component id="startButton" pickable="1">
             <transformation>
-                <translate x="0.65" y="1" z="0.9" />
-                <scale x="0.12" y="0.2" z="0.03" />
+                <translate x="0.6" y="1" z="0.9" />
+                <scale x="0.14" y="0.4" z="0.03" />
             </transformation>
             <materials>
                 <material id="darkBrown" />
@@ -207,8 +201,8 @@
 
         <component id="undoButton" visible="0" pickable="1">
             <transformation>
-                <translate x="0.4" y="1" z="0.9" />
-                <scale x="0.12" y="0.2" z="0.03" />
+                <translate x="0.3" y="1" z="0.9" />
+                <scale x="0.14" y="0.4" z="0.03" />
             </transformation>
             <materials>
                 <material id="darkBrown" />
@@ -226,8 +220,8 @@
 
         <component id="movieButton" visible="0" pickable="1">
             <transformation>
-                <translate x="0.15" y="1" z="0.9" />
-                <scale x="0.12" y="0.2" z="0.03" />
+                <translate x="0" y="1" z="0.9" />
+                <scale x="0.14" y="0.4" z="0.03" />
             </transformation>
             <materials>
                 <material id="darkBrown" />
@@ -245,8 +239,8 @@
 
         <component id="switchSceneButton" visible="1" pickable="1">
             <transformation>
-                <translate x="-0.1" y="1" z="0.9" />
-                <scale x="0.12" y="0.2" z="0.03" />
+                <translate x="-0.3" y="1" z="0.9" />
+                <scale x="0.14" y="0.4" z="0.03" />
             </transformation>
             <materials>
                 <material id="darkBrown" />
@@ -264,8 +258,8 @@
 
         <component id="switchCameraButton" visible="0" pickable="1">
             <transformation>
-                <translate x="-0.35" y="1" z="0.9" />
-                <scale x="0.12" y="0.2" z="0.03" />
+                <translate x="-0.6" y="1" z="0.9" />
+                <scale x="0.14" y="0.4" z="0.03" />
             </transformation>
             <materials>
                 <material id="darkBrown" />
@@ -293,7 +287,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Start" scale_y="2.5" scale_x="0.5"/>
+            <text string="Start" scale_y="2.5" scale_x="0.5" x_off="-0.2" />
         </component>
 
         <component id="movieButtonTop">
@@ -308,7 +302,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Watch" scale_y="2.5" scale_x="0.5"/>
+            <text string="Watch" scale_y="2.5" scale_x="0.5" x_off="-0.2" />
         </component>
 
         <component id="undoButtonTop">
@@ -323,7 +317,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Undo" scale_y="2.5" scale_x="0.5"/>
+            <text string="Undo" scale_y="2.5" scale_x="0.5" x_off="-0.2" />
         </component>
 
         <component id="switchSceneButtonTop">
@@ -338,7 +332,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Travel" scale_y="2.5" scale_x="0.5"/>
+            <text string="Travel" scale_y="2.5" scale_x="0.5" x_off="-0.2" />
         </component>
 
         <component id="switchCameraButtonTop">
@@ -353,7 +347,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Camera" scale_y="2.5" scale_x="0.5"/>
+            <text string="Camera" scale_y="2.5" scale_x="0.5" x_off="-0.2" />
         </component>
 
         <component id="faces">
@@ -383,30 +377,30 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
-        <children>
+            <children>
                 <componentref id="startButton" />
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
                 <componentref id="switchCameraButton" />
-        </children>
+            </children>
         </component>
 
         <component id="whitePlayerButtons" visible="0">
             <transformation>
-                <rotate axis="y" angle="180"/>
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
-        <children>
+            <children>
                 <componentref id="startButton" />
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
                 <componentref id="switchCameraButton" />
-        </children>
+            </children>
         </component>
 
         <component id="cube_face1">
@@ -434,7 +428,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-                                    
+
         </component>
 
         <component id="cube_face3">
@@ -1891,7 +1885,7 @@
             </materials>
             <texture id="woodTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="demoHalfPiece" />
+                <primitiveref id="halfPiece" />
                 <componentref id="rotatedPatch" />
             </children>
         </component>
@@ -1905,7 +1899,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="demoHalfPiece" />
+                <primitiveref id="halfPiece" />
             </children>
         </component>
 
@@ -2124,7 +2118,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber2">
@@ -2140,7 +2134,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3" />
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber3">
@@ -2156,7 +2150,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber4">
@@ -2172,7 +2166,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber5">
@@ -2188,7 +2182,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber6">
@@ -2204,7 +2198,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="" scale_x="2" scale_y="3" />
         </component>
 
         <component id="twoDotsPlayer1">
@@ -2214,7 +2208,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="timerDotUp" />
                 <componentref id="timerDotDown" />
@@ -2228,7 +2222,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="timerDotUp" />
                 <componentref id="timerDotDown" />
@@ -2356,7 +2350,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="0.8" scale_y="1.8"/>
+            <text string="0" scale_x="0.8" scale_y="1.8" />
         </component>
 
         <component id="supportBlockFace4White">
@@ -2371,7 +2365,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="0.8" scale_y="1.8"/>
+            <text string="0" scale_x="0.8" scale_y="1.8" />
         </component>
 
         <component id="supportBlockFace5">
