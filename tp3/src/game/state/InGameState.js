@@ -13,6 +13,7 @@ export class InGameState extends GameState {
     onPiecePicked(component) {
         if (this.gameController.selectedPiece != null) {
             this.gameController.cleanTextures();
+            this.gameController.lightController.disableSpotlight();
         }
 
         const previousComponentID = this.gameController.selectedPiece != null ? this.gameController.selectedPiece.componentID : null;
@@ -43,6 +44,7 @@ export class InGameState extends GameState {
 
         this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
             this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
+        this.gameController.lightController.enableSpotlight(this.gameController.selectedPiece);
     }
 
     onPositionPicked(component) {
@@ -146,7 +148,7 @@ export class InGameState extends GameState {
         for (let button in buttonsMap) {
             buttonsMap[button].component.visible = true;
             if (button === "startButton") {
-                buttonsMap[button].setText("ABANDON");
+                buttonsMap[button].setText("Abandon");
             } else if (button === "undoButton") {
                 buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
             } else if (button === "movieButton") {
@@ -174,6 +176,7 @@ export class InGameState extends GameState {
         }
 
         let component = this.gameController.scene.graph.components[piece.componentID];
+        this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
 
         for (let i = 0; i < capturedPieces.length; i++) {

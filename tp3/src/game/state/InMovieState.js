@@ -1,6 +1,5 @@
 import { GameState } from './GameState.js';
 import { BLACK, Game } from '../model/Game.js';
-import { getInitialPositions } from '../view/Board.js';
 
 export class InMovieState extends GameState {
     constructor(gameController) {
@@ -43,10 +42,12 @@ export class InMovieState extends GameState {
         let capturedPieces = this.gameController.getCapturedPieces(from, to);
 
         let pickedComponent = null;
-        for (const [id, piece] of this.gameController.pieces) {
-            if (piece.position[0] == from[0] && piece.position[1] == from[1]) {
-                pickedComponent = this.gameController.scene.graph.components[piece.componentID];
-                piece.position = to;
+        let piece = null;
+        for (const [id, p] of this.gameController.pieces) {
+            if (p.position[0] == from[0] && p.position[1] == from[1]) {
+                pickedComponent = this.gameController.scene.graph.components[p.componentID];
+                p.position = to;
+                piece = p;
                 break;
             }
         }
@@ -56,6 +57,7 @@ export class InMovieState extends GameState {
             return;
         }
 
+        this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
             this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, capturedPieces);
 
