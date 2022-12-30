@@ -56,6 +56,15 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="0" linear="0.03" quadratic="0" />
         </omni>
+        <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
+            <!-- located on board position [0,0] -->
+            <location x="1.6" y="5" z="-8.4" w="1" />
+            <target x="1.6" y="3.3" z="-8.4" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
+        </spot>
     </lights>
 
     <textures>

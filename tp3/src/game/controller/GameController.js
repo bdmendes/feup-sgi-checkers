@@ -1,6 +1,7 @@
 import { CGFcamera } from '../../../../lib/CGF.js';
 import { getInitialPositions, getInitialStack } from '../view/Board.js';
 import { AnimationController } from './AnimationController.js';
+import { LightController } from './LightController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
 import { MyPiece } from '../view/MyPiece.js';
@@ -50,6 +51,7 @@ export class GameController {
         this.capturedPieces = {};
 
         // controllers
+        this.lightController = new LightController(scene);
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
         this.uiController = new UIController();
@@ -92,6 +94,11 @@ export class GameController {
             this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
             this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
         }
+
+        // Init light
+        this.lightController.setSpotlight();
+
+        // Reset game camera
         if (this.game != null) {
             this.setGameCamera(this.game.currentPlayer);
         }
@@ -185,6 +192,7 @@ export class GameController {
             this.uiController.flashToast(error);
         }
         this.selectedPiece = null;
+        this.lightController.disableSpotlight();
     }
 
     cleanTextures() {

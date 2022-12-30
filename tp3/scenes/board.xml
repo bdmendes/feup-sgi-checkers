@@ -125,7 +125,12 @@
         </primitive>
 
         <primitive id="rectangle">
-            <rectangle x1="-1" x2="1" y1="-1" y2="1" />
+            <patch degree_u="1" degree_v="1" parts_u="10" parts_v="10">
+                <controlpoint x="1" y="1" z="0" />
+                <controlpoint x="1" y="-1" z="0" />
+                <controlpoint x="-1" y="1" z="0" />
+                <controlpoint x="-1" y="-1" z="0" />
+            </patch>
         </primitive>
     </primitives>
 
