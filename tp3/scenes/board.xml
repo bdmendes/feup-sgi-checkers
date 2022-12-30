@@ -71,7 +71,7 @@
     </transformations>
 
     <primitives>
-        <primitive id="demoHalfPiece">
+        <primitive id="halfPiece">
             <patch degree_u="3" degree_v="2" parts_u="10" parts_v="10">
                 <controlpoint x="-2" y="0" z="0" />
                 <controlpoint x="-3" y="1" z="0" />
@@ -1886,7 +1886,7 @@
             </materials>
             <texture id="woodTexture" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="demoHalfPiece" />
+                <primitiveref id="halfPiece" />
                 <componentref id="rotatedPatch" />
             </children>
         </component>
@@ -1900,7 +1900,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="demoHalfPiece" />
+                <primitiveref id="halfPiece" />
             </children>
         </component>
 

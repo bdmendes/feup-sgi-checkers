@@ -15,7 +15,8 @@ function getUrlVars() {
 
 function main() {
     const file = getUrlVars()["file"];
-    const appController = new AppController(file ? [file] : ["house.xml", "beach.xml", "space.xml"], ["Comfy House", "Distant Beach", "Dark Space"]);
+    //const appController = new AppController(file ? [file] : ["house.xml", "beach.xml", "space.xml"], ["Comfy House", "Distant Beach", "Dark Space"]);
+    const appController = new AppController(file ? [file] : ["beach.xml", "space.xml"], ["Distant Beach", "Dark Space"]);
     appController.start();
 }
 
