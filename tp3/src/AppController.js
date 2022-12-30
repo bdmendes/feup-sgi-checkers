@@ -68,6 +68,7 @@ export class AppController {
         if (forceUIUpdate) {
             this.scene.onGraphLoaded();
             this.gameController.notifyGraphLoaded();
+            document.getElementById('scenario').value = this.graphs[this.selectedGraph].filename;
         }
 
         if (copyBoard) {
