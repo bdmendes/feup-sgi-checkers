@@ -248,8 +248,8 @@ export class GameController {
 
     reset() {
         // Clean selections
-        this.clean();
         this.cleanTextures();
+        this.clean();
 
         // Put pieces in their initial positions
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
