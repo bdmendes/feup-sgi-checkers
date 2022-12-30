@@ -6,6 +6,8 @@ import { GameOverState } from './GameOverState.js';
 export class InGameState extends GameState {
     constructor(gameController) {
         super(gameController);
+        this.notifiedNoValidMovesOnce = false;
+        this.notifiedClickDropOnce = false;
     }
 
     onPiecePicked(component) {
@@ -28,6 +30,17 @@ export class InGameState extends GameState {
         }
 
         this.gameController.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.gameController.selectedPiece.position).map(move => move[1]);
+
+        if (this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite) {
+            if (!this.notifiedClickDropOnce && this.gameController.selectedPiece.possibleMoves.length > 0) {
+                this.gameController.uiController.flashToast("Awesome! Now click on a valid square to move!");
+                this.notifiedClickDropOnce = true;
+            } else if (this.gameController.selectedPiece.possibleMoves.length == 0 && !this.notifiedNoValidMovesOnce) {
+                this.gameController.uiController.flashToast("No valid moves for this piece. Try another one!");
+                this.notifiedNoValidMovesOnce = true;
+            }
+        }
+
         this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
             this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
     }
