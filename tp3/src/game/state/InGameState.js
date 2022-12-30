@@ -126,6 +126,10 @@ export class InGameState extends GameState {
             buttonsMap[button].component.visible = true;
             if (button === "startButton") {
                 buttonsMap[button].setText("ABANDON");
+            } else if (button === "undoButton") {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+            } else if (button === "movieButton") {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
             }
         }
     }

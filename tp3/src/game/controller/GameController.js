@@ -14,13 +14,14 @@ import { InMovieState } from '../state/InMovieState.js';
 
 
 export class GameController {
-    constructor(scene, sceneSwitcher) {
+    constructor(scene, graphSwitcher) {
         this.scene = scene;
         this.scene.addPickListener(this);
         this.scene.addTimeListener(this);
         this.scene.addGraphLoadedListener(this);
-        this.graphLoaded = false;
-        this.sceneSwitcher = sceneSwitcher;
+        this.firstGraphLoaded = false;
+        this.loadedGraphs = [];
+        this.graphSwitcher = graphSwitcher;
 
         // state
         this.state = new StartState(this);
@@ -77,23 +78,40 @@ export class GameController {
     }
 
     notifyGraphLoaded(force = false) {
-        if (this.graphLoaded && !force) {
+        // Stop concurrent calls
+        if (this.firstGraphLoaded && !force) {
             return;
         }
-        this.graphLoaded = true;
+        this.firstGraphLoaded = true;
 
-        // Init camera
-        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
-        this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+        // Hook camera (only once per graph, to maintain original camera position)
+        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
+            this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
+            this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1], this.cameraBlackPosition[2] - 5);
+            this.cameraTarget = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1] - 3.2, this.cameraBlackPosition[2] - 2.5);
+        }
+        if (this.game != null) {
+            this.setGameCamera(this.game.currentPlayer);
+        }
 
-        // Init clock
-        this.clock = new BoardClock(this.scene, this.game, this.scene.graph.components["timer"]);
+        // Hook clock
+        this.clock = new BoardClock(this.scene.graph.components["timer"]);
+        if (this.blackRemainingSeconds != null) {
+            this.clock.update(this.blackRemainingSeconds, this.whiteRemainingSeconds);
+        }
 
-        // Init auxiliary boards
-        this.stackState = getInitialStack();
-        this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer2"], WHITE);
-        this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene, this.scene.graph.components["supportBlockPlayer1"], BLACK);
+        // Hook auxiliary boards
+        if (this.blackAuxiliaryBoard == null) {
+            this.whiteAuxiliaryBoard = new AuxiliaryBoard(this.scene.graph.components["supportBlockPlayer2"], WHITE);
+            this.blackAuxiliaryBoard = new AuxiliaryBoard(this.scene.graph.components["supportBlockPlayer1"], BLACK);
+        } else {
+            this.whiteCapturedPieces = this.whiteAuxiliaryBoard.getCapturedPieces();
+            this.blackCapturedPieces = this.blackAuxiliaryBoard.getCapturedPieces();
+            this.whiteAuxiliaryBoard.component = this.scene.graph.components["supportBlockPlayer2"];
+            this.blackAuxiliaryBoard.component = this.scene.graph.components["supportBlockPlayer1"];
+            this.whiteAuxiliaryBoard.setCapturedPieces(this.whiteCapturedPieces);
+            this.blackAuxiliaryBoard.setCapturedPieces(this.blackCapturedPieces);
+        }
 
         // Init buttons console
         const blackConsoleID = 'blackPlayerButtons';
@@ -134,12 +152,17 @@ export class GameController {
             // Init switch scene button
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => { this.sceneSwitcher(); });
+                consoleComponent, player, () => { this.graphSwitcher(); });
 
             // Init switch scene button
             const switchCameraButtonID = 'switchCameraButton';
             consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
                 consoleComponent, player, () => { this.switchCamera() });
+        }
+
+        // Remember that graph was loaded
+        if (!this.loadedGraphs.includes(this.scene.graph.filename)) {
+            this.loadedGraphs.push(this.scene.graph.filename);
         }
     }
 

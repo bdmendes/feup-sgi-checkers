@@ -1,8 +1,7 @@
 import { WHITE } from '../model/Game.js';
 
 export class AuxiliaryBoard {
-    constructor(scene, component, player) {
-        this.scene = scene;
+    constructor(component, player) {
         this.component = component;
         this.player = player;
     }

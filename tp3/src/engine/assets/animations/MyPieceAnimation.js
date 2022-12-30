@@ -127,6 +127,6 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
     }
 
     _isCollision(p1, p2) {
-        return distanceBetweenPoints(p1[0], p1[1], p2[0], p2[1]) < 0.8;
+        return distanceBetweenPoints(p1[0], p1[1], p2[0], p2[1]) < 1;
     }
 }

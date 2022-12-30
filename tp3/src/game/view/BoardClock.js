@@ -1,7 +1,5 @@
 export class BoardClock {
-    constructor(scene, game, clockComponent) {
-        this.scene = scene;
-        this.game = game;
+    constructor(clockComponent) {
         this.clockComponent = clockComponent;
 
         this.blackMinutesComponent = this.clockComponent.children["minutePlayer1"];
