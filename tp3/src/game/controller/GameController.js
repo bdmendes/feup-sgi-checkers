@@ -26,6 +26,7 @@ export class GameController {
 
         // state
         this.state = new StartState(this);
+        this.state.init();
 
         // game
         this.game = null;
@@ -126,6 +127,17 @@ export class GameController {
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
+                    if (this.state instanceof InGameState) {
+                        if (!confirm("Do you want to restart the game? All progress will be lost.")) {
+                            return;
+                        }
+                        this.reset();
+                        this.state.destruct();
+                        this.state = new StartState(this);
+                        this.state.init();
+                        return;
+                    }
+
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
                     }, 300);
@@ -211,12 +223,6 @@ export class GameController {
     }
 
     start(hintBlack, hintWhite) {
-        if (this.state instanceof InGameState) {
-            if (!confirm("Do you want to restart the game? All progress will be lost.")) {
-                return;
-            }
-        }
-
         this.game = new Game();
 
         this.reset();
