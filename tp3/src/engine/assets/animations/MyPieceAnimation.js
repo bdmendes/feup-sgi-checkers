@@ -4,7 +4,7 @@ import { MyAnimation } from './MyAnimation.js';
 import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
 import { distanceBetweenPoints } from "../../utils/math.js"
 
-export const MY_PIECE_ANIMATION_TIME = 1;
+export const MY_PIECE_ANIMATION_TIME = 0.8;
 const PIECE_HEIGHT = 0.25;
 const BLACK_KING_TEXTURE = 'blackPieceKingTexture';
 const WHITE_KING_TEXTURE = 'whitePieceKingTexture';
@@ -91,13 +91,18 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             }
             this.capturedPieces = [];
             this.finalUpdate = true;
+            if (!this.nextKeyFrame.isJump) {
+                this.animationController.gameController.lightController.disableSpotlight();
+            }
             return;
         }
 
         if (this.nextKeyFrame.isJump) {
             this._handleCaptureAnimation(t);
         } else {
-            this._checkColision();
+            let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
+            this._checkColision(currentPosition);
+            this.animationController.gameController.lightController.updateSpotlight(currentPosition);
         }
     }
 
@@ -114,9 +119,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         return -(Math.pow(timePercentage * 4 - 2, 2)) + 4
     }
 
-    _checkColision() {
-        let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
-
+    _checkColision(currentPosition) {
         for (let i = 0; i < this.capturedPieces.length; i++) {
             if (this._isCollision(this.capturedPieces[i].position, currentPosition)) {
                 if (!this.capturedPieces[i].isCaptured) {
