@@ -130,7 +130,7 @@ export class GameController {
                 consoleComponent, player, () => {
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
-                    }, 300);
+                    }, 100);
                 });
 
             // Init undo button
@@ -154,9 +154,10 @@ export class GameController {
                 });
 
             // Init switch scene button
+            // TODO: Sometimes scene camera goes mad when switching scenes
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => { this.graphSwitcher(); });
+                consoleComponent, player, () => setTimeout(() => this.graphSwitcher(), 100));
 
             // Init switch scene button
             const switchCameraButtonID = 'switchCameraButton';

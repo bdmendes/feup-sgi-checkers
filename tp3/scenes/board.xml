@@ -20,8 +20,7 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1" linear="0" quadratic="0" />
-        </omni>7
-    </lights>
+        </omni>7 </lights>
 
     <textures>
         <texture id="woodTexture" file="scenes/images/pieces_wood.jpg" />
@@ -288,7 +287,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Start" scale_y="2.5" scale_x="0.5"/>
+            <text string="Start" scale_y="2.5" scale_x="0.6" />
         </component>
 
         <component id="movieButtonTop">
@@ -303,7 +302,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Watch" scale_y="2.5" scale_x="0.5"/>
+            <text string="Watch" scale_y="2.5" scale_x="0.6" />
         </component>
 
         <component id="undoButtonTop">
@@ -318,7 +317,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Undo" scale_y="2.5" scale_x="0.5"/>
+            <text string="Undo" scale_y="2.5" scale_x="0.6" />
         </component>
 
         <component id="switchSceneButtonTop">
@@ -333,7 +332,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Travel" scale_y="2.5" scale_x="0.5"/>
+            <text string="Travel" scale_y="2.5" scale_x="0.6" />
         </component>
 
         <component id="switchCameraButtonTop">
@@ -348,7 +347,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="Camera" scale_y="2.5" scale_x="0.5"/>
+            <text string="Camera" scale_y="2.5" scale_x="0.6" />
         </component>
 
         <component id="faces">
@@ -378,30 +377,30 @@
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
-        <children>
+            <children>
                 <componentref id="startButton" />
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
                 <componentref id="switchCameraButton" />
-        </children>
+            </children>
         </component>
 
         <component id="whitePlayerButtons" visible="0">
             <transformation>
-                <rotate axis="y" angle="180"/>
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
-        <children>
+            <children>
                 <componentref id="startButton" />
                 <componentref id="movieButton" />
                 <componentref id="undoButton" />
                 <componentref id="switchSceneButton" />
                 <componentref id="switchCameraButton" />
-        </children>
+            </children>
         </component>
 
         <component id="cube_face1">
@@ -429,7 +428,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-                                    
+
         </component>
 
         <component id="cube_face3">
@@ -2119,7 +2118,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="0" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber2">
@@ -2151,7 +2150,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="0" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber4">
@@ -2167,7 +2166,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="0" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber5">
@@ -2183,7 +2182,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="0" scale_x="2" scale_y="3" />
         </component>
 
         <component id="displayNumber6">
@@ -2199,7 +2198,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="2" scale_y="3"/>
+            <text string="0" scale_x="2" scale_y="3" />
         </component>
 
         <component id="twoDotsPlayer1">
@@ -2209,7 +2208,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="timerDotUp" />
                 <componentref id="timerDotDown" />
@@ -2223,7 +2222,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="blackPieceTexture" length_s="1" length_t="1"/>
+            <texture id="blackPieceTexture" length_s="1" length_t="1" />
             <children>
                 <componentref id="timerDotUp" />
                 <componentref id="timerDotDown" />
@@ -2351,7 +2350,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="0.8" scale_y="1.8"/>
+            <text string="0" scale_x="0.8" scale_y="1.8" />
         </component>
 
         <component id="supportBlockFace4White">
@@ -2366,7 +2365,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-            <text string="0" scale_x="0.8" scale_y="1.8"/>
+            <text string="0" scale_x="0.8" scale_y="1.8" />
         </component>
 
         <component id="supportBlockFace5">

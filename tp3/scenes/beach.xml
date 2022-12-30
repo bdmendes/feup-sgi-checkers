@@ -6,7 +6,7 @@
 
     <views default="gameCamera">
         <perspective id="gameCamera" near="0.1" far="500" angle="75">
-            <from x="-3.5" y="7.5" z="5.5" />
+            <from x="-3.5" y="6.5" z="4.2" />
             <to x="-3.5" y="3.3" z="2" />
         </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
@@ -53,7 +53,7 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1" g="1" b="1" a="1.0" />
             <specular r="1" g="1" b="1" a="1.0" />
-            <attenuation constant="0" linear="0.04" quadratic="0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
         <omni id="sunLight2" enabled="1">
             <location x="10" y="10" z="-10" w="1.0" />
@@ -93,7 +93,11 @@
         <texture id="sandTexture" file="scenes/images/beach_map/sand.png" />
         <texture id="beachBallTexture" file="scenes/images/beachball.jpg" />
         <texture id="umbrellaTexture" file="scenes/images/stripes.png" />
+        <texture id="umbrellaTexture2" file="scenes/images/stripes2.jpg" />
         <texture id="beachWoodTexture" file="scenes/images/beachwood.jpg" />
+        <texture id="goldTexture" file="scenes/images/gold.jpg" />
+        <texture id="drinkTexture" file="scenes/images/drink.png" />
+        <texture id="beachTowelTexture" file="scenes/images/beachtowel.jpg" />
     </textures>
 
     <materials>
@@ -101,6 +105,12 @@
             <emission r="0" g="0" b="0" a="1.0" />
             <ambient r="0.2" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="green" shininess="1">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.1" g="0.9" b="0.2" a="1.0" />
+            <diffuse r="0.2" g="0.9" b="0.1" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
     </materials>
@@ -156,6 +166,20 @@
                 <controlpoint x="2" y="6" z="0" />
             </patch>
         </primitive>
+
+        <primitive id="circlePatch">
+            <patch degree_u="1" degree_v="3" parts_u="10" parts_v="10">
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="-2.7" />
+                <controlpoint x="2" y="0" z="0" />
+
+                <controlpoint x="-2" y="0" z="0" />
+                <controlpoint x="-2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="2.7" />
+                <controlpoint x="2" y="0" z="0" />
+            </patch>
+        </primitive>
     </primitives>
 
     <animations></animations>
@@ -164,7 +188,7 @@
         <component id="root">
             <transformation></transformation>
             <materials>
-                <material id="darkBrown" />
+                <material id="neutral" />
             </materials>
             <texture id="none" />
             <children>
@@ -173,6 +197,82 @@
                 <componentref id="gameBoard" />
                 <componentref id="beachBall" />
                 <componentref id="umbrella" />
+                <componentref id="bigUmbrella" />
+                <componentref id="towel" />
+            </children>
+        </component>
+
+        <component id="towel">
+            <transformation>
+                <translate x="-4" y="0.01" z="11" />
+                <scale x="4" y="2" z="2" />
+                <rotate axis="z" angle="90" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="beachTowelTexture" length_s="4" length_t="4" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="drink">
+            <transformation>
+                <translate x="0.0" y="0.65" z="1" />
+                <rotate axis="x" angle="90" />
+                <scale x="0.03" y="0.5" z="0.015" />
+            </transformation>
+            <materials>
+                <material id="neutral" />
+            </materials>
+            <texture id="goldTexture" length_s="4" length_t="4" />
+            <children>
+                <componentref id="rotatedHalfBarrel" />
+                <primitiveref id="halfBarrel" />
+                <componentref id="barrelCoverTop" />
+                <componentref id="barrelCoverBottom" />
+                <componentref id="drinkStick" />
+            </children>
+        </component>
+
+        <component id="rotatedHalfBarrel">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="halfBarrel" />
+            </children>
+        </component>
+
+        <component id="barrelCoverTop">
+            <transformation>
+                <translate x="0" y="6" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="drinkTexture" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="circlePatch" />
+            </children>
+        </component>
+
+        <component id="barrelCoverBottom">
+            <transformation>
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="circlePatch" />
             </children>
         </component>
 
@@ -190,12 +290,12 @@
             </children>
         </component>
 
-        <component id="umbrella">
+        <component id="drinkStick">
             <transformation>
-                <rotate axis="z" angle="10" />
-                <translate x="-8" y="10" z="-3" />
+                <translate x="1" y="7.1" z="1" />
+                <rotate axis="z" angle="-20" />
                 <rotate axis="x" angle="90" />
-                <scale x="1" y="1" z="10" />
+                <scale x="1" y="1" z="5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -203,7 +303,41 @@
             <texture id="inherit" />
             <children>
                 <componentref id="umbrellaSupport" />
-                <componentref id="umbrellaTop" />
+                <componentref id="umbrellaTopGreen" />
+            </children>
+        </component>
+
+        <component id="bigUmbrella">
+            <transformation>
+                <rotate axis="z" angle="-10" />
+                <translate x="5" y="7" z="9" />
+                <rotate axis="x" angle="90" />
+                <scale x="1.2" y="1.2" z="8" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="umbrellaSupport" />
+                <componentref id="umbrellaTopTexturized2" />
+            </children>
+        </component>
+
+        <component id="umbrella">
+            <transformation>
+                <rotate axis="z" angle="10" />
+                <translate x="-8" y="8" z="-3" />
+                <rotate axis="x" angle="90" />
+                <scale x="1" y="1" z="8" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="umbrellaSupport" />
+                <componentref id="umbrellaTopTexturized1" />
             </children>
         </component>
 
@@ -221,7 +355,7 @@
             </children>
         </component>
 
-        <component id="umbrellaTop">
+        <component id="umbrellaTopTexturized1">
             <transformation>
                 <translate x="0" y="0" z="-0.01" />
                 <scale x="1" y="1" z="0.5" />
@@ -230,6 +364,40 @@
                 <material id="inherit" />
             </materials>
             <texture id="umbrellaTexture" length_s="5" length_t="1" />
+            <children>
+                <componentref id="triangle1" />
+                <componentref id="triangle2" />
+                <componentref id="triangle3" />
+                <componentref id="triangle4" />
+            </children>
+        </component>
+
+        <component id="umbrellaTopTexturized2">
+            <transformation>
+                <translate x="0" y="0" z="-0.01" />
+                <scale x="1" y="1" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="umbrellaTexture2" length_s="5" length_t="1" />
+            <children>
+                <componentref id="triangle1" />
+                <componentref id="triangle2" />
+                <componentref id="triangle3" />
+                <componentref id="triangle4" />
+            </children>
+        </component>
+
+        <component id="umbrellaTopGreen">
+            <transformation>
+                <translate x="0" y="0" z="-0.01" />
+                <scale x="0.5" y="0.5" z="0.25" />
+            </transformation>
+            <materials>
+                <material id="green" />
+            </materials>
+            <texture id="none" length_s="5" length_t="1" />
             <children>
                 <componentref id="triangle1" />
                 <componentref id="triangle2" />
@@ -336,7 +504,7 @@
         <component id="cylinder1">
             <transformation>
                 <translate x="0" y="-2" z="0" />
-                <scale x="1" y="2" z="1" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -349,7 +517,7 @@
 
         <component id="cylinder2">
             <transformation>
-                <scale x="1" y="2" z="1" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -363,7 +531,7 @@
         <component id="cylinder3">
             <transformation>
                 <translate x="2" y="-2" z="0" />
-                <scale x="1" y="2" z="1" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -377,7 +545,7 @@
         <component id="cylinder4">
             <transformation>
                 <translate x="2" y="0" z="0" />
-                <scale x="1" y="2" z="1" />
+                <scale x="1" y="1" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -390,11 +558,10 @@
 
         <component id="walls" pickable="1">
             <transformation>
-                <scale x="18" y="18" z="18" />
+                <scale x="15" y="15" z="15" />
                 <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
                 <material id="neutral" />
             </materials>
             <texture id="bankTexture" length_s="2" length_t="2" />
@@ -512,12 +679,11 @@
                 <scale x="1.5" y="2" z="0.1" />
             </transformation>
             <materials>
-                <material id="neutral" />
                 <material id="darkBrown" />
-                <material id="inherit" />
             </materials>
             <texture id="beachWoodTexture" length_s="2" length_t="2" />
             <children>
+                <componentref id="drink" />
                 <componentref id="cube_face1" />
                 <componentref id="cube_face2" />
                 <componentref id="cube_face3" />
