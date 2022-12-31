@@ -1,4 +1,5 @@
 import { GameState } from './GameState.js';
+import { BLACK } from '../model/Game.js';
 
 export class GameOverState extends GameState {
     constructor(gameController) {
@@ -6,6 +7,18 @@ export class GameOverState extends GameState {
     }
 
     init() {
+        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
+    }
+
+    updateButtonsVisibility(player) {
+        if (player === BLACK) {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
+        } else {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
+        }
+
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
             for (let button in buttonsMap) {
                 if (button === "startButton") {
@@ -22,11 +35,5 @@ export class GameOverState extends GameState {
 
     onPiecePicked(_) {
         this.gameController.uiController.flashToast("Eager, aren't you? Start a new game first!");
-    }
-
-    destruct() {
-        for (const filename in this.gameController.graphNeedsReset) {
-            this.gameController.graphNeedsReset[filename] = true;
-        }
     }
 }

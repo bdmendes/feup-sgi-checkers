@@ -11,21 +11,37 @@ export class InMovieState extends GameState {
 
     init() {
         this.gameController.reset();
+        this.updateButtonsVisibility(null);
+        this.gameController.uiController.flashToast("Playing movie...", null, true);
+    }
+
+    onSceneChanged() {
+        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
+    }
+
+    updateButtonsVisibility(player) {
+        if (player === BLACK) {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
+        } else {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
+        }
 
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
             for (let button in buttonsMap) {
                 if (button === "movieButton") {
                     buttonsMap[button].component.visible = true;
-                    buttonsMap[button].setText("PLAY");
+                    buttonsMap[button].setText("End");
                 } else if (button === "switchCameraButton") {
+                    buttonsMap[button].component.visible = true;
+                } else if (button === "switchSceneButton") {
                     buttonsMap[button].component.visible = true;
                 } else {
                     buttonsMap[button].component.visible = false;
                 }
             }
         }
-
-        this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
     onTimeElapsed() {
@@ -33,7 +49,7 @@ export class InMovieState extends GameState {
         if (this.currentMove >= this.gameController.game.moves.length) {
             if (!this.flashedMovieEnd) {
                 this.flashedMovieEnd = true;
-                this.gameController.uiController.flashToast("Movie ended! Press PLAY to go back to the game.", null, true);
+                this.gameController.uiController.flashToast("Movie ended! Press END to go back to the game.", null, true);
             }
             return;
         }

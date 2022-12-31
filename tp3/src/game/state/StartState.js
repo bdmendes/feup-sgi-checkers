@@ -11,7 +11,21 @@ export class StartState extends GameState {
             return;
         }
 
+        this.updateButtonsVisibility(null);
+
+        // Switch camera to black
+        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] === WHITE) {
+            this.gameController.cameraController.switchCamera();
+        }
+    }
+
+    onSceneChanged() {
+        this.init();
+    }
+
+    updateButtonsVisibility(_) {
         // Set black buttons visible
+        const buttonsMap = this.gameController.blackButtons;
         for (let button in this.gameController.blackButtons) {
             buttonsMap[button].component.visible = true;
             if (button === "startButton") {
@@ -23,12 +37,10 @@ export class StartState extends GameState {
                 buttonsMap[button].component.visible = false;
             }
         }
-        this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
-        this.gameController.blackButtons["startButton"].parentConsole.visible = true;
 
-        // Switch camera to black
-        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] === WHITE) {
-            this.gameController.cameraController.switchCamera();
+        if (this.gameController.whiteButtons["startButton"] != null) {
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
+            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
         }
     }
 

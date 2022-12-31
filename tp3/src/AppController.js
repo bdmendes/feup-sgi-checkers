@@ -84,7 +84,7 @@ export class AppController {
         this.lastSelectedGraph = this.selectedGraph;
     }
 
-    switchScene(filename = null, resetCamera = true) {
+    switchScene(filename = null) {
         if (filename != null) {
             this.selectedGraph = filename;
         } else {

@@ -26,7 +26,6 @@ export class GameController {
         this.scene.addGraphLoadedListener(this);
         this.firstGraphLoaded = false;
         this.graphSwitcher = graphSwitcher;
-        this.graphNeedsReset = {};
 
         // state
         this._state = new StartState(this);
@@ -34,6 +33,9 @@ export class GameController {
 
         // game
         this.game = null;
+        this.resignedGame = null;
+
+        // component hooks
         this.pieces = new Map();
         this.blackButtons = {};
         this.whiteButtons = {};
@@ -46,10 +48,7 @@ export class GameController {
         this.hintWhite = null;
         this.hintBlack = null;
 
-        // selected piece
-        this.selectedPiece = null;
-
-        // captured pieces
+        // captured pieces history (for undo)
         this.capturedPieces = {};
 
         // controllers
@@ -133,6 +132,7 @@ export class GameController {
                             return;
                         }
                         this.switchState(new GameOverState(this));
+                        this.resignedGame = true;
                         return;
                     }
 
@@ -151,7 +151,8 @@ export class GameController {
             consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
                 consoleComponent, player, () => {
                     if (this._state instanceof InMovieState) {
-                        this.switchState(this.game.winner() == null ? new InGameState(this) : new GameOverState(this));
+                        this.switchState(!this.resignedGame && this.game.winner() == null
+                            ? new InGameState(this) : new GameOverState(this));
                         return;
                     }
 
@@ -171,18 +172,6 @@ export class GameController {
 
         // Update scene-dependent state variables
         this._state.onSceneChanged();
-
-        // Update know graphs for resetting
-        // TODO: GAME OVER RESET OVER ALL BOARDS NOT WORKING
-        if (this.graphNeedsReset[this.scene.graph.filename] == null) {
-            this.graphNeedsReset[this.scene.graph.filename] = false;
-        } else if (this.graphNeedsReset[this.scene.graph.filename]) {
-            //alert("Graph changed! Resetting game...")
-            this.reset();
-            this.graphNeedsReset[this.scene.graph.filename] = false;
-        }
-        //alert(this.graphNeedsReset[this.scene.graph.filename]);
-        console.log(this.graphNeedsReset)
     }
 
     // TODO: Move this outahere!
@@ -210,10 +199,10 @@ export class GameController {
 
         // Init game model
         this.game = new Game();
+        this.resignedGame = false;
 
         // Reset game view
         this.reset();
-        this.graphNeedsReset[this.scene.graph.filename] = false;
 
         // Hook pieces
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
@@ -229,9 +218,6 @@ export class GameController {
 
         // Flash welcome message
         this.uiController.flashToast("Game started! Good luck!");
-
-        // Set game camera
-        setTimeout(() => this.cameraController.setGameCamera(BLACK), 100);
     }
 
     reset() {

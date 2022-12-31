@@ -63,4 +63,6 @@ export class UndoState extends GameState {
             this.gameController.cameraController.switchCamera();
         }
     }
+
+    updateButtonsVisibility() { }
 }

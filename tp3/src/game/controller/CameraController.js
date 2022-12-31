@@ -28,10 +28,10 @@ export class CameraController {
         }
 
         // Set camera to the right position for the current player
-        this.setGameCamera(this.gameController.game?.currentPlayer ?? BLACK);
+        this._setGameCamera(this.gameController.game?.currentPlayer ?? BLACK);
     }
 
-    setGameCamera(player, updateButtons = true) {
+    _setGameCamera(player, updateButtons = true) {
         const graph = this.gameController.scene.graph.filename;
         const camera = new CGFcamera(this.gameController.scene.camera.fov,
             this.gameController.scene.camera.near, this.gameController.scene.camera.far,
@@ -55,7 +55,7 @@ export class CameraController {
         const player = this.facingPlayer[graph];
 
         // Put the camera in the right position for rotating
-        this.setGameCamera(player ?? BLACK, false);
+        this._setGameCamera(player ?? BLACK, false);
 
         // Inject camera animation
         const cameraAnimation = new MyCameraAnimation(this.gameController.scene,
