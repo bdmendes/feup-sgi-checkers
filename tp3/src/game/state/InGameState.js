@@ -23,7 +23,7 @@ export class InGameState extends GameState {
             ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
         const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
         if (facingPlayer != nextToPlay) {
-            this.gameController.cameraController.switchCamera();
+            this.gameController.cameraController.setGameCamera();
         }
 
         // Update buttons visibility
