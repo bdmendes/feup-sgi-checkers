@@ -10,7 +10,7 @@ export class GameOverState extends GameState {
             for (let button in buttonsMap) {
                 if (button === "startButton") {
                     buttonsMap[button].component.visible = true;
-                    buttonsMap[button].setText("START");
+                    buttonsMap[button].setText("Start");
                 } else if (button === "movieButton" || button === "switchSceneButton") {
                     buttonsMap[button].component.visible = true;
                 } else {
@@ -22,5 +22,11 @@ export class GameOverState extends GameState {
 
     onPiecePicked(_) {
         this.gameController.uiController.flashToast("Eager, aren't you? Start a new game first!");
+    }
+
+    destruct() {
+        for (const filename in this.gameController.graphNeedsReset) {
+            this.gameController.graphNeedsReset[filename] = true;
+        }
     }
 }

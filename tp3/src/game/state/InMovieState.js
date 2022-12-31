@@ -29,6 +29,7 @@ export class InMovieState extends GameState {
     }
 
     onTimeElapsed() {
+        // If movie ended, flash toast and return
         if (this.currentMove >= this.gameController.game.moves.length) {
             if (!this.flashedMovieEnd) {
                 this.flashedMovieEnd = true;
@@ -37,13 +38,12 @@ export class InMovieState extends GameState {
             return;
         }
 
-        let [from, to, _, nextToPlay] = this.gameController.game.moves[this.currentMove];
-
-        let capturedPieces = this.gameController.getCapturedPieces(from, to);
-
+        // Get current move and captured pieces
+        const [from, to, _, nextToPlay] = this.gameController.game.moves[this.currentMove];
+        const capturedPieces = this.gameController.getCapturedPieces(from, to);
         let pickedComponent = null;
         let piece = null;
-        for (const [id, p] of this.gameController.pieces) {
+        for (const [_, p] of this.gameController.pieces) {
             if (p.position[0] == from[0] && p.position[1] == from[1]) {
                 pickedComponent = this.gameController.scene.graph.components[p.componentID];
                 p.position = to;
@@ -52,11 +52,7 @@ export class InMovieState extends GameState {
             }
         }
 
-        if (pickedComponent == null) {
-            console.error("Could not find piece to move in movie");
-            return;
-        }
-
+        // Enable piece spotlight and inject move animation
         this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
             this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, capturedPieces);
@@ -68,8 +64,8 @@ export class InMovieState extends GameState {
             this.gameController.whiteAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
         }
 
+        // Prepare next move
         this.currentMove += 1;
-
         this.currentToPlay = nextToPlay;
     }
 

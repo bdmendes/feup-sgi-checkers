@@ -11,8 +11,8 @@ export class StartState extends GameState {
             return;
         }
 
-        const buttonsMap = this.gameController.game.currentPlayer === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
-        for (let button in buttonsMap) {
+        // Set black buttons visible
+        for (let button in this.gameController.blackButtons) {
             buttonsMap[button].component.visible = true;
             if (button === "startButton") {
                 buttonsMap[button].setText("Start");
@@ -23,14 +23,13 @@ export class StartState extends GameState {
                 buttonsMap[button].component.visible = false;
             }
         }
-
-        this.gameController.cameraController.setGameCamera(BLACK);
-        if (this.gameController.game.currentPlayer == WHITE) {
-            this.gameController.switchCamera();
-            this.gameController.reset();
-        }
         this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
         this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+
+        // Switch camera to black
+        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] === WHITE) {
+            this.gameController.cameraController.switchCamera();
+        }
     }
 
     onPiecePicked(_) {

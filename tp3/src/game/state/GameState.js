@@ -18,8 +18,26 @@ export class GameState {
             ? this.gameController.blackButtons
             : this.gameController.whiteButtons;
         const button = buttonsMap[component.id];
-        button.pick();
+        button?.pick();
     }
 
     onTimeElapsed() { }
+
+    onSceneChanged() {
+        this.updateButtonsVisibility(this.gameController.game?.currentPlayer ?? BLACK);
+    }
+
+    updateButtonsVisibility(player) {
+        if (this.gameController.whiteButtons["startButton"] == null) {
+            return;
+        }
+
+        if (player === BLACK) {
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
+            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+        } else {
+            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
+            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
+        }
+    }
 }

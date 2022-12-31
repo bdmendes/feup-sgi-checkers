@@ -1,6 +1,7 @@
 import { GameState } from "./GameState.js";
 import { InGameState } from "./InGameState.js";
 import { BLACK } from "../model/Game.js";
+import { GAME_TIME } from "../controller/GameController.js";
 
 export class UndoState extends GameState {
     constructor(gameController) {
@@ -53,13 +54,13 @@ export class UndoState extends GameState {
         this.gameController.game.undo();
 
         // Update clock
-        this.gameController.whiteRemainingSeconds = 5 * 60;
-        this.gameController.blackRemainingSeconds = 5 * 60;
+        this.gameController.whiteRemainingSeconds = GAME_TIME;
+        this.gameController.blackRemainingSeconds = GAME_TIME;
         this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 
         // Flip camera if turn changed
         if (this.gameController.game.currentPlayer != currentPlayer) {
-            this.gameController.animationController.injectCameraAnimation(false);
+            this.gameController.cameraController.switchCamera();
         }
     }
 }

@@ -15,6 +15,8 @@ import { InMovieState } from '../state/InMovieState.js';
 import { GameOverState } from '../state/GameOverState.js';
 import { UndoState } from '../state/UndoState.js';
 
+export const GAME_TIME = 15;
+
 
 export class GameController {
     constructor(scene, graphSwitcher) {
@@ -24,6 +26,7 @@ export class GameController {
         this.scene.addGraphLoadedListener(this);
         this.firstGraphLoaded = false;
         this.graphSwitcher = graphSwitcher;
+        this.graphNeedsReset = {};
 
         // state
         this._state = new StartState(this);
@@ -129,8 +132,7 @@ export class GameController {
                         if (!confirm("Do you want to restart the game? All progress will be lost.")) {
                             return;
                         }
-                        this.reset();
-                        this.switchState(new StartState(this));
+                        this.switchState(new GameOverState(this));
                         return;
                     }
 
@@ -164,8 +166,23 @@ export class GameController {
             // Init switch camera button
             const switchCameraButtonID = 'switchCameraButton';
             consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
-                consoleComponent, player, () => { this.switchCamera() });
+                consoleComponent, player, () => this.cameraController.switchCamera());
         }
+
+        // Update scene-dependent state variables
+        this._state.onSceneChanged();
+
+        // Update know graphs for resetting
+        // TODO: GAME OVER RESET OVER ALL BOARDS NOT WORKING
+        if (this.graphNeedsReset[this.scene.graph.filename] == null) {
+            this.graphNeedsReset[this.scene.graph.filename] = false;
+        } else if (this.graphNeedsReset[this.scene.graph.filename]) {
+            //alert("Graph changed! Resetting game...")
+            this.reset();
+            this.graphNeedsReset[this.scene.graph.filename] = false;
+        }
+        //alert(this.graphNeedsReset[this.scene.graph.filename]);
+        console.log(this.graphNeedsReset)
     }
 
     // TODO: Move this outahere!
@@ -177,7 +194,7 @@ export class GameController {
         while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
             current[0] += xdelta;
             current[1] += ydelta;
-            this.pieces.forEach((piece, key) => {
+            this.pieces.forEach((piece, _) => {
                 if (!piece.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
                     capturedPieces.push(piece);
                 }
@@ -187,11 +204,18 @@ export class GameController {
     }
 
     start(hintBlack, hintWhite) {
+        // Update hint settings
+        this.hintBlack = hintBlack;
+        this.hintWhite = hintWhite;
+
+        // Init game model
         this.game = new Game();
 
+        // Reset game view
         this.reset();
+        this.graphNeedsReset[this.scene.graph.filename] = false;
 
-        // Init pieces
+        // Hook pieces
         let [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (let [key, value] of initBlackPositions) {
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
@@ -200,16 +224,14 @@ export class GameController {
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
-        this.hintBlack = hintBlack;
-        this.hintWhite = hintWhite;
+        // Switch to game state
+        this.switchState(new InGameState(this));
 
-        this._state.destruct();
-        this._state = new InGameState(this);
-        this._state.init();
-
-        this.cameraController.setGameCamera(this.game.currentPlayer);
-
+        // Flash welcome message
         this.uiController.flashToast("Game started! Good luck!");
+
+        // Set game camera
+        setTimeout(() => this.cameraController.setGameCamera(BLACK), 100);
     }
 
     reset() {
@@ -229,9 +251,9 @@ export class GameController {
         // Save time and reset it
         this.savedWhiteSeconds = this.whiteRemainingSeconds;
         this.savedBlackSeconds = this.blackRemainingSeconds;
-        this.whiteRemainingSeconds = 5 * 60;
-        this.blackRemainingSeconds = 5 * 60;
-        this.clock.update(0, 0);
+        this.whiteRemainingSeconds = GAME_TIME;
+        this.blackRemainingSeconds = GAME_TIME;
+        this.clock.update(GAME_TIME, GAME_TIME);
 
         // Reset captured pieces
         this.savedCapturedPieces = { ...this.capturedPieces };

@@ -1,5 +1,4 @@
 import { MyPieceAnimation } from "../../engine/assets/animations/MyPieceAnimation.js";
-import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
 
 export class AnimationController {
     constructor(scene, gameController) {
@@ -63,10 +62,5 @@ export class AnimationController {
             this.scene.graph.animations[component.id].addMidKeyframe(pos, capturedPiece.position, true, false);
             capturedPiece.isCaptured = false;
         }
-    }
-
-    injectCameraAnimation(isCapture, isMove = true) {
-        const cameraAnimation = new MyCameraAnimation(this.scene, this.scene.graph.selectedCameraID, this.scene.camera, isCapture, isMove);
-        this.scene.graph.animations[this.scene.graph.selectedCameraID] = cameraAnimation;
     }
 }

@@ -1,42 +1,68 @@
 import { CGFcamera } from "../../../../lib/CGF.js";
 import { BLACK, WHITE } from "../model/Game.js";
+import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
 
 const GAME_CAMERA_ID = "gameCamera";
 
 export class CameraController {
     constructor(gameController) {
         this.gameController = gameController;
-        this.cameraAnimation = 0;
-        this.cameraTarget = null;
-        this.cameraBlackPosition = null;
-        this.cameraWhitePosition = null;
+
+        // Per graph values
+        this.cameraTarget = {};
+        this.cameraBlackPosition = {};
+        this.cameraWhitePosition = {};
+        this.facingPlayer = {};
     }
 
     hookSceneCamera() {
-        this.cameraTarget = vec3.fromValues(this.gameController.scene.graph.cameras["gameCamera"].target[0],
-            this.gameController.scene.graph.cameras["gameCamera"].target[1], this.gameController.scene.graph.cameras["gameCamera"].target[2]);
-        this.cameraBlackPosition = vec3.fromValues(...this.gameController.scene.graph.cameras["gameCamera"].position);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1],
-            this.cameraBlackPosition[2] + 2 * (this.cameraTarget[2] - this.cameraBlackPosition[2]));
+        const graph = this.gameController.scene.graph.filename;
+
+        // Do not hook camera if it's already hooked
+        if (!(graph in this.cameraTarget)) {
+            this.cameraTarget[graph] = vec3.fromValues(this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[0],
+                this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[1], this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[2]);
+            this.cameraBlackPosition[graph] = vec3.fromValues(...this.gameController.scene.graph.cameras[GAME_CAMERA_ID].position);
+            this.cameraWhitePosition[graph] = vec3.fromValues(this.cameraBlackPosition[graph][0], this.cameraBlackPosition[graph][1],
+                this.cameraBlackPosition[graph][2] + 2 * (this.cameraTarget[graph][2] - this.cameraBlackPosition[graph][2]));
+        }
+
+        // Set camera to the right position for the current player
+        this.setGameCamera(this.gameController.game?.currentPlayer ?? BLACK);
     }
 
-    setGameCamera(player) {
-        const camera = new CGFcamera(this.gameController.scene.camera.fov, this.gameController.scene.camera.near,
-            this.gameController.scene.camera.far, player === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition, this.cameraTarget);
+    setGameCamera(player, updateButtons = true) {
+        const graph = this.gameController.scene.graph.filename;
+        const camera = new CGFcamera(this.gameController.scene.camera.fov,
+            this.gameController.scene.camera.near, this.gameController.scene.camera.far,
+            player === BLACK ? this.cameraBlackPosition[graph] : this.cameraWhitePosition[graph], this.cameraTarget[graph]);
 
+        // Set active camera
         this.gameController.scene.graph.selectedCameraID = GAME_CAMERA_ID;
         this.gameController.scene.graph.cameras[GAME_CAMERA_ID] = camera;
         this.gameController.scene.camera = this.gameController.scene.graph.cameras[GAME_CAMERA_ID];
         this.gameController.scene.interface.setActiveCamera(this.gameController.scene.camera);
+        this.facingPlayer[this.gameController.scene.graph.filename] = player;
+
+        // Update buttons visibility
+        if (updateButtons) {
+            this.gameController._state.updateButtonsVisibility(player);
+        }
     }
 
-    switchCamera() {
-        if (this.cameraAnimation++ % 2 == 0) {
-            this.setGameCamera(this.gameController.game.currentPlayer);
-        } else {
-            this.setGameCamera(this.gameController.game.currentPlayer == BLACK ? WHITE : BLACK);
-        }
+    switchCamera(isCapture = false, isMove = false) {
+        const graph = this.gameController.scene.graph.filename;
+        const player = this.facingPlayer[graph];
 
-        this.gameController.animationController.injectCameraAnimation(false, false);
+        // Put the camera in the right position for rotating
+        this.setGameCamera(player ?? BLACK, false);
+
+        // Inject camera animation
+        const cameraAnimation = new MyCameraAnimation(this.gameController.scene,
+            this.gameController.scene.graph.selectedCameraID, this.gameController.scene.camera, isCapture, isMove);
+        this.gameController.scene.graph.animations[this.gameController.scene.graph.selectedCameraID] = cameraAnimation;
+        const newPlayer = this.facingPlayer[graph] === WHITE ? BLACK : WHITE;
+        this.facingPlayer[graph] = newPlayer;
+        this.gameController._state.updateButtonsVisibility(newPlayer);
     }
 }
