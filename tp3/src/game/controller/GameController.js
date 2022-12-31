@@ -136,7 +136,7 @@ export class GameController {
 
                     setTimeout(function () {
                         document.getElementById('modal').style.visibility = 'visible';
-                    }, 100);
+                    }, 250);
                 });
 
             // Init undo button
@@ -160,7 +160,7 @@ export class GameController {
             // Init switch scene button
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
-                consoleComponent, player, () => setTimeout(() => this.graphSwitcher(), 100));
+                consoleComponent, player, () => this.graphSwitcher());
 
             // Init switch camera button
             const switchCameraButtonID = 'switchCameraButton';
@@ -185,11 +185,19 @@ export class GameController {
         this.reset();
 
         // Hook pieces
-        let [initBlackPositions, initWhitePositions] = getInitialPositions();
+        const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (let [key, value] of initBlackPositions) {
+            if (this.pieces.has('blackPiece' + key)) {
+                this.pieces.get('blackPiece' + key).position = value;
+                continue;
+            }
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
         }
         for (let [key, value] of initWhitePositions) {
+            if (this.pieces.has('whitePiece' + key)) {
+                this.pieces.get('whitePiece' + key).position = value;
+                continue;
+            }
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
@@ -207,6 +215,7 @@ export class GameController {
             const component = this.scene.graph.components[id];
             if (component.animationID != null) {
                 this.savedAnimations[id] = this.scene.graph.animations[component.animationID];
+                delete this.scene.graph.animations[component.animationID];
                 component.animationID = null;
             }
             this.savedPieces.set(id, { ...piece });

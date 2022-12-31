@@ -41,13 +41,11 @@ export class AppController {
         // Hook start button to game initialization
         document.getElementById('modal').style.visibility = 'hidden';
         document.getElementById('startButton').onclick = () => {
-            setTimeout(() => {
-                document.getElementById('modal').style.visibility = 'hidden';
-                const hintValue = document.getElementById('hints').value;
-                const scenarioValue = document.getElementById('scenario').value;
-                this.switchScene(scenarioValue);
-                this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
-            }, 250);
+            setTimeout(() => document.getElementById('modal').style.visibility = 'hidden', 250);
+            const hintValue = document.getElementById('hints').value;
+            const scenarioValue = document.getElementById('scenario').value;
+            this.switchScene(scenarioValue);
+            this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
         };
     }
 
@@ -75,8 +73,11 @@ export class AppController {
             for (const [id, _] of this.gameController.pieces) {
                 const animation = this.graphs[this.lastSelectedGraph].animations[id];
                 if (animation != null) {
-                    this.graphs[this.selectedGraph].animations[id] = animation;
                     this.graphs[this.selectedGraph].components[id].animationID = animation.id;
+                    this.graphs[this.selectedGraph].animations[id] = animation;
+                } else {
+                    this.graphs[this.selectedGraph].components[id].animationID = null;
+                    delete this.graphs[this.selectedGraph].animations[id];
                 }
             }
         }
