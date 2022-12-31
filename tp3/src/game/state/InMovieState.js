@@ -1,5 +1,6 @@
 import { GameState } from './GameState.js';
-import { BLACK, Game } from '../model/Game.js';
+import { BLACK } from '../model/Game.js';
+import { capturedPieces } from '../view/Board.js';
 
 export class InMovieState extends GameState {
     constructor(gameController) {
@@ -11,7 +12,7 @@ export class InMovieState extends GameState {
 
     init() {
         this.gameController.reset();
-        this.updateButtonsVisibility(null);
+        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
         this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
@@ -56,7 +57,7 @@ export class InMovieState extends GameState {
 
         // Get current move and captured pieces
         const [from, to, _, nextToPlay] = this.gameController.game.moves[this.currentMove];
-        const capturedPieces = this.gameController.getCapturedPieces(from, to);
+        const captured = capturedPieces(from, to, this.gameController.pieces);
         let pickedComponent = null;
         let piece = null;
         for (const [_, p] of this.gameController.pieces) {
@@ -71,13 +72,13 @@ export class InMovieState extends GameState {
         // Enable piece spotlight and inject move animation
         this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, capturedPieces);
+            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured);
 
         // Update captured pieces marker
         if (this.currentToPlay === BLACK) {
-            this.gameController.blackAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.blackAuxiliaryBoard.addCapturedPieces(captured.length);
         } else {
-            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(captured.length);
         }
 
         // Prepare next move

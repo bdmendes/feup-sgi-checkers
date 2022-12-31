@@ -15,8 +15,7 @@ import { InMovieState } from '../state/InMovieState.js';
 import { GameOverState } from '../state/GameOverState.js';
 import { UndoState } from '../state/UndoState.js';
 
-export const GAME_TIME = 15;
-
+export const GAME_TIME = 5 * 60;
 
 export class GameController {
     constructor(scene, graphSwitcher) {
@@ -28,8 +27,7 @@ export class GameController {
         this.graphSwitcher = graphSwitcher;
 
         // state
-        this._state = new StartState(this);
-        this._state.init();
+        this.switchState(new StartState(this));
 
         // game
         this.game = null;
@@ -48,9 +46,6 @@ export class GameController {
         this.hintWhite = null;
         this.hintBlack = null;
 
-        // captured pieces history (for undo)
-        this.capturedPieces = {};
-
         // controllers
         this.lightController = new LightController(scene);
         this.textureController = new TextureController(scene);
@@ -67,6 +62,9 @@ export class GameController {
         this.savedBlackCapturedPieces = 0;
         this.savedStackState = null;
         this.savedCapturedPieces = null;
+
+        // saved captured pieces for undoing
+        this.capturedPieces = {};
     }
 
     notifyPick(component) {
@@ -174,24 +172,6 @@ export class GameController {
         this._state.onSceneChanged();
     }
 
-    // TODO: Move this outahere!
-    getCapturedPieces(from, to) {
-        let capturedPieces = [];
-        let xdelta = (to[0] > from[0]) ? 1 : -1;
-        let ydelta = (to[1] > from[1]) ? 1 : -1;
-        let current = from.slice();
-        while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
-            current[0] += xdelta;
-            current[1] += ydelta;
-            this.pieces.forEach((piece, _) => {
-                if (!piece.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
-                    capturedPieces.push(piece);
-                }
-            });
-        }
-        return capturedPieces;
-    }
-
     start(hintBlack, hintWhite) {
         // Update hint settings
         this.hintBlack = hintBlack;
@@ -275,7 +255,7 @@ export class GameController {
     }
 
     switchState(newState) {
-        this._state.destruct();
+        this._state?.destruct();
         this._state = newState;
         this._state.init();
     }

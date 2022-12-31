@@ -3,6 +3,23 @@ import { BLACK } from '../model/Game.js';
 const BLACK_PIECE_STR = 'blackPiece';
 const WHITE_PIECE_STR = 'whitePiece';
 
+export function capturedPieces(from, to, pieces) {
+    let capturedPieces = [];
+    let xdelta = (to[0] > from[0]) ? 1 : -1;
+    let ydelta = (to[1] > from[1]) ? 1 : -1;
+    let current = from.slice();
+    while (current[0] + xdelta != to[0] && current[1] + ydelta != to[1]) {
+        current[0] += xdelta;
+        current[1] += ydelta;
+        pieces.forEach((piece, _) => {
+            if (!piece.isCaptured && piece.position[0] === current[0] && piece.position[1] === current[1]) {
+                capturedPieces.push(piece);
+            }
+        });
+    }
+    return capturedPieces;
+}
+
 export function columnToLetter(column) {
     return String.fromCharCode(65 + column);
 }

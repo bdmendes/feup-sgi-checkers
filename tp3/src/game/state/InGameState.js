@@ -3,6 +3,7 @@ import { BLACK, WHITE } from '../model/Game.js';
 import { parsePosition, checkValidPosition } from '../view/Board.js';
 import { GameOverState } from './GameOverState.js';
 import { GAME_TIME } from '../controller/GameController.js';
+import { capturedPieces } from '../view/Board.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
@@ -90,25 +91,25 @@ export class InGameState extends GameState {
         }
 
         // Update game model
-        let currentPlayer = this.gameController.game.currentPlayer;
+        const currentPlayer = this.gameController.game.currentPlayer;
         this.gameController.game.move(this.selectedPiece.position, pickedPosition);
         this.selectedPiece.position = pickedPosition;
 
         // Update captured pieces history (for undoing)
-        let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
-        let capturedPieces = this.gameController.getCapturedPieces(from, to);
-        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces.map(piece => piece.componentID);
+        const [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
+        const captured = capturedPieces(from, to, this.gameController.pieces);
+        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = captured.map(piece => piece.componentID);
 
         // Animate move
-        let pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
+        const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
+            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, captured);
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
-            this.gameController.blackAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.blackAuxiliaryBoard.addCapturedPieces(captured.length);
         } else {
-            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(captured.length);
         }
 
         // End if game is over

@@ -24,7 +24,7 @@ export class GameState {
     onTimeElapsed() { }
 
     onSceneChanged() {
-        this.updateButtonsVisibility(this.gameController.game?.currentPlayer ?? BLACK);
+        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] ?? BLACK);
     }
 
     updateButtonsVisibility(player) { }

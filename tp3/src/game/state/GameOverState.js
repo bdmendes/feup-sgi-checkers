@@ -10,6 +10,10 @@ export class GameOverState extends GameState {
         this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
     }
 
+    onSceneChanged() {
+        this.init();
+    }
+
     updateButtonsVisibility(player) {
         if (player === BLACK) {
             this.gameController.blackButtons["startButton"].parentConsole.visible = true;
