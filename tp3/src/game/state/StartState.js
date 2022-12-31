@@ -24,7 +24,7 @@ export class StartState extends GameState {
             }
         }
 
-        this.gameController.setGameCamera(BLACK);
+        this.gameController.cameraController.setGameCamera(BLACK);
         if (this.gameController.game.currentPlayer == WHITE) {
             this.gameController.switchCamera();
             this.gameController.reset();

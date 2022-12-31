@@ -87,7 +87,7 @@ export class InGameState extends GameState {
         }
 
         // force game camera
-        this.gameController.setGameCamera(currentPlayer);
+        this.gameController.cameraController.setGameCamera(currentPlayer);
         if (currentPlayer != nextToPlay) {
             if (nextToPlay === BLACK) {
                 this.gameController.whiteRemainingSeconds = 5 * 60;

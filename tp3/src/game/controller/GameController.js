@@ -1,7 +1,7 @@
-import { CGFcamera } from '../../../../lib/CGF.js';
 import { getInitialPositions, getInitialStack } from '../view/Board.js';
 import { AnimationController } from './AnimationController.js';
 import { LightController } from './LightController.js';
+import { CameraController } from './CameraController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
 import { MyPiece } from '../view/MyPiece.js';
@@ -39,9 +39,8 @@ export class GameController {
         this.blackAuxiliaryBoard = null;
         this.clock = null;
         this.stackState = null;
-        this.hintWhite = false;
-        this.hintBlack = false;
-        this.cameraAnimation = 0;
+        this.hintWhite = null;
+        this.hintBlack = null;
 
         // selected piece
         this.selectedPiece = null;
@@ -53,6 +52,7 @@ export class GameController {
         this.lightController = new LightController(scene);
         this.textureController = new TextureController(scene);
         this.animationController = new AnimationController(scene, this);
+        this.cameraController = new CameraController(this);
         this.uiController = new UIController();
 
         // saved state for resetting
@@ -88,11 +88,7 @@ export class GameController {
         this.firstGraphLoaded = true;
 
         // Hook camera
-        this.cameraTarget = vec3.fromValues(this.scene.graph.cameras["gameCamera"].target[0],
-            this.scene.graph.cameras["gameCamera"].target[1], this.scene.graph.cameras["gameCamera"].target[2]);
-        this.cameraBlackPosition = vec3.fromValues(...this.scene.graph.cameras["gameCamera"].position);
-        this.cameraWhitePosition = vec3.fromValues(this.cameraBlackPosition[0], this.cameraBlackPosition[1],
-            this.cameraBlackPosition[2] + 2 * (this.cameraTarget[2] - this.cameraBlackPosition[2]));
+        this.cameraController.hookSceneCamera();
 
         // Hook light
         this.lightController.setSpotlight();
@@ -241,7 +237,7 @@ export class GameController {
         this.state = new InGameState(this);
         this.state.init();
 
-        this.setGameCamera(this.game.currentPlayer);
+        this.cameraController.setGameCamera(this.game.currentPlayer);
 
         this.uiController.flashToast("Game started! Good luck!");
     }
@@ -302,28 +298,5 @@ export class GameController {
         this.blackAuxiliaryBoard.setCapturedPieces(this.savedBlackCapturedPieces);
         this.stackState = { ...this.savedStackState };
         this.capturedPieces = { ...this.savedCapturedPieces };
-    }
-
-    //////////////////////////////////////////////////////////////
-    // CAMERA CONTROLLER??
-
-    setGameCamera(currentPlayer, gameCameraID = "gameCamera") {
-        let camera = new CGFcamera(this.scene.camera.fov, this.scene.camera.near, this.scene.camera.far,
-            currentPlayer === BLACK ? this.cameraBlackPosition : this.cameraWhitePosition, this.cameraTarget);
-
-        this.scene.graph.selectedCameraID = gameCameraID;
-        this.scene.graph.cameras[gameCameraID] = camera;
-        this.scene.camera = this.scene.graph.cameras[gameCameraID];
-        this.scene.interface.setActiveCamera(this.scene.camera);
-    }
-
-    switchCamera() {
-        if (this.cameraAnimation++ % 2 == 0) {
-            this.setGameCamera(this.game.currentPlayer);
-        } else {
-            this.setGameCamera((this.game.currentPlayer == BLACK) ? WHITE : BLACK);
-        }
-
-        this.animationController.injectCameraAnimation(false, false);
     }
 }

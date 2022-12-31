@@ -3,8 +3,6 @@ import { MyInterface } from './engine/MyInterface.js';
 import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
 import { GameController } from './game/controller/GameController.js';
-import { UIController } from './game/controller/UIController.js';
-import { BLACK } from './game/model/Game.js';
 
 export class AppController {
     constructor(fileNames, graphNames) {
@@ -42,7 +40,6 @@ export class AppController {
 
         // Hook start button to game initialization
         document.getElementById('modal').style.visibility = 'hidden';
-
         document.getElementById('startButton').onclick = () => {
             setTimeout(() => {
                 document.getElementById('modal').style.visibility = 'hidden';
