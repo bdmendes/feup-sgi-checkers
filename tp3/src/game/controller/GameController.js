@@ -125,11 +125,13 @@ export class GameController {
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
                     if (this._state instanceof InGameState) {
-                        if (!confirm("Do you want to restart the game? All progress will be lost.")) {
-                            return;
-                        }
-                        this.switchState(new StartState(this));
-                        this.resignedGame = true;
+                        setTimeout(function (gameController) {
+                            if (!confirm("Do you want to restart the game? All progress will be lost.")) {
+                                return;
+                            }
+                            gameController.switchState(new StartState(gameController));
+                            gameController.resignedGame = true;
+                        }, 250, this);
                         return;
                     }
 
