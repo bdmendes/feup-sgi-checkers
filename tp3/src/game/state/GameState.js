@@ -1,4 +1,4 @@
-import { Game, BLACK, WHITE } from '../model/Game.js';
+import { BLACK } from '../model/Game.js';
 
 export class GameState {
     constructor(gameController) {
@@ -22,6 +22,4 @@ export class GameState {
     }
 
     onTimeElapsed() { }
-
-    undo() { }
 }

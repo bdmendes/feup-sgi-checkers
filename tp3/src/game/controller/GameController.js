@@ -13,6 +13,7 @@ import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { GameOverState } from '../state/GameOverState.js';
+import { UndoState } from '../state/UndoState.js';
 
 
 export class GameController {
@@ -25,8 +26,8 @@ export class GameController {
         this.graphSwitcher = graphSwitcher;
 
         // state
-        this.state = new StartState(this);
-        this.state.init();
+        this._state = new StartState(this);
+        this._state.init();
 
         // game
         this.game = null;
@@ -68,16 +69,16 @@ export class GameController {
 
     notifyPick(component) {
         if (component.id.includes('Piece')) {
-            this.state.onPiecePicked(component);
+            this._state.onPiecePicked(component);
         } else if (component.id.includes('position')) {
-            this.state.onPositionPicked(component);
+            this._state.onPositionPicked(component);
         } else if (component.id.includes('Button')) {
-            this.state.onButtonPicked(component);
+            this._state.onButtonPicked(component);
         }
     }
 
     notifyTime() {
-        this.state.onTimeElapsed();
+        this._state.onTimeElapsed();
     }
 
     notifyGraphLoaded(force = false) {
@@ -124,14 +125,12 @@ export class GameController {
             const startButtonID = 'startButton';
             consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
                 consoleComponent, player, () => {
-                    if (this.state instanceof InGameState) {
+                    if (this._state instanceof InGameState) {
                         if (!confirm("Do you want to restart the game? All progress will be lost.")) {
                             return;
                         }
                         this.reset();
-                        this.state.destruct();
-                        this.state = new StartState(this);
-                        this.state.init();
+                        this.switchState(new StartState(this));
                         return;
                     }
 
@@ -143,47 +142,29 @@ export class GameController {
             // Init undo button
             const undoButtonID = 'undoButton';
             consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
-                consoleComponent, player, () => { this.state.undo() });
+                consoleComponent, player, () => { this.switchState(new UndoState(this)) });
 
             // Init movie button
             const movieButtonID = 'movieButton';
             consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
                 consoleComponent, player, () => {
-                    if (this.state instanceof InMovieState) {
-                        this.state.destruct();
-                        this.state = this.game.winner() == null ? new InGameState(this) : new GameOverState(this);
-                        this.state.init();
+                    if (this._state instanceof InMovieState) {
+                        this.switchState(this.game.winner() == null ? new InGameState(this) : new GameOverState(this));
                         return;
                     }
 
-                    this.state = new InMovieState(this);
-                    this.state.init();
+                    this.switchState(new InMovieState(this));
                 });
 
             // Init switch scene button
-            // TODO: Sometimes scene camera goes mad when switching scenes
             const switchSceneButtonID = 'switchSceneButton';
             consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
                 consoleComponent, player, () => setTimeout(() => this.graphSwitcher(), 100));
 
-            // Init switch scene button
+            // Init switch camera button
             const switchCameraButtonID = 'switchCameraButton';
             consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
                 consoleComponent, player, () => { this.switchCamera() });
-        }
-    }
-
-    clean(error = null) {
-        if (error != null) {
-            this.uiController.flashToast(error);
-        }
-        this.selectedPiece = null;
-        this.lightController.disableSpotlight();
-    }
-
-    cleanTextures() {
-        if (this.selectedPiece != null) {
-            this.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
         }
     }
 
@@ -205,17 +186,6 @@ export class GameController {
         return capturedPieces;
     }
 
-    getPieceInPosition(position) {
-        let piece = null;
-
-        this.pieces.forEach((p, key) => {
-            if (!p.isCaptured && p.position[0] === position[0] && p.position[1] === position[1]) {
-                piece = p;
-            }
-        });
-        return piece;
-    }
-
     start(hintBlack, hintWhite) {
         this.game = new Game();
 
@@ -233,9 +203,9 @@ export class GameController {
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;
 
-        this.state.destruct();
-        this.state = new InGameState(this);
-        this.state.init();
+        this._state.destruct();
+        this._state = new InGameState(this);
+        this._state.init();
 
         this.cameraController.setGameCamera(this.game.currentPlayer);
 
@@ -243,10 +213,6 @@ export class GameController {
     }
 
     reset() {
-        // Clean selections
-        this.cleanTextures();
-        this.clean();
-
         // Put pieces in their initial positions
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
@@ -298,5 +264,11 @@ export class GameController {
         this.blackAuxiliaryBoard.setCapturedPieces(this.savedBlackCapturedPieces);
         this.stackState = { ...this.savedStackState };
         this.capturedPieces = { ...this.savedCapturedPieces };
+    }
+
+    switchState(newState) {
+        this._state.destruct();
+        this._state = newState;
+        this._state.init();
     }
 }
