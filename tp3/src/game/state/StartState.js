@@ -1,5 +1,5 @@
 import { GameState } from './GameState.js';
-import { BLACK, WHITE } from '../model/Game.js';
+import { BLACK } from '../model/Game.js';
 
 export class StartState extends GameState {
     constructor(gameController) {
@@ -14,7 +14,7 @@ export class StartState extends GameState {
         this.updateButtonsVisibility(null);
 
         // Switch camera to black
-        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] === WHITE) {
+        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != BLACK) {
             this.gameController.cameraController.switchCamera();
         }
     }
@@ -31,6 +31,8 @@ export class StartState extends GameState {
             if (button === "startButton") {
                 buttonsMap[button].setText("Start");
                 buttonsMap[button].component.visible = true;
+            } else if (button === "movieButton") {
+                buttonsMap[button].component.visible = this.gameController.game?.moves.length > 0;
             } else if (button === "switchSceneButton") {
                 buttonsMap[button].component.visible = true;
             } else {

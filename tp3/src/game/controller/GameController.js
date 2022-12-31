@@ -12,7 +12,6 @@ import { StartState } from '../state/StartState.js';
 import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
-import { GameOverState } from '../state/GameOverState.js';
 import { UndoState } from '../state/UndoState.js';
 
 export const GAME_TIME = 5 * 60;
@@ -129,7 +128,7 @@ export class GameController {
                         if (!confirm("Do you want to restart the game? All progress will be lost.")) {
                             return;
                         }
-                        this.switchState(new GameOverState(this));
+                        this.switchState(new StartState(this));
                         this.resignedGame = true;
                         return;
                     }
@@ -150,7 +149,7 @@ export class GameController {
                 consoleComponent, player, () => {
                     if (this._state instanceof InMovieState) {
                         this.switchState(!this.resignedGame && this.game.winner() == null
-                            ? new InGameState(this) : new GameOverState(this));
+                            ? new InGameState(this) : new StartState(this));
                         return;
                     }
 

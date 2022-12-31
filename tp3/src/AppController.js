@@ -41,11 +41,11 @@ export class AppController {
         // Hook start button to game initialization
         document.getElementById('modal').style.visibility = 'hidden';
         document.getElementById('startButton').onclick = () => {
-            setTimeout(() => document.getElementById('modal').style.visibility = 'hidden', 250);
             const hintValue = document.getElementById('hints').value;
             const scenarioValue = document.getElementById('scenario').value;
             this.switchScene(scenarioValue);
             this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
+            setTimeout(() => document.getElementById('modal').style.visibility = 'hidden', 100);
         };
     }
 

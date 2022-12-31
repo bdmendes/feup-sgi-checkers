@@ -100,6 +100,5 @@ export class InMovieState extends GameState {
         }
 
         this.gameController.uiController.hideToast();
-        this.gameController.uiController.flashToast("Back to the game!");
     }
 }

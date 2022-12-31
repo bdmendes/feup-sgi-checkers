@@ -1,6 +1,7 @@
 import { CGFcamera } from "../../../../lib/CGF.js";
 import { BLACK, WHITE } from "../model/Game.js";
 import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
+import { InGameState } from "../state/InGameState.js";
 
 const GAME_CAMERA_ID = "gameCamera";
 
@@ -19,16 +20,14 @@ export class CameraController {
         const graph = this.gameController.scene.graph.filename;
 
         // Do not hook camera if it's already hooked
-        if (!(graph in this.cameraTarget)) {
+        if (!(graph in this.facingPlayer)) {
             this.cameraTarget[graph] = vec3.fromValues(this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[0],
                 this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[1], this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[2]);
             this.cameraBlackPosition[graph] = vec3.fromValues(...this.gameController.scene.graph.cameras[GAME_CAMERA_ID].position);
             this.cameraWhitePosition[graph] = vec3.fromValues(this.cameraBlackPosition[graph][0], this.cameraBlackPosition[graph][1],
                 this.cameraBlackPosition[graph][2] + 2 * (this.cameraTarget[graph][2] - this.cameraBlackPosition[graph][2]));
+            this.facingPlayer[graph] = BLACK;
         }
-
-        // Set camera to the right position for the current player
-        this._setGameCamera(this.gameController.game?.currentPlayer ?? BLACK);
     }
 
     _setGameCamera(player, updateButtons = true) {
@@ -61,7 +60,7 @@ export class CameraController {
         const cameraAnimation = new MyCameraAnimation(this.gameController.scene,
             this.gameController.scene.graph.selectedCameraID, this.gameController.scene.camera, isCapture, isMove);
         this.gameController.scene.graph.animations[this.gameController.scene.graph.selectedCameraID] = cameraAnimation;
-        const newPlayer = this.facingPlayer[graph] === WHITE ? BLACK : WHITE;
+        const newPlayer = player === WHITE ? BLACK : WHITE;
         this.facingPlayer[graph] = newPlayer;
         this.gameController._state.updateButtonsVisibility(newPlayer);
     }

@@ -1,9 +1,9 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
 import { parsePosition, checkValidPosition } from '../view/Board.js';
-import { GameOverState } from './GameOverState.js';
 import { GAME_TIME } from '../controller/GameController.js';
 import { capturedPieces } from '../view/Board.js';
+import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
@@ -21,7 +21,8 @@ export class InGameState extends GameState {
         // Switch game camera to current player
         const nextToPlay = this.gameController.game.moves.length == 0
             ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
-        if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
+        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
+        if (facingPlayer != nextToPlay) {
             this.gameController.cameraController.switchCamera();
         }
 
@@ -115,7 +116,7 @@ export class InGameState extends GameState {
         // End if game is over
         const winner = this.gameController.game.winner();
         if (winner != null) {
-            this.gameController.switchState(new GameOverState(this.gameController));
+            this.gameController.switchState(new StartState(this.gameController));
             const winnerString = winner == WHITE ? "White" : "Black";
             this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`);
             return;
@@ -145,7 +146,7 @@ export class InGameState extends GameState {
         const gameOver = (winningPlayer) => {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
-            this.gameController.switchState(new GameOverState(this.gameController));
+            this.gameController.switchState(new StartState(this.gameController));
             this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
         };
 
