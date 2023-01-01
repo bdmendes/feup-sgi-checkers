@@ -5,11 +5,13 @@ export class LightController {
     constructor(scene) {
         this.scene = scene;
         this.initialLightPosition = null;
+        this.disableUpdate = null;
     }
 
     hookSpotlight() {
         this.initialLightPosition = this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].position;
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].disable();
+        this.disableUpdate = true;
     }
 
     enableSpotlight(piece) {
@@ -21,15 +23,21 @@ export class LightController {
             this.initialLightPosition[2] + piece.position[0] * BOARD_POSITION_SIZE,
             1];
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].enable();
+        this.disableUpdate = false;
     }
 
     disableSpotlight() {
         this.scene.graph.enabledLights[GAME_SPOTLIGHT_ID] = false;
         this.scene.graph.lights[GAME_SPOTLIGHT_ID][0] = false;
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].disable();
+        this.disableUpdate = true;
     }
 
     updateSpotlight(position) {
+        if (this.disableUpdate) {
+            return;
+        }
+
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].position = [
             this.initialLightPosition[0] + position[1] * BOARD_POSITION_SIZE,
             this.initialLightPosition[1],
