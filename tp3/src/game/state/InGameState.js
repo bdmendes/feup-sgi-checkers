@@ -37,8 +37,8 @@ export class InGameState extends GameState {
         this._clearPieceSelection();
     }
 
-    updateButtonsVisibility() {
-        const player = this.gameController.game.currentPlayer;
+    updateButtonsVisibility(forcedPlayer) {
+        const player = forcedPlayer ?? this.gameController.game.currentPlayer;
         if (player === BLACK) {
             this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
             this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
