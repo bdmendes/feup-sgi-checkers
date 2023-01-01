@@ -53,7 +53,7 @@
             <specular r="0.99" g="0.9" b="0.44" a="1.0" />
             <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
-        <omni id="mainLight1" enabled="1">
+        <omni id="mainLight1" enabled="0">
             <location x="-10" y="10" z="-10" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1" g="1" b="1" a="1.0" />

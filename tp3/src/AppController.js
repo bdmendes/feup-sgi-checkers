@@ -43,14 +43,18 @@ export class AppController {
         document.getElementById('startButton').onclick = () => {
             const hintValue = document.getElementById('hints').value;
             const scenarioValue = document.getElementById('scenario').value;
+            const timeValue = parseInt(document.getElementById('game_time').value);
+
             this.switchScene(scenarioValue);
-            this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
+
+            this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white', timeValue);
+
             setTimeout(() => document.getElementById('modal').style.visibility = 'hidden', 100);
         };
     }
 
     start() {
-        this.gameController.uiController.flashToast('Welcome to ' + this.graphNames[this.selectedGraph] + '! Press START to begin.');
+        this.gameController.uiController.flashToast('Welcome to ' + this.graphNames[this.selectedGraph] + '! Press START to begin.', null, true);
         this.updateCurrentGraph(false);
         this.app.run();
     }

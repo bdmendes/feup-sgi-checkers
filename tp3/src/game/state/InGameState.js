@@ -1,7 +1,7 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
 import { parsePosition, checkValidPosition, capturedPieces } from '../view/hooks/Board.js';
-import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
+import { MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
 import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
@@ -155,9 +155,9 @@ export class InGameState extends GameState {
         if (currentPlayer != nextToPlay) {
             // Update clock
             if (nextToPlay === BLACK) {
-                this.gameController.whiteRemainingSeconds = GAME_TIME;
+                this.gameController.whiteRemainingSeconds = this.gameController.gameTime;
             } else {
-                this.gameController.blackRemainingSeconds = GAME_TIME;
+                this.gameController.blackRemainingSeconds = this.gameController.gameTime;
             }
             this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 

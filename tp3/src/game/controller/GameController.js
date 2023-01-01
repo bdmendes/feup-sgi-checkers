@@ -14,7 +14,6 @@ import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
 
-export const GAME_TIME = 5;
 export const START_BUTTON_ID = "startButton";
 export const UNDO_BUTTON_ID = "undoButton";
 export const MOVIE_BUTTON_ID = "movieButton";
@@ -47,8 +46,11 @@ export class GameController {
         this.blackAuxiliaryBoard = null;
         this.clock = null;
         this.stackState = null;
+
+        // settings
         this.hintWhite = null;
         this.hintBlack = null;
+        this.gameTime = null;
 
         // controllers
         this.lightController = new LightController(scene);
@@ -175,10 +177,13 @@ export class GameController {
         this.state.onSceneChanged();
     }
 
-    start(hintBlack, hintWhite) {
-        // Update hint settings
+    start(hintBlack = true, hintWhite = true, gameTime = 5 * 60) {
+        // Update hint and time settings
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;
+        this.gameTime = gameTime;
+        this.blackRemainingSeconds = this.gameTime;
+        this.whiteRemainingSeconds = this.gameTime;
 
         // Init game model
         this.game = new Game();
@@ -226,9 +231,9 @@ export class GameController {
         // Save time and reset it
         this.savedWhiteSeconds = this.whiteRemainingSeconds;
         this.savedBlackSeconds = this.blackRemainingSeconds;
-        this.whiteRemainingSeconds = GAME_TIME;
-        this.blackRemainingSeconds = GAME_TIME;
-        this.clock.update(GAME_TIME, GAME_TIME);
+        this.whiteRemainingSeconds = this.gameTime;
+        this.blackRemainingSeconds = this.gameTime;
+        this.clock.update(this.gameTime, this.gameTime);
 
         // Reset captured pieces
         this.savedCapturedPieces = { ...this.capturedPieces };

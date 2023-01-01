@@ -100,12 +100,6 @@
 </head>
 
 <body>
-    <script>
-        window.addEventListener("beforeunload", function () {
-            return "Are you sure you want to leave? Game progress will be lost.";
-        });
-    </script>
-
     <div class="wrapper">
         <script type="module" src="src/main.js"></script>
         <div class="front toast hidden" id="toast">Toast</div>
@@ -137,6 +131,18 @@
                     <option value="black">Yes, only for black</option>
                     <option value="white">Yes, only for white</option>
                     <option value="none">No, I know the rules well</option>
+                </select>
+
+                <br style="margin-bottom: 0.5em;">
+
+                <label for="game_time">How much time should one have per move?</label>
+                <select name="game_time" id="game_time" autocomplete="off">
+                    <option value="15">15 seconds</option>
+                    <option value="30">30 seconds</option>
+                    <option value="60">1 minute</option>
+                    <option value="180">3 minutes</option>
+                    <option selected value="300">5 minutes</option>
+                    <option value="600">10 minutes</option>
                 </select>
 
                 <br>
