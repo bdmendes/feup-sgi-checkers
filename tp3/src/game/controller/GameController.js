@@ -189,17 +189,9 @@ export class GameController {
         // Hook pieces
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (let [key, value] of initBlackPositions) {
-            if (this.pieces.has('blackPiece' + key)) {
-                this.pieces.get('blackPiece' + key).position = value;
-                continue;
-            }
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
         }
         for (let [key, value] of initWhitePositions) {
-            if (this.pieces.has('whitePiece' + key)) {
-                this.pieces.get('whitePiece' + key).position = value;
-                continue;
-            }
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
@@ -227,6 +219,7 @@ export class GameController {
             this.savedPieces.set(id, { ...piece });
             piece.position = (piece.color == BLACK ? initBlackPositions : initWhitePositions).get(piece.id);
             piece.isCaptured = false;
+            piece.kingPromotionMove = null;
         }
 
         // Save time and reset it

@@ -44,7 +44,7 @@ export class UndoState extends GameState {
         // Animate undo
         const component = this.gameController.scene.graph.components[piece.componentID];
         this.gameController.lightController.enableSpotlight(piece);
-        this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
+        this.gameController.animationController.injectMoveAnimation(piece, component, to, from, false, [], this.gameController.game.moves.length - 1);
         for (let i = 0; i < capturedPieces.length; i++) {
             this.gameController.animationController.injectCaptureAnimation(this.gameController.pieces.get(capturedPieces[i]));
         }

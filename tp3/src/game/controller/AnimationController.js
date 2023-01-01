@@ -6,7 +6,13 @@ export class AnimationController {
         this.gameController = gameController;
     }
 
-    injectMoveAnimation(component, initialPos, finalPos, toKing, capturedPieces) {
+    injectMoveAnimation(piece, component, initialPos, finalPos, toKing, capturedPieces, moveNumber = 0) {
+        if (toKing && piece.kingPromotionMove == null) {
+            piece.kingPromotionMove = moveNumber;
+        } else if (piece.kingPromotionMove != null && piece.kingPromotionMove > moveNumber) {
+            component.tempTextureID = null;
+        }
+
         if (component.animationID == null) {
             const animation = new MyPieceAnimation(this, component.id, initialPos);
             this.scene.graph.animations[component.id] = animation;
@@ -49,10 +55,6 @@ export class AnimationController {
             if (!capturedPiece.isCaptured) {
                 this.gameController.stackState.blackStack++;
             }
-        }
-
-        if (component.tempTextureID != null) {
-            component.tempTextureID = null;
         }
 
         if (!capturedPiece.isCaptured) {

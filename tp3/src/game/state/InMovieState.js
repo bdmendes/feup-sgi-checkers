@@ -43,8 +43,8 @@ export class InMovieState extends GameState {
 
         // Enable piece spotlight and inject move animation
         this.gameController.lightController.enableSpotlight(piece);
-        this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured);
+        this.gameController.animationController.injectMoveAnimation(piece, pickedComponent, from, to,
+            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured, this.currentMove + 1);
 
         // Update captured pieces marker
         if (this.currentToPlay === BLACK) {

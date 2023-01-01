@@ -132,8 +132,8 @@ export class InGameState extends GameState {
 
         // Animate move
         const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
-        this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured);
+        this.gameController.animationController.injectMoveAnimation(this.selectedPiece, pickedComponent, from, to,
+            this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured, this.gameController.game.moves.length);
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
