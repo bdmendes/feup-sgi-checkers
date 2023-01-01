@@ -37,6 +37,15 @@
     </ambient>
 
     <lights>
+        <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
+            <!-- located on board position [0,0] -->
+            <location x="-4.9" y="5" z="0.6" w="1" />
+            <target x="-4.9" y="3.3" z="0.6" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
+        </spot>
         <omni id="sunLight1" enabled="1">
             <location x="-10" y="10" z="10" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -71,15 +80,6 @@
             <ambient r="0.5" g="0.5" b="0.4" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.4" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
-        </spot>
-        <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
-            <!-- located on board position [0,0] -->
-            <location x="-4.9" y="5" z="0.6" w="1" />
-            <target x="-4.9" y="3.3" z="0.6" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
             <attenuation constant="0" linear="0.1" quadratic="0" />
         </spot>
     </lights>

@@ -18,12 +18,15 @@ export class LightController {
         this.disableUpdate = true;
         this.scene.graph.enabledLights[GAME_SPOTLIGHT_ID] = true;
         this.scene.graph.lights[GAME_SPOTLIGHT_ID][0] = true;
-        this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].position = [
+
+        const key = this._getIndexFromKey(GAME_SPOTLIGHT_ID);
+
+        this.scene.lights[key].position = [
             this.initialLightPosition[0] + piece.position[1] * BOARD_POSITION_SIZE,
             this.initialLightPosition[1],
             this.initialLightPosition[2] + piece.position[0] * BOARD_POSITION_SIZE,
             1];
-        this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].enable();
+        this.scene.lights[key].enable();
         this.disableUpdate = false;
     }
 
