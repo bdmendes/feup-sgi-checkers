@@ -165,6 +165,8 @@ export class InGameState extends GameState {
             if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
                 this.gameController.cameraController.switchCamera(isCapture, true);
             }
+        } else {
+            this.gameController.uiController.flashToast("Still your turn... Look for captures!");
         }
 
         // Clear piece selection
