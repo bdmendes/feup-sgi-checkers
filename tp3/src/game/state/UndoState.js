@@ -5,7 +5,7 @@ import { GAME_TIME } from "../controller/GameController.js";
 
 export class UndoState extends GameState {
     constructor(gameController) {
-        super(gameController);
+        super(gameController, null);
     }
 
     init() {

@@ -6,7 +6,7 @@
 
     <views default="gameCamera">
         <perspective id="gameCamera" near="0.1" far="500" angle="75">
-            <from x="-3.5" y="7.5" z="6" />
+            <from x="-3.5" y="6.6" z="4.6" />
             <to x="-3.5" y="3.3" z="2" />
         </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
@@ -713,7 +713,7 @@
         <component id="earthNight" pickable="1">
             <transformation>
                 <translate x="-7" y="-15" z="9" />
-                <scale x="2" y="2" z="2" />C
+                <scale x="2" y="2" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />

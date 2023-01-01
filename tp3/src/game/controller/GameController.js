@@ -15,6 +15,11 @@ import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
 
 export const GAME_TIME = 5 * 60;
+export const START_BUTTON_ID = "startButton";
+export const UNDO_BUTTON_ID = "undoButton";
+export const MOVIE_BUTTON_ID = "movieButton";
+export const SWITCH_SCENE_BUTTON_ID = "switchSceneButton";
+export const SWITCH_CAMERA_BUTTON_ID = "switchCameraButton";
 
 export class GameController {
     constructor(scene, graphSwitcher) {
@@ -68,16 +73,16 @@ export class GameController {
 
     notifyPick(component) {
         if (component.id.includes('Piece')) {
-            this._state.onPiecePicked(component);
+            this.state.onPiecePicked(component);
         } else if (component.id.includes('position')) {
-            this._state.onPositionPicked(component);
+            this.state.onPositionPicked(component);
         } else if (component.id.includes('Button')) {
-            this._state.onButtonPicked(component);
+            this.state.onButtonPicked(component);
         }
     }
 
     notifyTime() {
-        this._state.onTimeElapsed();
+        this.state.onTimeElapsed();
     }
 
     notifyGraphLoaded(force = false) {
@@ -91,7 +96,7 @@ export class GameController {
         this.cameraController.hookSceneCamera();
 
         // Hook light
-        this.lightController.setSpotlight();
+        this.lightController.hookSpotlight();
 
         // Hook clock
         this.clock = new BoardClock(this.scene.graph.components["timer"]);
@@ -121,10 +126,9 @@ export class GameController {
             const consoleButtons = player === BLACK ? this.blackButtons : this.whiteButtons;
 
             // Init start button
-            const startButtonID = 'startButton';
-            consoleButtons[startButtonID] = new BoardButton(this.scene, consoleComponent.children[startButtonID],
+            consoleButtons[START_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[START_BUTTON_ID],
                 consoleComponent, player, () => {
-                    if (this._state instanceof InGameState) {
+                    if (this.state instanceof InGameState) {
                         setTimeout(function (gameController) {
                             if (!confirm("Do you want to restart the game? All progress will be lost.")) {
                                 return;
@@ -141,15 +145,13 @@ export class GameController {
                 });
 
             // Init undo button
-            const undoButtonID = 'undoButton';
-            consoleButtons[undoButtonID] = new BoardButton(this.scene, consoleComponent.children[undoButtonID],
+            consoleButtons[UNDO_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[UNDO_BUTTON_ID],
                 consoleComponent, player, () => { this.switchState(new UndoState(this)) });
 
             // Init movie button
-            const movieButtonID = 'movieButton';
-            consoleButtons[movieButtonID] = new BoardButton(this.scene, consoleComponent.children[movieButtonID],
+            consoleButtons[MOVIE_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[MOVIE_BUTTON_ID],
                 consoleComponent, player, () => {
-                    if (this._state instanceof InMovieState) {
+                    if (this.state instanceof InMovieState) {
                         this.switchState(!this.resignedGame && this.game.winner() == null
                             ? new InGameState(this) : new StartState(this));
                         return;
@@ -159,18 +161,16 @@ export class GameController {
                 });
 
             // Init switch scene button
-            const switchSceneButtonID = 'switchSceneButton';
-            consoleButtons[switchSceneButtonID] = new BoardButton(this.scene, consoleComponent.children[switchSceneButtonID],
+            consoleButtons[SWITCH_SCENE_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[SWITCH_SCENE_BUTTON_ID],
                 consoleComponent, player, () => this.graphSwitcher());
 
             // Init switch camera button
-            const switchCameraButtonID = 'switchCameraButton';
-            consoleButtons[switchCameraButtonID] = new BoardButton(this.scene, consoleComponent.children[switchCameraButtonID],
+            consoleButtons[SWITCH_CAMERA_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[SWITCH_CAMERA_BUTTON_ID],
                 consoleComponent, player, () => this.cameraController.switchCamera());
         }
 
         // Update scene-dependent state variables
-        this._state.onSceneChanged();
+        this.state.onSceneChanged();
     }
 
     start(hintBlack, hintWhite) {
@@ -265,8 +265,8 @@ export class GameController {
     }
 
     switchState(newState) {
-        this._state?.destruct();
-        this._state = newState;
-        this._state.init();
+        this.state?.destruct();
+        this.state = newState;
+        this.state.init();
     }
 }

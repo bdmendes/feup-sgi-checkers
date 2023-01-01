@@ -1,9 +1,10 @@
 import { GameState } from './GameState.js';
 import { BLACK } from '../model/Game.js';
+import { MOVIE_BUTTON_ID, START_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from '../controller/GameController.js';
 
 export class StartState extends GameState {
     constructor(gameController) {
-        super(gameController);
+        super(gameController, null);
     }
 
     init() {
@@ -11,7 +12,7 @@ export class StartState extends GameState {
             return;
         }
 
-        this.updateButtonsVisibility(null);
+        this.updateButtonsVisibility();
 
         // Switch camera to black
         if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != BLACK) {
@@ -28,21 +29,21 @@ export class StartState extends GameState {
         const buttonsMap = this.gameController.blackButtons;
         for (let button in this.gameController.blackButtons) {
             buttonsMap[button].component.visible = true;
-            if (button === "startButton") {
+            if (button === START_BUTTON_ID) {
                 buttonsMap[button].setText("Start");
                 buttonsMap[button].component.visible = true;
-            } else if (button === "movieButton") {
+            } else if (button === MOVIE_BUTTON_ID) {
                 buttonsMap[button].component.visible = this.gameController.game?.moves.length > 0;
-            } else if (button === "switchSceneButton") {
+            } else if (button === SWITCH_SCENE_BUTTON_ID) {
                 buttonsMap[button].component.visible = true;
             } else {
                 buttonsMap[button].component.visible = false;
             }
         }
 
-        if (this.gameController.whiteButtons["startButton"] != null) {
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
-            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
+        if (this.gameController.whiteButtons[START_BUTTON_ID] != null) {
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
         }
     }
 

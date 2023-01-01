@@ -1,10 +1,11 @@
 import { GameState } from './GameState.js';
 import { BLACK } from '../model/Game.js';
 import { capturedPieces } from '../view/Board.js';
+import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from '../controller/GameController.js';
 
 export class InMovieState extends GameState {
     constructor(gameController) {
-        super(gameController);
+        super(gameController, new Map([[MOVIE_BUTTON_ID, "End"], [SWITCH_CAMERA_BUTTON_ID, null], [SWITCH_SCENE_BUTTON_ID, null]]));
         this.currentMove = 0;
         this.currentToPlay = BLACK;
         this.flashedMovieEnd = false;
@@ -14,35 +15,6 @@ export class InMovieState extends GameState {
         this.gameController.reset();
         this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
         this.gameController.uiController.flashToast("Playing movie...", null, true);
-    }
-
-    onSceneChanged() {
-        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
-    }
-
-    updateButtonsVisibility(player) {
-        if (player === BLACK) {
-            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
-        } else {
-            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
-        }
-
-        for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
-            for (let button in buttonsMap) {
-                if (button === "movieButton") {
-                    buttonsMap[button].component.visible = true;
-                    buttonsMap[button].setText("End");
-                } else if (button === "switchCameraButton") {
-                    buttonsMap[button].component.visible = true;
-                } else if (button === "switchSceneButton") {
-                    buttonsMap[button].component.visible = true;
-                } else {
-                    buttonsMap[button].component.visible = false;
-                }
-            }
-        }
     }
 
     onTimeElapsed() {
@@ -92,7 +64,7 @@ export class InMovieState extends GameState {
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
             for (let button in buttonsMap) {
                 buttonsMap[button].component.visible = true;
-                if (button === "movieButton") {
+                if (button === MOVIE_BUTTON_ID) {
                     buttonsMap[button].component.visible = true;
                     buttonsMap[button].setText("Watch");
                 }

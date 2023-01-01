@@ -1,7 +1,6 @@
 import { CGFcamera } from "../../../../lib/CGF.js";
 import { BLACK, WHITE } from "../model/Game.js";
 import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
-import { InGameState } from "../state/InGameState.js";
 
 const GAME_CAMERA_ID = "gameCamera";
 
@@ -47,7 +46,7 @@ export class CameraController {
 
         // Update buttons visibility
         if (updateButtons) {
-            this.gameController._state.updateButtonsVisibility(player);
+            this.gameController.state.updateButtonsVisibility(player);
         }
     }
 
@@ -64,6 +63,6 @@ export class CameraController {
         this.gameController.scene.graph.animations[this.gameController.scene.graph.selectedCameraID] = cameraAnimation;
         const newPlayer = player === WHITE ? BLACK : WHITE;
         this.facingPlayer[graph] = newPlayer;
-        this.gameController._state.updateButtonsVisibility(newPlayer);
+        this.gameController.state.updateButtonsVisibility(newPlayer);
     }
 }

@@ -1,23 +1,19 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
 import { parsePosition, checkValidPosition } from '../view/Board.js';
-import { GAME_TIME } from '../controller/GameController.js';
+import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
 import { capturedPieces } from '../view/Board.js';
 import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
-        super(gameController);
+        super(gameController, null);
         this.selectedPiece = null;
         this.notifiedNoValidMovesOnce = false;
         this.notifiedClickDropOnce = false;
     }
 
     init() {
-        if (this.gameController.game == null) {
-            return;
-        }
-
         // Switch game camera to current player
         const nextToPlay = this.gameController.game.moves.length == 0
             ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
@@ -27,11 +23,41 @@ export class InGameState extends GameState {
         }
 
         // Update buttons visibility
-        this.updateButtonsVisibility(this.gameController.game.currentPlayer);
+        this.updateButtonsVisibility();
+    }
+
+    beforeSceneChanged() {
+        this._clearPossibleMoveTextures();
+        this._clearPieceSelection();
     }
 
     onSceneChanged() {
         this.init();
+        this._clearPossibleMoveTextures();
+        this._clearPieceSelection();
+    }
+
+    updateButtonsVisibility() {
+        const player = this.gameController.game.currentPlayer;
+        if (player === BLACK) {
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
+        } else {
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = true;
+        }
+
+        const buttonsMap = player === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
+        for (let button in buttonsMap) {
+            buttonsMap[button].component.visible = true;
+            if (button === START_BUTTON_ID) {
+                buttonsMap[button].setText("Abandon");
+            } else if (button === UNDO_BUTTON_ID) {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+            } else if (button === MOVIE_BUTTON_ID) {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+            }
+        }
     }
 
     onPiecePicked(component) {
@@ -166,28 +192,6 @@ export class InGameState extends GameState {
         // Update clock
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
-    }
-
-    updateButtonsVisibility(player) {
-        if (player === BLACK) {
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
-            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
-        } else {
-            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
-        }
-
-        const buttonsMap = player === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
-        for (let button in buttonsMap) {
-            buttonsMap[button].component.visible = true;
-            if (button === "startButton") {
-                buttonsMap[button].setText("Abandon");
-            } else if (button === "undoButton") {
-                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
-            } else if (button === "movieButton") {
-                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
-            }
-        }
     }
 
     _clearPieceSelection(flashMessageText = null) {

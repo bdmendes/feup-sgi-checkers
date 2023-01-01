@@ -60,6 +60,8 @@ export class AppController {
             return;
         }
 
+        this.gameController.state.beforeSceneChanged();
+
         this.scene.graph = this.graphs[this.selectedGraph];
         this.datInterface.sceneGraph = this.graphs[this.selectedGraph];
 
