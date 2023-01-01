@@ -31,8 +31,8 @@ export class GameState {
 
     beforeSceneChanged() { }
 
-    updateButtonsVisibility() {
-        const player = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] ?? BLACK;
+    updateButtonsVisibility(forcedPlayer = null) {
+        const player = forcedPlayer ?? (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] ?? BLACK);
         if (player === BLACK) {
             this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
             this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
