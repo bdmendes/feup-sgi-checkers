@@ -34,6 +34,7 @@ export class StartState extends GameState {
                 buttonsMap[button].component.visible = true;
             } else if (button === MOVIE_BUTTON_ID) {
                 buttonsMap[button].component.visible = this.gameController.game?.moves.length > 0;
+                buttonsMap[button].setText("Watch");
             } else if (button === SWITCH_SCENE_BUTTON_ID) {
                 buttonsMap[button].component.visible = true;
             } else {
