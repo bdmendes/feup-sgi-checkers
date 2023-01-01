@@ -3,8 +3,6 @@ import { MyInterface } from './engine/MyInterface.js';
 import { XMLscene } from './engine/XMLscene.js';
 import { MySceneGraph } from './engine/MySceneGraph.js';
 import { GameController } from './game/controller/GameController.js';
-import { UIController } from './game/controller/UIController.js';
-import { BLACK } from './game/model/Game.js';
 
 export class AppController {
     constructor(fileNames, graphNames) {
@@ -42,15 +40,12 @@ export class AppController {
 
         // Hook start button to game initialization
         document.getElementById('modal').style.visibility = 'hidden';
-
         document.getElementById('startButton').onclick = () => {
-            setTimeout(() => {
-                document.getElementById('modal').style.visibility = 'hidden';
-                const hintValue = document.getElementById('hints').value;
-                const scenarioValue = document.getElementById('scenario').value;
-                this.switchScene(scenarioValue);
-                this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
-            }, 250);
+            const hintValue = document.getElementById('hints').value;
+            const scenarioValue = document.getElementById('scenario').value;
+            this.switchScene(scenarioValue);
+            this.gameController.start(hintValue == 'both' || hintValue == 'black', hintValue == 'both' || hintValue == 'white');
+            setTimeout(() => document.getElementById('modal').style.visibility = 'hidden', 100);
         };
     }
 
@@ -65,6 +60,8 @@ export class AppController {
             return;
         }
 
+        this.gameController.state.beforeSceneChanged();
+
         this.scene.graph = this.graphs[this.selectedGraph];
         this.datInterface.sceneGraph = this.graphs[this.selectedGraph];
 
@@ -78,8 +75,11 @@ export class AppController {
             for (const [id, _] of this.gameController.pieces) {
                 const animation = this.graphs[this.lastSelectedGraph].animations[id];
                 if (animation != null) {
-                    this.graphs[this.selectedGraph].animations[id] = animation;
                     this.graphs[this.selectedGraph].components[id].animationID = animation.id;
+                    this.graphs[this.selectedGraph].animations[id] = animation;
+                } else {
+                    this.graphs[this.selectedGraph].components[id].animationID = null;
+                    delete this.graphs[this.selectedGraph].animations[id];
                 }
             }
         }
@@ -87,7 +87,7 @@ export class AppController {
         this.lastSelectedGraph = this.selectedGraph;
     }
 
-    switchScene(filename = null, resetCamera = true) {
+    switchScene(filename = null) {
         if (filename != null) {
             this.selectedGraph = filename;
         } else {

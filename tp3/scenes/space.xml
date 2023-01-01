@@ -6,7 +6,7 @@
 
     <views default="gameCamera">
         <perspective id="gameCamera" near="0.1" far="500" angle="75">
-            <from x="-3.5" y="7.5" z="6" />
+            <from x="-3.5" y="6.6" z="4.6" />
             <to x="-3.5" y="3.3" z="2" />
         </perspective>
         <perspective id="mainCamera" near="0.1" far="500" angle="58">
@@ -41,6 +41,15 @@
     </ambient>
 
     <lights>
+        <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
+            <!-- located on board position [0,0] -->
+            <location x="-4.9" y="5" z="0.6" w="1" />
+            <target x="-4.9" y="3.3" z="0.6" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0" linear="0.1" quadratic="0" />
+        </spot>
         <omni id="mainLight1" enabled="1">
             <location x="-10" y="10" z="-10" w="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -69,15 +78,6 @@
             <specular r="0.7" g="0.7" b="0.8" a="1.0" />
             <attenuation constant="0" linear="0.1" quadratic="0" />
         </omni>
-        <spot id="gameSpotlight" enabled="0" angle="5" exponent="100">
-            <!-- located on board position [0,0] -->
-            <location x="-4.9" y="5" z="0.6" w="1" />
-            <target x="-4.9" y="3.3" z="0.6" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-            <attenuation constant="0" linear="0.1" quadratic="0" />
-        </spot>
     </lights>
 
     <textures>
@@ -713,7 +713,7 @@
         <component id="earthNight" pickable="1">
             <transformation>
                 <translate x="-7" y="-15" z="9" />
-                <scale x="2" y="2" z="2" />C
+                <scale x="2" y="2" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />

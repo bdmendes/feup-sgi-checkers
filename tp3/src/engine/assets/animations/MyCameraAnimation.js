@@ -17,7 +17,7 @@ export class MyCameraAnimation extends MyAnimation {
      * Creates an instance of MyKeyframeAnimation.
      * @param {XMLscene} scene 
      */
-    constructor(scene, id, camera, isCapture, isMove = true) {
+    constructor(scene, id, camera, isCapture = false, isMove = true) {
         super(id);
         this.scene = scene;
         this.initialCamera = camera;

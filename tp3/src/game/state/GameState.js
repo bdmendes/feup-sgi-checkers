@@ -1,8 +1,10 @@
-import { Game, BLACK, WHITE } from '../model/Game.js';
+import { START_BUTTON_ID } from '../controller/GameController.js';
+import { BLACK } from '../model/Game.js';
 
 export class GameState {
-    constructor(gameController) {
+    constructor(gameController, visibleButtons) {
         this.gameController = gameController;
+        this.visibleButtons = visibleButtons;
     }
 
     init() { }
@@ -18,10 +20,38 @@ export class GameState {
             ? this.gameController.blackButtons
             : this.gameController.whiteButtons;
         const button = buttonsMap[component.id];
-        button.pick();
+        button?.pick();
     }
 
     onTimeElapsed() { }
 
-    undo() { }
+    onSceneChanged() {
+        this.updateButtonsVisibility();
+    }
+
+    beforeSceneChanged() { }
+
+    updateButtonsVisibility() {
+        const player = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] ?? BLACK;
+        if (player === BLACK) {
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
+        } else {
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = true;
+        }
+
+        const buttonsMap = player === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
+        for (let button in buttonsMap) {
+            if (this.visibleButtons.has(button)) {
+                buttonsMap[button].component.visible = true;
+                const text = this.visibleButtons.get(button);
+                if (text != null) {
+                    buttonsMap[button].setText(text);
+                }
+            } else {
+                buttonsMap[button].component.visible = false;
+            }
+        }
+    }
 }

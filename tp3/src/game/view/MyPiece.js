@@ -1,7 +1,7 @@
 export class MyPiece {
     constructor(id, componentID, color, position) {
         this.id = id;
-        this.componentID = componentID; // component id in the xml
+        this.componentID = componentID;
         this.color = color;
         this.position = position;
         this.possibleMoves = null;

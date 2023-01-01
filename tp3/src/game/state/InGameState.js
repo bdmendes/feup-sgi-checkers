@@ -1,124 +1,183 @@
 import { GameState } from './GameState.js';
-import { Game, BLACK, WHITE } from '../model/Game.js';
-import { parsePosition, checkValidPosition, getInitialPositions, getInitialStack } from '../view/Board.js';
-import { GameOverState } from './GameOverState.js';
+import { BLACK, WHITE } from '../model/Game.js';
+import { parsePosition, checkValidPosition } from '../view/Board.js';
+import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
+import { capturedPieces } from '../view/Board.js';
+import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
-        super(gameController);
+        super(gameController, null);
+        this.selectedPiece = null;
         this.notifiedNoValidMovesOnce = false;
         this.notifiedClickDropOnce = false;
     }
 
+    init() {
+        // Switch game camera to current player
+        const nextToPlay = this.gameController.game.moves.length == 0
+            ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
+        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
+        if (facingPlayer != nextToPlay) {
+            this.gameController.cameraController.setGameCamera(nextToPlay);
+        }
+
+        // Update buttons visibility
+        this.updateButtonsVisibility();
+    }
+
+    beforeSceneChanged() {
+        this._clearPossibleMoveTextures();
+        this._clearPieceSelection();
+    }
+
+    onSceneChanged() {
+        this.init();
+        this._clearPossibleMoveTextures();
+        this._clearPieceSelection();
+    }
+
+    updateButtonsVisibility() {
+        const player = this.gameController.game.currentPlayer;
+        if (player === BLACK) {
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = true;
+        } else {
+            this.gameController.blackButtons[START_BUTTON_ID].parentConsole.visible = false;
+            this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = true;
+        }
+
+        const buttonsMap = player === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
+        for (let button in buttonsMap) {
+            buttonsMap[button].component.visible = true;
+            if (button === START_BUTTON_ID) {
+                buttonsMap[button].setText("Abandon");
+            } else if (button === UNDO_BUTTON_ID) {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+            } else if (button === MOVIE_BUTTON_ID) {
+                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+                buttonsMap[button].setText("Watch");
+            }
+        }
+    }
+
     onPiecePicked(component) {
-        if (this.gameController.selectedPiece != null) {
-            this.gameController.cleanTextures();
+        // Clear previous selection
+        if (this.selectedPiece != null) {
+            this._clearPossibleMoveTextures();
             this.gameController.lightController.disableSpotlight();
         }
 
-        const previousComponentID = this.gameController.selectedPiece != null ? this.gameController.selectedPiece.componentID : null;
-
-        this.gameController.selectedPiece = this.gameController.pieces.get(component.id);
-
-        if (this.gameController.game.currentPlayer != this.gameController.selectedPiece.color) {
-            this.gameController.clean("Invalid piece to play. Turn: " + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
+        // Clear current selection if clicking on the same piece
+        if (this.selectedPiece?.componentID === component.id) {
+            this._clearPieceSelection();
             return;
         }
 
-        if (previousComponentID === component.id) {
-            this.gameController.clean();
+        // Select new piece
+        this.selectedPiece = this.gameController.pieces.get(component.id);
+        if (this.gameController.game.currentPlayer != this.selectedPiece.color) {
+            this._clearPieceSelection("Invalid piece to play. Turn: "
+                + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
             return;
         }
 
-        this.gameController.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.gameController.selectedPiece.position).map(move => move[1]);
-
+        // Highlight possible moves and flash tip if hints are enabled
+        this.selectedPiece.possibleMoves = this.gameController.game.possibleMoves(this.selectedPiece.position).map(move => move[1]);
         if (this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite) {
-            if (!this.notifiedClickDropOnce && this.gameController.selectedPiece.possibleMoves.length > 0) {
+            if (!this.notifiedClickDropOnce && this.selectedPiece.possibleMoves.length > 0) {
                 this.gameController.uiController.flashToast("Awesome! Now click on a valid square to move!");
                 this.notifiedClickDropOnce = true;
-            } else if (this.gameController.selectedPiece.possibleMoves.length == 0 && !this.notifiedNoValidMovesOnce) {
+            } else if (!this.notifiedNoValidMovesOnce && this.selectedPiece.possibleMoves.length == 0) {
                 this.gameController.uiController.flashToast("No valid moves for this piece. Try another one!");
                 this.notifiedNoValidMovesOnce = true;
             }
         }
-
-        this.gameController.textureController.applyPossibleMoveTexture(this.gameController.selectedPiece.position, this.gameController.selectedPiece.possibleMoves,
+        this.gameController.textureController.applyPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves,
             this.gameController.game.currentPlayer == BLACK ? this.gameController.hintBlack : this.gameController.hintWhite);
-        this.gameController.lightController.enableSpotlight(this.gameController.selectedPiece);
+
+        // Turn on game spotlight
+        this.gameController.lightController.enableSpotlight(this.selectedPiece);
     }
 
     onPositionPicked(component) {
-        if (this.gameController.selectedPiece == null) {
-            this.gameController.clean("Invalid position. Firstly, choose a valid " + (this.gameController.game.currentPlayer === BLACK ? "black piece" : "white piece"))
+        // Error if no piece is selected
+        if (this.selectedPiece == null) {
+            this._clearPieceSelection("Invalid position. Firstly, choose a valid "
+                + (this.gameController.game.currentPlayer === BLACK ? "black piece" : "white piece"))
             return;
         }
 
-        if (this.gameController.selectedPiece != null) {
-            this.gameController.cleanTextures();
-        }
+        // Clear move highlights
+        this._clearPossibleMoveTextures();
 
-        let pickedPosition = parsePosition(component);
-
-        if (!checkValidPosition(this.gameController.selectedPiece.possibleMoves, pickedPosition)) {
-            this.gameController.clean("Invalid move");
+        // Error if move is invalid
+        const pickedPosition = parsePosition(component);
+        if (!checkValidPosition(this.selectedPiece.possibleMoves, pickedPosition)) {
+            this._clearPieceSelection("Invalid move");
             return;
         }
 
-        let currentPlayer = this.gameController.game.currentPlayer;
+        // Update game model
+        const currentPlayer = this.gameController.game.currentPlayer;
+        this.gameController.game.move(this.selectedPiece.position, pickedPosition);
+        this.selectedPiece.position = pickedPosition;
 
-        this.gameController.game.move(this.gameController.selectedPiece.position, pickedPosition);
-        this.gameController.selectedPiece.position = pickedPosition;
+        // Update captured pieces history (for undoing)
+        const [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
+        const captured = capturedPieces(from, to, this.gameController.pieces);
+        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = captured.map(piece => piece.componentID);
 
-        let [from, to, isCapture, nextToPlay] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
-
-        let capturedPieces = this.gameController.getCapturedPieces(from, to);
-
-        this.gameController.capturedPieces[this.gameController.game.moves.length - 1] = capturedPieces.map(piece => piece.componentID);
-
-        let pickedComponent = this.gameController.scene.graph.components[this.gameController.selectedPiece.componentID];
+        // Animate move
+        const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            (this.gameController.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, capturedPieces);
+            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, captured);
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
-            this.gameController.blackAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.blackAuxiliaryBoard.addCapturedPieces(captured.length);
         } else {
-            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(capturedPieces.length);
+            this.gameController.whiteAuxiliaryBoard.addCapturedPieces(captured.length);
         }
 
-        // force game camera
-        this.gameController.setGameCamera(currentPlayer);
+        // End if game is over
+        const winner = this.gameController.game.winner();
+        if (winner != null) {
+            this.gameController.switchState(new StartState(this.gameController));
+            const winnerString = winner == WHITE ? "White" : "Black";
+            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`);
+            return;
+        }
+
+        // Update view for next player
         if (currentPlayer != nextToPlay) {
+            // Update clock
             if (nextToPlay === BLACK) {
-                this.gameController.whiteRemainingSeconds = 5 * 60;
+                this.gameController.whiteRemainingSeconds = GAME_TIME;
             } else {
-                this.gameController.blackRemainingSeconds = 5 * 60;
+                this.gameController.blackRemainingSeconds = GAME_TIME;
             }
             this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
-            this.gameController.animationController.injectCameraAnimation(isCapture);
 
-            if (this.gameController.game.winner() != null) {
-                this.gameController.state.destruct();
-                this.gameController.state = new GameOverState(this.gameController);
-                this.gameController.state.init();
-                const winner = this.gameController.game.winner() == WHITE ? "White" : "Black";
-                this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winner}`);
+            // Rotate camera for current player
+            if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
+                this.gameController.cameraController.switchCamera(isCapture, true);
             }
         }
 
-        this.gameController.selectedPiece = null;
+        // Clear piece selection
+        this.selectedPiece = null;
     }
 
     onTimeElapsed() {
         const gameOver = (winningPlayer) => {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
-            this.gameController.state.destruct();
-            this.gameController.state = new GameOverState(this.gameController);
-            this.gameController.state.init();
+            this.gameController.switchState(new StartState(this.gameController));
             this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
         };
 
+        // Switch state and flash winner if time is up
         if (this.gameController.game.currentPlayer === BLACK) {
             this.gameController.blackRemainingSeconds -= 1;
             if (this.gameController.blackRemainingSeconds === 0) {
@@ -126,73 +185,32 @@ export class InGameState extends GameState {
             }
         } else {
             this.gameController.whiteRemainingSeconds -= 1;
-            if (this.gameController.blackRemainingSeconds === 0) {
+            if (this.gameController.whiteRemainingSeconds === 0) {
                 gameOver(BLACK);
             }
         }
+
+        // Update clock
         this.gameController.clock.update(this.gameController.blackRemainingSeconds,
             this.gameController.whiteRemainingSeconds);
-        this._updateButtonsVisibility();
     }
 
-    _updateButtonsVisibility() {
-        if (this.gameController.game.currentPlayer === BLACK) {
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = false;
-            this.gameController.blackButtons["startButton"].parentConsole.visible = true;
-        } else {
-            this.gameController.blackButtons["startButton"].parentConsole.visible = false;
-            this.gameController.whiteButtons["startButton"].parentConsole.visible = true;
+    _clearPieceSelection(flashMessageText = null) {
+        if (flashMessageText != null) {
+            this.gameController.uiController.flashToast(flashMessageText);
         }
+        this.selectedPiece = null;
+        this.gameController.lightController.disableSpotlight();
+    }
 
-        const buttonsMap = this.gameController.game.currentPlayer === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
-        for (let button in buttonsMap) {
-            buttonsMap[button].component.visible = true;
-            if (button === "startButton") {
-                buttonsMap[button].setText("Abandon");
-            } else if (button === "undoButton") {
-                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
-            } else if (button === "movieButton") {
-                buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
-            }
+    _clearPossibleMoveTextures() {
+        if (this.selectedPiece != null) {
+            this.gameController.textureController.cleanPossibleMoveTexture(this.selectedPiece.position, this.selectedPiece.possibleMoves);
         }
     }
 
-    undo() {
-        if (this.gameController.game.moves.length === 0) {
-            return;
-        }
-
-        let [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
-
-        let currentPlayer = this.gameController.game.currentPlayer;
-
-        let piece = this.gameController.getPieceInPosition(to);
-
-        let capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
-        if (currentPlayer === BLACK) {
-            this.gameController.whiteAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
-        } else {
-            this.gameController.blackAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
-        }
-
-        let component = this.gameController.scene.graph.components[piece.componentID];
-        this.gameController.lightController.enableSpotlight(piece);
-        this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
-
-        for (let i = 0; i < capturedPieces.length; i++) {
-            this.gameController.animationController.injectCaptureAnimation(this.gameController.pieces.get(capturedPieces[i]));
-        }
-
-        this.gameController.game.undo();
-        this.gameController.game.printBoard();
-        piece.position = from;
-
-        this.gameController.whiteRemainingSeconds = 5 * 60;
-        this.gameController.blackRemainingSeconds = 5 * 60;
-        this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
-
-        if (this.gameController.game.currentPlayer != currentPlayer) {
-            this.gameController.animationController.injectCameraAnimation(false);
-        }
+    destruct() {
+        this._clearPossibleMoveTextures();
+        this._clearPieceSelection();
     }
 }
