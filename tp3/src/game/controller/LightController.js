@@ -9,12 +9,13 @@ export class LightController {
     }
 
     hookSpotlight() {
+        this.disableUpdate = true;
         this.initialLightPosition = this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].position;
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].disable();
-        this.disableUpdate = true;
     }
 
     enableSpotlight(piece) {
+        this.disableUpdate = true;
         this.scene.graph.enabledLights[GAME_SPOTLIGHT_ID] = true;
         this.scene.graph.lights[GAME_SPOTLIGHT_ID][0] = true;
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].position = [
@@ -27,10 +28,10 @@ export class LightController {
     }
 
     disableSpotlight() {
+        this.disableUpdate = true;
         this.scene.graph.enabledLights[GAME_SPOTLIGHT_ID] = false;
         this.scene.graph.lights[GAME_SPOTLIGHT_ID][0] = false;
         this.scene.lights[this._getIndexFromKey(GAME_SPOTLIGHT_ID)].disable();
-        this.disableUpdate = true;
     }
 
     updateSpotlight(position) {

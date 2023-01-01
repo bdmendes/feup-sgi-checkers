@@ -72,5 +72,7 @@ export class InMovieState extends GameState {
         }
 
         this.gameController.uiController.hideToast();
+
+        this.gameController.lightController.disableSpotlight();
     }
 }
