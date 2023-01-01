@@ -60,7 +60,7 @@ export class UndoState extends GameState {
 
         // Flip camera if turn changed
         if (this.gameController.game.currentPlayer != currentPlayer) {
-            this.gameController.cameraController.switchCamera();
+            this.gameController.cameraController.switchCamera(false, true);
         }
     }
 
