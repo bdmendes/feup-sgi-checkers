@@ -56,6 +56,7 @@ export class InGameState extends GameState {
                 buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
             } else if (button === MOVIE_BUTTON_ID) {
                 buttonsMap[button].component.visible = this.gameController.game.moves.length > 0;
+                buttonsMap[button].setText("Watch");
             }
         }
     }
