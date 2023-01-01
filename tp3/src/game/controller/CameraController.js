@@ -19,7 +19,7 @@ export class CameraController {
     hookSceneCamera() {
         const graph = this.gameController.scene.graph.filename;
 
-        // Do not hook camera if it's already hooked
+        // Do not hook camera if it's already hooked; else maintain position
         if (!(graph in this.facingPlayer)) {
             this.cameraTarget[graph] = vec3.fromValues(this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[0],
                 this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[1], this.gameController.scene.graph.cameras[GAME_CAMERA_ID].target[2]);
@@ -27,6 +27,8 @@ export class CameraController {
             this.cameraWhitePosition[graph] = vec3.fromValues(this.cameraBlackPosition[graph][0], this.cameraBlackPosition[graph][1],
                 this.cameraBlackPosition[graph][2] + 2 * (this.cameraTarget[graph][2] - this.cameraBlackPosition[graph][2]));
             this.facingPlayer[graph] = BLACK;
+        } else {
+            this.setGameCamera(this.facingPlayer[graph]);
         }
     }
 

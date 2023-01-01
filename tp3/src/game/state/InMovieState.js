@@ -70,7 +70,7 @@ export class InMovieState extends GameState {
         }
 
         // Enable piece spotlight and inject move animation
-        // this.gameController.lightController.enableSpotlight(piece);
+        this.gameController.lightController.enableSpotlight(piece);
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
             this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured);
 
