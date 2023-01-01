@@ -14,7 +14,7 @@ import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
 
-export const GAME_TIME = 5 * 60;
+export const GAME_TIME = 5;
 export const START_BUTTON_ID = "startButton";
 export const UNDO_BUTTON_ID = "undoButton";
 export const MOVIE_BUTTON_ID = "movieButton";
@@ -35,7 +35,7 @@ export class GameController {
 
         // game
         this.game = null;
-        this.resignedGame = null;
+        this.gameOver = null;
 
         // component hooks
         this.pieces = new Map();
@@ -135,7 +135,7 @@ export class GameController {
                                 return;
                             }
                             gameController.switchState(new StartState(gameController));
-                            gameController.resignedGame = true;
+                            gameController.gameOver = true;
                             gameController.uiController.flashToast("You resigned. You can now start a new game.");
                         }, 250, this);
                         return;
@@ -154,7 +154,7 @@ export class GameController {
             consoleButtons[MOVIE_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[MOVIE_BUTTON_ID],
                 consoleComponent, player, () => {
                     if (this.state instanceof InMovieState) {
-                        this.switchState(!this.resignedGame && this.game.winner() == null
+                        this.switchState(!this.gameOver && this.game.winner() == null
                             ? new InGameState(this) : new StartState(this));
                         return;
                     }
@@ -182,7 +182,7 @@ export class GameController {
 
         // Init game model
         this.game = new Game();
-        this.resignedGame = false;
+        this.gameOver = false;
 
         // Reset game view
         this.reset();

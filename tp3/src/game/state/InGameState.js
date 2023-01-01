@@ -147,7 +147,7 @@ export class InGameState extends GameState {
         if (winner != null) {
             this.gameController.switchState(new StartState(this.gameController));
             const winnerString = winner == WHITE ? "White" : "Black";
-            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`);
+            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`, null, true);
             return;
         }
 
@@ -178,7 +178,8 @@ export class InGameState extends GameState {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
             this.gameController.switchState(new StartState(this.gameController));
-            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
+            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`, null, true);
+            this.gameController.gameOver = true;
         };
 
         // Switch state and flash winner if time is up
