@@ -14,6 +14,10 @@ export class InGameState extends GameState {
     }
 
     init() {
+        // add onbeforeunload dialog
+        window.onbeforeunload = function () {
+            return 'Are you sure you want to leave?';
+        }
         // Switch game camera to current player
         const nextToPlay = this.gameController.game.moves.length == 0
             ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
@@ -210,6 +214,7 @@ export class InGameState extends GameState {
     }
 
     destruct() {
+        window.onbeforeunload = function () { }
         this._clearPossibleMoveTextures();
         this._clearPieceSelection();
     }

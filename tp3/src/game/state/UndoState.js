@@ -9,6 +9,11 @@ export class UndoState extends GameState {
     }
 
     init() {
+        // add onbeforeunload dialog
+        window.onbeforeunload = function () {
+            return 'Are you sure you want to leave?';
+        }
+
         this._undo();
         this.gameController.switchState(new InGameState(this.gameController));
     }
@@ -65,4 +70,8 @@ export class UndoState extends GameState {
     }
 
     updateButtonsVisibility() { }
+
+    destruct() {
+        window.onbeforeunload = function () { }
+    }
 }

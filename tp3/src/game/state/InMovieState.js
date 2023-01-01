@@ -12,6 +12,11 @@ export class InMovieState extends GameState {
     }
 
     init() {
+        // add onbeforeunload dialog
+        window.onbeforeunload = function () {
+            return 'Are you sure you want to leave?';
+        }
+
         this.gameController.reset();
         this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
         this.gameController.uiController.flashToast("Playing movie...", null, true);
@@ -59,6 +64,8 @@ export class InMovieState extends GameState {
     }
 
     destruct() {
+        window.onbeforeunload = function () { }
+
         this.gameController.undoReset();
 
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
