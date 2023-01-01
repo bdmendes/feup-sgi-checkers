@@ -3,14 +3,17 @@ import { InGameState } from "./InGameState.js";
 import { BLACK } from "../model/Game.js";
 import { GAME_TIME } from "../controller/GameController.js";
 
+import { MY_PIECE_ANIMATION_TIME } from "../view/animations/MyPieceAnimation.js";
+
 export class UndoState extends GameState {
     constructor(gameController) {
-        super(gameController, null);
+        super(gameController, new Map());
     }
 
     init() {
+        this.updateButtonsVisibility();
         this._undo();
-        this.gameController.switchState(new InGameState(this.gameController));
+        setTimeout(() => this.gameController.switchState(new InGameState(this.gameController)), MY_PIECE_ANIMATION_TIME * 1000 + 100);
     }
 
     _undo() {
@@ -63,6 +66,4 @@ export class UndoState extends GameState {
             this.gameController.cameraController.switchCamera(false, true);
         }
     }
-
-    updateButtonsVisibility() { }
 }
