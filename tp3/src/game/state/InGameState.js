@@ -1,8 +1,7 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
-import { parsePosition, checkValidPosition } from '../view/Board.js';
+import { parsePosition, checkValidPosition, capturedPieces } from '../view/hooks/Board.js';
 import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
-import { capturedPieces } from '../view/Board.js';
 import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
@@ -38,8 +37,6 @@ export class InGameState extends GameState {
 
     onSceneChanged() {
         this.init();
-        this._clearPossibleMoveTextures();
-        this._clearPieceSelection();
     }
 
     updateButtonsVisibility(forcedPlayer) {
@@ -136,7 +133,7 @@ export class InGameState extends GameState {
         // Animate move
         const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, captured);
+            this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured);
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {

@@ -1,4 +1,4 @@
-import { WHITE } from '../model/Game.js';
+import { WHITE } from '../../model/Game.js';
 
 export class AuxiliaryBoard {
     constructor(component, player) {

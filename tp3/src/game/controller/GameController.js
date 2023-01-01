@@ -1,15 +1,15 @@
-import { getInitialPositions, getInitialStack } from '../view/Board.js';
+import { getInitialPositions, getInitialStack } from '../view/hooks/Board.js';
 import { AnimationController } from './AnimationController.js';
 import { LightController } from './LightController.js';
 import { CameraController } from './CameraController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
-import { MyPiece } from '../view/MyPiece.js';
-import { BoardButton } from '../view/BoardButton.js';
-import { BoardClock } from '../view/BoardClock.js';
+import { MyPiece } from '../view/hooks/MyPiece.js';
+import { BoardButton } from '../view/hooks/BoardButton.js';
+import { BoardClock } from '../view/hooks/BoardClock.js';
 import { InGameState } from '../state/InGameState.js';
 import { StartState } from '../state/StartState.js';
-import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
+import { AuxiliaryBoard } from '../view/hooks/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
@@ -59,6 +59,7 @@ export class GameController {
 
         // saved state for resetting
         this.savedAnimations = {};
+        this.savedTempTextureIDs = {};
         this.savedPieces = new Map();
         this.savedWhiteSeconds = 0;
         this.savedBlackSeconds = 0;
@@ -210,7 +211,7 @@ export class GameController {
     }
 
     reset() {
-        // Put pieces in their initial positions
+        // Put pieces in their initial positions and reset textures
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
             const component = this.scene.graph.components[id];
@@ -219,6 +220,10 @@ export class GameController {
                 delete this.scene.graph.animations[component.animationID];
                 component.animationID = null;
             }
+
+            this.savedTempTextureIDs[id] = component.tempTextureID;
+            component.tempTextureID = null;
+
             this.savedPieces.set(id, { ...piece });
             piece.position = (piece.color == BLACK ? initBlackPositions : initWhitePositions).get(piece.id);
             piece.isCaptured = false;
@@ -242,13 +247,14 @@ export class GameController {
     }
 
     undoReset() {
-        // Restore piece positions
+        // Restore piece positions and textures
         for (const [id, _] of this.pieces) {
             const component = this.scene.graph.components[id];
             if (this.savedAnimations[id] != null) {
                 component.animationID = this.savedAnimations[id].id;
                 this.scene.graph.animations[component.animationID] = this.savedAnimations[component.animationID];
             }
+            component.tempTextureID = this.savedTempTextureIDs[id];
             this.pieces.set(id, { ...this.savedPieces.get(id) });
         }
 

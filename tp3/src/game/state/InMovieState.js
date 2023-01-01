@@ -1,6 +1,6 @@
 import { GameState } from './GameState.js';
 import { BLACK } from '../model/Game.js';
-import { capturedPieces } from '../view/Board.js';
+import { capturedPieces } from '../view/hooks/Board.js';
 import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from '../controller/GameController.js';
 
 export class InMovieState extends GameState {

@@ -1,6 +1,6 @@
 import { CGFcamera } from "../../../../lib/CGF.js";
 import { BLACK, WHITE } from "../model/Game.js";
-import { MyCameraAnimation } from "../../engine/assets/animations/MyCameraAnimation.js";
+import { MyCameraAnimation } from "../view/animations/MyCameraAnimation.js";
 
 const GAME_CAMERA_ID = "gameCamera";
 

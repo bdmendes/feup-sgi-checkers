@@ -1,4 +1,4 @@
-import { MyPieceAnimation } from "../../engine/assets/animations/MyPieceAnimation.js";
+import { MyPieceAnimation } from "../view/animations/MyPieceAnimation.js";
 
 export class AnimationController {
     constructor(scene, gameController) {

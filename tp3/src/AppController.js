@@ -81,6 +81,9 @@ export class AppController {
                     this.graphs[this.selectedGraph].components[id].animationID = null;
                     delete this.graphs[this.selectedGraph].animations[id];
                 }
+
+                const tempTextureID = this.graphs[this.lastSelectedGraph].components[id].tempTextureID;
+                this.graphs[this.selectedGraph].components[id].tempTextureID = tempTextureID;
             }
         }
 
