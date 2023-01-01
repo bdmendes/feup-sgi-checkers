@@ -136,6 +136,7 @@ export class GameController {
                             }
                             gameController.switchState(new StartState(gameController));
                             gameController.resignedGame = true;
+                            gameController.uiController.flashToast("You resigned. You can now start a new game.");
                         }, 250, this);
                         return;
                     }
