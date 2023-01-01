@@ -13,7 +13,7 @@ export class InMovieState extends GameState {
 
     init() {
         this.gameController.reset();
-        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
+        this.updateButtonsVisibility();
         this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
@@ -63,9 +63,7 @@ export class InMovieState extends GameState {
 
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
             for (let button in buttonsMap) {
-                buttonsMap[button].component.visible = true;
                 if (button === MOVIE_BUTTON_ID) {
-                    buttonsMap[button].component.visible = true;
                     buttonsMap[button].setText("Watch");
                 }
             }
