@@ -389,7 +389,7 @@ function parseHighlighted(componentID, sceneGraph, node, component, highlightInd
         return 'component ' + componentID + ' must have a highlight block with non null scale_h';
     }
 
-    const enableHighlight = getIntegerBooleanProperty(sceneGraph, node, componentID, 'enabled', false);
+    const enableHighlight = getIntegerBooleanProperty(sceneGraph, highlightedNode, componentID, 'enabled', true);
 
     component.highlight = new GraphHighlight(sceneGraph.scene, color, scaleH);
     component.enableHighlight = enableHighlight;
