@@ -173,6 +173,7 @@ export class InGameState extends GameState {
         const winner = this.gameController.game.winner();
         if (winner != null) {
             this.gameController.switchState(new StartState(this.gameController));
+            this.gameController.gameOver = true;
             const winnerString = winner == WHITE ? "White" : "Black";
             this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`, null, true);
             return;

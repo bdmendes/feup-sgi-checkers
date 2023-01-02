@@ -5,7 +5,7 @@ import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from
 
 export class InMovieState extends GameState {
     constructor(gameController) {
-        super(gameController, new Map([[MOVIE_BUTTON_ID, "End"], [SWITCH_CAMERA_BUTTON_ID, null], [SWITCH_SCENE_BUTTON_ID, null]]));
+        super(gameController, new Map([[MOVIE_BUTTON_ID, "End"], [SWITCH_CAMERA_BUTTON_ID, null]]));
         this.currentMove = 0;
         this.currentToPlay = BLACK;
         this.flashedMovieEnd = false;
