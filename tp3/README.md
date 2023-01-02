@@ -34,7 +34,7 @@ The graphics engine ported from TP2 had its XML specification updated to support
 
 As the relevant actions for the application usage can be made using the board's pickable buttons, we are closing the `dat.GUI` interface by default to provide an immersive experience. It can still be opened manually to play with all TP2's scene settings, such as lights or highlights toggling. It is refreshed automatically every time the graph changes, but we did notice that the properties do not auto update if changed via game and not the interface (for example, "travelling" via board button does not update the selected scene field on `dat.GUI`.). Also, even closed by default, its label's text is *Close Controls* instead of *Open Controls*. We are assuming that these are bugs related to this library's version shipped with `WebCGF`.
 
-Note that on game development (explained below) we rely solely on semantic ID names for hooking scene components to view models. This makes sure that the graphics engine layer stays agnostic. The `board` is included in the three scenes using the `include` tag so that any change to `board.xml` is reflected in all scenes.
+Note that on game development (explained below) we rely solely on semantic ID names for hooking scene components to view models. This makes sure that the graphics engine layer, where the parser resides, stays agnostic. The `board` is included in the three scenes using the `include` tag so that any change to `board.xml` is reflected in all scenes.
 
 ### Game development
 
@@ -52,13 +52,31 @@ Note that on game development (explained below) we rely solely on semantic ID na
 
 #### Undo
 
+One can undo if playing an active game with 1 or more moves, via the pickable board button for the effect. The game model stores the list of the moves and the board after each move, so undoing there is straightforward. On the graphical side of things, an animation is injected on the last played piece from the final position to the initial position of the last move, and captured pieces, if any, are returned to the board, similarly to how they left, but on reverse. The text marker is also updated to remove the now in game pieces.
+
 #### Camera rotation
+
+One can rotate the camera to the other side of the board, via the pickable board button for the effect. The camera is also switched automatically to the next to play side, while playing. This is done by rotating the camera 180 degrees around the board's center, which should be the camera's target specificed in the XML. Some things that we kept in mind to make the switching consistent:
+
+- The rotation should make sense, in the way that the board stays visible in the screen and that it lands on the desired position. This means that we need to "put" the camera in front of the board, in its original position (when the graph loaded), discarding previous camera movement by dragging the mouse around the scene.
+- If the user switches the camera manually to the player that is not to play and plays the current player's move from that side, there is no need to switch the camera back, since it is facing the correct side after the move.
+- The cameras differ from graph to graph, so the positions are stored per graph. This also means that when switching scenes, while playing, we need to put the camera to the player that is to play, currently. If an active game is not being played, the camera is not touched when switching scenes.
 
 #### Movie
 
+As per requirements, one can watch the movie of the game at any time while playing an active game with 1 or more moves, via the pickable board button for the effect. On the model side of things, we can just iterate over the list of moves and execute them over an initial board. On the graphical side of things, things get complicated, since we need to reset all hooked objects and "undo" the reset when stopping the movie, so that the game can be played again. This goes as follows:
+
+- When entering the *InMovieState*, the view is reset to its initial state: piece animations, piece textures, captured pieces marker, game time are saved and reset to their initial state.
+- One time per second, the state is notified to make a move. It injects move animation and increments the current move index. When the last move is reached, this time elapsed handler does nothing.
+- When the user ends the movie, the saved state is restored and the game may resume, if it was active.
+
 #### Move hints
 
+To improve the user experience, when tapping a piece, if the game is set up to do that (on the `Start Game` popup), the view will highlight the possible moves for that piece, in the current position, provided by the game model, by changing the texture of the square to a green one. After making a move or selecting another piece, the controller removes the temporary texture from the board.
+
 #### Time measure
+
+When a new game is started, it stores the black and white remaining seconds to the set up time (on the `Start Game` popup), updating the hooked clock component. Each second, the current player remaining time decreases, as seen in the board clock. When the time is up, the game ends and the winner is the opponent. After a move is made, the time resets to the set up time and starts counting for the next to play player. The time is not stored in the game model, as it is not relevant to the game logic.
 
 ### Challenges faced (and solutions employed)
 
