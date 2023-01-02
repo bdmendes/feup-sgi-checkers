@@ -37,7 +37,7 @@ export class UndoState extends GameState {
 
         // Remove captured pieces from auxiliary board
         const capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
-        if (currentPlayer === BLACK) {
+        if (piece.color != BLACK) {
             this.gameController.whiteAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
         } else {
             this.gameController.blackAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
