@@ -95,6 +95,10 @@ export class InGameState extends GameState {
 
         // Select new piece
         this.selectedPiece = this.gameController.pieces.get(component.id);
+        if (this.selectedPiece.isCaptured) {
+            this._clearPieceSelection("Trying to play a captured piece? :)");
+            return;
+        }
         if (this.gameController.game.currentPlayer != this.selectedPiece.color) {
             this._clearPieceSelection("Invalid piece to play. Turn: "
                 + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
