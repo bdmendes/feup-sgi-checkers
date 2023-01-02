@@ -32,10 +32,11 @@
 ### [TP3 - Game Development](tp3)
 
 - Items described in tp3 [README](https://git.fe.up.pt/sgi-meic/sgi-2022-2023/t05/sgi-t05-g04/-/blob/main/tp3/README.md)
-- [Checkers Game](https://www.ultraboardgames.com/checkers/game-rules.php)
-  - The checkers game was implemented and joined with the scenes to give the user a confortable and great experience to play a nice game of checkers against a friend. The scene can be changed at any time providing the power of choice to the user so that the scene can be the most adaptable for the moment.
+- Game
+  - The [checkers game](https://www.ultraboardgames.com/checkers/game-rules.php) was implemented and drawn in the graphical user interface to provide the user a confortable and great experience to play a nice game of checkers against a friend.
+  - Besides playing the game by clicking and dropping the pieces, the user can interact with the application by picking the buttons on top of the board, on their side of the camera. These include starting the game, switching the scene, switching the camera view to the other player's side, undoing and watching the game movie, as per the requirements. The behaviour and availability of these actions depend on the state of the application; we have made an effort to make them consistent and smart, hiding when not needed or not usable. For greater detail, check the complete report in [TP3's README](https://git.fe.up.pt/sgi-meic/sgi-2022-2023/t05/sgi-t05-g04/-/blob/main/tp3/README.md).
 - Scenes
   - The first scene is the previous comfortable living room developed in TP1 and TP2 but with the game board, timers and auxiliar boards in the dinner table to play a nice game of checkers.
-  - The second scene is a beach + bloat @bdmendes
+  - The second scene resembles a beach located somewhere in the world, in the end of an afternoon. A drink seats above a beach table so that players can hydrate themselves during the game. A beach towel and some sun umbrellas complete this dreamy scenario.
   - The third scene is a representation of a part of the universe with several planets in their orbits. In the middle of the scene there is an asteroid which has the game board, timers and auxiliar boards on top to play a nice game of checkers.
   - [Check out our scene here](https://paginas.fe.up.pt/~up201905951/sgi/tp3/)
