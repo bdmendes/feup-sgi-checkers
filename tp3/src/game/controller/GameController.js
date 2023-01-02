@@ -260,7 +260,7 @@ export class GameController {
         // Restore time
         this.whiteRemainingSeconds = this.savedWhiteSeconds;
         this.blackRemainingSeconds = this.savedBlackSeconds;
-        this.clock.update(this.whiteRemainingSeconds, this.blackRemainingSeconds);
+        this.clock.update(this.blackRemainingSeconds, this.whiteRemainingSeconds);
 
         // Restore captured pieces
         this.whiteAuxiliaryBoard.setCapturedPieces(this.savedWhiteCapturedPieces);
