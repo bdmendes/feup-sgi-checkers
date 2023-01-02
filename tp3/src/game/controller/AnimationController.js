@@ -9,10 +9,9 @@ export class AnimationController {
     injectMoveAnimation(piece, component, initialPos, finalPos, toKing, capturedPieces, moveNumber = 0) {
         if (toKing && piece.kingPromotionMove == null) {
             piece.kingPromotionMove = moveNumber;
-        } else if (piece.kingPromotionMove != null && piece.kingPromotionMove > moveNumber) {
+        } else if (!toKing && piece.kingPromotionMove != null && piece.kingPromotionMove > moveNumber) {
             component.tempTextureID = null;
             piece.kingPromotionMove = null;
-            toKing = false;
         }
 
         if (component.animationID == null) {
