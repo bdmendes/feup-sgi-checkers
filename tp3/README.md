@@ -66,9 +66,9 @@ As an added bonus, the captured pieces' stack for each player has two spots, so 
 
 The illumination can be divided in two important aspects, the general illumination and the game illumination.
 
-Each scene, that are explained in the next section with more detail, has its specific lights to give the most adequate illumination depending on the situation and in what each scene represent. For example, while the beach scene has more stronger and yellow lights than the confortable living room, the space scene has more dark and blue lights to increase the quality of the user experience for each scene.
+Each scene, that is explained in the next section with more detail, has its specific lights to provide the most adequate illumination depending on the situation and what the scene represents. For example, while the beach scene has stronger and warmer lights than the comfortable living room, the space scene has darker and bluer lights, has it is supposed to be a night scene.
 
-The game has its own **spotlight** that illuminates the pieces that the user pick during the game, and, when a move is made, the spotlight follow the piece that is moving keeping the piece illuminated during the **move animation**
+The game has its own **spotlight** that illuminates the pieces that the user picks during the game, and, when a move is made, the spotlight follows the piece that is moving, keeping the piece illuminated during the **move animation**
 
 ### Game scenes
 
