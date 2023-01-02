@@ -10,6 +10,7 @@ export class InGameState extends GameState {
     constructor(gameController) {
         super(gameController, null);
         this.selectedPiece = null;
+        this.animating = false;
         this.notifiedNoValidMovesOnce = false;
         this.notifiedClickDropOnce = false;
     }
@@ -21,12 +22,7 @@ export class InGameState extends GameState {
         }
 
         // Switch game camera to current player
-        const nextToPlay = this.gameController.game.moves.length == 0
-            ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
-        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
-        if (facingPlayer != nextToPlay) {
-            this.gameController.cameraController.setGameCamera(nextToPlay);
-        }
+        this._updateCamera(true);
 
         // Update buttons visibility
         this.updateButtonsVisibility();
@@ -38,7 +34,21 @@ export class InGameState extends GameState {
     }
 
     onSceneChanged() {
-        this.init();
+        this._updateCamera(false);
+        this.updateButtonsVisibility();
+    }
+
+    _updateCamera(animate) {
+        const nextToPlay = this.gameController.game.moves.length == 0
+            ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
+        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
+        if (facingPlayer != nextToPlay) {
+            if (!animate) {
+                this.gameController.cameraController.setGameCamera(nextToPlay);
+            } else {
+                this.gameController.cameraController.switchCamera();
+            }
+        }
     }
 
     updateButtonsVisibility(forcedPlayer) {
