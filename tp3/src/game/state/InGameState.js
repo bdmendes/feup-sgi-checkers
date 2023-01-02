@@ -51,6 +51,19 @@ export class InGameState extends GameState {
         }
     }
 
+    onButtonPicked(component) {
+        // Do not respond while animating
+        if (this.animating) {
+            return;
+        }
+
+        const buttonsMap = this.gameController.game === null || this.gameController.game.currentPlayer === BLACK
+            ? this.gameController.blackButtons
+            : this.gameController.whiteButtons;
+        const button = buttonsMap[component.id];
+        button?.pick();
+    }
+
     updateButtonsVisibility(forcedPlayer) {
         const player = forcedPlayer ?? this.gameController.game.currentPlayer;
         if (player === BLACK) {
