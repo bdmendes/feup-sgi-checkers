@@ -3,6 +3,8 @@ import { BLACK, WHITE } from '../model/Game.js';
 import { parsePosition, checkValidPosition, capturedPieces } from '../view/hooks/Board.js';
 import { MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
 import { StartState } from './StartState.js';
+import { MY_PIECE_ANIMATION_TIME } from '../view/animations/MyPieceAnimation.js';
+import { CAMERA_ANIMATION_TIME } from '../view/animations/MyCameraAnimation.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
@@ -64,6 +66,11 @@ export class InGameState extends GameState {
     }
 
     onPiecePicked(component) {
+        // If animating, do not allow movement
+        if (this.animating) {
+            return;
+        }
+
         // Clear previous selection
         if (this.selectedPiece != null) {
             this._clearPossibleMoveTextures();
@@ -103,6 +110,11 @@ export class InGameState extends GameState {
     }
 
     onPositionPicked(component) {
+        // If animating, do not allow movement
+        if (this.animating) {
+            return;
+        }
+
         // Error if no piece is selected
         if (this.selectedPiece == null) {
             this._clearPieceSelection("Invalid position. Firstly, choose a valid "
@@ -134,6 +146,7 @@ export class InGameState extends GameState {
         const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
         this.gameController.animationController.injectMoveAnimation(this.selectedPiece, pickedComponent, from, to,
             this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured, this.gameController.game.moves.length);
+        this.animating = true;
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
@@ -165,8 +178,11 @@ export class InGameState extends GameState {
             if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
                 this.gameController.cameraController.switchCamera(isCapture, true);
             }
+
+            setTimeout(() => this.animating = false, MY_PIECE_ANIMATION_TIME * 1000 + CAMERA_ANIMATION_TIME * 1000 + 100);
         } else {
             this.gameController.uiController.flashToast("Still your turn... Look for captures!");
+            setTimeout(() => this.animating = false, MY_PIECE_ANIMATION_TIME * 1000 + 100);
         }
 
         // Clear piece selection
@@ -174,6 +190,11 @@ export class InGameState extends GameState {
     }
 
     onTimeElapsed() {
+        // If animating, pause the clock
+        if (this.animating) {
+            return;
+        }
+
         const gameOver = (winningPlayer) => {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
@@ -217,5 +238,6 @@ export class InGameState extends GameState {
     destruct() {
         this._clearPossibleMoveTextures();
         this._clearPieceSelection();
+        this.animating = false;
     }
 }
