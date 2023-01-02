@@ -11,6 +11,8 @@ export class AnimationController {
             piece.kingPromotionMove = moveNumber;
         } else if (piece.kingPromotionMove != null && piece.kingPromotionMove > moveNumber) {
             component.tempTextureID = null;
+            piece.kingPromotionMove = null;
+            toKing = false;
         }
 
         if (component.animationID == null) {
