@@ -42,7 +42,7 @@ export class InMovieState extends GameState {
         let pickedComponent = null;
         let piece = null;
         for (const [_, p] of this.gameController.pieces) {
-            if (p.position[0] == from[0] && p.position[1] == from[1]) {
+            if (!p.isCaptured && p.position[0] == from[0] && p.position[1] == from[1]) {
                 pickedComponent = this.gameController.scene.graph.components[p.componentID];
                 p.position = to;
                 piece = p;
