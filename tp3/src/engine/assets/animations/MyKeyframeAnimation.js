@@ -37,19 +37,19 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @param {*} t
      * @memberof MyKeyframeAnimation
      */
-    update(t) {
+    update(t, allowLoop = true) {
         if (this.keyframes.length == 0 || this.lastUpdate) {
             return;
         }
 
-        if (this.scene.graph.loopAnimations) {
+        if (this.scene.graph.loopAnimations && allowLoop) {
             t = t % this.keyframes[this.keyframes.length - 1].instant;
         }
 
         const beforeFirstInstant = t < this.keyframes[0].instant;
         const afterLastInstant = t > this.keyframes[this.keyframes.length - 1].instant;
         if (beforeFirstInstant || afterLastInstant) {
-            if (!this.lastUpdate && afterLastInstant && this.keyframes.length > 1) {
+            if ((!this.scene.graph.loopAnimations || !allowLoop) && !this.lastUpdate && afterLastInstant && this.keyframes.length > 1) {
                 this.matrix = this.interpolate(this.keyframes[this.keyframes.length - 2], this.keyframes[this.keyframes.length - 1], 1);
                 this.lastUpdate = true;
             }

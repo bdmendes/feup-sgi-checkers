@@ -34,6 +34,8 @@ The graphics engine ported from TP2 had its XML specification updated to support
 
 Note that on game development (explained below) we rely solely on semantic ID names for hooking scene components to view models. This makes sure that the graphics engine layer stays agnostic. The `board` is included in the three scenes using the `include` tag so that any change to `board.xml` is reflected in all scenes.
 
+> *NOTE*: As the relevant actions for the application usage can be made using the board's pickable buttons, we are closing the `dat.GUI` interface by default. It can still be opened manually to play with all TP2's scene settings, such as lights or highlights toggling. It is refreshed automatically every time the graph changes, but we did notice that the properties do not auto update if changed via game and not the interface (for example, "travelling" via board button does not update the selected scene field on `dat.GUI`.). Also, even closed by default, its label's text is *Close Controls* instead of *Open Controls*. We are assuming that these are bugs related to this library's version shipped with `WebCGF`.
+
 ### Game development
 
 #### Selection of pieces and positions
