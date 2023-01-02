@@ -1,26 +1,29 @@
 import { GameState } from './GameState.js';
 import { BLACK } from '../model/Game.js';
 import { capturedPieces } from '../view/hooks/Board.js';
-import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID } from '../controller/GameController.js';
+import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from '../controller/GameController.js';
 
 export class InMovieState extends GameState {
     constructor(gameController) {
-        super(gameController, new Map([[MOVIE_BUTTON_ID, "End"], [SWITCH_CAMERA_BUTTON_ID, null]]));
+        super(gameController, new Map([[MOVIE_BUTTON_ID, "End"], [SWITCH_CAMERA_BUTTON_ID, null], [SWITCH_SCENE_BUTTON_ID, null]]));
         this.currentMove = 0;
         this.currentToPlay = BLACK;
         this.flashedMovieEnd = false;
-        this.destructing = false;
+        this.resettingBoard = true;
     }
 
     init() {
+        this.resettingBoard = true;
         this.gameController.reset();
+        this.resettingBoard = false;
+
         this.updateButtonsVisibility();
         this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
     onTimeElapsed() {
         // If resetting board, do not further animate
-        if (this.destructing) {
+        if (this.resettingBoard) {
             return;
         }
 
@@ -65,7 +68,7 @@ export class InMovieState extends GameState {
     }
 
     destruct() {
-        this.destructing = true;
+        this.resettingBoard = true;
 
         this.gameController.undoReset();
 

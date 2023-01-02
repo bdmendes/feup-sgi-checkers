@@ -13,6 +13,7 @@ import { AuxiliaryBoard } from '../view/hooks/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
+import { BlockingState } from '../state/BlockingState.js';
 
 export const START_BUTTON_ID = "startButton";
 export const UNDO_BUTTON_ID = "undoButton";
@@ -166,15 +167,19 @@ export class GameController {
 
             // Init switch scene button
             consoleButtons[SWITCH_SCENE_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[SWITCH_SCENE_BUTTON_ID],
-                consoleComponent, player, () => this.graphSwitcher());
+                consoleComponent, player, () => {
+                    this.state.beforeSceneChanged();
+                    const oldState = this.state;
+                    this.state = new BlockingState();
+                    this.graphSwitcher();
+                    this.state = oldState;
+                    this.state.onSceneChanged();
+                });
 
             // Init switch camera button
             consoleButtons[SWITCH_CAMERA_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[SWITCH_CAMERA_BUTTON_ID],
                 consoleComponent, player, () => this.cameraController.switchCamera());
         }
-
-        // Update scene-dependent state variables
-        this.state.onSceneChanged();
     }
 
     start(hintBlack = true, hintWhite = true, gameTime = 5 * 60) {
