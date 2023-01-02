@@ -32,7 +32,6 @@ export class UndoState extends GameState {
 
         // Get piece in final position
         const [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
-        const currentPlayer = this.gameController.game.currentPlayer;
         const piece = getPieceInPosition(to);
 
         // Remove captured pieces from auxiliary board
@@ -61,7 +60,7 @@ export class UndoState extends GameState {
         this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 
         // Flip camera if turn changed
-        if (this.gameController.game.currentPlayer != currentPlayer) {
+        if (this.gameController.game.currentPlayer != this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]) {
             this.gameController.cameraController.switchCamera(false, true);
         }
     }

@@ -51,6 +51,19 @@ export class InGameState extends GameState {
         }
     }
 
+    onButtonPicked(component) {
+        // Do not respond while animating
+        if (this.animating) {
+            return;
+        }
+
+        const buttonsMap = this.gameController.game === null || this.gameController.game.currentPlayer === BLACK
+            ? this.gameController.blackButtons
+            : this.gameController.whiteButtons;
+        const button = buttonsMap[component.id];
+        button?.pick();
+    }
+
     updateButtonsVisibility(forcedPlayer) {
         const player = forcedPlayer ?? this.gameController.game.currentPlayer;
         if (player === BLACK) {
@@ -95,6 +108,10 @@ export class InGameState extends GameState {
 
         // Select new piece
         this.selectedPiece = this.gameController.pieces.get(component.id);
+        if (this.selectedPiece.isCaptured) {
+            this._clearPieceSelection("Trying to play a captured piece? :)");
+            return;
+        }
         if (this.gameController.game.currentPlayer != this.selectedPiece.color) {
             this._clearPieceSelection("Invalid piece to play. Turn: "
                 + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
@@ -169,6 +186,7 @@ export class InGameState extends GameState {
         const winner = this.gameController.game.winner();
         if (winner != null) {
             this.gameController.switchState(new StartState(this.gameController));
+            this.gameController.gameOver = true;
             const winnerString = winner == WHITE ? "White" : "Black";
             this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`, null, true);
             return;
