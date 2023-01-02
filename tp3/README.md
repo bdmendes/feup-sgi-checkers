@@ -46,7 +46,7 @@ When a valid movement is made, the piece cannot be simply teleported. It is impo
 
 #### Move animation
 
-In this animation, we move a piece based on the position in the game board and the selected final position by the user. To do this, we use the class _MyPieceAnimation_, that extends the class _MyKeyframeAnimation_, that, in addition to the polished animation already created, allows the application to inject _GraphKeyframe_ objects to the piece animation when it is triggered by the user actions which lead to an animation that can change throughout the execution of the program. Besides the smooth motion, if the movement is a capture, then the animation checks for collision with the captured pieces and when a collision is detected, a *Capture animation* is injected.
+In this animation, we move a piece based on the position in the game board and the selected final position by the user. To do this, we use the class _MyPieceAnimation_, that extends the class _MyKeyframeAnimation_, that, in addition to the polished animation already created, allows the application to inject _GraphKeyframe_ objects to the piece animation when it is triggered by the user actions which lead to an animation that can change throughout the execution of the program. Besides the smooth motion, if the movement is a capture, then the animation checks for collision with the captured pieces and when a collision is detected, a _Capture animation_ is injected.
 
 #### Capture animation
 
@@ -62,11 +62,25 @@ As an added bonus, the captured pieces' stack for each player has two spots, so 
 
 ### Illumination
 
-bloat @nando, fala da spotlight
+The illumination can be divided in two important aspects, the general illumination and the game illumination.
+
+Each scene, that are explained in the next section with more detail, has its specific lights to give the most adequate illumination depending on the situation and in what each scene represent. For example, while the beach scene has more stronger and yellow lights than the confortable living room, the space scene has more dark and blue lights to increase the quality of the user experience for each scene.
+
+The game has its own **spotlight** that illuminates the pieces that the user pick during the game, and, when a move is made, the spotlight follow the piece that is moving keeping the piece illuminated during the **move animation**
 
 ### Game scenes
 
-bloat @nando
+#### Comfortable living room
+
+The first scene is the previous comfortable living room developed in TP1 and TP2 but with the game board, timers and auxiliar boards in the dinner table to play a nice game of checkers.
+
+#### Beach
+
+The second scene resembles a beach located somewhere in the world, in the end of an afternoon. A drink seats above a beach table so that players can hydrate themselves during the game. A beach towel and some sun umbrellas complete this dreamy scenario.
+
+#### Space
+
+The third scene is a representation of a part of the universe with several planets in their orbits. In the middle of the scene there is an asteroid which has the game board, timers and auxiliar boards on top to play a nice game of checkers.
 
 ## Additional game features
 
@@ -86,7 +100,7 @@ One can rotate the camera to the other side of the board, via the pickable board
 
 As per requirements, one can watch the movie of the game at any time while playing an active game with 1 or more moves, via the pickable board button for the effect. On the model side of things, we can just iterate over the list of moves and execute them over an initial board. On the graphical side of things, things get complicated, since we need to reset all hooked objects and "undo" the reset when stopping the movie, so that the game can be played again. This goes as follows:
 
-- When entering the *InMovieState*, the view is reset to its initial state: piece animations, piece textures, captured pieces marker, game time are saved and reset to their initial state.
+- When entering the _InMovieState_, the view is reset to its initial state: piece animations, piece textures, captured pieces marker, game time are saved and reset to their initial state.
 - One time per second, the state is notified to make a move. It injects move animation and increments the current move index. When the last move is reached, this time elapsed handler does nothing.
 - When the user ends the movie, the saved state is restored and the game may resume, if it was active.
 
@@ -100,11 +114,11 @@ When a new game is started, it stores the black and white remaining seconds to t
 
 ## Challenges faced (and solutions employed)
 
-- Hooking the graphical objects to view models cannot be done in a synchronous way, since the loading of the scene is asynchronous. This means that the controller needs to wait for the scene to be loaded before hooking the graphical objects to the view models. It is not viable to busy wait for this event, so the *GameController* adds itself as a graph loaded listener in the *XMLScene* and hooks the graphical objects only when it is notified. This works quite well, since the user is not able to start a new game before the scene is loaded: the `Start` button is not pickable until the scene is loaded.
+- Hooking the graphical objects to view models cannot be done in a synchronous way, since the loading of the scene is asynchronous. This means that the controller needs to wait for the scene to be loaded before hooking the graphical objects to the view models. It is not viable to busy wait for this event, so the _GameController_ adds itself as a graph loaded listener in the _XMLScene_ and hooks the graphical objects only when it is notified. This works quite well, since the user is not able to start a new game before the scene is loaded: the `Start` button is not pickable until the scene is loaded.
 - The chosen code architecture reflects our belief that it was not maintainble to inject application specific artifacts in the developed engine. It was already challenging enough to deal with a big codebase that was loosely coupled.
 - While Javascript "exposes" a single threaded interface to the user, its callback nature allows for several race conditions. In the context of this work, it is mainly related to graph switching and loading: when it happens, the controller needs to hook the graphical objects to its model, but there might already be work being done to the scene. Some problems and its solutions:
   - A turned on spotlight is being updated to follow the piece movement while the user switches the scene and switches itself off a bit later on the new scene. When returning to the old scene, its graph still has that light on, confusing the game controller. We worked around this by disabling the spotlight when switching the scene and let the next movement use the newly hooked spotlight.
-  - Every graph has a different instance of the board. This means that if an animation is being updated on one graph and the user travels, the scene now makes no sense since the object was stationary, there, before, and the initial positions are different. This means that the game would be basically unplayable if this issue was not tackled. We solved this by copying the reference to active animations and textures from the old to the new graph every time it is switched. Besides this, we disabled the handling of scene dispatched events by switching the state to a *BlockingState* until the new graph is loaded and the graphical objects are hooked: this prevents the user from playing the game while the scene is being switched, which would result in newly injected animations in the new scene, while the animations were being copied from the old scene, resulting in quite unpredictable behavior. 
+  - Every graph has a different instance of the board. This means that if an animation is being updated on one graph and the user travels, the scene now makes no sense since the object was stationary, there, before, and the initial positions are different. This means that the game would be basically unplayable if this issue was not tackled. We solved this by copying the reference to active animations and textures from the old to the new graph every time it is switched. Besides this, we disabled the handling of scene dispatched events by switching the state to a _BlockingState_ until the new graph is loaded and the graphical objects are hooked: this prevents the user from playing the game while the scene is being switched, which would result in newly injected animations in the new scene, while the animations were being copied from the old scene, resulting in quite unpredictable behavior.
 - Using traditional spritesheets to draw text raises some issues, such as the letters not having the same width, which results in weird spacing between letters when drawn. There are some workarounds that could have been explored, such as centering the text on each character box on the font asset, or even determining the frame of the letter with a color detecting algorithm, but this was not the scope of this work. We resorted to avoiding using tiny letters such as `I`, which is a bit naive, but works quite well in maintaing a good text look.
 
 ## Conclusions and future work
