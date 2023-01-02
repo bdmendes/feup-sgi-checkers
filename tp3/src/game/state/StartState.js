@@ -8,10 +8,14 @@ export class StartState extends GameState {
     }
 
     init() {
+        // Remove onbeforeunload event
+        window.onbeforeunload = null;
+
         if (this.gameController.game == null) {
             return;
         }
 
+        // Update buttons visibility
         this.updateButtonsVisibility();
 
         // Switch camera to black

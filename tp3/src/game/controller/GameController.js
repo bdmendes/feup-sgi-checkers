@@ -1,20 +1,19 @@
-import { getInitialPositions, getInitialStack } from '../view/Board.js';
+import { getInitialPositions, getInitialStack } from '../view/hooks/Board.js';
 import { AnimationController } from './AnimationController.js';
 import { LightController } from './LightController.js';
 import { CameraController } from './CameraController.js';
 import { Game, BLACK, WHITE } from '../model/Game.js';
 import { TextureController } from './TextureController.js';
-import { MyPiece } from '../view/MyPiece.js';
-import { BoardButton } from '../view/BoardButton.js';
-import { BoardClock } from '../view/BoardClock.js';
+import { MyPiece } from '../view/hooks/MyPiece.js';
+import { BoardButton } from '../view/hooks/BoardButton.js';
+import { BoardClock } from '../view/hooks/BoardClock.js';
 import { InGameState } from '../state/InGameState.js';
 import { StartState } from '../state/StartState.js';
-import { AuxiliaryBoard } from '../view/AuxiliaryBoard.js';
+import { AuxiliaryBoard } from '../view/hooks/AuxiliaryBoard.js';
 import { UIController } from './UIController.js';
 import { InMovieState } from '../state/InMovieState.js';
 import { UndoState } from '../state/UndoState.js';
 
-export const GAME_TIME = 5 * 60;
 export const START_BUTTON_ID = "startButton";
 export const UNDO_BUTTON_ID = "undoButton";
 export const MOVIE_BUTTON_ID = "movieButton";
@@ -35,7 +34,7 @@ export class GameController {
 
         // game
         this.game = null;
-        this.resignedGame = null;
+        this.gameOver = null;
 
         // component hooks
         this.pieces = new Map();
@@ -47,8 +46,11 @@ export class GameController {
         this.blackAuxiliaryBoard = null;
         this.clock = null;
         this.stackState = null;
+
+        // settings
         this.hintWhite = null;
         this.hintBlack = null;
+        this.gameTime = null;
 
         // controllers
         this.lightController = new LightController(scene);
@@ -59,6 +61,7 @@ export class GameController {
 
         // saved state for resetting
         this.savedAnimations = {};
+        this.savedTempTextureIDs = {};
         this.savedPieces = new Map();
         this.savedWhiteSeconds = 0;
         this.savedBlackSeconds = 0;
@@ -134,7 +137,8 @@ export class GameController {
                                 return;
                             }
                             gameController.switchState(new StartState(gameController));
-                            gameController.resignedGame = true;
+                            gameController.gameOver = true;
+                            gameController.uiController.flashToast("You resigned. You can now start a new game.");
                         }, 250, this);
                         return;
                     }
@@ -152,7 +156,7 @@ export class GameController {
             consoleButtons[MOVIE_BUTTON_ID] = new BoardButton(this.scene, consoleComponent.children[MOVIE_BUTTON_ID],
                 consoleComponent, player, () => {
                     if (this.state instanceof InMovieState) {
-                        this.switchState(!this.resignedGame && this.game.winner() == null
+                        this.switchState(!this.gameOver && this.game.winner() == null
                             ? new InGameState(this) : new StartState(this));
                         return;
                     }
@@ -173,14 +177,17 @@ export class GameController {
         this.state.onSceneChanged();
     }
 
-    start(hintBlack, hintWhite) {
-        // Update hint settings
+    start(hintBlack = true, hintWhite = true, gameTime = 5 * 60) {
+        // Update hint and time settings
         this.hintBlack = hintBlack;
         this.hintWhite = hintWhite;
+        this.gameTime = gameTime;
+        this.blackRemainingSeconds = this.gameTime;
+        this.whiteRemainingSeconds = this.gameTime;
 
         // Init game model
         this.game = new Game();
-        this.resignedGame = false;
+        this.gameOver = false;
 
         // Reset game view
         this.reset();
@@ -188,17 +195,9 @@ export class GameController {
         // Hook pieces
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (let [key, value] of initBlackPositions) {
-            if (this.pieces.has('blackPiece' + key)) {
-                this.pieces.get('blackPiece' + key).position = value;
-                continue;
-            }
             this.pieces.set('blackPiece' + key, new MyPiece(key, 'blackPiece' + key, BLACK, value));
         }
         for (let [key, value] of initWhitePositions) {
-            if (this.pieces.has('whitePiece' + key)) {
-                this.pieces.get('whitePiece' + key).position = value;
-                continue;
-            }
             this.pieces.set('whitePiece' + key, new MyPiece(key, 'whitePiece' + key, WHITE, value));
         }
 
@@ -210,7 +209,7 @@ export class GameController {
     }
 
     reset() {
-        // Put pieces in their initial positions
+        // Put pieces in their initial positions and reset textures
         const [initBlackPositions, initWhitePositions] = getInitialPositions();
         for (const [id, piece] of this.pieces) {
             const component = this.scene.graph.components[id];
@@ -219,17 +218,22 @@ export class GameController {
                 delete this.scene.graph.animations[component.animationID];
                 component.animationID = null;
             }
+
+            this.savedTempTextureIDs[id] = component.tempTextureID;
+            component.tempTextureID = null;
+
             this.savedPieces.set(id, { ...piece });
             piece.position = (piece.color == BLACK ? initBlackPositions : initWhitePositions).get(piece.id);
             piece.isCaptured = false;
+            piece.kingPromotionMove = null;
         }
 
         // Save time and reset it
         this.savedWhiteSeconds = this.whiteRemainingSeconds;
         this.savedBlackSeconds = this.blackRemainingSeconds;
-        this.whiteRemainingSeconds = GAME_TIME;
-        this.blackRemainingSeconds = GAME_TIME;
-        this.clock.update(GAME_TIME, GAME_TIME);
+        this.whiteRemainingSeconds = this.gameTime;
+        this.blackRemainingSeconds = this.gameTime;
+        this.clock.update(this.gameTime, this.gameTime);
 
         // Reset captured pieces
         this.savedCapturedPieces = { ...this.capturedPieces };
@@ -242,13 +246,14 @@ export class GameController {
     }
 
     undoReset() {
-        // Restore piece positions
+        // Restore piece positions and textures
         for (const [id, _] of this.pieces) {
             const component = this.scene.graph.components[id];
             if (this.savedAnimations[id] != null) {
                 component.animationID = this.savedAnimations[id].id;
                 this.scene.graph.animations[component.animationID] = this.savedAnimations[component.animationID];
             }
+            component.tempTextureID = this.savedTempTextureIDs[id];
             this.pieces.set(id, { ...this.savedPieces.get(id) });
         }
 

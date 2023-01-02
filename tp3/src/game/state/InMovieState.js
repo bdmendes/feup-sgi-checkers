@@ -1,6 +1,6 @@
 import { GameState } from './GameState.js';
 import { BLACK } from '../model/Game.js';
-import { capturedPieces } from '../view/Board.js';
+import { capturedPieces } from '../view/hooks/Board.js';
 import { MOVIE_BUTTON_ID, SWITCH_CAMERA_BUTTON_ID, SWITCH_SCENE_BUTTON_ID } from '../controller/GameController.js';
 
 export class InMovieState extends GameState {
@@ -12,13 +12,8 @@ export class InMovieState extends GameState {
     }
 
     init() {
-        // add onbeforeunload dialog
-        window.onbeforeunload = function () {
-            return 'Are you sure you want to leave?';
-        }
-
         this.gameController.reset();
-        this.updateButtonsVisibility(this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]);
+        this.updateButtonsVisibility();
         this.gameController.uiController.flashToast("Playing movie...", null, true);
     }
 
@@ -48,8 +43,8 @@ export class InMovieState extends GameState {
 
         // Enable piece spotlight and inject move animation
         this.gameController.lightController.enableSpotlight(piece);
-        this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured);
+        this.gameController.animationController.injectMoveAnimation(piece, pickedComponent, from, to,
+            this.currentToPlay == BLACK ? to[0] == 0 : to[0] == 7, captured, this.currentMove + 1);
 
         // Update captured pieces marker
         if (this.currentToPlay === BLACK) {
@@ -64,15 +59,11 @@ export class InMovieState extends GameState {
     }
 
     destruct() {
-        window.onbeforeunload = function () { }
-
         this.gameController.undoReset();
 
         for (const buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
             for (let button in buttonsMap) {
-                buttonsMap[button].component.visible = true;
                 if (button === MOVIE_BUTTON_ID) {
-                    buttonsMap[button].component.visible = true;
                     buttonsMap[button].setText("Watch");
                 }
             }

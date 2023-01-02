@@ -1,8 +1,7 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
-import { parsePosition, checkValidPosition } from '../view/Board.js';
-import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
-import { capturedPieces } from '../view/Board.js';
+import { parsePosition, checkValidPosition, capturedPieces } from '../view/hooks/Board.js';
+import { MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
 import { StartState } from './StartState.js';
 
 export class InGameState extends GameState {
@@ -14,10 +13,11 @@ export class InGameState extends GameState {
     }
 
     init() {
-        // add onbeforeunload dialog
+        // Add onbeforeunload dialog
         window.onbeforeunload = function () {
-            return 'Are you sure you want to leave?';
+            return 'Are you sure you want to leave? Current game will be lost.';
         }
+
         // Switch game camera to current player
         const nextToPlay = this.gameController.game.moves.length == 0
             ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
@@ -37,8 +37,6 @@ export class InGameState extends GameState {
 
     onSceneChanged() {
         this.init();
-        this._clearPossibleMoveTextures();
-        this._clearPieceSelection();
     }
 
     updateButtonsVisibility(forcedPlayer) {
@@ -134,8 +132,8 @@ export class InGameState extends GameState {
 
         // Animate move
         const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
-        this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, captured);
+        this.gameController.animationController.injectMoveAnimation(this.selectedPiece, pickedComponent, from, to,
+            this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured, this.gameController.game.moves.length);
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
@@ -149,7 +147,7 @@ export class InGameState extends GameState {
         if (winner != null) {
             this.gameController.switchState(new StartState(this.gameController));
             const winnerString = winner == WHITE ? "White" : "Black";
-            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`);
+            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`, null, true);
             return;
         }
 
@@ -157,9 +155,9 @@ export class InGameState extends GameState {
         if (currentPlayer != nextToPlay) {
             // Update clock
             if (nextToPlay === BLACK) {
-                this.gameController.whiteRemainingSeconds = GAME_TIME;
+                this.gameController.whiteRemainingSeconds = this.gameController.gameTime;
             } else {
-                this.gameController.blackRemainingSeconds = GAME_TIME;
+                this.gameController.blackRemainingSeconds = this.gameController.gameTime;
             }
             this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 
@@ -167,6 +165,8 @@ export class InGameState extends GameState {
             if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
                 this.gameController.cameraController.switchCamera(isCapture, true);
             }
+        } else {
+            this.gameController.uiController.flashToast("Still your turn... Look for captures!");
         }
 
         // Clear piece selection
@@ -178,7 +178,8 @@ export class InGameState extends GameState {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
             this.gameController.switchState(new StartState(this.gameController));
-            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
+            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`, null, true);
+            this.gameController.gameOver = true;
         };
 
         // Switch state and flash winner if time is up
@@ -214,7 +215,6 @@ export class InGameState extends GameState {
     }
 
     destruct() {
-        window.onbeforeunload = function () { }
         this._clearPossibleMoveTextures();
         this._clearPieceSelection();
     }

@@ -41,16 +41,17 @@ export class GameState {
             this.gameController.whiteButtons[START_BUTTON_ID].parentConsole.visible = true;
         }
 
-        const buttonsMap = player === BLACK ? this.gameController.blackButtons : this.gameController.whiteButtons;
-        for (let button in buttonsMap) {
-            if (this.visibleButtons.has(button)) {
-                buttonsMap[button].component.visible = true;
-                const text = this.visibleButtons.get(button);
-                if (text != null) {
-                    buttonsMap[button].setText(text);
+        for (let buttonsMap of [this.gameController.blackButtons, this.gameController.whiteButtons]) {
+            for (let button in buttonsMap) {
+                if (this.visibleButtons.has(button)) {
+                    buttonsMap[button].component.visible = true;
+                    const text = this.visibleButtons.get(button);
+                    if (text != null) {
+                        buttonsMap[button].setText(text);
+                    }
+                } else {
+                    buttonsMap[button].component.visible = false;
                 }
-            } else {
-                buttonsMap[button].component.visible = false;
             }
         }
     }

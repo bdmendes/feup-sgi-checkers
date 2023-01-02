@@ -1,6 +1,5 @@
 import { CGFcamera } from '../../../../../lib/CGF.js';
-import { XMLscene } from '../../XMLscene.js';
-import { MyAnimation } from './MyAnimation.js';
+import { MyAnimation } from '../../../engine/assets/animations/MyAnimation.js';
 import { MY_PIECE_ANIMATION_TIME } from './MyPieceAnimation.js';
 
 // stretch_factor = 1 => perfect circle
@@ -15,7 +14,7 @@ export const CAMERA_ANIMATION_TIME = 1;
 export class MyCameraAnimation extends MyAnimation {
     /**
      * Creates an instance of MyKeyframeAnimation.
-     * @param {XMLscene} scene 
+     * @param scene 
      */
     constructor(scene, id, camera, isCapture = false, isMove = true) {
         super(id);
