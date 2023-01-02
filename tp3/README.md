@@ -60,7 +60,9 @@ Where y corresponds to the height of the jump and x represents the percentage of
 
 This allow us to make a pretty and smooth animation when a piece is captured
 
-### Camara movement
+### Camera movement
+
+To give an even more emersed experience to the user, we inject a camera animation each time the game turn changes which changes the camera position from the player 1 perspective to the player 2 perspective making a small rotation around the board. Furthermore, we added the option to the user change the camera position in the middle of the game whenever the user wants to provide the best user experience.
 
 ## Visualization
 
