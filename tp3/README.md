@@ -1,5 +1,7 @@
 # SGI 2022/2023 - TP3
 
+![Picking a piece](./readme_assets/tp3_pick_piece.png)
+
 ## Group: T05G04
 
 | Name          | Number    | E-Mail                   |
@@ -11,7 +13,7 @@
 
 ## Code architecture
 
-![code_arch](./readme_assets/sgi_arch.png)
+![code_arch](./readme_assets/tp3_arch_diagram.png)
 
 Starting from TP2's work, a powerful but non interactable graphics engine, we felt that it would be of great benefit to make only needed adjustments to its abilites, for example, to accomodate for text spritesheets, and keep it completely agnostic to its usage.
 
@@ -112,3 +114,25 @@ When a new game is started, it stores the black and white remaining seconds to t
 This pratical work was the most interesting and challenging of the three, requiring us to code a very interactive system that responds very differently depending on the state. This, coupled with new graphical/mathematical challenges, such as detecting collisions or animating objects on the fly, made it a challenging although very rewarding project.
 
 In the end, we feel the need to mention that we'd love to have more time to further improve on this project, perhaps working on an artificial intelligence or a proper, separate backend, for multiplayer online games. Still, we think that the delivered product is quite polished and does its proposed job quite well.
+
+---
+
+## Screenshots
+
+![Initial view](./readme_assets/tp3_initial_view.png)
+*Initial view*
+
+![Game setup](./readme_assets/tp3_start_game.png)
+*Game setup*
+
+![Picking a piece](./readme_assets/tp3_pick_piece.png)
+*Picking a piece*
+
+![Playing the movie](./readme_assets/tp3_movie.png)
+*Playing the movie*
+
+![Undoing a capture](./readme_assets/tp3_undo_capture.png)
+*Undoing a capture*
+
+![Rotating the camera](./readme_assets/tp3_rotate_camera.png)
+*Rotating the camera*
