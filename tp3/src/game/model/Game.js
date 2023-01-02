@@ -179,20 +179,25 @@ export class Game {
         let isCapture = false;
         let nextToPlay = this.currentPlayer === WHITE ? BLACK : WHITE;
         if (Math.abs(to[0] - from[0]) >= 2) {
-            isCapture = true;
-
             // Capture pieces on the way
             const [rowDiff, colDiff] = [to[0] - from[0], to[1] - from[1]];
             for (let i = 1; i < Math.abs(rowDiff); i++) {
-                this.board[from[0] + i * rowDiff / Math.abs(rowDiff)][from[1] + i * colDiff / Math.abs(colDiff)] = EMPTY;
+                const position = [from[0] + i * rowDiff / Math.abs(rowDiff), from[1] + i * colDiff / Math.abs(colDiff)];
+                const piece = this.board[position[0]][position[1]];
+                if (piece != EMPTY) {
+                    isCapture = true;
+                }
+                this.board[position[0]][position[1]] = EMPTY;
             }
 
-            // Check if there is a double capture available for the current player
-            const moves = this._possibleMovesSingle(to);
-            for (const move of moves) {
-                if (move[2]) {
-                    nextToPlay = this.currentPlayer;
-                    break;
+            if (isCapture) {
+                // Check if there is a double capture available for the current player
+                const moves = this._possibleMovesSingle(to);
+                for (const move of moves) {
+                    if (move[2]) {
+                        nextToPlay = this.currentPlayer;
+                        break;
+                    }
                 }
             }
         }
