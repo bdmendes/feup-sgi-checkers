@@ -1,16 +1,18 @@
 import { GameState } from "./GameState.js";
 import { InGameState } from "./InGameState.js";
 import { BLACK } from "../model/Game.js";
-import { GAME_TIME } from "../controller/GameController.js";
+
+import { MY_PIECE_ANIMATION_TIME } from "../view/animations/MyPieceAnimation.js";
 
 export class UndoState extends GameState {
     constructor(gameController) {
-        super(gameController, null);
+        super(gameController, new Map());
     }
 
     init() {
+        this.updateButtonsVisibility();
         this._undo();
-        this.gameController.switchState(new InGameState(this.gameController));
+        setTimeout(() => this.gameController.switchState(new InGameState(this.gameController)), MY_PIECE_ANIMATION_TIME * 1000 + 100);
     }
 
     _undo() {
@@ -30,21 +32,20 @@ export class UndoState extends GameState {
 
         // Get piece in final position
         const [from, to, _, __] = this.gameController.game.moves[this.gameController.game.moves.length - 1];
-        const currentPlayer = this.gameController.game.currentPlayer;
         const piece = getPieceInPosition(to);
 
         // Remove captured pieces from auxiliary board
         const capturedPieces = this.gameController.capturedPieces[this.gameController.game.moves.length - 1];
-        if (currentPlayer === BLACK) {
+        if (piece.color != BLACK) {
             this.gameController.whiteAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
         } else {
             this.gameController.blackAuxiliaryBoard.removeCapturedPieces(capturedPieces.length);
         }
 
         // Animate undo
-        let component = this.gameController.scene.graph.components[piece.componentID];
+        const component = this.gameController.scene.graph.components[piece.componentID];
         this.gameController.lightController.enableSpotlight(piece);
-        this.gameController.animationController.injectMoveAnimation(component, to, from, false, []);
+        this.gameController.animationController.injectMoveAnimation(piece, component, to, from, false, [], this.gameController.game.moves.length - 1);
         for (let i = 0; i < capturedPieces.length; i++) {
             this.gameController.animationController.injectCaptureAnimation(this.gameController.pieces.get(capturedPieces[i]));
         }
@@ -54,15 +55,13 @@ export class UndoState extends GameState {
         this.gameController.game.undo();
 
         // Update clock
-        this.gameController.whiteRemainingSeconds = GAME_TIME;
-        this.gameController.blackRemainingSeconds = GAME_TIME;
+        this.gameController.whiteRemainingSeconds = this.gameController.gameTime;
+        this.gameController.blackRemainingSeconds = this.gameController.gameTime;
         this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 
         // Flip camera if turn changed
-        if (this.gameController.game.currentPlayer != currentPlayer) {
+        if (this.gameController.game.currentPlayer != this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename]) {
             this.gameController.cameraController.switchCamera(false, true);
         }
     }
-
-    updateButtonsVisibility() { }
 }

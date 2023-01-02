@@ -1,26 +1,28 @@
 import { GameState } from './GameState.js';
 import { BLACK, WHITE } from '../model/Game.js';
-import { parsePosition, checkValidPosition } from '../view/Board.js';
-import { GAME_TIME, MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
-import { capturedPieces } from '../view/Board.js';
+import { parsePosition, checkValidPosition, capturedPieces } from '../view/hooks/Board.js';
+import { MOVIE_BUTTON_ID, START_BUTTON_ID, UNDO_BUTTON_ID } from '../controller/GameController.js';
 import { StartState } from './StartState.js';
+import { MY_PIECE_ANIMATION_TIME } from '../view/animations/MyPieceAnimation.js';
+import { CAMERA_ANIMATION_TIME } from '../view/animations/MyCameraAnimation.js';
 
 export class InGameState extends GameState {
     constructor(gameController) {
         super(gameController, null);
         this.selectedPiece = null;
+        this.animating = false;
         this.notifiedNoValidMovesOnce = false;
         this.notifiedClickDropOnce = false;
     }
 
     init() {
-        // Switch game camera to current player
-        const nextToPlay = this.gameController.game.moves.length == 0
-            ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
-        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
-        if (facingPlayer != nextToPlay) {
-            this.gameController.cameraController.setGameCamera(nextToPlay);
+        // Add onbeforeunload dialog
+        window.onbeforeunload = function () {
+            return 'Are you sure you want to leave? Current game will be lost.';
         }
+
+        // Switch game camera to current player
+        this._updateCamera(true);
 
         // Update buttons visibility
         this.updateButtonsVisibility();
@@ -32,9 +34,34 @@ export class InGameState extends GameState {
     }
 
     onSceneChanged() {
-        this.init();
-        this._clearPossibleMoveTextures();
-        this._clearPieceSelection();
+        this._updateCamera(false);
+        this.updateButtonsVisibility();
+    }
+
+    _updateCamera(animate) {
+        const nextToPlay = this.gameController.game.moves.length == 0
+            ? BLACK : this.gameController.game.moves[this.gameController.game.moves.length - 1][3];
+        const facingPlayer = this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename];
+        if (facingPlayer != nextToPlay) {
+            if (!animate) {
+                this.gameController.cameraController.setGameCamera(nextToPlay);
+            } else {
+                this.gameController.cameraController.switchCamera();
+            }
+        }
+    }
+
+    onButtonPicked(component) {
+        // Do not respond while animating
+        if (this.animating) {
+            return;
+        }
+
+        const buttonsMap = this.gameController.game === null || this.gameController.game.currentPlayer === BLACK
+            ? this.gameController.blackButtons
+            : this.gameController.whiteButtons;
+        const button = buttonsMap[component.id];
+        button?.pick();
     }
 
     updateButtonsVisibility(forcedPlayer) {
@@ -62,6 +89,11 @@ export class InGameState extends GameState {
     }
 
     onPiecePicked(component) {
+        // If animating, do not allow movement
+        if (this.animating) {
+            return;
+        }
+
         // Clear previous selection
         if (this.selectedPiece != null) {
             this._clearPossibleMoveTextures();
@@ -76,6 +108,10 @@ export class InGameState extends GameState {
 
         // Select new piece
         this.selectedPiece = this.gameController.pieces.get(component.id);
+        if (this.selectedPiece.isCaptured) {
+            this._clearPieceSelection("Trying to play a captured piece? :)");
+            return;
+        }
         if (this.gameController.game.currentPlayer != this.selectedPiece.color) {
             this._clearPieceSelection("Invalid piece to play. Turn: "
                 + (this.gameController.game.currentPlayer === BLACK ? "black pieces" : "white pieces"));
@@ -101,6 +137,11 @@ export class InGameState extends GameState {
     }
 
     onPositionPicked(component) {
+        // If animating, do not allow movement
+        if (this.animating) {
+            return;
+        }
+
         // Error if no piece is selected
         if (this.selectedPiece == null) {
             this._clearPieceSelection("Invalid position. Firstly, choose a valid "
@@ -130,8 +171,9 @@ export class InGameState extends GameState {
 
         // Animate move
         const pickedComponent = this.gameController.scene.graph.components[this.selectedPiece.componentID];
-        this.gameController.animationController.injectMoveAnimation(pickedComponent, from, to,
-            (this.selectedPiece.color == BLACK) ? to[0] == 0 : to[0] == 7, captured);
+        this.gameController.animationController.injectMoveAnimation(this.selectedPiece, pickedComponent, from, to,
+            this.selectedPiece.color == BLACK ? to[0] == 0 : to[0] == 7, captured, this.gameController.game.moves.length);
+        this.animating = true;
 
         // Update captured pieces marker
         if (currentPlayer === BLACK) {
@@ -144,8 +186,9 @@ export class InGameState extends GameState {
         const winner = this.gameController.game.winner();
         if (winner != null) {
             this.gameController.switchState(new StartState(this.gameController));
+            this.gameController.gameOver = true;
             const winnerString = winner == WHITE ? "White" : "Black";
-            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`);
+            this.gameController.uiController.flashToast(`The game is over! Congratulations, ${winnerString}`, null, true);
             return;
         }
 
@@ -153,9 +196,9 @@ export class InGameState extends GameState {
         if (currentPlayer != nextToPlay) {
             // Update clock
             if (nextToPlay === BLACK) {
-                this.gameController.whiteRemainingSeconds = GAME_TIME;
+                this.gameController.whiteRemainingSeconds = this.gameController.gameTime;
             } else {
-                this.gameController.blackRemainingSeconds = GAME_TIME;
+                this.gameController.blackRemainingSeconds = this.gameController.gameTime;
             }
             this.gameController.clock.update(this.gameController.blackRemainingSeconds, this.gameController.whiteRemainingSeconds);
 
@@ -163,6 +206,11 @@ export class InGameState extends GameState {
             if (this.gameController.cameraController.facingPlayer[this.gameController.scene.graph.filename] != nextToPlay) {
                 this.gameController.cameraController.switchCamera(isCapture, true);
             }
+
+            setTimeout(() => this.animating = false, MY_PIECE_ANIMATION_TIME * 1000 + CAMERA_ANIMATION_TIME * 1000 + 100);
+        } else {
+            this.gameController.uiController.flashToast("Still your turn... Look for captures!");
+            setTimeout(() => this.animating = false, MY_PIECE_ANIMATION_TIME * 1000 + 100);
         }
 
         // Clear piece selection
@@ -170,11 +218,17 @@ export class InGameState extends GameState {
     }
 
     onTimeElapsed() {
+        // If animating, pause the clock
+        if (this.animating) {
+            return;
+        }
+
         const gameOver = (winningPlayer) => {
             const winning = winningPlayer == WHITE ? "White" : "Black";
             const loser = winningPlayer == WHITE ? "Black" : "White";
             this.gameController.switchState(new StartState(this.gameController));
-            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`);
+            this.gameController.uiController.flashToast(`Time is up for ${loser}! ${winning} is the winner!`, null, true);
+            this.gameController.gameOver = true;
         };
 
         // Switch state and flash winner if time is up
@@ -212,5 +266,6 @@ export class InGameState extends GameState {
     destruct() {
         this._clearPossibleMoveTextures();
         this._clearPieceSelection();
+        this.animating = false;
     }
 }

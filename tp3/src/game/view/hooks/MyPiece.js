@@ -6,5 +6,6 @@ export class MyPiece {
         this.position = position;
         this.possibleMoves = null;
         this.isCaptured = false;
+        this.kingPromotionMove = null;
     }
 }

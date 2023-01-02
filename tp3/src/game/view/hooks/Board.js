@@ -1,4 +1,4 @@
-import { BLACK } from '../model/Game.js';
+import { BLACK } from '../../model/Game.js';
 
 const BLACK_PIECE_STR = 'blackPiece';
 const WHITE_PIECE_STR = 'whitePiece';

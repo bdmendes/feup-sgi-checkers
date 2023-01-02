@@ -38,7 +38,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * @memberof MyKeyframeAnimation
      */
     update(t, allowLoop = true) {
-        if (this.keyframes.length == 0 || this.lastUpdate) {
+        if (this.keyframes.length == 0 || (this.lastUpdate && !this.scene.graph.loopAnimations)) {
             return;
         }
 
@@ -49,6 +49,9 @@ export class MyKeyframeAnimation extends MyAnimation {
         const beforeFirstInstant = t < this.keyframes[0].instant;
         const afterLastInstant = t > this.keyframes[this.keyframes.length - 1].instant;
         if (beforeFirstInstant || afterLastInstant) {
+            if (afterLastInstant && !this.isVisible) {
+                this.isVisible = true;
+            }
             if ((!this.scene.graph.loopAnimations || !allowLoop) && !this.lastUpdate && afterLastInstant && this.keyframes.length > 1) {
                 this.matrix = this.interpolate(this.keyframes[this.keyframes.length - 2], this.keyframes[this.keyframes.length - 1], 1);
                 this.lastUpdate = true;

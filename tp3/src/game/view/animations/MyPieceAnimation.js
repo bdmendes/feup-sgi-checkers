@@ -1,8 +1,7 @@
-import { XMLscene } from '../../XMLscene.js';
-import { GraphKeyframe } from './GraphKeyframe.js';
-import { MyAnimation } from './MyAnimation.js';
-import { MyKeyframeAnimation } from './MyKeyframeAnimation.js';
-import { distanceBetweenPoints } from "../../utils/math.js"
+import { GraphKeyframe } from '../../../engine/assets/animations/GraphKeyframe.js';
+import { MyAnimation } from '../../../engine/assets/animations/MyAnimation.js';
+import { MyKeyframeAnimation } from '../../../engine/assets/animations/MyKeyframeAnimation.js';
+import { distanceBetweenPoints } from "../../../engine/utils/math.js"
 
 export const MY_PIECE_ANIMATION_TIME = 0.8;
 const PIECE_HEIGHT = 0.25;
@@ -17,7 +16,6 @@ const WHITE_KING_TEXTURE = 'whitePieceKingTexture';
 export class MyPieceAnimation extends MyKeyframeAnimation {
     /**
      * Creates an instance of MyKeyframeAnimation.
-     * @param {XMLscene} scene 
      */
     constructor(animationController, id, initialPos) {
         super(animationController.scene, id);
@@ -48,7 +46,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
 
     addMidKeyframe(initialPos, finalPos, isJump, toKing, capturedPieces = []) {
         this.capturedPieces.push(...capturedPieces);
-        let lastKeyFrame = this.keyframes[this.keyframes.length - 1];
+        const lastKeyFrame = this.keyframes[this.keyframes.length - 1];
 
         const keyframe = new GraphKeyframe(this.scene, -1);
         keyframe.isJump = isJump;
@@ -82,12 +80,12 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         super.update(t, false);
 
         if (this.finalUpdate) {
-            return
+            return;
         }
 
         if (this.lastUpdate) {
             if (this.nextKeyFrame.toKing && this.scene.graph.components[this.id].tempTextureID == null) {
-                this.scene.graph.components[this.id].tempTextureID = (this.id.includes('black')) ? BLACK_KING_TEXTURE : WHITE_KING_TEXTURE;
+                this.scene.graph.components[this.id].tempTextureID = this.id.includes('black') ? BLACK_KING_TEXTURE : WHITE_KING_TEXTURE;
             }
             this.capturedPieces = [];
             this.finalUpdate = true;
@@ -100,18 +98,18 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
         if (this.nextKeyFrame.isJump) {
             this._handleCaptureAnimation(t);
         } else {
-            let currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
+            const currentPosition = [this.initialPos[0] + this.matrix[14], this.initialPos[1] + this.matrix[12]];
             this._checkColision(currentPosition);
             this.animationController.gameController.lightController.updateSpotlight(currentPosition);
         }
     }
 
     _handleCaptureAnimation(t) {
-        let timePercentage = (t - this.lastKeyframe.instant) / MY_PIECE_ANIMATION_TIME;
+        const timePercentage = (t - this.lastKeyframe.instant) / MY_PIECE_ANIMATION_TIME;
 
         // reset y
         this.matrix[13] = 0;
-        let y_offset = this.nextKeyFrame.transformation.translationCoords[1] * timePercentage;
+        const y_offset = this.nextKeyFrame.transformation.translationCoords[1] * timePercentage;
         this.matrix = mat4.translate(this.matrix, this.matrix, [0, this._calculateY(timePercentage) + y_offset, 0]);
     }
 
