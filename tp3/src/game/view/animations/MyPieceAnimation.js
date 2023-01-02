@@ -77,7 +77,7 @@ export class MyPieceAnimation extends MyKeyframeAnimation {
             super.lastUpdate = this.finalUpdate = false;
         }
 
-        super.update(t);
+        super.update(t, false);
 
         if (this.finalUpdate) {
             return;
