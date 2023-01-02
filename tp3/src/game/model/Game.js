@@ -41,7 +41,7 @@ export class Game {
         }
         this.board = this.previousBoards.pop();
         this.moves.pop();
-        this.currentPlayer = this.currentPlayer === WHITE ? BLACK : WHITE;
+        this.currentPlayer = this.moves.length > 0 ? this.moves[this.moves.length - 1][3] : BLACK;
         return true;
     }
 
