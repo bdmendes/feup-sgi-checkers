@@ -54,7 +54,7 @@ In this animation, we move a piece based on the position in the game board and t
 
 This animation is injected in the application when a collision is detected, and the captured piece jumps in the shape of a parabola from the game board to the auxiliar board.
 
-> We model the movement with `y = (x * 4 - 2)² + 4, x ∈ [0,1]`, where y corresponds to the height of the jump and x represents the percentage of the time in the animation.
+> We model the movement with `y = -(x * 4 - 2)² + 4, x ∈ [0,1]`, where y corresponds to the height of the jump and x represents the percentage of the time in the animation.
 
 This allows us to make a pretty and smooth animation when a piece is captured.
 
@@ -134,19 +134,19 @@ In the end, we feel the need to mention that we'd love to have more time to furt
 ## Screenshots
 
 ![Initial view](./readme_assets/tp3_initial_view.png)
-*Initial view*
+_Initial view_
 
 ![Game setup](./readme_assets/tp3_start_game.png)
-*Game setup*
+_Game setup_
 
 ![Picking a piece](./readme_assets/tp3_pick_piece.png)
-*Picking a piece*
+_Picking a piece_
 
 ![Playing the movie](./readme_assets/tp3_movie.png)
-*Playing the movie*
+_Playing the movie_
 
 ![Undoing a capture](./readme_assets/tp3_undo_capture.png)
-*Undoing a capture*
+_Undoing a capture_
 
 ![Rotating the camera](./readme_assets/tp3_rotate_camera.png)
-*Rotating the camera*
+_Rotating the camera_
